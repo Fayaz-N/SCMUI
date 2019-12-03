@@ -39,10 +39,10 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="SecondApproverEmpNo">Second Approver :</label>
+        <label for="Departments">Second Approver :</label>
       </div>
       <div class="ui-g-5">
-        <select formControlName="SecondApproveEmpNo" class="form-control dropdown" [(ngModel)]="Departments.SecondApprover">
+        <select formControlName="SecondApproverEmpNo" class="form-control dropdown" [(ngModel)]="Departments.SecondApproverEmpNo">
           <option [value]="0">Select</option>
           <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
         </select>
