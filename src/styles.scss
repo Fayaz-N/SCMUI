@@ -1,0 +1,291 @@
+/* You can add global styles to this file, and also import other style files */
+
+/*@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-angular-lists/styles/material.css";*/
+
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+@import '../node_modules/primeng/resources/primeng.min.css';
+@import '../node_modules/primeng/resources/themes/nova-light/theme.css';
+@import '../node_modules/primeicons/primeicons.css';
+@import '../node_modules/font-awesome/css/font-awesome.min.css';
+@import '../node_modules/animate.css/animate.css';
+
+
+body {
+  /* background: #456; */
+  font-family: 'Open Sans', sans-serif;
+  overflow-y: auto;
+  font-size: 12px !important;
+}
+.form-control {
+  font-family: 'Open Sans', sans-serif;
+  overflow-y: auto;
+  font-size: 10px !important;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 0px;
+}
+
+.top-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 6;
+  /*background-color:#337D88;*/
+  background-color: #727077;
+  height: 69px;
+  margin-left: 0px;
+}
+.checkmark {
+  color: #1ea31e;
+  font-size: 18px;
+  float: right;
+  margin:auto
+}
+.vendor-List {
+  height:100% !important;
+  margin-top:10px !important;
+  cursor:pointer !important;
+}
+.icons {
+  font-size: 1.5em !important;
+  color: #00CED1;
+}
+/*::ng-deep .ui-datatable-scrollable-header-box {
+  margin-right: 0 !important;
+}*/
+body .ui-widget {
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.form-inline-list {
+  display: flex;
+}
+
+.form-control.is-invalid, .was-validated .form-control:invalid {
+  border-color: #dc3545;
+  padding-right: calc(1.5em + .75rem);
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem);
+}
+
+.invalid-feedback {
+  width: 100%;
+  margin-top: .25rem;
+  font-size: 80%;
+  color: #dc3545;
+}
+
+.my-animation {
+  animation-duration: 1s;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+}
+
+.ui-datepicker {
+  line-height: 1px !important;
+}
+
+.lblEdit {
+  display: inline-block;
+  width: 100%;
+  /*padding-right: 10px;*/
+}
+
+.ptable-cell {
+  white-space: pre-wrap;
+  word-wrap: break-word
+}
+
+.valueEdit {
+  display: inline-block;
+  /*text-align: right;*/
+  /*width: 50%;*/
+  /*padding-right: 12px;*/
+}
+
+.head-text {
+  background-color: #DCDEE0;
+  font-size: 14px !important;
+  color: #000;
+  font-weight: 600;
+  display: flex;
+  margin-right: 15px !important;
+}
+
+.edit {
+  text-align: right;
+}
+
+.forms-input {
+  border-radius: 2px 0px 2px 0px !important;
+  width: 91% !important;
+}
+
+.btn-border {
+  border-radius: 0px !important;
+}
+
+.active {
+  text-decoration: underline;
+  color: #007bff !important;
+  font-size: 13px;
+}
+
+body .ui-radiobutton .ui-radiobutton-box {
+  width: 13px;
+  height: 13px;
+}
+
+
+.table-responsive {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table {
+  width: 80%;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.table td, .table tr {
+  padding: .75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.ui-listbox {
+  height: 200px !important;
+  width: max-content !important;
+}
+
+.ui-listbox-list {
+  height: 200px !important;
+  width: max-content !important;
+}
+
+.ui-dialog-mask {
+  position: initial;
+}
+
+.popoverDiv {
+  height: max-content !important;
+  width: max-content !important;
+  position: absolute;
+  z-index: 100;
+}
+
+.label-heads {
+  font-weight: 600;
+  color: black;
+  font-size: 12px;
+}
+
+.edit-button {
+  cursor: pointer;
+  width: 20px !important;
+  height: 20px !important;
+}
+.head-sec{
+  width:100%;
+}
+body .ui-inputswitch {
+  width: 6em !important;
+  height: 2.3em !important;
+}
+
+body .ui-inputswitch .ui-inputswitch-slider:before {
+  background-color: #ffffff;
+  height: 1.6em !important;
+  width: 1.6em !important;
+  left: 0.25em;
+  bottom: 0.3em;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+  color: #dc354578;
+}
+
+.icon-bar {
+  width: 40px;
+  background-color: #555;
+  position: fixed;
+  top: 165px;
+  right: 0px;
+  z-index: 99;
+}
+
+.icon-bar a {
+  display: block;
+  text-align: center;
+  /*padding: 16px;*/
+  transition: all 0.3s ease;
+  color: white !important;
+  font-size: 20px;
+}
+
+.icon-bar a:hover {
+  background-color: #000;
+}
+
+.active {
+  background-color: #4CAF50;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 6;
+  /*background-color:#337D88;*/
+  background-color: #727077;
+  /*height: 70px;*/
+  left: 0px;
+  padding-left: 200px;
+  color: white;
+  font-size: 14px;
+}
+/* Extra small devices (phones, 600px and down) 
+  @media only screen and (max-width: 600px) {
+  .inpt-width {
+    width: 79% !important;
+  }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .inpt-width {
+    width: 70% !important;
+  }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .inpt-width {
+    width: 79% !important;
+  }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .inpt-width {
+    width: 90% !important;
+  }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .inpt-width {
+    width: 91% !important;
+  }
+}

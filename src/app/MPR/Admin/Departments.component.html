@@ -1,0 +1,138 @@
+<p-table #dt [value]="Departments" [globalFilterFields]="['Department']" editMode="row" [resizableColumns]="true" columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
+  <ng-template pTemplate="header">
+    <tr>
+      <th colspan="6" class="text-right">
+        <input type="text" pInputText size="35" placeholder="Search by Department" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+        <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="showDialogAddDepartment()" label="Add New"></button>
+      </th>
+    </tr>
+    <tr class="text-center">
+      <th>Sl No.</th>
+      <th>Department</th>
+      <th>Second Approver</th>
+      <th>Third Approver</th>
+      <th>Bool In Use</th>
+      <th>Edit</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+    <tr [pEditableRow]="rowData">
+      <td class="text-center">{{ri+1}}</td>
+      <td>{{rowData.Department}}</td>
+      <td>{{rowData.SecondApproverName}}</td>
+      <td>{{rowData.ThirdApproverName}}</td>
+      <td class="text-center">{{rowData.BoolInUse ? "Yes":"No"}}</td>
+      <td class="text-center"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" pTooltip="Edit" class="ui-button-info" (click)="onRowEditInit($event,'PSEditForm',rowData,'ProcurementSourceId')"></button>
+    </tr>
+  </ng-template>
+</p-table>
+<form [formGroup]="DeptAddForm">
+  <p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">Department :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="Department" ngModel maxlength="20" [(ngModel)]="DeptAddForm.Department" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />
+        <span *ngIf="DeptAddSubmitted && DeptAddForm.controls.Department.errors" class="invalid-feedback">Please enter the Department.</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="SecondApproverEmpNo">Second Approver :</label>
+      </div>
+      <div class="ui-g-5">
+        <select formControlName="SecondApproveEmpNo" class="form-control dropdown" [(ngModel)]="Departments.SecondApprover">
+          <option [value]="0">Select</option>
+          <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="ThirdApprover">Third Approver :</label>
+      </div>
+      <div class="ui-g-5">
+        <select formControlName="ThirdApproverEmpNo" class="form-control dropdown" [(ngModel)]="Departments.ThirdApproverEmpNo">
+          <option [value]="0">Select</option>
+          <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+        </select>
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="InsertData()" label="Insert"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</form>
+
+<form [formGroup]="DeptEditForm">
+  <p-dialog header="Edit" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
+    <!--<div class="ui-g ui-fluid">-->
+    <div class="ui-g-14">
+      <div class="ui-g-2">
+        <label for="procSrc">Department Id :</label>
+      </div>
+      <div class="ui-g-5">
+        <label>{{editDepartment.DepartmentId}}</label>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">Department :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="Department" [(ngModel)]="editDepartment.Department" [ngClass]="{ 'is-invalid': DeptEditSubmitted && DeptEditForm.controls.Department.errors }" class="form-control" />
+        <span *ngIf="DeptEditSubmitted && DeptEditForm.controls.Department.errors" class="invalid-feedback">Department required.</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="SecondApproverEmpNo">Second Approver :</label>
+      </div>
+      <div class="ui-g-5">
+        <select formControlName="SecondApproverEmpNo" class="form-control dropdown" [(ngModel)]="editDepartment.SecondApproverEmpNo">
+          <option [value]="0">Select</option>
+          <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+        </select>
+       </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="ThirdApproverEmpNo">Third Approver :</label>
+      </div>
+      <div class="ui-g-5">
+        <select formControlName="ThirdApproverEmpNo" class="form-control dropdown" [(ngModel)]="editDepartment.ThirdApproverEmpNo">
+          <option [value]="0">Select</option>
+          <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+        </select>
+        <!--<span style="color:red;font-weight:bold" *ngIf="DeptEditSubmitted&&(DeptEditForm.controls.SecondApproverEmpNo.value=='Select' || DeptEditForm.controls.SecondApproverEmpNo.value==undefined)" class="error">Select the Second Approver.</span>-->
+      </div>
+    </div>
+
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">In Use :</label>
+      </div>
+      <div class="ui-g-5">
+        <select formControlName="BoolInUse" [(ngModel)]="editDepartment.BoolInUse" [ngClass]="{ 'is-invalid': DeptEditSubmitted && DeptEditForm.controls.BoolInUse.value=='select'}" class="form-control dropdown">
+          <option value="select">Select</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+        <span *ngIf="DeptEditSubmitted && DeptEditForm.controls.BoolInUse.value=='select'" class="invalid-feedback">In Use required</span>
+      </div>
+    </div>
+    <!--</div>-->
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="UpdateData()" label="Update"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</form>
+
+

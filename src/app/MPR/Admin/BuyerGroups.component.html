@@ -1,0 +1,139 @@
+<!--<div class="" style="margin-top:20px;max-width:900px;">-->
+<div class="text-capitalize text-center font-weight-bold">Buyer Groups</div>
+<form [formGroup]="MPRBuyerGroup">
+  <p-table #dt *ngIf="buyerGrps.length>0" [value]="buyerGrps" data-key="BuyerGroupId" [globalFilterFields]="['BuyerGroup']" editMode="row" [paginator]="true"
+           [rows]="10" [resizableColumns]="true" columnResizeMode="expand"
+           selectionMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th colspan="4" class="text-right">
+          <!--<i class="fa fa-search" style="margin:4px 4px 0 0"></i>-->
+          <input type="text" pInputText size="40" placeholder="Search by Buyer Group" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+          <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAddBuyerGroup()" label="Add New"></button>
+        </th>
+      </tr>
+      <tr class="text-center">
+        <th>Buyer Group Id</th>
+        <th>Buyer Group</th>
+        <th>In Use</th>
+        <th>Edit</th>
+        <!--<th>Remove</th>-->
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex="0">
+      <tr [pEditableRow]="rowData">
+        <td class="text-center">{{rowData.BuyerGroupId}}</td>
+        <td>{{rowData.BuyerGroup}}</td>
+        <td class="text-center">{{rowData.BoolInUse ? "Yes":"No"}}</td>
+        <td class="text-center" style="white-space: nowrap">
+          <button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit($event,'BuyerGroupsEditForm',rowData,'BuyerGroupId')"></button>
+        </td>
+        <!--<td class="text-center">
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="ui-button-danger" (click)="onBuyerGrpRowDelete(rowData,BuyerGroupId)"></button>
+        </td>-->
+      </tr>
+    </ng-template>
+  </p-table>
+</form>
+  <p-dialog header="Buyer Groups Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="BuyerGroupsAddForm" (ngSubmit)="onBuyerGroupAdd()" novalidate>
+        <div class="ui-g-12">
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group :</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputType size="100" formControlName="BuyerGroup" focus-me="focusInput" [(ngModel)]="buyerGrps.BuyerGroup" [ngClass]="{ 'is-invalid': BuyerGroupsAddForm && BuyerGroupsAddForm.controls.BuyerGroup.errors}" class="form-control" required />
+            <span *ngIf="BGAddSubmitted && BuyerGroupsAddForm.controls.BuyerGroup.errors" class="invalid-feedback">Please enter the Buyer Group.</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-info" (click)="onBuyerGroupAdd()" label="Add"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Buyer Groups Edit" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="BuyerGroupsEditForm">
+        <div class="ui-g-12">
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group Id :</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{editbuyerGrps.BuyerGroupId}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group :</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText size="100" formControlName="BuyerGroup" class="form-control" [(ngModel)]="editbuyerGrps.BuyerGroup" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">In Use :</label>
+          </div>
+          <div class="ui-g-8">
+            <select formControlName="BoolInUse" class="form-control dropdown" [(ngModel)]="editbuyerGrps.BoolInUse">
+              <option value="select" selected="selected">Select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-info" (click)="onBuyerGroupUpdate()" label="Update"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <!--<p-table *ngIf="BuyerGroups.length>0" [value]="BuyerGroups" data-key="BuyerGroupId" editMode="row">
+    <ng-template pTemplate="header">
+      <tr class="text-center">
+        <th style="width:8%">Buyer Group Id</th>
+        <th>Buyer Group</th>
+        <th style="width:15%">Edit</th>
+        <th style="width:15%">Remove</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr [pEditableRow]="rowData">
+        <td class="text-center">
+          {{rowData.BuyerGroupId}}
+        </td>
+        <td style="white-space: nowrap">
+          <p-cellEditor>
+            <ng-template pTemplate="input">
+              <input pInputText type="text" [(ngModel)]="rowData.BuyerGroup" style="width: 500px" required />
+            </ng-template>
+            <ng-template pTemplate="output">
+              {{rowData.BuyerGroup}}
+            </ng-template>
+          </p-cellEditor>
+        </td>
+        <td class="text-center" style="white-space: nowrap">
+          <button *ngIf="!editing" pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button>
+          <button *ngIf="editing" pButton type="button" pSaveEditableRow icon="pi pi-check" class="ui-button-success" style="margin-right: .5em"></button>
+          <button *ngIf="editing" pButton type="button" pCancelEditableRow icon="pi pi-times" class="ui-button-warning"></button>
+        </td>
+        <td class="text-center">
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="ui-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>-->
+  <!--</div>-->

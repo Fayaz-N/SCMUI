@@ -1,0 +1,129 @@
+<div style="text-align: right">
+  <a class="btn btn-info btn-lg" (click)="showHideFilterBlock()">
+    <span class="glyphicon glyphicon-expand"></span>
+  </a>
+</div>
+<form [formGroup]="MPRfilterForm">
+  <div *ngIf="showFilterBlock" class="row form-control" style="height:100%;border-radius:0px;">
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="docNo" class="form-label">Document Number</label>
+        <input class="form-control" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="SaleOrderNo" class="form-label">Document Description</label>
+        <input class="form-control" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">From Date</label><br />
+        <p-calendar formControlName="FromDate" [(ngModel)]="mprFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">To Date</label>&nbsp;<br />
+        <p-calendar formControlName="ToDate" [(ngModel)]="mprFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+    </div>
+
+    <div *ngIf="typeOfList=='MPRCheckerList'" class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Checked By</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy','',undefined)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+        &nbsp;&nbsp;<label class="form-label">Checked Status</label>&nbsp;
+        <select class="form-control dropdown" formControlName="CheckerStatus" [(ngModel)]="mprFilterParams.Status" ng-init="mprFilterParams.status='Pending'">
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+        </select>&nbsp;
+      </div>
+    </div>
+    <div *ngIf="typeOfList=='MPRApproverList'" class="row form-group">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Approved By : </label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy','',undefined)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+        &nbsp;&nbsp;<label class="form-label">Approved Status:</label>&nbsp;
+        <select class="form-control dropdown" formControlName="ApprovalStatus" [(ngModel)]="mprFilterParams.Status" ng-init="mprFilterParams.status='Pending'">
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+        </select>&nbsp;
+      </div>
+    </div>
+    <div class="row">
+      <div class="ui-g-4 ui-md-4">
+      </div>
+      <div class="ui-g-4 ui-md-4">
+        <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
+      </div>
+    </div>
+  </div><br />
+</form>
+<div class="row form-control" style="height:100%;border-radius:0px;">
+  <p-table #dt [value]="mprList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true"  [loading]="loading">
+    <ng-template pTemplate="caption">
+      <!--<div style="text-align: right">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>-->
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S.No</th>
+        <th>MPR Document Number</th>
+        <th>Description</th>
+        <th>Preapared By</th>
+        <th>Preapared On</th>
+        <th>Check By</th>
+        <th>Check Status</th>
+        <th>Approved By</th>
+        <th>Approval Status</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'DocumentNo', 'contains')"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'CheckedName', 'contains')"></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td>
+          {{ri+1}}
+        </td>
+        <td class="ptable-cell"><a [routerLink]="['/SCM/MPRDetails',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+        <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
+        <td class="ptable-cell">{{rowData.PreparedName}}</td>
+        <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
+        <td class="ptable-cell">{{rowData.CheckedName}}</td>
+        <td class="ptable-cell">{{rowData.CheckStatus }}</td>
+        <td class="ptable-cell">{{rowData.ApproverName}}</td>
+        <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
+      </tr>
+    </ng-template>
+  </p-table><br />
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+

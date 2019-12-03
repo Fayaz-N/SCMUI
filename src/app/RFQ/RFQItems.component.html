@@ -1,0 +1,66 @@
+<div style="float:initial">
+  <label>Add Vendor: &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button><br />
+</div>
+<br />
+<div class="form-control form-inline" style="height:100%;">
+  <div *ngFor="let Item of rfqQuoteModel;let k=index">
+    <div  class="row form-control form-inline" style="height:100%;">
+      <div class="head-sec form-inline">
+        <label>Item Name: </label><span>{{Item.ItemName}}</span>&nbsp;&nbsp;
+        <label>Item Description: </label><span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
+        <label>Quantity: </label><span>{{Item.QuotationQty}}</span>
+      </div><br />
+      <div class="col-lg-12 col-md-12 col-sm-12 form-inline">
+        <div *ngFor="let vendor of Item.vendorDetails; let i=index">
+          <div *ngIf="i<=vendorsLength" class="form-control col-lg-12 col-md-12 col-sm-12 form-inline vendor-List" (click)="selectVendorList(k,i,vendor)">
+            <span class="form-inline"><b>{{vendor.VendorName}}</b> &nbsp;&nbsp; <input type="checkbox" class="checkmark" ></span><br />
+            <span class="form-inline"><b>Quantity: </b>&nbsp;<input type="number" class="form-control" value={{Item.QuotationQty}} /></span><br />
+            <span class="form-inline"><b>Discount: </b>&nbsp;{{vendor.Discount}}</span> <br />
+            <span class="form-inline"><b>Unit Price: </b>&nbsp;{{vendor.UnitPrice}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="row form-inline pt-2">
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      <button type="button" class="btn btn-success" (click)="onVendorQuoteUpdate()" label="Save">Submit</button>
+    </div>
+  </div>
+
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+<p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '400px'}">
+  <div class="ui-g-12">
+    <div class="ui-g-8 form-group">
+      <label class="form-label">Vendor</label>
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid','',undefined)"></button>
+        </span>
+        <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="onVendorSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
