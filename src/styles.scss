@@ -18,14 +18,19 @@ body {
   font-size: 12px !important;
 }
 .form-control {
-  font-family: 'Open Sans', sans-serif;
-  overflow-y: auto;
   font-size: 10px !important;
 }
 
 #main {
   transition: margin-left .5s;
   padding: 0px;
+}
+hr {
+  margin-top: 0.5em !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  border-style: inset !important;
+  border-color: black !important;
 }
 
 .top-header {
@@ -43,7 +48,16 @@ body {
   color: #1ea31e;
   font-size: 18px;
   float: right;
-  margin:auto
+  height: 20px;
+  width: 20px;
+  padding: 12px;
+  margin: auto !important;
+}
+.lbl-rfq {
+  margin: auto;
+  color: #428bca;
+  font-weight: 400;
+  font-size: 14px;
 }
 .vendor-List {
   height:100% !important;
@@ -254,6 +268,12 @@ a.disabled {
   padding-left: 200px;
   color: white;
   font-size: 14px;
+}
+.check-color {
+  color: #28a745cf;
+}
+.times-color {
+  color: #e61e1eb3;
 }
 /* Extra small devices (phones, 600px and down) 
   @media only screen and (max-width: 600px) {

@@ -5,10 +5,28 @@ export class rfqQuoteModel {
   ItemDescription: string;
   TargetSpend: string;
   QuotationQty: string;
-  vendorDetails: Array<any> = [];
+  vendorQuoteQty: string;
+  suggestedVendorDetails: Array<any> = [];
+  manualvendorDetails: Array<any> = [];
 
 }
-
+export class RFQRevisionData {
+  CreatedBy: number;
+  CreatedDate: Date;
+  RfqValidDate: Date;
+  PackingForwading: string;
+  ExciseDuty: string;
+  salesTax: string;
+  freight: string;
+  Insurance: string;
+  CustomsDuty: string;
+  ShipmentModeId: number;
+  PaymentTermDays: number;
+  PaymentTermRemarks: string;
+  BankGuarantee: string;
+  DeliveryMinWeeks: number;
+  DeliveryMaxWeeks: number;
+}
 //export class Vendordetails {
 //  VendorCode: string;
 //  VendorName: string;

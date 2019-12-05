@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
-import { RFQItemsComponent } from './RFQ/RFQItems.component';
+import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
 import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
@@ -23,7 +23,7 @@ const routes: Routes = [
       { path: "MPRList", component: MPRListComponent },
       { path: "MPRCheckerList", component: MPRListComponent },
       { path: "MPRApproverList", component: MPRListComponent },
-      { path: 'RFQItems/:RevisionId', component: RFQItemsComponent },
+      { path: 'GenerateRFQ/:RevisionId', component: GenerateRFQComponent },
       { path: 'Approvers', component: ApproversComponent },
       { path: 'Buyers', component: BuyerGroupsComponent },
       { path: 'Departments', component: DepartmentComponent },
@@ -46,4 +46,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { } export const
-  RoutingComponent = [MPRPageComponent, MPRListComponent, RFQItemsComponent];
+  RoutingComponent = [MPRPageComponent, MPRListComponent, GenerateRFQComponent];
