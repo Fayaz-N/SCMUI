@@ -9,6 +9,7 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
+import { LoginComponent } from './Login/Login.component';
 
 
 
@@ -18,6 +19,7 @@ const routes: Routes = [
     path: 'SCM',
     component: DashboardComponent,
     children: [
+      { path: "Login", component: LoginComponent },
       { path: "MPRDetails", component: MPRPageComponent },
       { path: "MPRDetails/:RevisionId", component: MPRPageComponent },
       { path: "MPRList", component: MPRListComponent },
