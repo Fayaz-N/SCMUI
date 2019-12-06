@@ -83,5 +83,10 @@ export class MprService {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + '/updateDataToDBMasters', updateData, httpOptions);
   }
+  //Login
 
+  ValidateLoginCredentials(search: DynamicSearchResult): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + '/ValidateLoginCredentials', search, httpOptions);
+  }
 }
