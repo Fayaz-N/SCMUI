@@ -1,0 +1,32 @@
+<form [formGroup]="LoginForm">
+	<div class="box" style="height:100%;">
+		<div class="row form-inline titleColor">
+			<div class="col-sm-2 col-md-2 col-lg-2"></div>
+			<div class="col-sm-8 col-md-8 col-lg-8 text-center" style="margin-top: 30px;">
+				<h1 style="font-size: 30px; vertical-align: middle; font-weight: bold">Supply Chain Management</h1>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-3 col-md-3 col-lg-3 form-group" style="margin-top: 80px;">
+				<label for="domainId" class="form-label">Domain Id :</label>
+				<input type="text" formControlName="DomainId" ngModel maxlength="20" class="form-control" [ngClass]="{ 'is-invalid': LoginSubmitted && LoginForm.controls.DomainId.errors }" required />
+				<span *ngIf="LoginSubmitted && LoginForm.controls.DomainId.errors" class="invalid-feedback">Please enter Domain Id</span>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-3 col-md-3 col-lg-3 form-group">
+				<label for="username" class="form-label">Password :</label>
+				<input type="password" formControlName="Password" ngModel maxlength="20" class="form-control" [ngClass]="{ 'is-invalid': LoginSubmitted && LoginForm.controls.Password.errors }" required />
+				<span *ngIf="LoginSubmitted && LoginForm.controls.Password.errors" class="invalid-feedback">Please enter Password</span>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-sm-4 col-md-4 col-lg-4"></div>
+			<div class="col-sm-4 col-md-4 col-lg-4" style="margin-top: 10px">
+				<button type="submit" class="btn btn-primary" (click)="Login()">Login</button>
+			</div>
+		</div>
+	</div>
+</form>
