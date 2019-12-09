@@ -19,7 +19,11 @@ export class RfqService {
     return this.http.get<any>(this.url + 'RFQ/getRFQItems/' + RevisionId);
   }
 
-  updateVendorQuotes(vendorQuoteList: any): Observable<any> {
-    return this.http.post<any>(this.url + 'RFQ/updateVendorQuotes', vendorQuoteList, this.httpOptions);
+  updateVendorQuotes(vendorQuoteList: any, termsList: any): Observable<any> {
+    var Data = {
+      RFQQuoteViewList: vendorQuoteList,
+      TermsList: termsList
+    }
+    return this.http.post<any>(this.url + 'RFQ/updateVendorQuotes', JSON.stringify(Data), this.httpOptions);
   }
 }

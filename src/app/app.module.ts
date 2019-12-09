@@ -24,6 +24,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
+import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
 import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
@@ -41,6 +42,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
     MPRPageComponent,
     MPRListComponent,
     GenerateRFQComponent,
+    RFQComparisionComponent,
     ApproversComponent,
     BuyerGroupsComponent,
     DepartmentComponent,

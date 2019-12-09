@@ -10,27 +10,30 @@ import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { LoginComponent } from './Login/Login.component';
+import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
 
 
 
 const routes: Routes = [
-  { path: '', redirectTo: 'SCM', pathMatch: 'full' },
+  { path: '', redirectTo: 'Login', pathMatch: 'full' },
+  { path: "Login", component: LoginComponent },
   {
     path: 'SCM',
     component: DashboardComponent,
     children: [
-      { path: "Login", component: LoginComponent },
       { path: "MPRDetails", component: MPRPageComponent },
-      { path: "MPRDetails/:RevisionId", component: MPRPageComponent },
+      { path: "MPRDetails/:MPRRevisionId", component: MPRPageComponent },
       { path: "MPRList", component: MPRListComponent },
       { path: "MPRCheckerList", component: MPRListComponent },
       { path: "MPRApproverList", component: MPRListComponent },
-      { path: 'GenerateRFQ/:RevisionId', component: GenerateRFQComponent },
+      { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent },
+      { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent },
       { path: 'Approvers', component: ApproversComponent },
       { path: 'Buyers', component: BuyerGroupsComponent },
       { path: 'Departments', component: DepartmentComponent },
       { path: 'Scopes', component: ScopesComponent },
       { path: 'ProcurementSource', component: ProcurementSourcesComponent },
+
 
     ]
   },

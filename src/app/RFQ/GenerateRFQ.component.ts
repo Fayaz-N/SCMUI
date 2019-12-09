@@ -1,7 +1,6 @@
-import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { constants } from '../Models/MPRConstants'
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { RfqService } from '../services/rfq.service ';
 import { MPRVendorDetail, searchList, DynamicSearchResult } from '../Models/mpr';
 import { MprService } from '../services/mpr.service';
@@ -14,7 +13,7 @@ import { MessageService } from 'primeng/api';
 })
 
 export class GenerateRFQComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService) { }
+  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
 
   public txtName: string;
   public dynamicData = new DynamicSearchResult();
@@ -27,29 +26,52 @@ export class GenerateRFQComponent implements OnInit {
   public vendorDetailsArray: Array<MPRVendorDetail> = [];
   public vendorSubmitted: boolean = false;
   public totalRfqItems: Array<any> = [];
-  public RevisionId: number;
+  public MPRRevisionId: number;
   public rfqQuoteModel: Array<rfqQuoteModel> = [];
   public vendorsLength: number = 2;
   public selectedIndex: string;
   public selectedVendorList: Array<any> = [];
   public cols: any[];
   public RFQRevisionData: RFQRevisionData;
+  public YILTermsAndConditions: Array<any> = [];
   //page load event
   ngOnInit() {
     this.vendorDetails = new MPRVendorDetail();
     this.RFQRevisionData = new RFQRevisionData();
     this.route.params.subscribe(params => {
-      if (params["RevisionId"]) {
-        this.RevisionId = params["RevisionId"];
+      if (params["MPRRevisionId"]) {
+        this.MPRRevisionId = params["MPRRevisionId"];
         this.getRFQItems();
       }
     });
-
   }
-  openMPR3Dialog(dialogName: string) {
+
+  //Get total generated RFQ Items
+  getRFQItems() {
+    this.RfqService.getRFQItems(this.MPRRevisionId).subscribe(data => {
+      this.totalRfqItems = data;
+      this.dynamicData = new DynamicSearchResult();
+      this.dynamicData.tableName = "MPRVendorDetails";
+      this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+        this.vendorDetailsArray = data;
+        this.getYILTermsAndConditions();
+      })
+      this.prepareRfQItems();
+    })
+  }
+  getYILTermsAndConditions() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select term.TermId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.YILTermsAndConditions = data;
+    })
+  }
+  openVendorDialog(dialogName: string) {
     this[dialogName] = true;
     this.vendorDetails = new MPRVendorDetail();
+    this.selectedItem = new searchList();
   }
+
   dialogCancel(dialogName: string, openDialog: string) {
     this[dialogName] = false;
     this[openDialog] = true;
@@ -81,9 +103,8 @@ export class GenerateRFQComponent implements OnInit {
   }
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
-
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
-      if ((this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
+      if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
         alert("vendor already exist");
         break;
         return false;
@@ -94,12 +115,9 @@ export class GenerateRFQComponent implements OnInit {
         this.vendorDetails.VendorName = item.name;
       }
     }
-
-
-
-
   }
 
+  //vendor submit
   onVendorSubmit(dialogName: string, type: string) {
     if (type == "vendorDetails") {
       this.vendorSubmitted = true;
@@ -109,7 +127,7 @@ export class GenerateRFQComponent implements OnInit {
         this.vendorSubmitted = false;
         this.vendorDetailsArray = [];
         this.vendorDetailsArray.push(this.vendorDetails);
-        this.MprService.updateMPRVendor(this.vendorDetailsArray, this.RevisionId).subscribe(data => {
+        this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
           this[dialogName] = false;
           this.vendorDetailsArray = data;
           this.preapreManualRfqlist();
@@ -118,13 +136,7 @@ export class GenerateRFQComponent implements OnInit {
     }
   }
 
-  getRFQItems() {
-    this.RfqService.getRFQItems(this.RevisionId).subscribe(data => {
-      this.totalRfqItems = data;
-      this.prepareRfQItems();
-    })
-  }
-
+  //pepare top 3 Suggested vendors
   prepareRfQItems() {
     for (var i = 0; i < this.totalRfqItems.length; i++) {
       var res = this.rfqQuoteModel.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
@@ -143,6 +155,7 @@ export class GenerateRFQComponent implements OnInit {
       }
     }
   }
+
   preapreManualRfqlist() {
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
       if (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == this.vendorDetails.Vendorid).length > 0) {
@@ -155,13 +168,16 @@ export class GenerateRFQComponent implements OnInit {
         manualdetails["ItemName"] = this.rfqQuoteModel[i].ItemName;
         manualdetails["VendorId"] = this.vendorDetails.Vendorid;
         manualdetails["VendorName"] = this.vendorDetails.VendorName;
-        manualdetails["vendorQuoteQty"] = " ";
-        manualdetails["Discount"] = "-";
         manualdetails["UnitPrice"] = "-";
+        manualdetails["vendorQuoteQty"] = "-";
+        manualdetails["Discount"] = "-";
+        manualdetails["PaymentTermCode"] = "-"
+
         this.rfqQuoteModel[i].manualvendorDetails.push(manualdetails)
       }
     }
   }
+
   selectVendorList(event: any, itemsIndex: number, vendorIndex: number, id: string, vendor: any, checked: boolean) {
     var qty = (<HTMLInputElement>document.getElementById(id + itemsIndex + "" + vendorIndex)).value;
     id == "SQty" ? this.rfqQuoteModel[itemsIndex].suggestedVendorDetails[vendorIndex].QuotationQty = qty : this.rfqQuoteModel[itemsIndex].manualvendorDetails[vendorIndex].QuotationQty = qty;
@@ -195,10 +211,12 @@ export class GenerateRFQComponent implements OnInit {
     }
 
   }
+
   bindCheckeMark(vendor: any, ItemId: number) {
     return this.selectedVendorList.filter(li => (li.VendorId == vendor.VendorId) && (li.ItemId == ItemId)).length > 0 ? true : false;
 
   }
+
   openrevisionDialog() {
     this.showConformationDialog = false;
     this.showRevisionsDialog = true;
@@ -213,6 +231,10 @@ export class GenerateRFQComponent implements OnInit {
     this.showConformationDialog = true;
 
   }
+  termChange(event:any,index: number) {
+    this.YILTermsAndConditions[index].DefaultSelect = event.target.checked
+  }
+
   onVendorQuoteUpdate() {
     var date = new Date();
     if (this.RFQRevisionData.RfqValidDate)
@@ -233,10 +255,12 @@ export class GenerateRFQComponent implements OnInit {
       item.DeliveryMinWeeks = this.RFQRevisionData.DeliveryMinWeeks;
       item.DeliveryMaxWeeks = this.RFQRevisionData.DeliveryMaxWeeks;
     });
-    this.RfqService.updateVendorQuotes(this.selectedVendorList).subscribe(data => {
-      if (data)
+    this.RfqService.updateVendorQuotes(this.selectedVendorList, this.YILTermsAndConditions).subscribe(data => {
+      if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Updated sucessfully' });
-      this.showRevisionsDialog = false;
+        this.showRevisionsDialog = false;
+        this.router.navigate(["/RFQComparision", this.MPRRevisionId]);
+      }
     })
   }
 

@@ -181,8 +181,8 @@ export class MPRPageComponent implements OnInit {
       });
     }
     this.route.params.subscribe(params => {
-      if (params["RevisionId"]) {
-        var revisionId = params["RevisionId"];
+      if (params["MPRRevisionId"]) {
+        var revisionId = params["MPRRevisionId"];
         this.spinner.show();
         this.loadMPRData(revisionId);
       }
