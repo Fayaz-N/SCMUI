@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { constants } from '../Models/MPRConstants'
 import { ActivatedRoute, Router } from '@angular/router';
 import { RfqService } from '../services/rfq.service ';
-import { MPRVendorDetail, searchList, DynamicSearchResult } from '../Models/mpr';
+import { MPRVendorDetail, searchList, DynamicSearchResult, Employee } from '../Models/mpr';
 import { MprService } from '../services/mpr.service';
 import { rfqQuoteModel, RFQRevisionData } from '../Models/rfq';
 import { MessageService } from 'primeng/api';
@@ -15,6 +15,7 @@ import { MessageService } from 'primeng/api';
 export class GenerateRFQComponent implements OnInit {
   constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
 
+  public employee: Employee;
   public txtName: string;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
@@ -36,6 +37,10 @@ export class GenerateRFQComponent implements OnInit {
   public YILTermsAndConditions: Array<any> = [];
   //page load event
   ngOnInit() {
+    if (localStorage.getItem("Employee")) 
+      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    else 
+      this.router.navigateByUrl("Login");
     this.vendorDetails = new MPRVendorDetail();
     this.RFQRevisionData = new RFQRevisionData();
     this.route.params.subscribe(params => {
@@ -61,7 +66,7 @@ export class GenerateRFQComponent implements OnInit {
   }
   getYILTermsAndConditions() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select term.TermId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
+    this.dynamicData.query = "select term.TermId,term.TermGroupId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.YILTermsAndConditions = data;
     })
@@ -240,7 +245,7 @@ export class GenerateRFQComponent implements OnInit {
     if (this.RFQRevisionData.RfqValidDate)
       date.setDate(date.getDate() + parseInt(this.RFQRevisionData.RfqValidDate.toString()));
     this.selectedVendorList.forEach(item => {
-      item.CreatedBy = 190455;
+      item.CreatedBy = this.employee.EmployeeNo;
       item.CreatedDate = new Date();
       item.RfqValidDate = new Date(date);
       item.PackingForwading = this.RFQRevisionData.PackingForwading;
@@ -259,7 +264,7 @@ export class GenerateRFQComponent implements OnInit {
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Updated sucessfully' });
         this.showRevisionsDialog = false;
-        this.router.navigate(["/RFQComparision", this.MPRRevisionId]);
+        this.router.navigate(["/SCM/RFQComparision", this.MPRRevisionId]);
       }
     })
   }

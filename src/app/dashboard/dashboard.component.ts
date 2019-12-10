@@ -1,22 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-Dashboard',
+  templateUrl: './Dashboard.component.html'
 })
 export class DashboardComponent implements OnInit {
-
-  show:boolean;
-  text:string;
-  constructor() {
-
-    
-   
-   }
+  constructor() { }
 
   ngOnInit() {
 
   }
-   
+
 }

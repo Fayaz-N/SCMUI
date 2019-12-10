@@ -301,7 +301,14 @@ a.disabled {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-} 
+}
+.panel-heading {
+  border-bottom: 0 !important;
+  padding: .625rem .9375rem !important;
+  text-align:center !important;
+}
+
+
 /* Extra small devices (phones, 600px and down) 
   @media only screen and (max-width: 600px) {
   .inpt-width {

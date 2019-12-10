@@ -20,6 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Login/Login.component';
+import { SideMenuComponent } from './Dashboard/SideMenu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
@@ -38,6 +39,7 @@ import { NgxSpinnerModule } from "ngx-spinner";
   declarations: [
     AppComponent,
     LoginComponent,
+    SideMenuComponent,
     DashboardComponent,
     MPRPageComponent,
     MPRListComponent,

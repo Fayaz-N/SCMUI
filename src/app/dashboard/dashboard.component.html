@@ -1,75 +1,58 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>SCM</title>
-  <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-</head>
-<body>
-  <div id="wrapper" [ngClass]="ref.click === true? 'toggled' :''">
-    <div class="overlay" [ngStyle]="{disply:ref.click === true? 'block' :'none'}"></div>
-
-    <!-- Sidebar -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-      <ul class="nav sidebar-nav">
-        <li class="sidebar-brand">
-          <a>
-            MPR
-          </a>
-        </li>
-        <li>
-          <a routerLink="MPRDetails">MPR Details</a>
-        </li>
-        <li>
-          <a routerLink="MPRList">MPR List</a>
-        </li>
-        <li>
-          <a routerLink="MPRCheckerList">MPR Checker List</a>
-        </li>
-        <li>
-          <a routerLink="MPRApproverList">MPR Approver List</a>
-        </li>
-        <li class="sidebar-brand">
-          <a>
-            Masters
-          </a>
-        </li>
-        <li>
-          <a routerLink="Approvers">Approvers</a>
-        </li>
-        <li>
-          <a routerLink="Buyers">Buyers</a>
-        </li>
-        <li>
-          <a routerLink="Departments">Departments</a>
-        </li>
-        <li>
-          <a routerLink="Scopes">Scopes</a>
-        </li>
-        <li>
-          <a routerLink="ProcurementSource">Procurement Source</a>
-        </li>
-      </ul>
-    </nav>
-    <!-- /#sidebar-wrapper -->
-    <!-- Page Content -->
-    <div id="main" class="top-header">
-      <div style="float:right;padding: 15px;"><img id="Image2" src="../assets/banner.jpg"></div>
+<div class="row" style="margin:auto">
+  <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="col-lg-3 col-xs-3 col-sm-3 col-md-3">
+      <h2>Dashboard</h2>
     </div>
-    <div id="page-content-wrapper">
-      <button appSidebar #ref="appSidebar" type="button" class="hamburger is-closed" data-toggle="offcanvas">
-        <span class="hamb-top"></span>
-        <span class="hamb-middle"></span>
-        <span class="hamb-bottom"></span>
-      </button>
-      <div style="width:100%;padding-left:30px">
-        <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="row" style="margin:auto">
+  <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12">
+    <div class="col-lg-3 col-xs-3 col-sm-3 col-md-3">
+      <div class="card b">
+        <div class="card-body panel-heading" style="background-color: #5d9cec !important">
+          <h3>Total MPR</h3>
+          <h4>50</h4>
+        </div>
       </div>
     </div>
-    <!-- /#page-content-wrapper -->
+    <div class="col-lg-3 col-xs-3 col-sm-3 col-md-3">
+      <div class="card b">
+        <div class="card-body panel-heading" style="background-color: #ffa500d9 !important">
+          <h3>Completed MPR</h3>
+          <h4>50</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-3 col-xs-3 col-sm-3 col-md-3">
+      <div class="card b">
+        <div class="card-body  panel-heading" style="background-color: #dc3545c4 !important">
+          <h3>Pending MPR</h3>
+          <h4>50</h4>
+        </div>
+      </div>
+    </div>
   </div>
-  <!-- /#wrapper -->
-</body>
-</html>
+</div>
+<div class="row" style="margin:auto">
+  <div class="col-lg-12 col-xs-12 col-sm-12 col-md-12 mt-5">
+    <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4" style="height:100%;border-radius: 25px;border: 1px solid #ccc;margin-left: 15px !important;">
+      <h4>MPR Waiting For Acknowledgement</h4>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-info">MPR 1</li>
+        <li class="list-group-item list-group-item-danger">MPR 2</li>
+        <li class="list-group-item list-group-item-success">MPR 3</li>
+      </ul>
+    </div>
+    
+    <div class="col-lg-4 col-xs-4 col-sm-4 col-md-4" style="height:100%;border-radius: 25px;border: 1px solid #ccc;margin-left: 15px !important;">
+      <h4>Waiting For Approvals</h4>
+      <ul class="list-group">
+        <li class="list-group-item list-group-item-info">PO 1</li>
+        <li class="list-group-item list-group-item-danger">PO 2</li>
+        <li class="list-group-item list-group-item-success">PO 3</li>
+      </ul>
+    </div>
+  </div>
+</div>
+

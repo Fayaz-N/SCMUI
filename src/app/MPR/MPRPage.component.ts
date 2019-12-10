@@ -1,23 +1,23 @@
-import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-import { DynamicSearchResult, searchList, mprRevision, MPRItemInfoes, MPRDetail, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRIncharge, MPRCommunication, MPRReminderTracking, MPRStatusUpdate } from '../Models/mpr';
+import { Employee,DynamicSearchResult, searchList, mprRevision, MPRItemInfoes, MPRDetail, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRIncharge, MPRCommunication, MPRReminderTracking, MPRStatusUpdate } from '../Models/mpr';
 import { MprService } from '../services/mpr.service';
 import { constants } from '../Models/MPRConstants'
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-
 
 @Component({
   selector: 'app-MPRPage',
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService) { }
+  constructor(private router: Router,private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   protected dialogElement: ElementRef;
 
   //variable Declarations start
+  public employee: Employee;
   public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm: FormGroup;
   public showMaterialForm; showVendorForm; showOtherDetailsForm; communicationFormEdit; showCommunicationForm: boolean = false;
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
@@ -58,6 +58,12 @@ export class MPRPageComponent implements OnInit {
 
   //page load event
   ngOnInit() {
+    if (localStorage.getItem("Employee")) {
+      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    }
+    else {
+      this.router.navigateByUrl("Login");
+    }
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();
@@ -343,7 +349,7 @@ export class MPRPageComponent implements OnInit {
       return;
     }
     else {
-      this.mprRevisionModel.PreparedBy = "190455";
+      this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this.mprRevisionModel.PreparedOn = new Date();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.mprRevisionModel = data;
@@ -562,7 +568,7 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.GuaranteePeriod = this.MPRPageForm3.value.supplyMonths + " " + "months after supply or " + this.MPRPageForm3.value.commissionMonths + " " + "months after commissioning whichever is earlier";
       if (this.mprRevisionModel.InspectionComments)
         this.mprRevisionModel.InspectionComments = this.mprRevisionModel.InspectionComments[0];
-      this.mprRevisionModel.PreparedBy = "190455";
+      this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this, this.mprRevisionModel.PreparedOn = new Date();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.mprRevisionModel = data;
@@ -662,7 +668,7 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel.MPRVendorDetails = [];
       this.mprRevisionModel.MPRDocumentations = [];
       this.mprRevisionModel.MPRIncharges = [];
-      this.MPRCommunications.RemarksFrom = "190455";
+      this.MPRCommunications.RemarksFrom = this.employee.EmployeeNo;
       this.MPRCommunications.RemarksDate = new Date();
       this.mprRevisionModel.MPRCommunications.push(this.MPRCommunications);
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {

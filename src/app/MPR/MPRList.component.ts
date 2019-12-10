@@ -1,16 +1,17 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-import { DynamicSearchResult, searchList, mprRevision, mprFilterParams } from '../Models/mpr';
+import { DynamicSearchResult, searchList, mprRevision, mprFilterParams, Employee } from '../Models/mpr';
 import { MprService } from '../services/mpr.service';
 import { constants } from '../Models/MPRConstants'
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-MPRList',
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute) { }
+  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router,) { }
+  public employee: Employee;
   public MPRfilterForm: FormGroup;
   public formName: string;
   public txtName: string;
@@ -30,6 +31,12 @@ export class MPRListComponent implements OnInit {
 
   //page load event
   ngOnInit() {
+    if (localStorage.getItem("Employee")) {
+      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    }
+    else {
+      this.router.navigateByUrl("Login");
+    }
     this.typeOfList = this.route.routeConfig.path;
     this.mprFilterParams = new mprFilterParams();
     this.mprFilterParams.ToDate = new Date();
@@ -47,12 +54,12 @@ export class MPRListComponent implements OnInit {
       ApprovalStatus: ['', [Validators.required]]
     });
     if (this.typeOfList == "mprCheckerList") {
-      this.MPRfilterForm.controls["CheckedBy"].setValue("N Senthil Kumar");
-      this.mprFilterParams.CheckedBy = "190455";
+      this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
+      this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
     }
     else if (this.typeOfList == "mprApproverList") {
-      this.MPRfilterForm.controls["ApprovedBy"].setValue("N Senthil Kumar");
-      this.mprFilterParams.ApprovedBy = "190455";
+      this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
+      this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
     }
     else {
       this.MPRfilterForm.controls["CheckedBy"].setValue("");

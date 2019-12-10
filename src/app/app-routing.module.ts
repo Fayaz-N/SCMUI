@@ -11,6 +11,7 @@ import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { LoginComponent } from './Login/Login.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
+import { SideMenuComponent } from './Dashboard/SideMenu.component';
 
 
 
@@ -19,8 +20,9 @@ const routes: Routes = [
   { path: "Login", component: LoginComponent },
   {
     path: 'SCM',
-    component: DashboardComponent,
+    component: SideMenuComponent,
     children: [
+      { path: "DashBoard", component: DashboardComponent },
       { path: "MPRDetails", component: MPRPageComponent },
       { path: "MPRDetails/:MPRRevisionId", component: MPRPageComponent },
       { path: "MPRList", component: MPRListComponent },
