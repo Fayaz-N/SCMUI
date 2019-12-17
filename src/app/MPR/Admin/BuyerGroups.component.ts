@@ -2,6 +2,7 @@ import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } fr
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { MPRBuyerGroup, searchList, DynamicSearchResult } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
+import { RfqService } from 'src/app/services/rfq.service ';
 import { constants } from 'src/app/Models/MPRConstants';
 
 @Component({
@@ -17,8 +18,9 @@ export class BuyerGroupsComponent implements OnInit {
 
   public BuyerGroupsAddForm; BuyerGroupsEditForm: FormGroup;
   public dataSaved: boolean;
-  public buyerGrps: MPRBuyerGroup;
+  public buyerGrps: Array<MPRBuyerGroup>=[];
   public editbuyerGrps: MPRBuyerGroup;
+  public addbuyerGrp: MPRBuyerGroup;
   public AddDialog: boolean;
   public EditDialog: boolean;
   public selectedItem: searchList;
@@ -28,8 +30,9 @@ export class BuyerGroupsComponent implements OnInit {
   public BGAddSubmitted: boolean;
 
   ngOnInit() {
-    this.buyerGrps = new MPRBuyerGroup();
+    this.buyerGrps =[];
     this.editbuyerGrps = new MPRBuyerGroup();
+    this.addbuyerGrp = new MPRBuyerGroup();
     this.BGAddSubmitted = false;
     this.loadBuyerGroups();
 
@@ -43,8 +46,7 @@ export class BuyerGroupsComponent implements OnInit {
     });
   }
   loadBuyerGroups() {
-    this.dynamicSearchResult.tableName = "MPRBuyerGroups";
-    this.MprService.getDBMastersList(this.dynamicSearchResult).subscribe(data => {
+    this.MprService.getMPRBuyerGroups().subscribe(data => {
       this.buyerGrps = data;
     });
   }
@@ -67,10 +69,7 @@ export class BuyerGroupsComponent implements OnInit {
   }
 
   addBuyerGrps(bg: MPRBuyerGroup) {
-    this.dynamicSearchResult.tableName = "MPRBuyerGroups";
-    this.dynamicSearchResult.columnNames = "BuyerGroup";
-    this.dynamicSearchResult.columnValues = bg.BuyerGroup;
-    this.MprService.addDataToDBMasters(this.dynamicSearchResult).subscribe(
+    this.MprService.addMPRBuyerGroup(bg).subscribe(
       () => {
         this.dataSaved = true;
         this.loadBuyerGroups();
@@ -93,9 +92,11 @@ export class BuyerGroupsComponent implements OnInit {
       return
     }
     else {
-      this.dynamicSearchResult.query = "UPDATE MPRBuyerGroups SET BuyerGroup='" + this.editbuyerGrps.BuyerGroup + "',BoolInUse='" + this.editbuyerGrps.BoolInUse + "' WHERE MPRBuyerGroups.BuyerGroupId=" + this.editbuyerGrps.BuyerGroupId;
-      this.MprService.updateDataToDBMasters(this.dynamicSearchResult).subscribe(data => {
-        this.editbuyerGrps = data
+      this.MprService.updateMPRBuyerGroup(this.editbuyerGrps).subscribe(
+        () => {
+          this.dataSaved = true;
+         this.loadBuyerGroups();
+         this.BuyerGroupsEditForm.reset();
       });
       this.loadBuyerGroups();
       this.EditDialog = false;

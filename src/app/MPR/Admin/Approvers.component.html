@@ -7,10 +7,10 @@
           <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="ShowAddDialog()"></button>
         </th>
       </tr>
-      <tr class="text-center">
-        <th>Sl No.</th>
-        <th>Approver Name</th>
-        <th>Removee</th>
+      <tr>
+        <th class="text-center">Sl No.</th>
+        <th class="text-center">Approver Name</th>
+        <th class="text-center">Remove</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -18,8 +18,8 @@
         <td class="text-center">{{ri+1}}</td>
         <td>{{rowData.Name}}</td>
         <td class="text-center">
-          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="ui-button-danger" (click)="onApproverRowDelete(rowData,EmployeeNo)"></button>
-       </td>
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="ui-button-danger" (click)="onApproverRowDelete(rowData)"></button>
+        </td>
       </tr>
     </ng-template>
   </p-table>
@@ -31,7 +31,7 @@
         <label for="employee">Approver :</label>
       </div>
       <div class="ui-g-5">
-        <select formControlName="EmployeeNo" class="form-control dropdown" [(ngModel)]="employee.EmployeeNo" [ngClass]="{'is-invalid': ApproverAddForm.controls.EmployeeNo.value=='Select'}">
+        <select formControlName="EmployeeNo" class="form-control dropdown" [(ngModel)]="EmpModel.EmployeeNo" [ngClass]="{'is-invalid': ApproverAddForm.controls.EmployeeNo.value=='Select'}">
           <option [value]="Select">Select</option>
           <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
         </select>

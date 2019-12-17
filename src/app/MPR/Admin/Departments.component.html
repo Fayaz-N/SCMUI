@@ -2,17 +2,18 @@
   <ng-template pTemplate="header">
     <tr>
       <th colspan="6" class="text-right">
+        <span style="padding-right:300px">Departments</span>
         <input type="text" pInputText size="35" placeholder="Search by Department" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
         <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="showDialogAddDepartment()" label="Add New"></button>
       </th>
     </tr>
-    <tr class="text-center">
-      <th>Sl No.</th>
-      <th>Department</th>
-      <th>Second Approver</th>
-      <th>Third Approver</th>
-      <th>Bool In Use</th>
-      <th>Edit</th>
+    <tr>
+      <th class="text-center">Sl No.</th>
+      <th class="text-center">Department</th>
+      <th class="text-center">Second Approver</th>
+      <th class="text-center">Third Approver</th>
+      <th class="text-center">Bool In Use</th>
+      <th class="text-center">Edit</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -30,7 +31,7 @@
   <p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '900px'}" [closable]="false">
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">Department :</label>
+        <label>Department :</label>
       </div>
       <div class="ui-g-5">
         <input type="text" formControlName="Department" ngModel maxlength="20" [(ngModel)]="DeptAddForm.Department" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />
@@ -42,7 +43,7 @@
         <label for="Departments">Second Approver :</label>
       </div>
       <div class="ui-g-5">
-        <select formControlName="SecondApproverEmpNo" class="form-control dropdown" [(ngModel)]="Departments.SecondApproverEmpNo">
+        <select formControlName="SecondApproverEmpNo" class="form-control dropdown" [(ngModel)]="DeptAddForm.SecondApproverEmpNo">
           <option [value]="0">Select</option>
           <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
         </select>
@@ -53,7 +54,7 @@
         <label for="ThirdApprover">Third Approver :</label>
       </div>
       <div class="ui-g-5">
-        <select formControlName="ThirdApproverEmpNo" class="form-control dropdown" [(ngModel)]="Departments.ThirdApproverEmpNo">
+        <select formControlName="ThirdApproverEmpNo" class="form-control dropdown" [(ngModel)]="DeptAddForm.ThirdApproverEmpNo">
           <option [value]="0">Select</option>
           <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
         </select>

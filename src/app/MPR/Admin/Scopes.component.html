@@ -1,4 +1,4 @@
-<p-table #dt *ngIf="mprScopes.length>0" [value]="mprScopes" data-key="ScopeId" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" columnResizeMode="expand" [class]="text-center" [globalFilterFields]="['Scope','BoolInUse']">
+<p-table #dt *ngIf="mprScopes.length>0" [value]="mprScopes" data-key="ScopeId" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" columnResizeMode="expand" [globalFilterFields]="['Scope','BoolInUse']">
   <ng-template pTemplate="header">
     <tr>
       <th colspan="4" class="text-right">
@@ -80,7 +80,7 @@
           <label for="mprScopes">Scope :</label>
         </div>
         <div class="ui-g-8">
-          <input pInputType size="100" formControlName="Scope" focus-me="focusInput" [(ngModel)]="mprScopes.Scope" class="form-control" required />
+          <input pInputType size="100" formControlName="Scope" focus-me="focusInput" class="form-control" required />
         </div>
       </div>
     </form>

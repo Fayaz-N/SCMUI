@@ -37,7 +37,7 @@
             <label for="buyergrp">Buyer Group :</label>
           </div>
           <div class="ui-g-8">
-            <input pInputType size="100" formControlName="BuyerGroup" focus-me="focusInput" [(ngModel)]="buyerGrps.BuyerGroup" [ngClass]="{ 'is-invalid': BuyerGroupsAddForm && BuyerGroupsAddForm.controls.BuyerGroup.errors}" class="form-control" required />
+            <input pInputType size="100" formControlName="BuyerGroup" focus-me="focusInput"  [ngClass]="{ 'is-invalid': BuyerGroupsAddForm && BuyerGroupsAddForm.controls.BuyerGroup.errors}" class="form-control" required />
             <span *ngIf="BGAddSubmitted && BuyerGroupsAddForm.controls.BuyerGroup.errors" class="invalid-feedback">Please enter the Buyer Group.</span>
           </div>
         </div>

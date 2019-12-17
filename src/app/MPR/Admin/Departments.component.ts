@@ -19,6 +19,7 @@ export class DepartmentComponent implements OnInit {
   public dataSaved: boolean = false;
   public Departments: Array<Department> = [];
   public editDepartment: Department;
+  public Department: Department;
   public AddDialog: boolean;
   public EditDialog: boolean;
   public employee: Array<Employee> = [];
@@ -27,6 +28,8 @@ export class DepartmentComponent implements OnInit {
   public updateDynamicData1 = new DynamicSearchResult();
   public updateDynamicData2 = new DynamicSearchResult();
   public query: string = "";
+  public columnNames: string = "Department";
+  public columnValues: string = "";
 
   ngOnInit() {
     this.Departments = [];
@@ -82,10 +85,19 @@ export class DepartmentComponent implements OnInit {
       return;
     }
     else {
-      const psAddDialogData = this.DeptAddForm.value;
+      this.Department = this.DeptAddForm.value;
       this.addDynamicData.tableName = "MPRDepartments";
-      this.addDynamicData.columnNames = "Department";
-      this.addDynamicData.columnValues = psAddDialogData.Department;
+      this.columnValues =this.Department.Department;
+      if (this.Department.SecondApproverEmpNo != "0") {
+        this.columnNames += ",SecondApprover";
+        this.columnValues += "," + this.Department.SecondApproverEmpNo;
+      }
+      if (this.Department.ThirdApproverEmpNo != "0") {
+        this.columnNames += ",ThirdApprover";
+        this.columnValues += ","+this.Department.ThirdApproverEmpNo;
+      }
+      this.addDynamicData.columnNames = this.columnNames;
+      this.addDynamicData.columnValues = this.columnValues;
 
       this.MprService.addDataToDBMasters(this.addDynamicData).subscribe(
         () => {

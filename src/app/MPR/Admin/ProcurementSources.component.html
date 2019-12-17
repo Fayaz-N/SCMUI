@@ -32,7 +32,7 @@
 					<label for="procSrc">Procurement Source :</label>
 				</div>
 				<div class="ui-g-5">
-					<input type="text" formControlName="ProcurementSource" ngModel maxlength="20" [(ngModel)]="procSrc.ProcurementSource" [ngClass]="{ 'is-invalid': PSAddSubmitted && PSAddForm.controls.ProcurementSource.errors }" class="form-control" />
+					<input type="text" formControlName="ProcurementSource" ngModel maxlength="20" [ngClass]="{ 'is-invalid': PSAddSubmitted && PSAddForm.controls.ProcurementSource.errors }" class="form-control" />
           <span *ngIf="PSAddSubmitted && PSAddForm.controls.ProcurementSource.errors" class="invalid-feedback">Please enter Procurement Source.</span>
 				</div>
 			</div>

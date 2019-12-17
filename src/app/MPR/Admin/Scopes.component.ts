@@ -17,14 +17,14 @@ export class ScopesComponent implements OnInit {
 
   public MPRScopesAddForm; MPRScopesEditForm: FormGroup;
   public dataSaved: boolean;
-  public mprScopes: MPRScope;
+  public mprScopes: Array<MPRScope>=[];
   public editMPRScopes: MPRScope;
   public AddDialog: boolean;
   public EditDialog: boolean;
   public dynamicSearchResult: DynamicSearchResult;
 
   ngOnInit() {
-    this.mprScopes = new MPRScope();
+    this.mprScopes = [];
     this.editMPRScopes = new MPRScope();
     this.dynamicSearchResult = new DynamicSearchResult();
     this.loadMPRScopes();
