@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <h4>Role Access</h4>
+      <div class="row selectgrow">
+          <div  class="col-lg-2 col-md-2 col-sm-2 form-group">
+              <label for="RoleName" class="form-label label" style="margin-left: 12px;">Role Name:</label>
+          </div>
+          <div  class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">          
+              <select placeholder="RoleName" [(ngModel)]="selectedGroup" id="RoleName" name="RoleName"
+        (ngModelChange)="onSelectName($event)" class="form-control">
+        <option *ngFor="let data of roleNameModel" [ngValue]="{ AccessGroupId: data.AccessGroupId, RoleName: data.RoleName,RoleId: data.RoleId}">
+          {{data.RoleName}} </option>
+      </select>
+            </div>  
+          <div class="col-sm-12 col-md-4 col-lg-6">   
+              <button *ngIf = "accessbtn" type="button" class="btn btn-default btn-sm" (click)="onClick()">
+                  <span class="glyphicon glyphicon-file"></span>View Access
+                </button>    
+          </div>    
+        </div>
+
+        <div *ngIf="accessdiv" class="row head-text-search">
+            <div class="col-md-2 pt-2">
+              <span>
+                  {{ name }} 
+              </span>
+                   
+              </div>
+              <div class="col-md-4 pt-2">
+                 
+              </div>
+             <div class="col-md-6 pt-2">
+                <input class="form-control searchinput" type="text" name="search" [(ngModel)]="searchText" autocomplete="off" placeholder="&#61442;  Search by Role Name">
+             </div>
+        
+          </div>
+  <div *ngIf="accessdiv" class="row" style="margin-right: 1px;">
+    <div class=" form-control form-inline" style="height:100%;">
+      <span class="form-control" style="width: 120px;" *ngFor="let data of allmastermodel | filter:searchText">
+        <a (click)="getallAccess(data.AccessGroupId)">
+          <label>
+            <span class="atext">{{data.GroupName}}</span>&nbsp;&nbsp;&nbsp;
+          </label>
+        </a>
+      </span>
+    </div>
+    <span>{{groupnamenew}}</span>
+  </div>
+  <div *ngIf="accessnamediv && accessdiv" class="row" style="margin-right: 1px;">
+    <!-- {{groupname}}           -->
+    <div  class="form-control" style="height:100%;">
+      <span class="form-control" style="width: 350px;" *ngFor="let data of accessnamenew">
+        
+        <!-- <span>{{data.AccessGroupMaster.GroupName}}</span> -->
+        <label>
+          <span>{{data.AccessName}}</span>&nbsp;&nbsp;&nbsp;
+          <input type="checkbox"  value="{{data.AccessNameID}}" [checked]="data.AuthorizationItems.AccessNamesId"
+            (change)="onChange(data.AccessNameID,$event)">&nbsp;&nbsp;&nbsp;
+        </label>
+      </span>
+      <button type="button" pButton icon="fa fa-check" label="Submit" (click)="onSubmit()" style="margin-top:4px;margin-right: 8px;"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="Cancel()" label="Cancel"></button>
+
+
+  </div>
+  <div>
+
+  </div>
+
+</div>

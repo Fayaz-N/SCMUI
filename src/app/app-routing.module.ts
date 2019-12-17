@@ -12,6 +12,11 @@ import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.comp
 import { LoginComponent } from './Login/Login.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
 import { SideMenuComponent } from './Dashboard/SideMenu.component';
+import { ConfigComponent } from './Authorization/Config.component';
+import { AccessGroupComponent } from './Authorization/AccessGroup.component';
+import { AuthorizationItemComponent } from './Authorization/AuthorizationItem.component';
+import { RoleAccessComponent } from './Authorization/RoleAccess.component';
+import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'Login', pathMatch: 'full' },
@@ -33,6 +38,11 @@ const routes: Routes = [
       { path: 'Departments', component: DepartmentComponent },
       { path: 'Scopes', component: ScopesComponent },
       { path: 'ProcurementSource', component: ProcurementSourcesComponent },
+      { path: 'Groupaccessibility', component: AccessGroupComponent },
+      { path: 'Roleaccessibility', component: RoleAccessComponent },
+      { path: 'Authorizationitem', component: AuthorizationItemComponent },
+      { path: 'Viewaccess', component: ViewAccessComponent },
+      { path: 'Configuration', component: ConfigComponent },
 
 
     ]

@@ -33,6 +33,18 @@ import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { SidebarDirective } from './sidebar.directive';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { ConfigComponent } from './Authorization/Config.component';
+import { AccessGroupComponent } from './Authorization/AccessGroup.component';
+import { AuthorizationItemComponent } from './Authorization/AuthorizationItem.component';
+import { RoleAccessComponent } from './Authorization/RoleAccess.component';
+import { ViewAccessComponent } from './Authorization/ViewAccess.component';
+import { SelectfilterPipe } from './common/selectfilter.pipe';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfirmationDialogComponent } from './common/confirmationdialog/confirmation-dialog.component';
+import { MatButtonModule } from '@angular/material';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @NgModule({
   declarations: [
@@ -49,7 +61,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
     DepartmentComponent,
     ProcurementSourcesComponent,
     ScopesComponent,
-    SidebarDirective
+    SidebarDirective,
+    ConfigComponent,
+    AccessGroupComponent,
+    RoleAccessComponent,
+    AuthorizationItemComponent,
+    SelectfilterPipe,
+    ViewAccessComponent,
+    ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -71,9 +90,14 @@ import { NgxSpinnerModule } from "ngx-spinner";
     CalendarModule,
     DataViewModule,
     ToastModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    Ng2SearchPipeModule,
+    MatDialogModule,
+    MatButtonModule,
+    ConfirmDialogModule
   ],
-  providers: [HttpClientModule, MessageService],
+  providers: [HttpClientModule, MessageService, ConfirmationService],
+  entryComponents: [ConfirmationDialogComponent,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
