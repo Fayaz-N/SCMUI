@@ -32,7 +32,7 @@
       </div>
       <div class="ui-g-5">
         <select formControlName="EmployeeNo" class="form-control dropdown" [(ngModel)]="EmpModel.EmployeeNo" [ngClass]="{'is-invalid': ApproverAddForm.controls.EmployeeNo.value=='Select'}">
-          <option [value]="Select">Select</option>
+          <option [value]="0">Select</option>
           <option *ngFor="let emp of employee" [value]="emp.EmployeeNo">{{emp.Name}}</option>
         </select>
         <span style="color:red;font-weight:bold" *ngIf="AddSubmitted&&(ApproverAddForm.controls.EmployeeNo.value=='Select' || ApproverAddForm.controls.EmployeeNo.value==undefined)" class="error">Select Approver.</span>

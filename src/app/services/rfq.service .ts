@@ -30,6 +30,9 @@ export class RfqService {
     return this.http.get<any>(this.url + 'RFQ/getRFQCompareItems/' + MPRRevisionId);
   }
   statusUpdate(vendorList: any): Observable<any> {
-    return this.http.post<any>(this.url + 'RFQ/rfqStatusUpdate/' + vendorList, this.httpOptions);
+    var Data = {
+      RFQQuoteViewList: vendorList
+    }
+    return this.http.post<any>(this.url + 'RFQ/rfqStatusUpdate/' , JSON.stringify(Data), this.httpOptions);
   }
 }

@@ -55,7 +55,7 @@ export class ApproversComponent implements OnInit {
     this.ApproverAddForm.reset();//To reset the values entered previously
     this.AddSubmitted = false;//Removes the Validation error when attempted to click the Add button
     this.loadEmployees();
-    this.EmpModel.EmployeeNo = "Select";
+    this.EmpModel.EmployeeNo = "0";
   }
 
   Cancel() {

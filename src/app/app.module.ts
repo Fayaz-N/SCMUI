@@ -30,6 +30,7 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
+import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component'
 import { SidebarDirective } from './sidebar.directive';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerModule } from "ngx-spinner";
@@ -61,6 +62,7 @@ import { ConfirmationService } from 'primeng/api';
     DepartmentComponent,
     ProcurementSourcesComponent,
     ScopesComponent,
+    ProjectManagersComponent,
     SidebarDirective,
     ConfigComponent,
     AccessGroupComponent,
