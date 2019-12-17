@@ -15,8 +15,8 @@ export class RfqService {
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
   public url = this.constants.url;
   
-  getRFQItems(RevisionId: number): Observable<any> {
-    return this.http.get<any>(this.url + 'RFQ/getRFQItems/' + RevisionId);
+  getRFQItems(MPRRevisionId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/getRFQItems/' + MPRRevisionId);
   }
 
   updateVendorQuotes(vendorQuoteList: any, termsList: any): Observable<any> {
@@ -25,5 +25,11 @@ export class RfqService {
       TermsList: termsList
     }
     return this.http.post<any>(this.url + 'RFQ/updateVendorQuotes', JSON.stringify(Data), this.httpOptions);
+  }
+  getRFQCompareItems(MPRRevisionId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/getRFQCompareItems/' + MPRRevisionId);
+  }
+  statusUpdate(vendorList: any): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/rfqStatusUpdate/' + vendorList, this.httpOptions);
   }
 }

@@ -6,6 +6,8 @@ export class rfqQuoteModel {
   TargetSpend: string;
   QuotationQty: string;
   vendorQuoteQty: string;
+  UnitPrice: string;
+  leastPrice: string;
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
 
@@ -27,22 +29,27 @@ export class RFQRevisionData {
   DeliveryMinWeeks: number;
   DeliveryMaxWeeks: number;
 }
-//export class Vendordetails {
-//  VendorCode: string;
-//  VendorName: string;
-//  OldvendorCode: string;
-//  RFQNo: string;
-//  MPRRevisionId: string;
-//  RfqMasterId: string;
-//  VendorId: number;
-//  rfqRevisionId: number;
-//  RFQValidDate: Date;
-//  DeliveryMinWeeks: number;
-//  DeliveryMaxWeeks: number;
-//  RFQItemsId: number;
-//  MPRItemsDetailsId: number;
-//  VendorQuoteQty: string;
-//  UnitPrice: string;
-//  DiscountPercentage: string;
-//  Discount: string;
-//}
+export class VendorDetails {
+  VendorCode: string;
+  VendorName: string;
+  OldvendorCode: string;
+  RFQNo: string;
+  MPRRevisionId: string;
+  RfqMasterId: string;
+  VendorId: number;
+  rfqRevisionId: number;
+  RFQValidDate: Date;
+  DeliveryMinWeeks: number;
+  DeliveryMaxWeeks: number;
+  RFQItemsId: number;
+  MPRItemsDetailsId: number;
+  VendorQuoteQty: string;
+  UnitPrice: string;
+  DiscountPercentage: string;
+  Discount: string;
+  PaymentTermDays: number;
+  PaymentTermRemarks: string;
+  BankGuarantee: string;
+  Freight: string;
+  Insurance: string;
+}

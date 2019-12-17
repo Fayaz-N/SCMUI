@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
@@ -12,8 +12,6 @@ import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.comp
 import { LoginComponent } from './Login/Login.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
 import { SideMenuComponent } from './Dashboard/SideMenu.component';
-
-
 
 const routes: Routes = [
   { path: '', redirectTo: 'Login', pathMatch: 'full' },
@@ -53,4 +51,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { } export const
-  RoutingComponent = [MPRPageComponent, MPRListComponent, GenerateRFQComponent];
+  RoutingComponent = [];

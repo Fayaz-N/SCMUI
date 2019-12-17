@@ -762,7 +762,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Check By </label>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRPageForm3.controls.CheckedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.CheckedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','CheckedBy',MPRPageForm3.controls.CheckedBy.value,'',undefined)">
+                <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRPageForm3.controls.CheckedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.CheckedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','CheckedBy',MPRPageForm3.controls.CheckedBy.value,undefined)">
                 <div class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','CheckedBy','',undefined)"></button>
                 </div>
@@ -777,7 +777,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label for="ApprovedBy" class="form-label">Approve By</label>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRPageForm3.controls.ApprovedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ApprovedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','ApprovedBy',MPRPageForm3.controls.ApprovedBy.value,'',undefined)">
+                <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRPageForm3.controls.ApprovedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ApprovedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','ApprovedBy',MPRPageForm3.controls.ApprovedBy.value,undefined)">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ApprovedBy','',undefined)"></button>
                 </span>

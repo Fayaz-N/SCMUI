@@ -307,7 +307,54 @@ a.disabled {
   padding: .625rem .9375rem !important;
   text-align:center !important;
 }
+.blink_text {
+  animation: 1s blinker linear infinite;
+  -webkit-animation: 1s blinker linear infinite;
+  -moz-animation: 1s blinker linear infinite;
+  color: red;
+}
 
+@-moz-keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@-webkit-keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@keyframes blinker {
+  0% {
+    opacity: 1.0;
+  }
+
+  50% {
+    opacity: 0.0;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
 
 /* Extra small devices (phones, 600px and down) 
   @media only screen and (max-width: 600px) {

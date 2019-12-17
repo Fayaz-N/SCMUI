@@ -56,7 +56,7 @@
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList','')" label="Cancel"></button>
     </div>
   </p-footer>
 </p-dialog>
@@ -76,7 +76,7 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton icon="fa fa-check" (click)="onVendorSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog','')" label="Cancel"></button>
     </div>
   </p-footer>
 </p-dialog>
@@ -101,8 +101,8 @@
   </p-table>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="openrevisionDialog('showConformationDialog')" label="Proceed"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showConformationDialog')" label="Back"></button>
+      <button type="button" pButton icon="fa fa-check" (click)="openrevisionDialog()" label="Proceed"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showConformationDialog','')" label="Back"></button>
     </div>
   </p-footer>
 </p-dialog>

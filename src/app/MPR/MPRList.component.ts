@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router,) { }
+  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
   public employee: Employee;
   public MPRfilterForm: FormGroup;
   public formName: string;
@@ -31,12 +31,12 @@ export class MPRListComponent implements OnInit {
 
   //page load event
   ngOnInit() {
-    if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
-    }
-    else {
-      this.router.navigateByUrl("Login");
-    }
+    //if (localStorage.getItem("Employee")) {
+    //  this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    //}
+    //else {
+    //  this.router.navigateByUrl("Login");
+    //}
     this.typeOfList = this.route.routeConfig.path;
     this.mprFilterParams = new mprFilterParams();
     this.mprFilterParams.ToDate = new Date();

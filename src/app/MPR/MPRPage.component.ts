@@ -58,12 +58,12 @@ export class MPRPageComponent implements OnInit {
 
   //page load event
   ngOnInit() {
-    if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
-    }
-    else {
-      this.router.navigateByUrl("Login");
-    }
+    //if (localStorage.getItem("Employee")) {
+    //  this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    //}
+    //else {
+    //  this.router.navigateByUrl("Login");
+    //}
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();

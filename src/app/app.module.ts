@@ -1,4 +1,3 @@
-/// <reference path="mpr/admin/approvers.component.ts" />
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -21,7 +20,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './Login/Login.component';
 import { SideMenuComponent } from './Dashboard/SideMenu.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
