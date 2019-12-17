@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 
 @Injectable({
   providedIn: 'root'
@@ -89,4 +89,29 @@ export class MprService {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + '/ValidateLoginCredentials', search, httpOptions);
   }
+  getMPRBuyerGroups(): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.get<MPRBuyerGroup[]>(this.url + '/GetAllMPRBuyerGroups', httpOptions);
+  }
+
+  addMPRBuyerGroup(buyerGroup: MPRBuyerGroup): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + '/InsertBuyerGroup', buyerGroup, httpOptions);
+  }
+
+  updateMPRBuyerGroup(buyerGroup: MPRBuyerGroup): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + '/UpdateMprBuyerGroups', buyerGroup, httpOptions);
+  }
+
+  getMPRApprovers(): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.get<MPRBuyerGroup[]>(this.url + '/GetAllMPRApprovers', httpOptions);
+  }
+
+  addMPRApprovers(mprApprover: MPRApprovers): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any[]>(this.url + '/InsertMPRApprover', mprApprover, httpOptions);
+  }
+
 }
