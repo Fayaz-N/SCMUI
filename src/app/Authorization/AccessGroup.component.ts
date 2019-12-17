@@ -135,7 +135,7 @@ getAccessNameByGroupId(accessGroupId:number){
 
 
   
-Remove(accessNameModel:AccessNameModel,index:number,value){
+Remove(accessNameModel:AccessNameModel){
   const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
     width: '450px',
     data: 'Do you confirm the deletion of this data?',

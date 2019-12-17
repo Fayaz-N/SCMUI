@@ -97,7 +97,7 @@ this.configService.getAllRoleName().subscribe(data=>{
 }
 )}
 
-Remove(roleAccessModel:RoleAccessModel,index:number,value){
+Remove(roleAccessModel:RoleAccessModel){
   const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
     width: '450px',
     data: 'Do you confirm the deletion of this data?',

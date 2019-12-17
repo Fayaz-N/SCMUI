@@ -108,8 +108,8 @@ this.configService.getAllGroupMaster().subscribe(data=>{
 }
 )}
 
-Remove(groupMastergetallModel:GroupMastergetallModel,index:number){
-  debugger
+Remove(groupMastergetallModel:GroupMastergetallModel){
+ 
   const dialogRef = this._dialog.open(ConfirmationDialogComponent, {
     width: '450px',
     data: 'Do you confirm the deletion of this data?',
