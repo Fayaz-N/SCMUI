@@ -53,11 +53,11 @@ export class MPRListComponent implements OnInit {
       CheckerStatus: ['', [Validators.required]],
       ApprovalStatus: ['', [Validators.required]]
     });
-    if (this.typeOfList == "mprCheckerList") {
+    if (this.typeOfList == "MPRCheckerList") {
       this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
       this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
     }
-    else if (this.typeOfList == "mprApproverList") {
+    else if (this.typeOfList == "MPRApproverList") {
       this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
       this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
     }
