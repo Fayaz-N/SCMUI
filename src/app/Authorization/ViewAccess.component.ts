@@ -28,6 +28,7 @@ export class ViewAccessComponent implements OnInit {
   groupName:any;
   RoleId:number = 0;
   viewmessage = false;
+  roleName: string;
  
   constructor(private router: Router,private activeroute: ActivatedRoute,
     private formBuilder: FormBuilder,private configService:ConfigService, private viewaccessservice:ViewAccessService) 
@@ -40,6 +41,7 @@ export class ViewAccessComponent implements OnInit {
   
    const roleID = localStorage.getItem("RoleId"); 
    this.RoleId = +roleID;
+   this.roleName=localStorage.getItem("RoleName");
    this.getGroupNameDetail();
    this.getAllAuthRoleAccessItem(this.RoleId);
   }

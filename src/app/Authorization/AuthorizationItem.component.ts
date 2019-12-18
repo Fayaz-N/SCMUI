@@ -198,6 +198,7 @@ getAccessNamebyAccessGroupId(AccessGroupId:number){
     this.name = RoleName;
     this.rolename = RoleId;
     localStorage.setItem("RoleId",RoleId);
+    localStorage.setItem("RoleName",RoleName);
     this.groupId=AccessGroupId;
     this.accessdiv=true;
     this.accessnamediv = false;  
