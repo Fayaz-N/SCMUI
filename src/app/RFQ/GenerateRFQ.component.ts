@@ -37,10 +37,10 @@ export class GenerateRFQComponent implements OnInit {
   public YILTermsAndConditions: Array<any> = [];
   //page load event
   ngOnInit() {
-    if (localStorage.getItem("Employee")) 
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
-    else 
-      this.router.navigateByUrl("Login");
+    //if (localStorage.getItem("Employee")) 
+    //  this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    //else 
+    //  this.router.navigateByUrl("Login");
     this.vendorDetails = new MPRVendorDetail();
     this.RFQRevisionData = new RFQRevisionData();
     this.route.params.subscribe(params => {

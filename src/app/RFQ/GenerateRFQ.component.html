@@ -113,16 +113,16 @@
       <label class="form-label">RFQ Valid Days</label>
       <input type="number" [(ngModel)]="RFQRevisionData.RfqValidDate" class="form-control" />
     </div>
-    <div class="ui-g-4 form-group">
+    <!--<div class="ui-g-4 form-group">
       <label class="form-label">Packing Forwarding</label>
       <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.PackingForwading" />
     </div>
     <div class="ui-g-4 form-group">
       <label class="form-label">Excise Duty</label>
       <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.ExciseDuty" />
-    </div>
+    </div>-->
   </div>
-  <div class="ui-g-12">
+  <!--<div class="ui-g-12">
     <div class="ui-g-4 form-group">
       <label class="form-label">Sales Tax</label>
       <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.salesTax" />
@@ -163,11 +163,11 @@
       <label class="form-label">Delivery MaxWeeks</label>
       <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMaxWeeks" />
     </div>
-  </div>
+  </div>-->
   <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0">
     <label class="form-label">Terms And Conditions:</label><br />
-    <div class="ui-g-4 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
-      <input type="checkbox" class="checkmark" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<b class="fixed-text">{{term.Terms}}</b>
+    <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
+      <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<b class="fixed-text">{{term.Terms}}</b>
     </div>
   </div>
   <p-footer>
