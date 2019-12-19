@@ -6,41 +6,41 @@ import { GroupMasterModel,AccessNameModel,AccessNameModelNew, AutrAuthorizationI
 import { GroupMastergetallModel,RoleNameModel } from '../Models/config.model';
 import { GroupNameModel,AccessRoleModel} from '../Models/config.model';
 import { RoleAccessModel } from '../Models/config.model';
-
+import { constants } from '../Models/MPRConstants'
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConfigService {
-  //url = 'http://10.29.15.165:90/Api/MPR';
-  url = 'http://localhost:49659/Api/ConfigAccess';
+  constructor(private http: HttpClient,private constants: constants) { }
+  public url = this.constants.url;;
 
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-  constructor(private http: HttpClient) { }
+  
 
 //All Method for GroupMaster
 
   createNewGroupMaster(groupMasterModel: GroupMasterModel): Observable<any> {   
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + '/AddNewGroupMaster/', groupMasterModel, httpOptions);
+    return this.http.post<any>(this.url + 'ConfigAccess/AddNewGroupMaster/', groupMasterModel, httpOptions);
   }
   getAllGroupMaster(): Observable<GroupMastergetallModel[]> {  
-    return this.http.get<GroupMastergetallModel[]>(this.url + '/getAllGroupMaster');  
+    return this.http.get<GroupMastergetallModel[]>(this.url + 'ConfigAccess/getAllGroupMaster');  
   }
 
   deleteGroupMaster(groupmasterModel: GroupMastergetallModel): Observable<GroupMastergetallModel> {  
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-    return this.http.put<GroupMastergetallModel>(this.url + '/DeleteGroupMaster',  groupmasterModel, httpOptions);      
+    return this.http.put<GroupMastergetallModel>(this.url + 'ConfigAccess/DeleteGroupMaster',  groupmasterModel, httpOptions);      
   }
 
   updateGroupMaster(updategroupmasterModel: GroupMastergetallModel): Observable<GroupMastergetallModel> {  
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-    return this.http.post<GroupMastergetallModel>(this.url + '/UpdateGroupMaster',  updategroupmasterModel, httpOptions);     
+    return this.http.post<GroupMastergetallModel>(this.url + 'ConfigAccess/UpdateGroupMaster',  updategroupmasterModel, httpOptions);     
   }
 
   getAllGroupName(): Observable<GroupNameModel[]> {  
-    return this.http.get<GroupNameModel[]>(this.url + '/getGroupNameDetail');  
+    return this.http.get<GroupNameModel[]>(this.url + 'ConfigAccess/getGroupNameDetail');  
   }
 
 
@@ -50,44 +50,44 @@ export class ConfigService {
 
   createAccessName(accessNameModel: AccessNameModelNew): Observable<any> {  
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + '/AddNewAccessName', accessNameModel, httpOptions);
+    return this.http.post<any>(this.url + 'ConfigAccess/AddNewAccessName', accessNameModel, httpOptions);
   }
 
   getAccessName(): Observable<GroupMastergetallModel[]> {  
-    return this.http.get<GroupMastergetallModel[]>(this.url + '/getAllGroupMaster');  
+    return this.http.get<GroupMastergetallModel[]>(this.url + 'ConfigAccess/getAllGroupMaster');  
   }
 
   deleteGroupAccess(accessNameModel: AccessNameModel): Observable<AccessNameModel> {  
     debugger
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-    return this.http.put<AccessNameModel>(this.url + '/DeleteGroupAccess',  accessNameModel, httpOptions);    
+    return this.http.put<AccessNameModel>(this.url + 'ConfigAccess/DeleteGroupAccess',  accessNameModel, httpOptions);    
   }
  
   getAllAccessName(GroupName: string): Observable<GroupNameModel> {  
-    return this.http.get<GroupNameModel>(this.url + '/getAccessName/' + GroupName);  
+    return this.http.get<GroupNameModel>(this.url + 'ConfigAccess/getAccessName/' + GroupName);  
   }
 
   //Update AccessName on cliclk of edit
   updateAccessName(accessNameModel: AccessNameModelNew): Observable<AccessNameModelNew> {  
   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-  return this.http.post<AccessNameModelNew>(this.url + '/UpdateAccessName',  accessNameModel, httpOptions);     
+  return this.http.post<AccessNameModelNew>(this.url + 'ConfigAccess/UpdateAccessName',  accessNameModel, httpOptions);     
 }
 
 //Delete AccessName on cliclk of edit
   deleteAccessName(accessNameModel: AccessNameModel): Observable<AccessNameModel> {  
   const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-  return this.http.post<AccessNameModel>(this.url + '/DeleteAccessName',  accessNameModel, httpOptions);     
+  return this.http.post<AccessNameModel>(this.url + 'ConfigAccess/DeleteAccessName',  accessNameModel, httpOptions);     
 }
 
   //All Method for AuthGroup
   
   createRoleAccess(roleAccessModel: RoleAccessModel): Observable<any> {   
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + '/AddNewRole/', roleAccessModel, httpOptions);
+    return this.http.post<any>(this.url + 'ConfigAccess/AddNewRole/', roleAccessModel, httpOptions);
   }
 
   getAllRoleName(): Observable<RoleAccessModel[]> {  
-    return this.http.get<RoleAccessModel[]>(this.url + '/getAllRole');  
+    return this.http.get<RoleAccessModel[]>(this.url + 'ConfigAccess/getAllRole');  
   }
 
 
@@ -95,57 +95,57 @@ export class ConfigService {
   //All Method for Role Based Access Label
 
   getAccessNamebyGroupId(accessGroupId:number): Observable<AccessNameModel[]>{
-    return this.http.get<AccessNameModel[]>(this.url + '/getAccessNameById' + '?accessGroupId=' + accessGroupId);
+    return this.http.get<AccessNameModel[]>(this.url + 'ConfigAccess/getAccessNameById' + '?accessGroupId=' + accessGroupId);
   }
   getAllNamebyId(roleId:number): Observable<AccessRoleModel[]>{
-    return this.http.get<AccessRoleModel[]>(this.url + '/getAllGroupById' + '?roleId=' + roleId);
+    return this.http.get<AccessRoleModel[]>(this.url + 'ConfigAccess/getAllGroupById' + '?roleId=' + roleId);
   }
 
   getRoleName(): Observable<RoleNameModel[]> {  
-    return this.http.get<RoleNameModel[]>(this.url + '/getAllRoleName');  
+    return this.http.get<RoleNameModel[]>(this.url + 'ConfigAccess/getAllRoleName');  
   }
   getAuthItems(): Observable<any> {  
-    return this.http.get<any>(this.url + '/getAuthorizationItemDetail');  
+    return this.http.get<any>(this.url + 'ConfigAccess/getAuthorizationItemDetail');  
   }
   
   
   addAccess(roleAccessModel: checkboxSelect): Observable<any[]> {  
     let params = new HttpParams();
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any[]>(this.url + '/AddAccessRole' , roleAccessModel, httpOptions);
+    return this.http.post<any[]>(this.url + 'ConfigAccess/AddAccessRole' , roleAccessModel, httpOptions);
   }
   
   getAccessNamebyAccessGroupId(accessGroupId:number): Observable<AccessNameModel[]>{
-    return this.http.get<AccessNameModel[]>(this.url + '/getGroupAccessNameById' + '?accessGroupId=' + accessGroupId);
+    return this.http.get<AccessNameModel[]>(this.url + 'ConfigAccess/getGroupAccessNameById' + '?accessGroupId=' + accessGroupId);
   }
 
   getAccessNamebyId(accessGroupId:number): Observable<AccessNameModel[]>{
-    return this.http.get<AccessNameModel[]>(this.url + '/getAccessNameById' + '?accessGroupId=' + accessGroupId);
+    return this.http.get<AccessNameModel[]>(this.url + 'ConfigAccess/getAccessNameById' + '?accessGroupId=' + accessGroupId);
   }
 
   UpdateAccess(roleAccessModel: number[]): Observable<number[]> {   
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<number[]>(this.url + '/UpdateAccess', roleAccessModel, httpOptions);
+    return this.http.post<number[]>(this.url + 'ConfigAccess/UpdateAccess', roleAccessModel, httpOptions);
   }
 
   createAccess(roleAccessModel: RoleAccessModel): Observable<any> {   
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + '/AddAccess/', roleAccessModel, httpOptions);
+    return this.http.post<any>(this.url + 'ConfigAccess/AddAccess/', roleAccessModel, httpOptions);
   }
 
   //Update AuthRole on cliclk of edit
   updateAuthRole(roleAccessModel: RoleAccessModel): Observable<RoleAccessModel> {  
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-    return this.http.post<RoleAccessModel>(this.url + '/UpdateAuthRole',  roleAccessModel, httpOptions);     
+    return this.http.post<RoleAccessModel>(this.url + 'ConfigAccess/UpdateAuthRole',  roleAccessModel, httpOptions);     
   }
   
   //Delete AuthRole on cliclk of edit
     deleteAuthRole(roleAccessModel: RoleAccessModel): Observable<RoleAccessModel> {  
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json'}) };  
-    return this.http.post<RoleAccessModel>(this.url + '/DeleteAuthRole',  roleAccessModel, httpOptions);     
+    return this.http.post<RoleAccessModel>(this.url + 'ConfigAccess/DeleteAuthRole',  roleAccessModel, httpOptions);     
   }
 
   getAllAccessNameData(): Observable<AccessNameModel[]>{
-    return this.http.get<AccessNameModel[]>(this.url + '/getAllAccessName');
+    return this.http.get<AccessNameModel[]>(this.url + 'ConfigAccess/getAllAccessName');
   }
 }
