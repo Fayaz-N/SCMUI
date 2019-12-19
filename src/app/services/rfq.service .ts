@@ -4,6 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
+import { RfqItemModel } from '../Models/rfq';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,18 @@ export class RfqService {
       RFQQuoteViewList: vendorList
     }
     return this.http.post<any>(this.url + 'RFQ/rfqStatusUpdate/' , JSON.stringify(Data), this.httpOptions);
+  }
+  GetItemsByRevisionId(RevisionId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/GetItemsByRevisionId/' + RevisionId);
+  }
+  GetUnitMasterList(): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/GetUnitMasterList', this.httpOptions);
+  }
+  GetAllMasterCurrency(): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/GetAllMasterCurrency', this.httpOptions);
+  }
+  InsertRfqItemInfo(rfqItem: RfqItemModel): Observable<any> {
+    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + 'RFQ/InsertRfqItemInfo/', rfqItem, httpOptions);
   }
 }

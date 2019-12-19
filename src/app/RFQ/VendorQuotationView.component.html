@@ -1,0 +1,67 @@
+<!--<div class="container">-->
+<div style="margin-bottom: 10%; margin-left: 30px; margin-right: 5px">
+    <div id="VendorQuotation">
+      <div class="row head-text pl-0">
+        <div class=" col-lg-12 col-md-12 col-sm-12 pt-2">
+          Vendor Quotation Format
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 pt-2">
+          Issuer
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 pt-2">
+          Supplier
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
+          RFQ No :
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
+          RFQ Date :
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
+          RFQ Valid Date :
+        
+        </div>
+      </div>
+      <div class="row form-control" style="height:100%; border-radius:0px;" *ngFor="let item of quoteDetails">
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+          <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
+            <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Item Code</label>
+            <span class="valueEdit font-weight-bold">{{item.ItemName}}</span>
+          </div>
+          <div class="col-lg-6 col-md-6 col-sm-6 form-group table-bordered" style="word-break: break-all;">
+            <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Item Description</label>
+            <span class="valueEdit font-weight-bold">{{item.ItemDescription}}</span>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
+            <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Quantity</label>
+            <span class="valueEdit font-weight-bold">{{item.QuotationQty}}</span>
+          </div>
+          <!--<div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
+            <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Attachment</label>
+            <span class="valueEdit font-weight-bold">{{item.ReferenceDocNo}}</span>
+          </div>-->
+        </div>
+        <div class="row" style="margin-left: 0px; margin-right: 0px">
+          <p-table>
+            <ng-template pTemplate="header">
+              <tr class="text-center">
+                <th>Sl No.</th>
+                <th>Qty</th>
+                <th>HSN Code</th>
+                <th>Unit Price</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+              <tr>
+                <td>XXX</td>
+                <td>XXXX</td>
+                <td>XXXX</td>
+                <td>XXXX</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </div>
+    </div><br />
+</div>
+

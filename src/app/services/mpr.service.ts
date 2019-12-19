@@ -91,26 +91,26 @@ export class MprService {
   }
   getMPRBuyerGroups(): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.get<MPRBuyerGroup[]>(this.url + 'MPR/GetAllMPRBuyerGroups', httpOptions);
+    return this.http.get<MPRBuyerGroup[]>(this.url + 'RFQ/GetAllMPRBuyerGroups', httpOptions);
   }
 
   addMPRBuyerGroup(buyerGroup: MPRBuyerGroup): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + 'MPR/InsertBuyerGroup', buyerGroup, httpOptions);  }
+    return this.http.post<any>(this.url + 'RFQ/InsertBuyerGroup', buyerGroup, httpOptions);  }
 
   updateMPRBuyerGroup(buyerGroup: MPRBuyerGroup): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + 'MPR/UpdateMprBuyerGroups', buyerGroup, httpOptions);
+    return this.http.post<any>(this.url + 'RFQ/UpdateMprBuyerGroups', buyerGroup, httpOptions);
   }
 
   getMPRApprovers(): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.get<MPRBuyerGroup[]>(this.url + 'MPR/GetAllMPRApprovers', httpOptions);
+    return this.http.get<MPRBuyerGroup[]>(this.url + 'RFQ/GetAllMPRApprovers', httpOptions);
   }
 
   addMPRApprovers(mprApprover: MPRApprovers): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any[]>(this.url + 'MPR/InsertMPRApprover', mprApprover, httpOptions);
+    return this.http.post<any[]>(this.url + 'RFQ/InsertMPRApprover', mprApprover, httpOptions);
   }
 
 }
