@@ -1,0 +1,96 @@
+<div class="container">
+  <p-table #dt *ngIf="buyerGrps.length>0" [value]="buyerGrps" data-key="BuyerGroupId" [globalFilterFields]="['BuyerGroup']" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" selectionMode="single">
+    <ng-template pTemplate="header">
+      <tr>
+        <th colspan="4" class="text-right">
+          <span style="padding-right:300px">Buyer Groups</span>
+          <input type="text" pInputText size="40" placeholder="Search by Buyer Group" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+          <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAddBuyerGroup()" label="Add New"></button>
+        </th>
+      </tr>
+      <tr>
+        <th class="text-center" style="padding:10px">Buyer Group Id</th>
+        <th class="text-center">Buyer Group</th>
+        <th class="text-center">In Use</th>
+        <th class="text-center">Edit</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex="0">
+      <tr [pEditableRow]="rowData">
+        <td class="text-center">{{rowData.BuyerGroupId}}</td>
+        <td>{{rowData.BuyerGroup}}</td>
+        <td class="text-center">{{rowData.BoolInUse ? "Yes":"No"}}</td>
+        <td class="text-center" style="white-space: nowrap">
+          <button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="onRowEditInit($event,'BuyerGroupsEditForm',rowData,'BuyerGroupId')"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+  <p-dialog header="Buyer Groups Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="BuyerGroupsAddForm" (ngSubmit)="onBuyerGroupAdd()" novalidate>
+        <div class="ui-g-12">
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group :</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputType size="100" formControlName="BuyerGroup" focus-me="focusInput" [(ngModel)]="buyerGrps.BuyerGroup" [ngClass]="{ 'is-invalid': BuyerGroupsAddForm && BuyerGroupsAddForm.controls.BuyerGroup.errors}" class="form-control" required />
+            <span *ngIf="BGAddSubmitted && BuyerGroupsAddForm.controls.BuyerGroup.errors" class="invalid-feedback">Please enter the Buyer Group.</span>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-info" (click)="onBuyerGroupAdd()" label="Add"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Buyer Groups Edit" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="BuyerGroupsEditForm">
+        <div class="ui-g-12">
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group Id :</label>
+          </div>
+          <div class="ui-g-8">
+            <label>{{editbuyerGrps.BuyerGroupId}}</label>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">Buyer Group :</label>
+          </div>
+          <div class="ui-g-8">
+            <input pInputText size="100" formControlName="BuyerGroup" class="form-control" [(ngModel)]="editbuyerGrps.BuyerGroup" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="buyergrp">In Use :</label>
+          </div>
+          <div class="ui-g-8">
+            <select formControlName="BoolInUse" class="form-control dropdown" [(ngModel)]="editbuyerGrps.BoolInUse">
+              <option value="select" selected="selected">Select</option>
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-info" (click)="onBuyerGroupUpdate()" label="Update"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+

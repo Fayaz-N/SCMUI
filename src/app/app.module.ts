@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { AppRoutingModule, RoutingComponent } from './app-routing.module';
+import { AppRoutingModule} from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DatePipe } from '@angular/common';
 import { TableModule } from 'primeng/table';
@@ -18,28 +18,11 @@ import { CalendarModule } from 'primeng/calendar';
 import { ToastModule } from 'primeng/toast';
 import { DataViewModule } from 'primeng/dataview';
 import { AppComponent } from './app.component';
-import { LoginComponent } from './Login/Login.component';
-import { SideMenuComponent } from './Dashboard/SideMenu.component';
-import { DashboardComponent } from './Dashboard/Dashboard.component';
-import { MPRPageComponent } from './MPR/MPRPage.component';
-import { MPRListComponent } from './MPR/MPRList.component';
-import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
-import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
-import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
-import { ApproversComponent } from './MPR/Admin/Approvers.component';
-import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
-import { DepartmentComponent } from './MPR/Admin/Departments.component';
-import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
-import { ScopesComponent } from './MPR/Admin/Scopes.component';
-import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component'
+//import { SideMenuComponent } from './Dashboard/SideMenu.component';
+//import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { SidebarDirective } from './sidebar.directive';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerModule } from "ngx-spinner";
-import { ConfigComponent } from './Authorization/Config.component';
-import { AccessGroupComponent } from './Authorization/AccessGroup.component';
-import { AuthorizationItemComponent } from './Authorization/AuthorizationItem.component';
-import { RoleAccessComponent } from './Authorization/RoleAccess.component';
-import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { SelectfilterPipe } from './common/selectfilter.pipe';
 import { Ng2SearchPipeModule } from 'ng2-search-filter';
 import { MatDialogModule } from '@angular/material/dialog';
@@ -47,32 +30,36 @@ import { ConfirmationDialogComponent } from './common/confirmationdialog/confirm
 import { MatButtonModule } from '@angular/material';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
+import {MatExpansionModule} from '@angular/material/expansion';
+import { ThemeModule } from './@theme/theme.module';
+import { NbSidebarModule, NbMenuModule, NbDatepickerModule, NbDialogModule, NbWindowModule, NbToastrModule, NbChatModule } from '@nebular/theme';
+import { CoreModule } from './@core/core.module';
+//import { LoginComponent } from './Login/Login.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    SideMenuComponent,
-    DashboardComponent,
-    MPRPageComponent,
-    MPRListComponent,
-    GenerateRFQComponent,
-    RFQComparisionComponent,
-    VendorQuotationViewComponent,
-    ApproversComponent,
-    BuyerGroupsComponent,
-    DepartmentComponent,
-    ProcurementSourcesComponent,
-    ScopesComponent,
-    ProjectManagersComponent,
-    SidebarDirective,
-    ConfigComponent,
-    AccessGroupComponent,
-    RoleAccessComponent,
-    AuthorizationItemComponent,
-    SelectfilterPipe,
-    ViewAccessComponent,
-    ConfirmationDialogComponent
+   //  LoginComponent,
+    // SideMenuComponent,
+    // DashboardComponent,
+    // MPRPageComponent,
+    // MPRListComponent,
+    // GenerateRFQComponent,
+    // RFQComparisionComponent,
+    // ApproversComponent,
+    // BuyerGroupsComponent,
+    // DepartmentComponent,
+    // ProcurementSourcesComponent,
+    // ScopesComponent,
+     SidebarDirective,
+    // ConfigComponent,
+    // AccessGroupComponent,
+    // RoleAccessComponent,
+    // AuthorizationItemComponent,
+    // SelectfilterPipe,
+    // ViewAccessComponent,
+    // ConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -98,10 +85,24 @@ import { ConfirmationService } from 'primeng/api';
     Ng2SearchPipeModule,
     MatDialogModule,
     MatButtonModule,
-    ConfirmDialogModule
+    ConfirmDialogModule,
+    MatExpansionModule,
+    ThemeModule.forRoot(),
+
+    NbSidebarModule.forRoot(),
+    NbMenuModule.forRoot(),
+    NbDatepickerModule.forRoot(),
+    NbDialogModule.forRoot(),
+    NbWindowModule.forRoot(),
+    NbToastrModule.forRoot(),
+    NbChatModule.forRoot({
+      messageGoogleMapKey: 'AIzaSyA_wNuCzia92MAmdLRzmqitRGvCF7wCZPY',
+    }),
+    CoreModule.forRoot(),
+    NbMenuModule.forRoot()
   ],
   providers: [HttpClientModule, MessageService, ConfirmationService],
-  entryComponents: [ConfirmationDialogComponent,],
+ // entryComponents: [ConfirmationDialogComponent,],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

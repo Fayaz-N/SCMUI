@@ -1,0 +1,181 @@
+<div *ngIf="RfqCompareItems.length>0">
+  <div class="row " style="margin-top:10px">
+    <div class="col-md-6 pt-2">
+      Material Purchase Requisition : <span style="color:#dc3545;">{{RfqCompareItems[0].DocumentNo}}</span>
+    </div>
+    <div class="col-md-3 pt-2">
+      <span class="form-inline ml-2">
+        Revision No:<span>{{RfqCompareItems[0].RevisionNo}}</span>
+      </span>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Document Number  </label>
+        <span class="valueEdit">{{RfqCompareItems[0].DocumentNo}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Document Description  </label>
+        <span class="valueEdit">{{RfqCompareItems[0].DocumentDescription}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Purpose Issuing MPR</label>
+        <span class="valueEdit">{{RfqCompareItems[0].IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Department</label>
+        <span class="valueEdit">{{RfqCompareItems[0].DepartmentName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Project Manager</label>
+        <span class="valueEdit">{{RfqCompareItems[0].ProjectManagerName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Job Code</label>
+        <span class="valueEdit">{{RfqCompareItems[0].JobCode}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Job Name</label>
+        <span class="valueEdit">{{RfqCompareItems[0].JobName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Ge Ps Approval Id</label>
+        <span class="valueEdit">{{RfqCompareItems[0].GEPSApprovalId}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Sale Order No</label>
+        <span class="valueEdit">{{RfqCompareItems[0].SaleOrderNo}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Name of the Client</label>
+        <span class="valueEdit">{{RfqCompareItems[0].ClientName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Plant Location</label>
+        <span class="valueEdit">{{RfqCompareItems[0].PlantLocation}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Buyer of Group </label>
+        <span class="valueEdit">{{RfqCompareItems[0].BuyerGroupName}}</span>
+      </div>
+    </div>
+  </div>
+  <br />
+  <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Least Price</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><img src="../assets/technics.png" style="height: 15px;width: 15px;"> - Technical Clearance</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>APD - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>DP - </b>Delivery period</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <br />
+  <div class="ui-g">
+    <div class="ui-g-12 ui-lg-12 ui-md-12">
+      <p-table [columns]="cols" [value]="rfqQuoteModel" [scrollable]="true" [style]="{width:'95%'}">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width:100px !important;">Item Name</th>
+            <th style="width:100px !important;">Item Description</th>
+            <th style="width:100px !important;">Quantity</th>
+            <th *ngFor="let col of columns;let colInd=index" style="width:100px !important;">
+              <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
+              {{col.VendorName}}<br /><label>RFQ NO : </label>&nbsp;<span><a href="#">{{col.RFQNo}}</a></span><br />
+              <label>Date : </label>&nbsp;<span style="color:#11d3b8c9">{{col.RFQValidDate | date :  constants.dateFormat}}</span>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+          <tr>
+            <td style="width:100px !important">{{rowData.ItemName}}</td>
+            <td style="width:100px !important">{{rowData.ItemDescription}}</td>
+            <td style="width:100px !important">{{rowData.QuotationQty}}</td>
+            <td *ngFor="let vendor of rowData.suggestedVendorDetails;let colIndex=index" style="width:100px !important;">
+              <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
+                <input type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+                    <label class="form-label lblEdit">Q</label>
+                    <span class="valueEdit">{{vendor.vendorQuoteQty}}</span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">Price </label>
+                    <span class="valueEdit">{{vendor.UnitPrice}}</span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
+                    <span class="valueEdit"></span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+                    <label class="form-label lblEdit">APD</label>
+                    <span class="valueEdit"></span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">DP</label>
+                    <span class="valueEdit">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}} &nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p> </span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">PT</label>
+                    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="footer">
+          <tr>
+            <td [attr.colspan]="3" style="color: #17a2b8;">Totals</td>
+            <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">Price :&nbsp;{{calculateTotalPrice(colInd)}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <label style="text-decoration: underline">Terms & Conditions:</label><br />
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+        <label class="form-label lblEdit">Payment Term Days   </label>
+        <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+        <label class="form-label lblEdit">Frieght</label>
+        <span class="valueEdit">{{RfqCompareItems[0].Freight}}</span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+        <label class="form-label lblEdit">Insurance </label>
+        <span class="valueEdit">{{RfqCompareItems[0].Insurance}}</span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+        <label class="form-label lblEdit">Bank Guarantee</label>
+        <span class="valueEdit">{{RfqCompareItems[0].BankGuarantee}}</span>
+      </div>
+
+    </div>
+  </div>
+    <br />
+    <br />
+    <br />
+  <div class="footer">
+    <div class="row form-inline pt-2">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+        <label>Status :&nbsp;<span class="blink_text">{{status}}</span></label>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+        <button type="button" class="btn btn-success" (click)="statusSubmit()" label="Save">Submit</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+

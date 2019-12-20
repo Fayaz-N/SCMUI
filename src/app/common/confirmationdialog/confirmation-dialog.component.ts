@@ -15,6 +15,13 @@ export class ConfirmationDialogComponent  {
       this.dialogRef.close();
     }
 
-
+    public animateCSS(formId, animatepostion) {
+      const element = document.getElementById(formId);
+      element.classList.add('animated', animatepostion);
+      element.addEventListener('animationend', function () {
+        element.classList.remove('animated', animatepostion);
+      })
+    }
+  
 
 }

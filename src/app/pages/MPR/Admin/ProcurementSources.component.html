@@ -1,0 +1,117 @@
+<p-table #dt *ngIf="procSrc.length>0" [value]="procSrc" [globalFilterFields]="['ProcurementSource']" editMode="row" [resizableColumns]="true" columnResizeMode="expand" selectionMode="single">
+	<ng-template pTemplate="header">
+		<tr>
+			<th colspan="4" class="text-right">
+				<input type="text" pInputText size="35" placeholder="Search by Procurement Source" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+				<button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="ShowAddDialog()"></button>
+			</th>
+		</tr>
+		<tr class="text-center">
+			<th>Sl No.</th>
+			<th>Procurement Source</th>
+			<th>In Use</th>
+			<th>Action</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+		<tr [pEditableRow]="rowData">
+			<td class="text-center">{{ri+1}}</td>
+			<td>{{rowData.ProcurementSource}}</td>
+			<td class="text-center">{{rowData.BoolInUse ? "Yes":"No"}}</td>
+			<td class="text-center"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" pTooltip="Edit" class="ui-button-info" (click)="onRowEditInit($event,'PSEditForm',rowData,'ProcurementSourceId')"></button>
+			</td>
+		</tr>
+	</ng-template>
+</p-table>
+
+<form [formGroup]="PSAddForm">
+	<p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}" [closable]="false">
+		<!--<div class="ui-g ui-fluid">-->
+			<div class="ui-g-12">
+				<div class="ui-g-2">
+					<label for="procSrc">Procurement Source :</label>
+				</div>
+				<div class="ui-g-5">
+					<input type="text" formControlName="ProcurementSource" ngModel maxlength="20" [(ngModel)]="procSrc.ProcurementSource" [ngClass]="{ 'is-invalid': PSAddSubmitted && PSAddForm.controls.ProcurementSource.errors }" class="form-control" />
+          <span *ngIf="PSAddSubmitted && PSAddForm.controls.ProcurementSource.errors" class="invalid-feedback">Please enter Procurement Source.</span>
+				</div>
+			</div>
+		<!--</div>-->
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="InsertData()" label="Insert"></button>
+				<button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+			</div>
+		</p-footer>
+	</p-dialog>
+</form>
+
+<form [formGroup]="PSEditForm">
+	<p-dialog header="Edit" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '700px'}" [closable]="false">
+		<!--<div class="ui-g ui-fluid">-->
+		<div class="ui-g-14">
+			<div class="ui-g-2">
+				<label for="procSrc">Procurement Source Id :</label>
+			</div>
+			<div class="ui-g-5">
+				<label>{{editPS.ProcurementSourceId}}</label>
+			</div>
+		</div>
+		<div class="ui-g-12">
+			<div class="ui-g-2">
+				<label for="procSrc">Procurement Source :</label>
+			</div>
+			<div class="ui-g-5">
+				<input type="text" formControlName="ProcurementSource" ngModel maxlength="20" [(ngModel)]="editPS.ProcurementSource" [ngClass]="{ 'is-invalid': PSEditSubmitted && PSEditForm.controls.ProcurementSource.errors }" class="form-control" />
+        <span *ngIf="PSEditSubmitted && PSEditForm.controls.ProcurementSource.errors" class="invalid-feedback">Procurement Source required.</span>
+			</div>
+		</div>
+		<div class="ui-g-12">
+			<div class="ui-g-2">
+				<label for="procSrc">In Use :</label>
+			</div>
+      <div class="ui-g-5">
+        <select formControlName="BoolInUse" [(ngModel)]="editPS.BoolInUse" [ngClass]="{ 'is-invalid': PSEditSubmitted && PSEditForm.controls.BoolInUse.value=='select'}" class="form-control dropdown">
+          <option value="select">Select</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+        <span *ngIf="PSEditSubmitted && PSEditForm.controls.BoolInUse.value=='select'" class="invalid-feedback">In Use required</span>
+      </div>
+		</div>
+		<!--</div>-->
+		<p-footer>
+			<div class="ui-dialog-buttonpane ui-helper-clearfix">
+				<button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="UpdateData()" label="Update"></button>
+				<button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+			</div>
+		</p-footer>
+	</p-dialog>
+</form>
+<!--</div>-->
+<!--<p-table class="container" #dt [value]="procSrc" [globalFilterFields]="['ProcurementSource']">
+	<ng-template pTemplate="caption">
+		<div style="display:inline">
+			<span style="float:left">Procurement Sources :</span>
+			<span style="text-align:right;padding-left: 900px !important;"><input type="text" pInputText size="40" placeholder="Search by Procurement Source" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;<button type="button" pButton icon="fa fa-plus"></button></span>
+		</div>
+	</ng-template>
+	<ng-template pTemplate="header">
+		<tr class="text-center">
+			<th>Sl No.</th>
+			<th>Procurement Source</th>
+			<th>In Use</th>
+			<th>Edit</th>
+		</tr>
+	</ng-template>
+	<ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+		<tr [pEditableRow]="rowData">
+			<td class="text-center">{{ri+1}}</td>
+			<td>{{rowData.ProcurementSource}}</td>
+			<td class="text-center">{{rowData.BoolInUse ? "Yes":"No"}}</td>
+			<td class="text-center" style="white-space: nowrap">
+				<button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info"></button>
+			</td>
+		</tr>
+	</ng-template>
+</p-table>-->

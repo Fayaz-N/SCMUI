@@ -1,0 +1,1267 @@
+<div *ngIf="showPage" style="margin-bottom: 10%;margin-right: 25px;">
+  <form [formGroup]="MPRPageForm1">
+    <div id="MPRPageForm1" class="my-animation">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">
+          Material Purchase Requisition : <span *ngIf="mprRevisionModel.MPRDetail.DocumentNo" style="color:#dc3545;">{{mprRevisionModel.MPRDetail.DocumentNo}}</span>
+        </div>
+        <div class="col-md-3 pt-2">
+          <span *ngIf="mprRevisionList.length > 0" class="form-inline ml-2">
+            Revision No:<span *ngFor="let revision of mprRevisionList">
+              &nbsp;&nbsp;
+              <a href='#/' [ngClass]="{'active': revision.RevisionId == mprRevisionModel.RevisionId,'disabled':revision.RevisionId != mprRevisionModel.RevisionId}" [routerLink]="['/dashboard/mpr',revision.RevisionId]">{{revision.RevisionNo}}</a>
+            </span>
+          </span>
+        </div>
+        <div *ngIf="form1Edit" class="col-md-3 edit pt-1">
+          <button type="button" *ngIf="!showForm1EditBtn" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('form1Edit','MPRPageForm1')"></button>
+        </div>
+      </div>
+      <div class="row form-control" style="height:100%;border-radius:0px;">
+        <div class="row " style="margin-top:10px">
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="docNo" class="form-label">Document Number</label>
+            <input class="form-control" type="text" formControlName="docNo" readonly [(ngModel)]="mprRevisionModel.MPRDetail.DocumentNo">
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="form-label lblEdit">Document Number  </label>
+            <span class="valueEdit">{{mprRevisionModel.MPRDetail.DocumentNo}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="SaleOrderNo" class="form-label">Document Description</label>
+            <textarea class="form-control" formControlName="DocumentDescription" [(ngModel)]="mprRevisionModel.MPRDetail.DocumentDescription" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.DocumentDescription.errors }"></textarea>
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.DocumentDescription.errors" class="invalid-feedback">Document Description Required.</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="form-label lblEdit">Document Description  </label>
+            <span class="valueEdit">{{mprRevisionModel.MPRDetail.DocumentDescription}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="purposeIssuingMpr" class="form-label">Purpose Issuing MPR</label>
+            <div class="form-control" style="height:70%" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.IssuePurposeId.errors }">
+              <p-radioButton class="form-inline" name="group1" value="1" label="For Enquiry" [(ngModel)]="mprRevisionModel.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt1"></p-radioButton>
+              <p-radioButton class="form-inline" name="group1" value="2" label="For Issuing PO" [(ngModel)]="mprRevisionModel.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt2"></p-radioButton>
+            </div>
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.IssuePurposeId.errors" class="invalid-feedback">Purpose Issuing MPR Required</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="form-label lblEdit">Purpose Issuing MPR  </label>
+            <span class="valueEdit">{{MPRPageForm1.value.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="DepartmentId" class="form-label">Department</label>
+            <div class="form-inline-list">
+              <input type="text" class="form-control forms-input  " formControlName="DepartmentId" [value]="MPRPageForm1.controls.DepartmentId.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && !MPRPageForm1.controls.DepartmentId.value}" (keyup)="bindSearchListData($event,'MPRPageForm1','DepartmentId',MPRPageForm1.controls.DepartmentId.value,undefined)">
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','DepartmentId','',undefined)"></button>
+              </span>
+              <span *ngIf="MPRForm1Submitted && !MPRPageForm1.controls.DepartmentId.value" class="invalid-feedback">Select Department.</span>
+            </div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Department  </label>
+            <span class="valueEdit">{{MPRPageForm1.value.DepartmentId}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="ProjectManager" class="form-label">Project Manager</label>
+            <div class="form-inline-list ml-2 ">
+              <input type="text" class="form-control forms-input" formControlName="ProjectManager" [value]="MPRPageForm1.controls.ProjectManager.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && !MPRPageForm1.controls.ProjectManager.value}" (keyup)="bindSearchListData($event,'MPRPageForm1','ProjectManager',MPRPageForm1.controls.ProjectManager.value,undefined)">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','ProjectManager','',undefined)"></button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && !MPRPageForm1.controls.ProjectManager.value" class="invalid-feedback">Select Department.</span>
+            </div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Project Manager  </label>
+            <span class="valueEdit">{{MPRPageForm1.value.ProjectManager}}</span>
+
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="JobCode" class="form-label">Job Code</label>
+            <input *ngIf="!form1Edit" class="form-control" type="text" id="JobCode" formControlName="JobCode" [(ngModel)]="mprRevisionModel.JobCode" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Job Code </label>
+            <span class="valueEdit">{{mprRevisionModel.JobCode}}</span>
+          </div>
+        </div>
+        <div class="row">
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="JobName" class="form-label">Job Name</label>
+            <input type="text" id="JobName" formControlName="JobName" [(ngModel)]="mprRevisionModel.JobName" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Job Name </label>
+            <span class="valueEdit">{{mprRevisionModel.JobName}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="GEPSApprovalId" class="form-label">Ge Ps Approval Id</label>
+            <input type="text" id="GEPSApprovalId" formControlName="GEPSApprovalId" [(ngModel)]="mprRevisionModel.GEPSApprovalId" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.GEPSApprovalId.errors }">
+            <div *ngIf="MPRForm1Submitted && MPRPageForm1.controls.GEPSApprovalId.errors" class="invalid-feedback">Ge Ps Approval Id Required.</div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Ge Ps Approval Id</label>
+            <span class="valueEdit">{{mprRevisionModel.GEPSApprovalId}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="SaleOrderNo" class="form-label">Sale Order No</label>
+            <input type="text" class="form-control form-inline  ml-2 " id="SaleOrderNo" formControlName="SaleOrderNo" [(ngModel)]="mprRevisionModel.SaleOrderNo" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.SaleOrderNo.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.SaleOrderNo.errors" class="invalid-feedback">Sale OrderNo Required.</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Sale Order No</label>
+            <span class="valueEdit">{{mprRevisionModel.SaleOrderNo}}</span>
+          </div>
+        </div>
+
+        <div class="row">
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="ClientName" class="form-label">Name of the Client</label>
+            <div class="form-inline-list  ml-2 ">
+              <input type="text" class="form-control forms-input" formControlName="ClientName" [value]="MPRPageForm1.controls.ClientName.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && !MPRPageForm1.controls.ClientName.value}" (keyup)="bindSearchListData($event,'MPRPageForm1','ClientName',MPRPageForm1.controls.ClientName.value,undefined)">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','ClientName','',undefined)"></button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && !MPRPageForm1.controls.ClientName.value" class="invalid-feedback">Select Client Name.</span>
+            </div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Name of the Client </label>
+            <span class="valueEdit">{{MPRPageForm1.value.ClientName}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="PlantLocation" class="form-label">Plant Location</label>
+            <input type="text" id="PlantLocation" formControlName="PlantLocation" [(ngModel)]="mprRevisionModel.PlantLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.PlantLocation.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.PlantLocation.errors" class="invalid-feedback">Plant Location Required.</span>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Plant Location </label>
+            <span class="valueEdit">{{mprRevisionModel.PlantLocation}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
+            <div class="form-inline-list  ml-2 ">
+              <input type="text" class="form-control forms-input" formControlName="BuyerGroupId" [value]="MPRPageForm1.controls.BuyerGroupId.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && !MPRPageForm1.controls.BuyerGroupId.value}" (keyup)="bindSearchListData($event,'MPRPageForm1','BuyerGroupId',MPRPageForm1.controls.BuyerGroupId.value,undefined)">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','BuyerGroupId','',undefined)"></button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && !MPRPageForm1.controls.BuyerGroupId.value" class="invalid-feedback">Select Buyer of Group.</span>
+            </div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Buyer of Group </label>
+            <span class="valueEdit">{{MPRPageForm1.value.BuyerGroupId}}</span>
+          </div>
+        </div>
+        <div *ngIf="!form1Edit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRForm1Submit('MPRPageForm1','showMaterialForm','form1Edit')" label="Save">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br />
+  <form *ngIf="showMaterialForm" [formGroup]="MPRPageForm2">
+    <!--<form [formGroup]="MPRPageForm2">-->
+    <div id="MPRMaterialId" class="my-animation">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">Material Details</div>
+        <div class="col-md-3 pt-2"></div>
+        <div *ngIf="materialFormEdit" class="col-md-3 edit pt-1">
+          <button type="button" *ngIf="!showMaterialEditBtn" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('materialFormEdit','MPRMaterialId')"></button>
+        </div>
+      </div>
+      <div class=" row form-control" style="height:100%;border-radius:0px;">
+        <p-table [value]="mprRevisionModel.MPRItemInfoes">
+          <ng-template pTemplate="caption">
+            <div style="display:inline">
+              <span style="float:left">Item Details : </span>
+              <span style="text-align:right;padding-left: 500px !important;"><button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button></span>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>S.No</th>
+              <th>Item Description</th>
+              <th>Quantity</th>
+              <th>Unit</th>
+              <th>Sale Order Line Item No</th>
+              <th>Reference Document No</th>
+              <th>Target Spend</th>
+              <th>Documents</th>
+              <th>Edit</th>
+              <th>Remove</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+            <tr>
+              <td>
+                {{ri+1}}
+              </td>
+              <td>{{rowData.ItemDescription}}</td>
+              <td>{{rowData.Quantity}}</td>
+              <td>{{rowData.UnitId}}</td>
+              <td>{{rowData.SOLineItemNo}}</td>
+              <td>{{rowData.ReferenceDocNo}}</td>
+              <td>{{rowData.TargetSpend}}</td>
+              <td>
+                <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+                  <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
+                </div>
+              </td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData,'ItemId')"></button>
+              </td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button *ngIf="!editing" [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
+              </td>
+
+            </tr>
+          </ng-template>
+        </p-table><br /><br />
+
+        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
+          <div class="form-group row">
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Target Spend</label>
+              <input class="form-control" [disabled]="true" readonly formControlName="TargetSpend" type="text" [value]="MPRPageForm2.controls.TargetSpend.value" [ngModel]="calculateTargetSpend()">
+            </div>
+            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label lblEdit">Target Spend </label>
+              <span class="valueEdit">{{calculateTargetSpend()}}</span>
+            </div>
+
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Target Spend Remarks</label>
+              <textarea class="form-control" type="text" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
+              <div *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</div>
+            </div>
+            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label lblEdit">Target Spend Remarks </label>
+              <span class="valueEdit">{{mprRevisionModel.TargetedSpendRemarks}}</span>
+            </div>
+
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Supporting Documents For Target Spent</label>&nbsp; &nbsp;
+              <button type="button" [disabled]="mprRevisionModel.MPRItemInfoes.length > 0 ? false:true" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentUpload')"></button>
+            </div>
+          </div>
+        </div>
+
+        <p-table *ngIf="MPR3Documents.length>0" [value]="MPR3Documents">
+          <ng-template pTemplate="caption">
+            Supporting Documents For Target Spent :
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>S.No</th>
+              <th>Document</th>
+              <th style="text-align:center">Remove</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr *ngIf="rowData.DocumentTypeid==2">
+              <td>
+                {{ri+1}}
+              </td>
+              <td>{{rowData.DocumentName}}</td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table><br />
+        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0 && !materialFormEdit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRMaterialSubmit('MPRMaterialId','showVendorForm','materialFormEdit')" label="Save">Proceed</button>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div *ngIf="showVendorForm" id="MPRVendorId" class="my-animation">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">Vendor Details</div>
+        <div class="col-md-3 pt-2"></div>
+        <div *ngIf="vendorFormEdit" class="col-md-3 edit pt-1">
+          <button type="button" *ngIf="!showVendorEditBtn" class="btn btn-outline-secondary form-control edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('vendorFormEdit','MPRVendorId')"></button>
+        </div>
+      </div>
+      <div class="row form-control" style="height:100%;border-radius:0px;">
+        <p-table [value]="mprRevisionModel.MPRVendorDetails">
+          <ng-template pTemplate="caption">
+            Vendor Details :
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>S.No</th>
+              <th>Name Of Vendor</th>
+              <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
+              <th>Remove</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr>
+              <td>
+                {{ri+1}}
+              </td>
+              <td>
+                <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}-{{rowData.VendorMaster.VendorCode}}</div>
+              </td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
+              </td>
+              <td>
+                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeVendor(rowData)"></button>
+              </td>
+            </tr>
+
+          </ng-template>
+        </p-table><br />
+
+        <div>
+          <div class="form-group row" style="margin-top:10px">
+            <div *ngIf="!vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Type Of Purchase </label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="PurchaseTypeId" [value]="MPRPageForm2.controls.PurchaseTypeId.value" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.PurchaseTypeId.errors }" (keyup)="bindSearchListData($event,'MPRPageForm2','PurchaseTypeId',MPRPageForm2.controls.PurchaseTypeId.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm2','PurchaseTypeId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.PurchaseTypeId.value" class="invalid-feedback">Select Type Of Purchase.</span>
+              </div>
+            </div>
+            <div *ngIf="vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Type Of Purchase </label>
+              <span class="valueEdit">{{MPRPageForm2.controls.PurchaseTypeId.value}}</span>
+            </div>
+
+
+            <div *ngIf="!vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Type of Preference </label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="PreferredVendorTypeId" [value]="MPRPageForm2.controls.PreferredVendorTypeId.value" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.PreferredVendorTypeId.errors }" (keyup)="bindSearchListData($event,'MPRPageForm2','PreferredVendorTypeId',MPRPageForm2.controls.PreferredVendorTypeId.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm2','PreferredVendorTypeId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.PreferredVendorTypeId.value" class="invalid-feedback">Select Type Of Preference.</span>
+              </div>
+            </div>
+            <div *ngIf="vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Type of Preference </label>
+              <span class="valueEdit">{{MPRPageForm2.controls.PreferredVendorTypeId.value}}</span>
+            </div>
+
+            <div *ngIf="!vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Justificatiion for selecting single vendor</label>
+              <input type="text" [attr.disabled]="justificationDisply == true ? true : null" [(ngModel)]="mprRevisionModel.JustificationForSinglePreferredVendor" id="JustificationForSinglePreferredVendor" formControlName="JustificationForSinglePreferredVendor" class="form-control" [ngClass]="{ 'is-invalid': MPRForm2Submitted  && justificationDisply==false&& MPRPageForm2.controls.JustificationForSinglePreferredVendor.errors }">
+              <span *ngIf="MPRForm2Submitted && justificationDisply==false && !MPRPageForm2.controls.JustificationForSinglePreferredVendor.value" class="invalid-feedback">Single vendor required.</span>
+            </div>
+            <div *ngIf="vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Justificatiion for selecting single vendor</label>
+              <span class="valueEdit">{{mprRevisionModel.JustificationForSinglePreferredVendor}}</span>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!vendorFormEdit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRVendorSubmit('MPRVendorId','showOtherDetailsForm','vendorFormEdit')" label="Save">Proceed</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br />
+  <form *ngIf="showOtherDetailsForm" [formGroup]="MPRPageForm3">
+    <!--<form [formGroup]="MPRPageForm3">-->
+    <div id="MPRPageForm3" class="my-animation">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">Other Deatils</div>
+        <div class="col-md-3 pt-2"></div>
+        <div *ngIf="form3Edit" class="col-md-3 edit pt-1">
+          <button type="button" *ngIf="!shoForm3EditBtn" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('form3Edit','MPRPageForm3')"></button>
+        </div>
+      </div>
+      <div class=" row form-control" style="height:100%;border-radius:0px;">
+
+        <b>Delivery Details:</b>
+        <div class="border" style="margin-top:10px !important">
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Delivery Required By</label>
+              <input type="date" #myDate [value]="mprRevisionModel.DeliveryRequiredBy | date:'yyyy-MM-dd'" (input)="mprRevisionModel.DeliveryRequiredBy=parseDate($event.target.value)" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }" />
+              <!--<input type="date" [(ngModel)="mprRevisionModel.DeliveryRequiredBy" data-date-format="constants.dateFormat" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }">-->
+              <span *ngIf="MPRForm3Submitted && MPRPageForm3.controls.DeliveryRequiredBy.errors" class="invalid-feedback">delivery requiredBy required.</span>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Delivery Required By</label>
+              <span class="valueEdit">{{mprRevisionModel.DeliveryRequiredBy | date :  constants.dateFormat}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Dispatch Location</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" [value]="MPRPageForm3.controls.DispatchLocation.value" formControlName="DispatchLocation" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DispatchLocation.errors }" (keyup)="bindSearchListData($event,'MPRPageForm3','DispatchLocation',MPRPageForm3.controls.DispatchLocation.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','DispatchLocation','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.DispatchLocation.value" class="invalid-feedback">Select Dispatch Location.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Dispatch Location </label>
+              <span class="valueEdit">{{MPRPageForm3.controls.DispatchLocation.value}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Specify Dispatch Location</label>
+              <input type="text" [(ngModel)]="mprRevisionModel.DispatchLocation" [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
+              <span *ngIf="MPRForm3Submitted && specifyDispatchDisply==false && !MPRPageForm3.controls.specifyDispatchLocation.value" class="invalid-feedback">Specify dispatch location required.</span>
+            </div>
+
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Specify Dispatch Location </label>
+              <span class="valueEdit">{{mprRevisionModel.DispatchLocation}}</span>
+            </div>
+          </div>
+        </div><br />
+
+        <b>Training Details:</b>
+        <div class="border" style="margin-top:10px !important">
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Scope Shall Include</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="ScopeId" [value]="MPRPageForm3.controls.ScopeId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.ScopeId.errors }" (keyup)="bindSearchListData($event,'MPRPageForm3','PreferredVendorTypeId',MPRPageForm3.controls.ScopeId.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ScopeId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.ScopeId.value" class="invalid-feedback">Select Scope Shall Include.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Scope Shall Include</label>
+              <span class="valueEdit">{{MPRPageForm3.controls.ScopeId.value}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Training Required</label>
+              <div class="form-inline ml-4">
+                <p-inputSwitch [(ngModel)]="mprRevisionModel.TrainingRequired" formControlName="TrainingRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.TrainingRequired.errors }"></p-inputSwitch>
+                &nbsp;&nbsp;<span class="form-label">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
+                <span *ngIf="MPRForm3Submitted && MPRPageForm3.controls.TrainingRequired.errors" class="invalid-feedback">Select training required.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Training Required</label>
+              <span class="valueEdit">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Man Weeks</label>
+              <div class="form-inline">
+                <select id="manWeeks" class="form-control forms-input" [(ngModel)]="mprRevisionModel.TrainingManWeeks" [attr.disabled]="MPRPageForm3.controls.TrainingRequired.value==true?null:true" formControlName="TrainingManWeeks" [ngClass]="{ 'is-invalid': MPRForm3Submitted && MPRPageForm3.controls.TrainingRequired.value==true &&  MPRPageForm3.controls.TrainingManWeeks.errors }">
+                  <option value="">Select</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="6">6</option>
+                </select>
+                <span *ngIf="MPRForm3Submitted && MPRPageForm3.controls.TrainingRequired.value==true && !MPRPageForm3.controls.TrainingManWeeks.value" class="invalid-feedback">Select man weeks.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Man Weeks </label>
+              <span class="valueEdit">{{mprRevisionModel.TrainingManWeeks}}</span>
+            </div>
+          </div>
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Remarks</label>
+              <input type="text" [(ngModel)]="mprRevisionModel.TrainingRemarks" [attr.disabled]="MPRPageForm3.controls.TrainingRequired.value==true?null:true" id="TrainingRemarks" formControlName="TrainingRemarks" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && MPRPageForm3.controls.TrainingRequired.value=='true' &&  MPRPageForm3.controls.TrainingRemarks.errors }">
+              <div *ngIf="MPRForm3Submitted && MPRPageForm3.controls.TrainingRequired.value==true  && MPRPageForm3.controls.TrainingRemarks.errors" class="invalid-feedback">remarks Required.</div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Remarks </label>
+              <span class="valueEdit">{{mprRevisionModel.TrainingRemarks}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Documentation</label>
+              <div class="form-inline ml-4">
+                <p-inputSwitch id="documentation" [(ngModel)]="mprRevisionModel.BoolDocumentationApplicable" formControlName="BoolDocumentationApplicable" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.BoolDocumentationApplicable.errors }"></p-inputSwitch>
+                &nbsp;<span class="form-label">{{mprRevisionModel.BoolDocumentationApplicable==true?'Yes':'No'}}</span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.BoolDocumentationApplicable.value" class="invalid-feedback">Select Doumentation.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Documentation </label>
+              <span class="valueEdit">{{mprRevisionModel.BoolDocumentationApplicable==true?'Yes':'No'}}</span>
+            </div>
+          </div>
+        </div>
+        <br />
+        <p-table *ngIf="mprRevisionModel.BoolDocumentationApplicable==true" [value]="mprRevisionModel.MPRDocumentations" [responsive]="true">
+          <ng-template pTemplate="caption">
+            Documentation :
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>Description</th>
+              <th>For Approval</th>
+              <th>For Final</th>
+              <th style="text-align:center"><button [disabled]="form3Edit" type="button" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentationDialog')"></button></th>
+
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr *ngIf="rowData.MPRDocumentationDescription">
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="rowData.MPRDocumentationDescription.DocumentationDescription" required>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{rowData.MPRDocumentationDescription.DocumentationDescription}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="rowData.NoOfSetsApproval" required>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{rowData.NoOfSetsApproval}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td>
+                <p-cellEditor>
+                  <ng-template pTemplate="input">
+                    <input pInputText type="text" [(ngModel)]="rowData.NoOfSetsFinal" required>
+                  </ng-template>
+                  <ng-template pTemplate="output">
+                    {{rowData.NoOfSetsFinal}}
+                  </ng-template>
+                </p-cellEditor>
+              </td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button [disabled]="form3Edit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoumentation(rowData)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table><br />
+        <b>Gurantee Details:</b>
+        <div class="border" style="margin-top:10px !important">
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-3 col-md-3 col-sm-3 form-group">
+              <label>Gurantee Period Required</label>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-6 col-md-6 col-sm-6 form-group" style="margin:0px">
+              <label class="lblEdit">Gurantee Period Required</label>
+              <span>{{mprRevisionModel.GuaranteePeriod}}</span>
+            </div>
+
+            <div *ngIf="form3Edit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label class="lblEdit">No. of sets of Quality Assurance Plan Required</label>
+              <span *ngIf="form3Edit" class="valueEdit">{{mprRevisionModel.NoOfSetsOfQAP}}</span>
+            </div>
+            <div *ngIf="!form3Edit" class="col-lg-9 col-md-9 col-sm-9 form-group">
+              <div class="form-inline">
+                <select class="form-control" formControlName="supplyMonths" (change)="monthChanges();" style="width:100px">
+                  <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+                </select>&nbsp;&nbsp;
+                <label class="form-label">months after supply   or</label>&nbsp;&nbsp;
+                <select class="form-control" formControlName="commissionMonths" (change)="monthChanges();" style="width:100px">
+                  <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+                </select>&nbsp;&nbsp;
+                <label class="form-label">months after commissioning whichever is earlier</label>
+              </div>
+            </div>
+          </div>
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              Or &nbsp;&nbsp;
+              <p-checkbox formControlName="GuaranteePeriod" label="Not Applicable" value="Not Applicable" (click)="guranteeChanges()" [(ngModel)]="mprRevisionModel.GuaranteePeriod"></p-checkbox>
+            </div>
+          </div><br />
+
+
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">No. of sets of Quality Assurance Plan Required </label>
+              <div class="form-inline">
+                <select class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.NoOfSetsOfQAP.value}" formControlName="NoOfSetsOfQAP" [(ngModel)]="mprRevisionModel.NoOfSetsOfQAP" style="width:100px">
+                  <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+                </select>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.NoOfSetsOfQAP.value" class="invalid-feedback">Select Quality Assurance Plan Required.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />
+        <b>Inspection Details:</b>
+
+        <div class="border" style="margin-top:10px !important">
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-6 col-md-6 col-sm-6 form-group">
+              <label class="form-label">Inspection Required</label>
+              <div class="form-inline ml-4">
+                <p-inputSwitch formControlName="InspectionRequired" [(ngModel)]="mprRevisionModel.InspectionRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.InspectionRequired.errors }"></p-inputSwitch>
+                &nbsp;&nbsp;<span class="form-label" style="right: 20px;">{{mprRevisionModel.InspectionRequired==true?'Yes':'No'}}</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Inspection Required </label>
+              <span class="valueEdit">{{mprRevisionModel.InspectionRequired==true?'Yes':'No'}}</span>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit"> No. of sets of Test Certificates </label>
+              <span class="valueEdit">{{mprRevisionModel.NoOfSetsOfTestCertificates}}</span>
+            </div>
+          </div>
+
+          <div *ngIf="!form3Edit">
+            <div *ngIf="mprRevisionModel.InspectionRequired==true" class="form-group row" style="margin:0px">
+              <p-radioButton name="groupname" class="col-lg-8 col-md-8 col-sm-8 form-group" formControlName="InspectionComments" (click)="inspectionChanges($event)" [(ngModel)]="mprRevisionModel.InspectionComments" label="Inspection Procedure and Test Certificates shall be submitted by the Vendor" value="Inspection Procedure and Test Certificates shall be submitted by the Vendor"></p-radioButton>
+            </div><br />
+
+            <div *ngIf="mprRevisionModel.InspectionRequired==false" class="form-group row" style="margin:0px">
+              <p-radioButton class="col-lg-8 col-md-8 col-sm-8 form-group" formControlName="InspectionComments" (click)="inspectionChanges($event)" [(ngModel)]="mprRevisionModel.InspectionComments" label="Test certificates to be submitted in order to release the despatch clearance" value="Test certificates to be submitted in order to release the despatch clearance."></p-radioButton>
+            </div>
+
+            <div class="form-group row" style="margin:0px">
+              <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label"> No. of sets of Test Certificates</label>
+                <div class="form-inline">
+                  <select class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.NoOfSetsOfTestCertificates.value}" formControlName="NoOfSetsOfTestCertificates" [(ngModel)]="mprRevisionModel.NoOfSetsOfTestCertificates">
+                    <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+                  </select>
+                  <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.NoOfSetsOfTestCertificates.value" class="invalid-feedback">Select No. of sets of Test Certificates.</span>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="mprRevisionModel.InspectionRequired==true" class="form-group row" style="margin:0px">
+              <p-radioButton class="col-lg-8 col-md-8 col-sm-8 form-group" name="groupname" formControlName="InspectionComments" (click)="inspectionChanges($event)" [(ngModel)]="mprRevisionModel.InspectionComments" label="Inspection & Test shall be carried out in accordance with the mutually agreed procedure" value="Inspection & Test shall be carried out in accordance with the mutually agreed procedure"></p-radioButton>
+            </div>
+          </div>
+        </div>
+        <div class="border" style="margin-top:10px !important">
+          <br />
+          <div class="form-group row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Source Of Procurement</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="ProcurementSourceId" [value]="MPRPageForm3.controls.ProcurementSourceId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ProcurementSourceId.value}" (keyup)="bindSearchListData($event,'MPRPageForm3',MPRPageForm3.controls.ProcurementSourceId.value,'',undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ProcurementSourceId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.ProcurementSourceId.value" class="invalid-feedback">Select Source Of Procurement.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Source Of Procurement</label>
+              <span class="valueEdit">{{MPRPageForm3.value.ProcurementSourceId}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Customs Duty For Imports</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="CustomsDutyId" [value]="MPRPageForm3.controls.CustomsDutyId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.CustomsDutyId.value}" (keyup)="bindSearchListData($event,'MPRPageForm3',MPRPageForm3.controls.CustomsDutyId.value,'',undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','CustomsDutyId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.CustomsDutyId.value" class="invalid-feedback">Select Customs Duty For Imports.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Customs Duty For Imports </label>
+              <span class="valueEdit">{{MPRPageForm3.value.CustomsDutyId}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Project Duty Applicable</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="ProjectDutyApplicableId" [value]="MPRPageForm3.controls.ProjectDutyApplicableId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ProjectDutyApplicableId.value}" (keyup)="bindSearchListData($event,'MPRPageForm3',MPRPageForm3.controls.ProjectDutyApplicableId.value,'',undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ProjectDutyApplicableId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.ProjectDutyApplicableId.value" class="invalid-feedback">Select Project Duty Applicable.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Project Duty Applicable </label>
+              <span class="valueEdit">{{MPRPageForm3.value.ProjectDutyApplicableId}}</span>
+            </div>
+          </div>
+          <div class="form-group row" style="margin:0px">
+            <div class="col-lg-5 col-md-5 col-sm-5">
+              <label for="InchargeName" class="form-label">Incharge Names </label>&nbsp;&nbsp;
+              <button type="button" [disabled]="form3Edit" pButton icon="fa fa-plus" (click)="showInchargeDialogToAdd('displayInchargeDialog')"></button>
+            </div>
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Remarks</label>
+              <div class="form-inline">
+                <textarea [(ngModel)]="mprRevisionModel.Remarks" id="Remarks" formControlName="Remarks" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted  &&  MPRPageForm3.controls.Remarks.errors }"></textarea>
+                <span *ngIf="MPRForm3Submitted && MPRPageForm3.controls.Remarks.errors" class="invalid-feedback">remarks Required.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Remarks</label>
+              <span class="valueEdit">{{mprRevisionModel.Remarks}}</span>
+            </div>
+          </div>
+          <!--<div class="form-group" style="margin:0px">
+            <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <i class="pi pi-envelope icons" ></i><span>Can Receive Mail Notification</span>
+            </div>
+            </div>-->
+          <div class="form-group row" style="margin:0px">
+            <div class="col-lg-5 col-md-5 col-sm-5">
+              <p-table *ngIf="mprRevisionModel.MPRIncharges.length>0" [value]="mprRevisionModel.MPRIncharges">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>Emp Name</th>
+                    <th>Can Clear Technically</th>
+                    <th>Can Clear Commercially</th>
+                    <th>Can Receive Mail Notification</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+                  <tr>
+                    <td>{{getEmployeename(rowData.Incharge)}}</td>
+                    <td>
+                      <i *ngIf="rowData.CanClearTechnically==true" class="pi pi-check"></i>
+                      <i *ngIf="rowData.CanClearTechnically==false" class="pi pi-times"></i>
+                    </td>
+                    <td>
+                      <i *ngIf="rowData.CanClearCommercially==true" class="pi pi-check"></i>
+                      <i *ngIf="rowData.CanClearCommercially==false" class="pi pi-times"></i>
+                    </td>
+                    <td>
+                      <i *ngIf="rowData.CanReceiveMailNotification==true" class="pi pi-check"></i>
+                      <i *ngIf="rowData.CanReceiveMailNotification==false" class="pi pi-times"></i>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+
+
+          </div><br />
+          <div class="row" style="margin:0px">
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Check By </label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRPageForm3.controls.CheckedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.CheckedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','CheckedBy',MPRPageForm3.controls.CheckedBy.value,undefined)">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','CheckedBy','',undefined)"></button>
+                </div>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.CheckedBy.value" class="invalid-feedback">Select Check By.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Check By </label>
+              <span class="valueEdit">{{MPRPageForm3.value.CheckedBy}}</span>
+            </div>
+
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label for="ApprovedBy" class="form-label">Approve By</label>
+              <div class="form-inline-list">
+                <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRPageForm3.controls.ApprovedBy.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ApprovedBy.value}" (keyup)="bindSearchListData($event,'MPRPageForm3','ApprovedBy',MPRPageForm3.controls.ApprovedBy.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ApprovedBy','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRForm3Submitted && !MPRPageForm3.controls.ApprovedBy.value" class="invalid-feedback">Select Approve By.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Approve By </label>
+              <span class="valueEdit">{{MPRPageForm3.value.ApprovedBy}}</span>
+            </div>
+          </div>
+        </div><br />
+        <div *ngIf="!form3Edit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRForm3Submit('MPRPageForm3','form3Edit')" label="Save">Proceed</button>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+  <br />
+
+  <form *ngIf="showCommunicationForm" [formGroup]="MPRCommunicationForm">
+    <div id="MPRCommunicationId" class="my-animation">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">Communication Details</div>
+        <div class="col-md-3 pt-2"></div>
+        <div *ngIf="communicationFormEdit" class="col-md-3 edit pt-1">
+          <button type="button" *ngIf="!showCommEditBtn" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('showCommunicationForm','MPRCommunicationId')"></button>
+        </div>
+      </div>
+      <div class=" row form-control" style="height:100%;border-radius:0px;">
+        <div class="row " style="margin-top:0px">
+          <div class="col-lg-4 col-md-4 col-sm-4">
+            <label for="InchargeName" class="form-label">Add Communication </label>&nbsp;&nbsp;
+            <button type="button" [disabled]="communicationFormEdit" pButton icon="fa fa-plus" (click)="showCommunicationDialogToAdd('displayCommunicationDialog')"></button>
+          </div>
+          <div class="col-lg-8 col-md-8 col-sm-8">
+            <i class="glyphicon glyphicon-time"></i>&nbsp;Reminder&nbsp;
+            <i style="color:green" class="glyphicon glyphicon-time"></i>&nbsp;Reminder Mail Sent&nbsp;
+            <i style="color:green" class="glyphicon glyphicon-envelope"></i>&nbsp;Mail Sent
+          </div>
+        </div><br />
+        <div class="form-group row" style="margin:0px">
+
+          <div class="col-lg-12 col-md-12 col-sm-12">
+
+            <p-table *ngIf="mprRevisionModel.MPRCommunications.length>0" [value]="mprRevisionModel.MPRCommunications">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>Communication By</th>
+                  <th>Date</th>
+                  <th>Remarks</th>
+                  <th> Communication To</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+                <tr>
+                  <td>{{getEmployeename(rowData.RemarksFrom)}}</td>
+                  <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
+                  <td>
+                    {{rowData.Remarks}}
+                  </td>
+                  <td>
+                    <span *ngFor="let trackData of rowData.MPRReminderTrackings">
+                      <span [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{getEmployeename(trackData.MailTo)}}</span>&nbsp;
+                      <i *ngIf="rowData.SendEmail==1" style="color:green" class="glyphicon glyphicon-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="glyphicon glyphicon-time"></i>&nbsp;
+                    </span>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+
+        </div><br />
+      </div>
+    </div>
+  </form><br />
+
+  <div *ngIf="showForm1EditBtn" id="MPRStatusId" class="my-animation">
+    <div class="row head-text pl-0">
+      <div class="col-md-6 pt-2">Status</div>
+      <div class="col-md-3 pt-2"></div>
+    </div>
+    <div class="row form-control" style="height:100%;border-radius:0px;">
+      <div class="row " style="margin-top:0px">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Checker: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionModel.CheckedBy}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.CheckStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.CheckedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.CheckerRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionModel.ApprovedBy}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.ApprovalStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.ApprovedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.ApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div><br />
+      <div class="row " style="margin-top:0px">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Second Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionModel.SecondApprover | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.SecondApproversStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.SecondApprovedOn}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.SecondApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Third Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionModel.ThirdApprover}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.ThirdApproverStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.ThirdApproverStatusChangedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.ThirdApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="showForm1EditBtn" class="icon-bar">
+    <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Form1"><i class="fa fa-home"></i></a>
+    <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-search"></i></a>
+    <a id="mprPage2" (click)="scrollToView('MPRVendorId','mprPage2')" pTooltip="MPR VendorForm"><i class="fa fa-search"></i></a>
+    <a id="mprPage3" (click)="scrollToView('MPRPageForm3','mprPage3')" pTooltip="MPR Form3"><i class="fa fa-envelope"></i></a>
+    <a id="mprPage4" (click)="scrollToView('MPRCommunicationId','mprPage4')" pTooltip="MPR Communication"><i class="fa fa-envelope"></i></a>
+    <a id="mprPage5" (click)="scrollToView('MPRStatusId','mprPage5')" pTooltip="MPR Status"><i class="fa fa-globe"></i></a>
+    <a id="mprPage5" [routerLink]="['/SCM/GenerateRFQ',mprRevisionModel.RevisionId]"  routerLinkActive="active" pTooltip="Generate RFQ"><i class="fa fa-list-alt"></i></a>
+  </div>
+</div>
+<div *ngIf="displayFooter" class="footer">
+  <div class="row form-inline pt-2">
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
+        <option value="Select">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      <label class="form-label">Remarks:</label>&nbsp;
+      <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate()" label="Save">Submit</button>
+    </div>
+  </div>
+
+</div>
+
+<div>
+  <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">
+    <div class="ui-g ui-fluid">
+      <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRItemDetailsForm">
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Items</label>
+            <div class="form-inline-list">
+              <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}" (keyup)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)">
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId','',undefined)"></button>
+              </span>
+              <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.errors" class="invalid-feedback">select item.</span>
+            </div>
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Item Description</label>
+            <input pInputText id="compsrno" formControlName="ItemDescription" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}" />
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemDescription.errors" class="invalid-feedback">Item Description Required.</span>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Quantity</label>
+            <input formControlName="Quantity" type="number" [(ngModel)]="itemDetails.Quantity" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.Quantity.value}" />
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.Quantity.errors" class="invalid-feedback">Quanity Required.</span>
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Units</label>
+            <select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
+              <option value="select" selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Item No</label>
+            <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Reference No</label>
+            <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Target Spend</label>
+            <input type="number" formControlName="TargetSpend" [(ngModel)]="itemDetails.TargetSpend" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">File:</label>
+            <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
+            <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx" multiple>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+            <div *ngIf="document.ItemDetailsId==itemDetails.Itemdetailsid">
+              <i class="fa fa-paperclip" aria-hidden="true"></i>&nbsp;
+              <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onItemDeatilsSubmit()" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayItemDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Supporting Documents For Target Spent :" [(visible)]="showDocumentUpload" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '400px'}">
+    <div class="ui-g-1">
+      <label class="form-label">File:</label>
+    </div>
+    <div class="ui-g-6">
+      <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
+      <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx" multiple>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentUpload','documentDetails')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '400px'}">
+    <div class="ui-g-12">
+      <div class="ui-g-8 form-group">
+        <label class="form-label">Vendor</label>
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid','',undefined)"></button>
+          </span>
+          <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Select Documentation :" [(visible)]="showDocumentationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <div class="ui-g-5 form-group">
+          <label class="form-label">Description</label>
+          <div class="form-inline-list">
+            <input type="text" [(ngModel)]="MPRDocumentations.DocumentationDescription" class="form-control" (keyup)="bindSearchListData($event,'','DocumentationDescriptionId',MPRDocumentations.DocumentationDescription,undefined)">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DocumentationDescriptionId',MPRDocumentations.DocumentationDescription,undefined)"></button>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-4 form-group">
+          <label class="form-label">No Of Sets Approval</label>
+          <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsApproval">
+            <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+          </select>
+        </div>
+        <div class="ui-g-3 form-group">
+          <label class="form-label">No Of Sets Final</label>
+          <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsFinal">
+            <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentationDialog','documentations')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentationDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Incharge Names :" [(visible)]="displayInchargeDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRInchargeForm">
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-inline">
+            <label class="form-label">Incharge Name : </label>&nbsp;
+            <input type="text" formControlName="Incharge" [value]="MPRInchargeForm.controls.Incharge.value" class="form-control" (keyup)="bindSearchListData($event,'MPRInchargeForm','Incharge',MPRInchargeForm.controls.Incharge.value,undefined)">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRInchargeForm','Incharge','',undefined)"></button>
+            </div>
+          </div>
+          <div class="ui-g-5 form-inline">
+            <label class="form-label">Can clear Technically : </label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanClearTechnically" [(ngModel)]="mprIncharges.CanClearTechnically" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6">
+            <label for="CompType">Can Clear Commercially : </label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanClearCommercially" [(ngModel)]="mprIncharges.CanClearCommercially" binary="true"></p-checkbox>
+          </div>
+          <div class="ui-g-5">
+            <label for="CompType">Can ReceiveMail Notification:</label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanReceiveMailNotification" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true"></p-checkbox>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onInchargeDeatilsSubmit('displayInchargeDialog')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayInchargeDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRCommunicationForm" style="width:100%">
+        <div class="ui-g-12">
+          <div class="ui-g-8">
+            <label class="form-label">Remarks</label>&nbsp;
+            <textarea type="text" formControlName="Remarks" [(ngModel)]="MPRCommunications.Remarks" [value]="MPRCommunicationForm.controls.Remarks.value" class="form-control"></textarea>
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label class="form-label">Set Reminder</label>&nbsp;&nbsp;
+            <p-checkbox [(ngModel)]="MPRCommunications.SetReminder" formControlName="setReminder" binary="true"></p-checkbox>
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label for="CompType">Send Email </label>&nbsp;&nbsp;
+            <p-checkbox [(ngModel)]="MPRCommunications.SendEmail" formControlName="sendemail" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder" class="ui-g-12 form-inline">
+          <label class="form-label">Reminder Date: </label>&nbsp;
+          <input type="date" #myDate [value]="MPRCommunications.ReminderDate | date:'yyyy-MM-dd'" (input)="MPRCommunications.ReminderDate=parseDate($event.target.value)" formControlName="ReminderDate" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }" />
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
+          <label class="form-label">Add To Emails : </label>&nbsp;
+          <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRInchargeForm.controls.toEmail.value,undefined)">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','toEmail','',undefined)"></button>
+          </div> &nbsp;
+          <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
+            <label *ngIf="comm.MailAddressType=='To'" class="form-control">
+              <span>{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
+            </label>&nbsp;
+          </div>
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
+          <label class="form-label">Add CC Emails : </label>&nbsp;
+          <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRInchargeForm.controls.ccEmail.value,undefined)">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','ccEmail','',undefined)"></button>
+          </div>
+          <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
+            <label *ngIf="comm.MailAddressType=='CC'" class="form-control">
+              <span style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
+            </label>&nbsp;
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onCommnicationSubmit('displayCommunicationDialog')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayCommunicationDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</div>
+
+
+
+
+
+
+

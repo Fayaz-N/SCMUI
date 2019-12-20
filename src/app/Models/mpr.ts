@@ -16,7 +16,7 @@ export class searchParams {
   fieldName: string;
   fieldId: string;
   condition: string;
-  fieldAliasName: string;
+  entityName: string;
 }
 export class searchList {
   listName: string;
@@ -180,12 +180,10 @@ export class mprRevision {
   PreparedBy: string;
   PreparedOn: Date;
   CheckedBy: string;
-  CheckedName: string;
   CheckedOn: Date;
   CheckStatus: string;
   CheckerRemarks: string;
   ApprovedBy: string;
-  ApproverName: string;
   ApprovedOn: Date;
   ApprovalStatus: string;
   ApproverRemarks: string;
@@ -247,7 +245,6 @@ export class MPRScope {
 }
 export class MPRApprovers {
   EmployeeNo: string;
-  Name: string;
 }
 
 export class Employee {
@@ -273,7 +270,7 @@ export class Department {
   ThirdApproverName: string;
   BoolInUse: boolean;
 }
-export class ProjectManager{
+export class ProjectManagers {
   EmployeeNo: string;
   Name: string;
 }

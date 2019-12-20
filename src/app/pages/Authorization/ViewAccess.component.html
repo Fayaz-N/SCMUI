@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <h4>View All Access Of {{roleName}}</h4>
+    <div *ngIf="viewmessage" class="row" style="margin-bottom: 52px; margin-top: 10px;">
+        <div class="col-lg-12" *ngFor="let data of groupName">
+          <fieldset class="scheduler-border rounded">
+              <legend  class="scheduler-border">{{data}} </legend>
+              <div class="row"> 
+                  <span  style="width: 243px; margin-right: 8px;" *ngFor="let a of accessnamenew| selectfilter:data">                
+                      <label class="form-control" style="height: 60px;margin-bottom:6px;" [style.background]="a.AuthorizationItems.AccessNamesId ? 'hsla(89,43%,51%,0.3)':'#f39b9b'">
+                      <span>{{a.AccessName}}</span>&nbsp;&nbsp;&nbsp;
+                      <i [ngClass]="a.AuthorizationItems.AccessNamesId ? 'pi pi-check check-color':'pi pi-times times-color'"></i>
+                      </label>
+                    </span>
+              </div>
+          </fieldset>
+      </div>
+</div>
+<div *ngIf="!viewmessage">
+    <h4>No Access Item to show</h4>
+</div>
+  </div>
+
+
+  
