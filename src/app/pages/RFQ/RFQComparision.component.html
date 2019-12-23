@@ -85,7 +85,7 @@
             <th style="width:100px !important;">Quantity</th>
             <th *ngFor="let col of columns;let colInd=index" style="width:100px !important;">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
-              {{col.VendorName}}<br /><label>RFQ NO : </label>&nbsp;<span><a href="#">{{col.RFQNo}}</a></span><br />
+              {{col.VendorName}}<br /><label>RFQ NO : </label>&nbsp;<span><a [routerLink]="['/SCM/VendorQuoteView',col.rfqRevisionId]">{{col.RFQNo}}</a></span><br />
               <label>Date : </label>&nbsp;<span style="color:#11d3b8c9">{{col.RFQValidDate | date :  constants.dateFormat}}</span>
             </th>
           </tr>
@@ -163,9 +163,9 @@
 
     </div>
   </div>
-    <br />
-    <br />
-    <br />
+  <br />
+  <br />
+  <br />
   <div class="footer">
     <div class="row form-inline pt-2">
       <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">

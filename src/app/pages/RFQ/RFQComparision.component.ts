@@ -27,10 +27,10 @@ export class RFQComparisionComponent implements OnInit {
   public status: string;
   //page load event
   ngOnInit() {
-    //if (localStorage.getItem("Employee"))
-    //  JSON.parse(localStorage.getItem("Employee"))[0];
-    //else
-    //  this.router.navigateByUrl("Login");
+    if (localStorage.getItem("Employee"))
+      JSON.parse(localStorage.getItem("Employee"))[0];
+    else
+      this.router.navigateByUrl("Login");
     this.frozenCols = [
       { field: 'ItemName', header: 'ItemName' }
       //{ field: 'ItemDescription', header: 'ItemDescription' },

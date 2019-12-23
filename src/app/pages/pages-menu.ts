@@ -10,7 +10,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'MPR',
     icon: 'keypad-outline',
-    expanded: true,
+    expanded: false,
     children: [
       {
         title: 'MPR Details',
@@ -37,11 +37,25 @@ export const MENU_ITEMS: NbMenuItem[] = [
     
     
   },
+  {
+    title: 'RFQ',
+    icon: 'keypad-outline',
+    expanded: false,
+    children: [     
+      {
+        title: 'RFQ List',
+        link: '/SCM/RFQList',
+        icon: 'list-outline'
+      }
+    ],
+
+  },
+
  
   {
     title: 'Masters',
     icon: 'people-outline',
-    expanded: true,
+    expanded: false,
     children: [
       {
         title: 'Approver',
@@ -77,7 +91,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
   {
     title: 'Auth',
     icon: 'lock-outline',
-    expanded: true,
+    expanded: false,
     children: [
       {
         title: 'Access Group',

@@ -1,0 +1,97 @@
+<div class="row">
+  <div class="col-md-5"></div>
+  <div class="col-md-4" style="text-decoration: underline;"><h4>RFQ List</h4></div>
+  <div class="col-md-2">
+    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand"></i>
+  </div>
+</div><br />
+<form [formGroup]="RFQfilterForm">
+  <div *ngIf="showFilterBlock" class="form-control" style="height:100%;border-radius:0px;">
+    <div class="row" style="margin-top:10px">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <select class="form-control dropdown" name="comptype" [(ngModel)]="rfqFilterParams.typeOfFilter" formControlName="typeOfFilter">
+          <option value="select" selected>Select</option>
+          <option value=true>RFQ Valid Date</option>
+          <option value=false>RFQ Created Date</option>
+        </select>
+      </div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">From Date</label><br />
+        <p-calendar formControlName="FromDate" [(ngModel)]="rfqFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">To Date</label>&nbsp;<br />
+        <p-calendar formControlName="ToDate" [(ngModel)]="rfqFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="SaleOrderNo" class="form-label">RFQ No</label>
+        <input class="form-control" formControlName="RFQNo" [(ngModel)]="rfqFilterParams.RFQNo">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="SaleOrderNo" class="form-label">Vendor Name</label>
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" formControlName="venderid" [value]="RFQfilterForm.controls.venderid.value" (keyup)="bindSearchListData($event,'RFQfilterForm','venderid',RFQfilterForm.controls.VendorName.value,undefined)">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'RFQfilterForm','venderid','',undefined)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="docNo" class="form-label">Document Number</label>
+        <input class="form-control" type="text" formControlName="DocumentNo" [(ngModel)]="rfqFilterParams.DocumentNo">
+      </div>
+    </div>
+    <div class="row">
+      <div class="ui-g-4 ui-md-4">
+      </div>
+      <div class="ui-g-4 ui-md-4">
+        <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
+      </div>
+    </div>
+  </div><br />
+</form>
+<div class="row form-control" style="height:100%;border-radius:0px;">
+  <p-table #dt [value]="rfqList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true" [loading]="loading">
+    <ng-template pTemplate="caption">
+      <!--<div style="text-align: right">
+        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
+        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+      </div>-->
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th>S.No</th>
+        <th>RFQ No</th>
+        <th>RFQ Valid Date</th>
+        <th>RFQ Created Date</th>
+        <th>VendorName</th>
+        <th>MPR Document No</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td>
+          {{ri+1}}
+        </td>
+        <td class="ptable-cell"><a [routerLink]="['/SCM/VendorQuoteView',rowData.rfqRevisionId]" routerLinkActive="active">{{rowData.RFQNo}}</a></td>
+        <td class="ptable-cell">{{rowData.RFQValidDate | date :  constants.dateFormat}}</td>
+        <td class="ptable-cell">{{rowData.CreatedDate | date :  constants.dateFormat}}</td>
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
+        <td class="ptable-cell"><a [routerLink]="['/SCM/MPRDetails',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+      </tr>
+    </ng-template>
+  </p-table><br />
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+

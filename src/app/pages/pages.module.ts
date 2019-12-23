@@ -12,6 +12,7 @@ import { RoleAccessComponent } from './Authorization/RoleAccess.component';
 //import { LoginComponent } from './Login/Login.component';
 import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { MPRListComponent } from './MPR/MPRList.component';
+import { RFQListComponent } from './RFQ/RFQList.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
 import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
@@ -20,6 +21,7 @@ import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
+import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
@@ -80,6 +82,7 @@ import { LoginComponent } from './Login/Login.component';
     LoginComponent,
     ViewAccessComponent,
     MPRListComponent,
+    RFQListComponent,
     ApproversComponent,
     BuyerGroupsComponent,
     DepartmentComponent,
@@ -88,6 +91,7 @@ import { LoginComponent } from './Login/Login.component';
     MPRPageComponent,
     GenerateRFQComponent,
     RFQComparisionComponent,
+    VendorQuotationViewComponent,
     ConfirmationDialogComponent,
     SelectfilterPipe
     

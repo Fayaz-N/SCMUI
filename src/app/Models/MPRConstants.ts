@@ -5,7 +5,7 @@ import { searchParams } from '../Models/mpr';
   providedIn: 'root'
 }) 
 export class constants {
-  //public url = 'http://10.29.15.165:90/Api/';
+  //public url = 'http://10.29.15.123:90/Api/';
   public url = 'http://localhost:49659/Api/';
   public dateFormat = "MM/dd/yyyy";
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: "", entityName:"MPRDepartment" };

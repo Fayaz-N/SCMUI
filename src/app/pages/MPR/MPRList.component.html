@@ -1,19 +1,13 @@
-<div style="text-align: right">
-  <a class="btn btn-info btn-lg" (click)="showHideFilterBlock()">
-    <span class="glyphicon glyphicon-expand"></span>
-  </a>
-</div>
+<div class="row">
+  <div class="col-md-5"></div>
+  <div class="col-md-4" style="text-decoration: underline;"><h4>{{mprTitle}}</h4></div>
+  <div class="col-md-2">
+    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand"></i>
+  </div>
+</div><br />
 <form [formGroup]="MPRfilterForm">
-  <div *ngIf="showFilterBlock" class="row form-control" style="height:100%;border-radius:0px;">
-    <div class="row" style="margin-top:10px">
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label for="docNo" class="form-label">Document Number</label>
-        <input class="form-control" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label for="SaleOrderNo" class="form-label">Document Description</label>
-        <input class="form-control" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
-      </div>
+  <div *ngIf="showFilterBlock" class="form-control" style="height:100%;border-radius:0px;">
+    <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">From Date</label><br />
         <p-calendar formControlName="FromDate" [(ngModel)]="mprFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
@@ -21,6 +15,14 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">To Date</label>&nbsp;<br />
         <p-calendar formControlName="ToDate" [(ngModel)]="mprFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="docNo" class="form-label">Document Number</label>
+        <input class="form-control" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="SaleOrderNo" class="form-label">Document Description</label>
+        <input class="form-control" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
       </div>
     </div>
 
@@ -67,8 +69,8 @@
     </div>
   </div><br />
 </form>
-<div class="row form-control" style="height:100%;border-radius:0px;">
-  <p-table #dt [value]="mprList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true"  [loading]="loading">
+<div class="form-control" style="height:100%;border-radius:0px;">
+  <p-table #dt [value]="mprList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true" [loading]="loading">
     <ng-template pTemplate="caption">
       <!--<div style="text-align: right">
         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
@@ -87,7 +89,7 @@
         <th>Approved By</th>
         <th>Approval Status</th>
       </tr>
-      <tr>
+      <!--<tr>
         <th></th>
         <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'DocumentNo', 'contains')"></th>
         <th></th>
@@ -97,7 +99,7 @@
         <th></th>
         <th></th>
         <th></th>
-      </tr>
+      </tr>-->
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
       <tr>
@@ -126,4 +128,3 @@
     </div>
   </p-footer>
 </p-dialog>
-

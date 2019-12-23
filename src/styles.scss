@@ -2,7 +2,7 @@
 
 /*@import "../node_modules/@syncfusion/ej2-base/styles/material.css";
 @import "../node_modules/@syncfusion/ej2-angular-lists/styles/material.css";*/
- @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 // @import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 //  @import '../node_modules/primeng/resources/primeng.min.css';
 //  @import '../node_modules/primeng/resources/themes/nova-light/theme.css';
@@ -12,30 +12,30 @@
 
 
 
-.dropdown-full-width{
+.dropdown-full-width {
   width: 100%;
 }
 
-fieldset.scheduler-border{
+fieldset.scheduler-border {
   border: solid 1px #DDD !important;
   padding: 0 10px 10px 10px;
   border-bottom: none;
   margin-bottom: 5px;
 }
-legend.scheduler-border{
+
+legend.scheduler-border {
   width: auto !important;
   border: none;
   font-size: 16px;
   padding: 0 .25em 0 .25em;
-
 }
-legend.login-scheduler-border{
+
+legend.login-scheduler-border {
   width: auto !important;
   border: none;
   font-size: 16px;
   padding: 0 .25em 0 .25em;
   text-align: left;
-
 }
 
 body {
@@ -44,6 +44,7 @@ body {
   overflow-y: auto;
   font-size: 12px !important;
 }
+
 .form-control {
   font-size: 10px !important;
 }
@@ -52,6 +53,7 @@ body {
   transition: margin-left .5s;
   padding: 0px;
 }
+
 hr {
   margin-top: 0.5em !important;
   margin-left: auto !important;
@@ -142,7 +144,7 @@ body .ui-widget {
   color: #000;
   font-weight: 600;
   display: flex;
-  margin-right: 15px !important;
+  /*margin-right: 15px !important;*/
 }
 
 .edit {
@@ -221,9 +223,11 @@ body .ui-radiobutton .ui-radiobutton-box {
   width: 20px !important;
   height: 20px !important;
 }
-.head-sec{
-  width:100%;
+
+.head-sec {
+  width: 100%;
 }
+
 body .ui-inputswitch {
   width: 6em !important;
   height: 2.3em !important;
@@ -284,12 +288,15 @@ a.disabled {
   color: white;
   font-size: 14px;
 }
+
 .check-color {
   color: #28a745cf;
 }
+
 .times-color {
   color: #e61e1eb3;
 }
+
 .checkmark {
   color: #1ea31e;
   font-size: 18px;
@@ -299,46 +306,58 @@ a.disabled {
   padding: 12px;
   margin: auto !important;
 }
+
 .sug-icon {
   height: 20px;
   width: 20px;
   background-color: hsla(0, 43%, 51%, 0.3);
-  border:1px;
+  border: 1px;
 }
+
 .manual-icon {
   height: 20px;
   width: 20px;
   background-color: hsla(89, 43%, 51%, 0.3);
   border: 1px;
 }
+
 .manual-List {
   height: 100% !important;
   margin-top: 10px !important;
   cursor: pointer !important;
   background-color: hsla(89, 43%, 51%, 0.3) !important;
 }
+
 .suggested-List {
   height: 100% !important;
   margin-top: 10px !important;
   cursor: pointer !important;
   background-color: hsla(0, 43%, 51%, 0.3) !important;
 }
+
 .fixed-text {
   width: 200px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .panel-heading {
   border-bottom: 0 !important;
   padding: .625rem .9375rem !important;
-  text-align:center !important;
+  text-align: center !important;
 }
+
 .blink_text {
   animation: 1s blinker linear infinite;
   -webkit-animation: 1s blinker linear infinite;
   -moz-animation: 1s blinker linear infinite;
   color: red;
+}
+.expand {
+  font-size: 25px;
+  color: #598bff;
+  cursor:pointer;
 }
 
 @-moz-keyframes blinker {
@@ -432,6 +451,7 @@ legend.login-scheduler-border {
   padding: 0 .25em 0 .25em;
   text-align: left;
 }
+
 fieldset.scheduler-border {
   border: solid 3px #DDD !important;
   padding: 0 14px 14px 14px;

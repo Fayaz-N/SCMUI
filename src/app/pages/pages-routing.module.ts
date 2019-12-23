@@ -19,6 +19,8 @@ import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { ConfigComponent } from './Authorization/Config.component';
 import { LoginComponent } from './Login/Login.component';
 import { AuthGuard } from '../common/auth.guard';
+import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
+import { RFQListComponent } from './RFQ/RFQList.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,33 +35,35 @@ const routes: Routes = [{
       redirectTo: 'Login',
       pathMatch: 'full',
     },
-        { path: "Dashboard", component: DashboardComponent ,canActivate:[AuthGuard]},
-        { path: "MPRDetails", component: MPRPageComponent,canActivate:[AuthGuard] },
-        { path: "MPRDetails/:MPRRevisionId", component: MPRPageComponent,canActivate:[AuthGuard] },
-        { path: "MPRList", component: MPRListComponent,canActivate:[AuthGuard] },
-        { path: "MPRCheckerList", component: MPRListComponent,canActivate:[AuthGuard] },
-        { path: "MPRApproverList", component: MPRListComponent,canActivate:[AuthGuard] },
-        { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent,canActivate:[AuthGuard] },
-        { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent,canActivate:[AuthGuard] },
-          { path: 'Approvers', component: ApproversComponent,canActivate:[AuthGuard] },
-          { path: 'Buyers', component: BuyerGroupsComponent,canActivate:[AuthGuard] },
-          { path: 'Departments', component: DepartmentComponent,canActivate:[AuthGuard] },
-          { path: 'Scopes', component: ScopesComponent,canActivate:[AuthGuard] },
-          { path: 'ProcurementSource', component: ProcurementSourcesComponent,canActivate:[AuthGuard] },
-          { path: 'Groupaccessibility', component: AccessGroupComponent,canActivate:[AuthGuard] },
-          { path: 'Roleaccessibility', component: RoleAccessComponent,canActivate:[AuthGuard] },
-          { path: 'Authorizationitem', component: AuthorizationItemComponent,canActivate:[AuthGuard] },
-          { path: 'Viewaccess', component: ViewAccessComponent,canActivate:[AuthGuard] },
-          { path: 'Configuration', component: ConfigComponent,canActivate:[AuthGuard] },
-      
+    { path: "Dashboard", component: DashboardComponent, canActivate: [AuthGuard] },
+    { path: "MPRDetails", component: MPRPageComponent, canActivate: [AuthGuard] },
+    { path: "MPRDetails/:MPRRevisionId", component: MPRPageComponent, canActivate: [AuthGuard] },
+    { path: "MPRList", component: MPRListComponent, canActivate: [AuthGuard] },
+    { path: "MPRCheckerList", component: MPRListComponent, canActivate: [AuthGuard] },
+    { path: "MPRApproverList", component: MPRListComponent, canActivate: [AuthGuard] },
+    { path: "RFQList", component: RFQListComponent },
+    { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent, canActivate: [AuthGuard] },
+    { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent, canActivate: [AuthGuard] },
+    { path: 'VendorQuoteView/:RFQRevisionId', component: VendorQuotationViewComponent },
+    { path: 'Approvers', component: ApproversComponent, canActivate: [AuthGuard] },
+    { path: 'Buyers', component: BuyerGroupsComponent, canActivate: [AuthGuard] },
+    { path: 'Departments', component: DepartmentComponent, canActivate: [AuthGuard] },
+    { path: 'Scopes', component: ScopesComponent, canActivate: [AuthGuard] },
+    { path: 'ProcurementSource', component: ProcurementSourcesComponent, canActivate: [AuthGuard] },
+    { path: 'Groupaccessibility', component: AccessGroupComponent, canActivate: [AuthGuard] },
+    { path: 'Roleaccessibility', component: RoleAccessComponent, canActivate: [AuthGuard] },
+    { path: 'Authorizationitem', component: AuthorizationItemComponent, canActivate: [AuthGuard] },
+    { path: 'Viewaccess', component: ViewAccessComponent, canActivate: [AuthGuard] },
+    { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
 
-    
+
+
     // {
     //      path: '',
     //      redirectTo: 'Login',
     //      pathMatch: 'full',
     // },
-    
+
   ],
 }];
 

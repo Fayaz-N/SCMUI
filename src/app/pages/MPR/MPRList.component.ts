@@ -13,6 +13,7 @@ import { Employee, DynamicSearchResult, searchList, mprFilterParams } from 'src/
 })
 export class MPRListComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
+  public mprTitle: string;
   public employee: Employee;
   public MPRfilterForm: FormGroup;
   public formName: string;
@@ -30,15 +31,15 @@ export class MPRListComponent implements OnInit {
   public statusList: Array<any> = [];
   loading: boolean;
 
-
   //page load event
   ngOnInit() {
-    //if (localStorage.getItem("Employee")) {
-    //  this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
-    //}
-    //else {
-    //  this.router.navigateByUrl("Login");
-    //}
+    if (localStorage.getItem("Employee")) {
+      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+    }
+    else {
+      this.router.navigateByUrl("Login");
+    }
+    this.mprTitle = "MPR List";
     this.typeOfList = this.route.routeConfig.path;
     this.mprFilterParams = new mprFilterParams();
     this.mprFilterParams.ToDate = new Date();
@@ -55,11 +56,13 @@ export class MPRListComponent implements OnInit {
       CheckerStatus: ['', [Validators.required]],
       ApprovalStatus: ['', [Validators.required]]
     });
-    if (this.typeOfList == "mprCheckerList") {
+    if (this.typeOfList == "MPRCheckerList") {
+      this.mprTitle = "MPR Checker List";
       this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
       this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
     }
-    else if (this.typeOfList == "mprApproverList") {
+    else if (this.typeOfList == "MPRApproverList") {
+      this.mprTitle = "MPR Approver List";
       this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
       this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
     }

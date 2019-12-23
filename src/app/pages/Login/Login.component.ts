@@ -46,16 +46,13 @@ export class LoginComponent implements OnInit {
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
       this.MprService.ValidateLoginCredentials(this.dynamicData).subscribe(data => {
         if (data == true) {
-          this.MprService.GetListItems(this.dynamicData)
-          .pipe(first())
-          .subscribe(data => {
-            this.employee = data;
-            console.log(this.employee);
-            localStorage.setItem("Employee", JSON.stringify(this.employee));
-            this.LoginForm.reset();
-            this.router.navigateByUrl('SCM/Dashboard');
-          });
-        }
+          this.MprService.GetLoginListItems(this.dynamicData).subscribe(data => {
+              this.employee = data;
+              //localStorage.setItem("Employee", JSON.stringify(this.employee));
+              this.LoginForm.reset();
+              this.router.navigateByUrl('SCM/Dashboard');
+            });
+          }
         else {
           window.alert("Invalid Domain Id & Password");
           return;
