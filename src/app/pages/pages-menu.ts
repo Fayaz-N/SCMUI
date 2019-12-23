@@ -81,6 +81,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Procurement Source',
         link: '/SCM/ProcurementSource',
         icon:'list-outline'
+      },
+      {
+        title: 'Project Manager',
+        link: '/SCM/ProjectManager',
+        icon: 'list-outline'
       }
       
     ],

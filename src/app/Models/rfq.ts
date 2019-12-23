@@ -131,3 +131,14 @@ export class rfqFilterParams {
   VendorName: string;
   DocumentNo: string;
 }
+export class QuoteDetails {
+  CreatedDate: Date;
+  RfqValidDate: Date;
+  RFQmaster: RFQMaster;
+  RFQitem: Array<any>;
+  RFQTerms: Array<any>;
+}
+export class RFQMaster {
+  RfqNo: string;
+  Vendor: VendorDetails;
+}

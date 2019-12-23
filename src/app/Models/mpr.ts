@@ -270,7 +270,9 @@ export class Department {
   ThirdApproverName: string;
   BoolInUse: boolean;
 }
-export class ProjectManagers {
+
+
+export class ProjectManager {
   EmployeeNo: string;
   Name: string;
 }

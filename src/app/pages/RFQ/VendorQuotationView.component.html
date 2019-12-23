@@ -13,12 +13,12 @@
         <label>Issuer :</label><span>YOKOGAWA INDIA LIMITED</span>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
-        <label>Supplier :</label>&nbsp;<span>{{quoteDetails.rfqmaster.Vendor.VendorName}}</span>
+        <label>Supplier :</label>&nbsp;<span>{{quoteDetails.RFQmaster.Vendor.VendorName}}</span>
       </div>
     </div>
     <div class="row  pl-0">
       <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
-        <label>RFQ No :</label> &nbsp;<span>{{quoteDetails.rfqmaster.RfqNo}}</span>
+        <label>RFQ No :</label> &nbsp;<span>{{quoteDetails.RFQmaster.RfqNo}}</span>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
         <label>RFQ Date :</label>&nbsp;<span>{{quoteDetails.CreatedDate | date : constants.dateFormat}}</span>
@@ -29,7 +29,7 @@
     </div>
     <div class="row form-control" style="height:100%; border-radius:0px;">
       <div class="row" style="margin-left: 0px; margin-right: 0px">
-        <p-table [value]="quoteDetails.rfqitem">
+        <p-table [value]="quoteDetails.RFQitem">
           <ng-template pTemplate="header">
             <tr class="text-center">
               <th>Sl No.</th>

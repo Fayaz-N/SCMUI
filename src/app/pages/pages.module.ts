@@ -18,6 +18,7 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
+import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
@@ -88,6 +89,7 @@ import { LoginComponent } from './Login/Login.component';
     DepartmentComponent,
     ProcurementSourcesComponent,
     ScopesComponent,
+    ProjectManagersComponent,
     MPRPageComponent,
     GenerateRFQComponent,
     RFQComparisionComponent,

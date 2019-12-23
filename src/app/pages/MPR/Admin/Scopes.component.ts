@@ -1,9 +1,8 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-
+import { MPRScope, searchList, DynamicSearchResult } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { MPRScope, DynamicSearchResult } from 'src/app/Models/mpr';
 
 @Component({
   selector: 'app-Scopes',
@@ -18,14 +17,14 @@ export class ScopesComponent implements OnInit {
 
   public MPRScopesAddForm; MPRScopesEditForm: FormGroup;
   public dataSaved: boolean;
-  public mprScopes: MPRScope;
+  public mprScopes: Array<MPRScope> = [];
   public editMPRScopes: MPRScope;
   public AddDialog: boolean;
   public EditDialog: boolean;
   public dynamicSearchResult: DynamicSearchResult;
 
   ngOnInit() {
-    this.mprScopes = new MPRScope();
+    this.mprScopes = [];
     this.editMPRScopes = new MPRScope();
     this.dynamicSearchResult = new DynamicSearchResult();
     this.loadMPRScopes();
@@ -85,7 +84,7 @@ export class ScopesComponent implements OnInit {
       return
     }
     else {
-     // const scopeEdit = this.MPRScopesEditForm.value;
+      // const scopeEdit = this.MPRScopesEditForm.value;
       this.dynamicSearchResult = new DynamicSearchResult();
       this.dynamicSearchResult.tableName = "MPRScopes";
       this.dynamicSearchResult.query = "UPDATE MPRScopes SET Scope='" + this.editMPRScopes.Scope + "',BoolInUse='" + this.editMPRScopes.BoolInUse + "' WHERE ScopeId=" + this.editMPRScopes.ScopeId;
@@ -94,7 +93,7 @@ export class ScopesComponent implements OnInit {
         this.loadMPRScopes();
       });
       this.EditDialog = false;
-      
+
     }
   }
 

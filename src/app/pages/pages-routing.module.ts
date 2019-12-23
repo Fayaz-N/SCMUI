@@ -12,6 +12,7 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
+import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
 import { AccessGroupComponent } from './Authorization/AccessGroup.component';
 import { RoleAccessComponent } from './Authorization/RoleAccess.component';
 import { AuthorizationItemComponent } from './Authorization/AuthorizationItem.component';
@@ -50,6 +51,7 @@ const routes: Routes = [{
     { path: 'Departments', component: DepartmentComponent, canActivate: [AuthGuard] },
     { path: 'Scopes', component: ScopesComponent, canActivate: [AuthGuard] },
     { path: 'ProcurementSource', component: ProcurementSourcesComponent, canActivate: [AuthGuard] },
+    { path: 'ProjectManager', component: ProjectManagersComponent, canActivate: [AuthGuard] },
     { path: 'Groupaccessibility', component: AccessGroupComponent, canActivate: [AuthGuard] },
     { path: 'Roleaccessibility', component: RoleAccessComponent, canActivate: [AuthGuard] },
     { path: 'Authorizationitem', component: AuthorizationItemComponent, canActivate: [AuthGuard] },

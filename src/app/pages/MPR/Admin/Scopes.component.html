@@ -1,21 +1,22 @@
-<p-table #dt *ngIf="mprScopes.length>0" [value]="mprScopes" data-key="ScopeId" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" columnResizeMode="expand" [class]="text-center" [globalFilterFields]="['Scope','BoolInUse']">
+<div class="col-md-4" style="text-decoration: underline;"><h4>Scope List</h4></div>
+<p-table #dt *ngIf="mprScopes.length>0" [value]="mprScopes" data-key="ScopeId" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" columnResizeMode="expand" [globalFilterFields]="['Scope','BoolInUse']">
   <ng-template pTemplate="header">
     <tr>
       <th colspan="4" class="text-right">
         <input type="text" pInputText size="40" placeholder="Search by MPR Scope" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
         <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAddMPRScope()" label="Add New"></button>
       </th>
-    </tr> 
-     <tr>
-        <th colspan="4" class="text-center" style="background-color:#dbd4d4">MPR Scopes</th>
-      </tr>
-      <tr class="text-center">
-        <th style="width:10%">Sl. No.</th>
-        <th>Scope</th>
-        <th>In Use</th>
-        <th>Edit</th>
-      </tr>
-    </ng-template>
+    </tr>
+    <tr>
+      <th colspan="4" class="text-center" style="background-color:#dbd4d4">MPR Scopes</th>
+    </tr>
+    <tr class="text-center">
+      <th style="width:10%">Sl. No.</th>
+      <th>Scope</th>
+      <th>In Use</th>
+      <th>Edit</th>
+    </tr>
+  </ng-template>
   <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex="0">
     <tr [pEditableRow]="rowData">
       <td class="text-center">{{ri+1}}</td>
@@ -80,7 +81,7 @@
           <label for="mprScopes">Scope :</label>
         </div>
         <div class="ui-g-8">
-          <input pInputType size="100" formControlName="Scope" focus-me="focusInput" [(ngModel)]="mprScopes.Scope" class="form-control" required />
+          <input pInputType size="100" formControlName="Scope" focus-me="focusInput" class="form-control" required />
         </div>
       </div>
     </form>
