@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
   onContecxtItemSelection(title){
 if(title =="Logout"){
-  this.router.navigate(['/pages/dashboard']);
+  this.router.navigate(['/pages/Login']);
 }
   }
 }

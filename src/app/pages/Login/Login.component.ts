@@ -4,6 +4,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { Router } from '@angular/router';
 import { Employee, DynamicSearchResult } from 'src/app/Models/mpr';
 import { constants } from 'src/app/Models/MPRConstants';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -23,7 +24,9 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     //this.employee = new Employees();
-
+    localStorage.removeItem('Employee');
+    localStorage.removeItem('currentUser');
+    //localStorage.removeItem('EmployeeList');
     this.LoginForm = this.formBuilder.group({
       DomainId: ['', [Validators.required]],
       Password: ['', [Validators.required]],
@@ -43,10 +46,14 @@ export class LoginComponent implements OnInit {
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
       this.MprService.ValidateLoginCredentials(this.dynamicData).subscribe(data => {
         if (data == true) {
-          this.MprService.GetListItems(this.dynamicData).subscribe(data => {
+          this.MprService.GetListItems(this.dynamicData)
+          .pipe(first())
+          .subscribe(data => {
             this.employee = data;
+            console.log(this.employee);
             localStorage.setItem("Employee", JSON.stringify(this.employee));
-            this.router.navigateByUrl("pages/DashBoard");
+            this.LoginForm.reset();
+            this.router.navigateByUrl('SCM/Dashboard');
           });
         }
         else {

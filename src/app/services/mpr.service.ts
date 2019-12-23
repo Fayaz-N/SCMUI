@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams } from '../Models/mpr';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee } from '../Models/mpr';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,16 @@ export class MprService {
   //url = 'http://10.29.15.165:90/Api/MPR';
   url = 'http://localhost:49659/Api/MPR';
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-  constructor(private http: HttpClient) { }
+  private currentUserSubject:BehaviorSubject<Employee>;
+  public currentUser:Observable<Employee>;
+  constructor(private http: HttpClient) {
+    this.currentUserSubject = new BehaviorSubject<Employee>(JSON.parse(localStorage.getItem('currentUser')));
+    this.currentUser = this.currentUserSubject.asObservable();
+    console.log(this.currentUser);
+   }
+   public get currentUserValue():Employee{
+     return this.currentUserSubject.value;
+   }
 
   //getAllEmployee(): Observable<Employee[]> {
   //  return this.http.get<Employee[]>(this.url + '/AllEmployeeDetails');
@@ -20,9 +30,19 @@ export class MprService {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<number>(this.url + '/GetRecordsCount/', search, httpOptions);
   }
-  GetListItems(search: DynamicSearchResult): Observable<any> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + '/GetListItems/', search, httpOptions);
+  GetListItems(search: DynamicSearchResult) {
+    // const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + '/GetListItems/', search)
+    .pipe(map(data=>{
+     localStorage.setItem('currentUser',JSON.stringify(data));
+     this.currentUserSubject.next(data);
+     return data;
+    }))
+  }
+
+  logout(){
+    localStorage.removeItem('currentUser');
+    this.currentUserSubject.next(null);
   }
   updateMPR(mpr: mprRevision): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };

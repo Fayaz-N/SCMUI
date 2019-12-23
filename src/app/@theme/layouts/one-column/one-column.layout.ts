@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Employee } from 'src/app/Models/mpr';
+import { MprService } from 'src/app/services/mpr.service';
 
 @Component({
   selector: 'ngx-one-column-layout',
@@ -9,7 +11,7 @@ import { Component } from '@angular/core';
         <ngx-header></ngx-header>
       </nb-layout-header>
 
-      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive start>
+      <nb-sidebar class="menu-sidebar" tag="menu-sidebar" responsive start *ngIf="currentUser">
         <ng-content select="nb-menu"></ng-content>
       </nb-sidebar>
 
@@ -23,4 +25,13 @@ import { Component } from '@angular/core';
     </nb-layout>
   `,
 })
-export class OneColumnLayoutComponent {}
+export class OneColumnLayoutComponent {
+
+  currentUser:Employee;
+  constructor(private _usermanage:MprService){
+   
+    this._usermanage.currentUser.subscribe(x=> this.currentUser =x);
+    console.log(this.currentUser);
+  }
+  
+}

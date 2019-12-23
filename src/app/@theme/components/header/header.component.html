@@ -1,6 +1,6 @@
 <div class="header-container">
   <div class="logo-container">
-    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle">
+    <a (click)="toggleSidebar()" href="#" class="sidebar-toggle" *ngIf="currentUser">
       <nb-icon icon="menu-2-outline"></nb-icon>
     </a>
     <a class="logo"><img src="assets/yokoimg.png" height="68" width="167"></a>
@@ -9,13 +9,13 @@
 </div>
 
 <div class="header-container">
-  <h6>SCM-SYSTEM</h6>
+  <!-- <h6>SCM-SYSTEM</h6> -->
   <nb-actions size="small">
     
-    <nb-action class="user-action" *nbIsGranted="['view', 'user']" >
+    <nb-action class="user-action"  *ngIf="currentUser" >
       <nb-user [nbContextMenu]="userMenu"
                [onlyPicture]="userPictureOnly"
-               [name]="user?.name"
+               [name]="currentUser.Name"
                [picture]="user?.picture">
       </nb-user>
     </nb-action>

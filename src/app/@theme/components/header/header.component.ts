@@ -1,20 +1,23 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NbMediaBreakpointsService, NbMenuService, NbSidebarService, NbThemeService } from '@nebular/theme';
-
+import{Subscription} from 'rxjs-compat';
 import { UserData } from '../../../@core/data/users';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { Employee } from 'src/app/Models/mpr';
+import { MprService } from 'src/app/services/mpr.service';
 
 @Component({
   selector: 'ngx-header',
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-
+export class HeaderComponent implements OnInit {
+private subscription:Subscription;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
+  currentUser:Employee;
 
   themes = [
     {
@@ -37,13 +40,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu = [ { title: 'Logout' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
               private themeService: NbThemeService,
               private userService: UserData,
-              private breakpointService: NbMediaBreakpointsService) {
+              private breakpointService: NbMediaBreakpointsService,
+              private _usermanage:MprService) {
+
+                this._usermanage.currentUser.subscribe(x=>this.currentUser=x);
+                if(this.currentUser){
+                  console.log('Localstorage Value-'+ this.currentUser.Name);
+                }
   }
 
   ngOnInit() {
@@ -69,10 +78,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .subscribe(themeName => this.currentTheme = themeName);
   }
 
-  ngOnDestroy() {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
+  // ngOnDestroy() {
+  //   this.destroy$.next();
+  //   this.destroy$.complete();
+  // }
 
   changeTheme(themeName: string) {
     this.themeService.changeTheme(themeName);
@@ -84,8 +93,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     return false;
   }
 
-  navigateHome() {
-    this.menuService.navigateHome();
-    return false;
-  }
+  // navigateHome() {
+  //   this.menuService.navigateHome();
+  //   return false;
+  // }
+
+
 }
