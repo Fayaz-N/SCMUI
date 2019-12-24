@@ -27,11 +27,11 @@
     <div class="row" style="margin-right: 1px;">      
       <div class="form-control form-inline col-md-12" style="height:100%;">
         <span *ngFor="let data of allmastermodel | filter:searchText">       
-          <label class="form-control" style="height: 60px;margin-bottom:6px;">
+          <label class="form-control" style="height: 60px;margin-bottom:8px;">
             <span class="atext">{{data.GroupName}}</span>&nbsp;
             <i class="fa fa-remove" aria-hidden="true" (click)="Remove(data)"></i>&nbsp;&nbsp;&nbsp;
             <i class="fa fa-edit" aria-hidden="true" (click)="Edit(data)"></i>
-          </label>&nbsp;    
+          </label>&nbsp;&nbsp;&nbsp;    
         </span>
       </div>
     </div>

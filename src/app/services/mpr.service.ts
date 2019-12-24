@@ -134,7 +134,7 @@ export class MprService {
     return this.http.post<any[]>(this.url + 'RFQ/InsertMPRApprover', mprApprover, httpOptions);
   }
   logout() {
-    localStorage.removeItem('Employee');
+    //localStorage.removeItem('Employee');
     this.currentUserSubject.next(null);
     //window.location.reload();
   }

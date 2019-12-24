@@ -39,7 +39,7 @@ export class AccessGroupComponent implements OnInit {
       this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
     else
       this.router.navigateByUrl("Login");
-    localStorage.clear();
+    //localStorage.clear();
     this.groupAccessForm = this.formBuilder.group({
       GroupName: [''],
       AccessName: ['', [Validators.required]],

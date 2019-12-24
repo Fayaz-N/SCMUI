@@ -34,12 +34,12 @@
 
 </div>
 <div *ngIf="accessdiv" class="row" style="margin-right: 1px;">
-  <div class=" form-control form-inline" style="height:100%;">
-    <span class="form-control" style="width: 120px;" *ngFor="let data of allmastermodel | filter:searchText">
+  <div class=" form-control form-inline col-md-12" style="height:100%;">
+    <span *ngFor="let data of allmastermodel | filter:searchText">
       <a (click)="getallAccess(data.AccessGroupId)">
-        <label>
+        <label class="form-control" style="height: 60px;margin-bottom:8px;">
           <span class="atext">{{data.GroupName}}</span>&nbsp;&nbsp;&nbsp;
-        </label>
+        </label>&nbsp;&nbsp;&nbsp;
       </a>
     </span>
   </div>
