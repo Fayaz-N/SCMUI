@@ -10,22 +10,20 @@ import { constants } from '../Models/MPRConstants'
   providedIn: 'root'
 })
 export class MprService {
-  constructor(private http: HttpClient, private constants: constants) {
-    this.currentUserSubject = new BehaviorSubject<Employee>(JSON.parse(localStorage.getItem('Employee')));
-    this.currentUser = this.currentUserSubject.asObservable();
-  }
+ 
   public url = this.constants.url;
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
   private currentUserSubject: BehaviorSubject<Employee>;
   public currentUser: Observable<Employee>;
-
+  constructor(private http: HttpClient, private constants: constants) {
+    this.currentUserSubject = new BehaviorSubject<Employee>(JSON.parse(localStorage.getItem('Employee')));
+    this.currentUser = this.currentUserSubject.asObservable();
+  }
   public get currentUserValue(): Employee {
     return this.currentUserSubject.value;
   }
-  logout() {
-    localStorage.removeItem('Employee');
-    this.currentUserSubject.next(null);
-  }
+ 
+ 
   getRecordsCount(search: DynamicSearchResult): Observable<number> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<number>(this.url + 'MPR/GetRecordsCount/', search, httpOptions);
@@ -38,9 +36,11 @@ export class MprService {
     // const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + 'MPR/GetListItems/', search)
     .pipe(map(data=>{
-      localStorage.setItem('Employee',JSON.stringify(data));
-     this.currentUserSubject.next(data);
-     return data;
+     const object = Object.assign({}, ...data);
+     console.log(object);
+      localStorage.setItem('Employee',JSON.stringify(object));
+     this.currentUserSubject.next(object);
+     return object;
     }))
   }
 
@@ -132,5 +132,10 @@ export class MprService {
   addMPRApprovers(mprApprover: MPRApprovers): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any[]>(this.url + 'RFQ/InsertMPRApprover', mprApprover, httpOptions);
+  }
+  logout() {
+    localStorage.removeItem('Employee');
+    this.currentUserSubject.next(null);
+    //window.location.reload();
   }
 }
