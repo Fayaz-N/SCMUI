@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
   }
 
   Login() {
-    console.log(this.LoginForm.value);
+   
     this.LoginSubmitted = true;
     if (this.LoginForm.invalid) {
       return;
@@ -46,11 +46,13 @@ export class LoginComponent implements OnInit {
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
       this.MprService.ValidateLoginCredentials(this.dynamicData).subscribe(data => {
         if (data == true) {
-          this.MprService.GetLoginListItems(this.dynamicData).subscribe(data => {
-              this.employee = data;
+          this.MprService.GetLoginListItems(this.dynamicData)
+          .pipe(first())
+          .subscribe(data1 => {
+              this.employee = data1;
               //localStorage.setItem("Employee", JSON.stringify(this.employee));
               this.LoginForm.reset();
-              this.router.navigateByUrl('SCM/Dashboard');
+              this.router.navigateByUrl('/SCM/Dashboard');
             });
           }
         else {

@@ -2,6 +2,7 @@ import { Component,OnInit } from '@angular/core';
 import {AnalyticsService} from './@core/utils/analytics.service';
 import {NbMenuService} from '@nebular/theme';
 import { Router } from '@angular/router';
+import { MprService } from './services/mpr.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +13,7 @@ export class AppComponent implements OnInit {
 
   title = 'SCMUI';
 
-  constructor(private analytics:AnalyticsService,private menuService:NbMenuService,private router:Router){
+  constructor(private analytics:AnalyticsService,private menuService:NbMenuService,private router:Router,private _usermanage:MprService){
 
   }
   ngOnInit() {
@@ -25,7 +26,8 @@ export class AppComponent implements OnInit {
 
   onContecxtItemSelection(title){
 if(title =="Logout"){
-  this.router.navigate(['/pages/Login']);
+  this._usermanage.logout();
+  this.router.navigate(['/SCM/Login']);
 }
   }
 }

@@ -17,7 +17,7 @@ import { ConfigService } from 'src/app/services/config.service';
 
 
 export class AuthorizationItemComponent implements OnInit {
-  public employee: Employee;
+  public empl: Employee;
   groupAccessForm: FormGroup;
   selectedGroup: any = '';
   name = ''
@@ -65,7 +65,7 @@ export class AuthorizationItemComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.empl = JSON.parse(localStorage.getItem("Employee"))[0];
     else
       this.router.navigateByUrl("Login");
 

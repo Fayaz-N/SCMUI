@@ -12,12 +12,14 @@ import { MprService } from 'src/app/services/mpr.service';
   styleUrls: ['./header.component.scss'],
   templateUrl: './header.component.html',
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit ,OnDestroy{
 private subscription:Subscription;
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
   currentUser:Employee;
+  name:any;
+ public picture1:string;
 
   themes = [
     {
@@ -48,19 +50,26 @@ private subscription:Subscription;
               private userService: UserData,
               private breakpointService: NbMediaBreakpointsService,
               private _usermanage:MprService) {
-
+                 //this.currentUser = this._usermanage.currentUserValue;
+                // this.currentUser = JSON.parse(localStorage.getItem('Employee'));
                 this._usermanage.currentUser.subscribe(x=>this.currentUser=x);
                 if(this.currentUser){
                   console.log('Localstorage Value-'+ this.currentUser.Name);
                 }
+                 //this.name = this.currentUser[0].Name 
   }
 
   ngOnInit() {
+
+// console.log(name);
+// console.log(this.currentUser);
+    
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()
       .pipe(takeUntil(this.destroy$))
       .subscribe((users: any) => this.user = users.nick);
+      console.log(this.user);
 
     const { xl } = this.breakpointService.getBreakpointsMap();
     this.themeService.onMediaQueryChange()
@@ -78,10 +87,10 @@ private subscription:Subscription;
       .subscribe(themeName => this.currentTheme = themeName);
   }
 
-  // ngOnDestroy() {
-  //   this.destroy$.next();
-  //   this.destroy$.complete();
-  // }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 
   changeTheme(themeName: string) {
     this.themeService.changeTheme(themeName);
@@ -92,7 +101,7 @@ private subscription:Subscription;
 
     return false;
   }
-
+  
   // navigateHome() {
   //   this.menuService.navigateHome();
   //   return false;

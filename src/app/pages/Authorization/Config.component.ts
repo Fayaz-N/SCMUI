@@ -14,7 +14,7 @@ import { Employee } from 'src/app/Models/mpr';
   styleUrls: ['./AccessGroup.component.css']
 })
 export class ConfigComponent implements OnInit {
-  public employee: Employee;
+  public em: Employee;
   groupMasterForm: FormGroup;
   groupmastermodel: GroupMasterModel[];
   allmastermodel: GroupMasterModel[];
@@ -32,7 +32,7 @@ export class ConfigComponent implements OnInit {
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.em = JSON.parse(localStorage.getItem("Employee"))[0];
     else
       this.router.navigateByUrl("Login");
     this.groupMasterForm = this.formBuilder.group({
