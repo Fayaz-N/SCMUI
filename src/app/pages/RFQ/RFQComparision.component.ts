@@ -25,6 +25,7 @@ export class RFQComparisionComponent implements OnInit {
   public cols: any[];
   frozenCols: any[];
   public status: string;
+  public statusList: Array<any> = [];
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -119,6 +120,7 @@ export class RFQComparisionComponent implements OnInit {
   }
 
   selectVendorList(event: any, vendor: any, rowindex: any, vendorIndex: any, checkAll: boolean) {
+    this.statusList = []
     this.status = "";
     if (!checkAll) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
@@ -126,7 +128,7 @@ export class RFQComparisionComponent implements OnInit {
         this.selectedVendorList.push(vendor);
         const totalQty = this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
         if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).length > 1)) {
-          this.status = " Quantity Exceeded at row number " + (rowindex + 1);
+          this.statusList.push(rowindex + 1);
           event.target.checked = false;
           this.selectedVendorList.splice(index, 1);
           if ((this.selectedVendorList.filter(x => x.VendorId == vendor.VendorId)).length == 0)
@@ -151,7 +153,7 @@ export class RFQComparisionComponent implements OnInit {
             this.selectedVendorList.push(itmVendor);
             const totalQty = this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
           if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).length > 1)) {
-              this.status = " Quantity Exceeded at row number " + (rowIndex + 1);
+            this.statusList.push(rowindex + 1);
               (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
             event.target.checked = false;
             index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
@@ -168,6 +170,7 @@ export class RFQComparisionComponent implements OnInit {
           }
       })
     }
+    this.status = " Quantity Exceeded at row number " + " " + this.statusList.toString();
 
   }
 

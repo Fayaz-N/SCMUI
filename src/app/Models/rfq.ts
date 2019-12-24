@@ -134,8 +134,8 @@ export class rfqFilterParams {
 export class QuoteDetails {
   CreatedDate: Date;
   RfqValidDate: Date;
-  RFQmaster: RFQMaster;
-  RFQitem: Array<any>;
+  rfqmaster: RFQMaster;
+  rfqitem: Array<any>;
   RFQTerms: Array<any>;
 }
 export class RFQMaster {

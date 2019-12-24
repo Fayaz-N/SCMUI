@@ -14,7 +14,7 @@ import { constants } from 'src/app/Models/MPRConstants';
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private router: Router,private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   protected dialogElement: ElementRef;
 
@@ -39,6 +39,7 @@ export class MPRPageComponent implements OnInit {
   public txtName: string;
   public mprRevisionModel: mprRevision;
   public mprRevisionList: Array<mprRevision> = [];
+  public mprRevisionDetails: mprRevision;
   public dialogTop: string;
   public displayItemDialog: boolean = false;
   public showDocumentUpload: boolean;
@@ -683,7 +684,7 @@ export class MPRPageComponent implements OnInit {
   getStatusList() {
     this.MprService.getStatusList().subscribe(data => {
       this.statusList = data;
-     
+
     })
   }
   onstatusUpdate() {
@@ -726,18 +727,20 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel = data;
       this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
         this.mprRevisionList = data;
+        this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
+        this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
+        this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
+        this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
+        this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
+        this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
+        this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
+        this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
+        this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
+        this.bindStatusDetails();
         this.showPage = true;
         this.spinner.hide();
       });
-      this.bindMPRPageForm("MPRPageForm1", data);
-      this.bindMPRPageForm("MPRItemDetailsForm", data);
-      this.bindMPRPageForm("MPRPageForm2", data);
-      this.bindMPRPageForm("MPRInchargeForm", data);
-      this.bindMPRPageForm("MPRPageForm3", data);
-      this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
-      this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
-      this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
-      this.bindStatusDetails();
+
     });
   }
   //bind Status Details
@@ -752,8 +755,8 @@ export class MPRPageComponent implements OnInit {
 
   bindMPRPageForm(formName: string, data: any) {
     for (let item in this[formName].controls) {
-      if ((this.constants[item]) && (data[this.constants[item].entityName])) {
-        this[formName].controls[item].setValue(data[this.constants[item].entityName][this.constants[item].fieldName])
+      if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
+        this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
       }
       else {
         if (this.constants[item]) {
@@ -800,5 +803,6 @@ export class MPRPageComponent implements OnInit {
     // navelmnt.classList.add("active");
   }
 }
+
 
 

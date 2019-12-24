@@ -875,7 +875,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionModel.CheckedBy}}</td>
+              <td style="width:20%">{{mprRevisionDetails.CheckedName}}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -902,7 +902,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionModel.ApprovedBy}}</td>
+              <td style="width:20%">{{mprRevisionDetails.ApproverName}}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -931,7 +931,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionModel.SecondApprover | date :  constants.dateFormat}}</td>
+              <td style="width:20%">{{mprRevisionDetails.SecondApprover }}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -939,7 +939,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.SecondApprovedOn}}</td>
+              <td>{{mprRevisionModel.SecondApprovedOn | date :  constants.dateFormat}}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -958,7 +958,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionModel.ThirdApprover}}</td>
+              <td style="width:20%">{{mprRevisionDetails.ThirdApprover}}</td>
             </tr>
             <tr>
               <td>Status</td>

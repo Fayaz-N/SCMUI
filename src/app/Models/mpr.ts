@@ -180,10 +180,12 @@ export class mprRevision {
   PreparedBy: string;
   PreparedOn: Date;
   CheckedBy: string;
+  CheckedName: string;
   CheckedOn: Date;
   CheckStatus: string;
   CheckerRemarks: string;
   ApprovedBy: string;
+  ApproverName: string;
   ApprovedOn: Date;
   ApprovalStatus: string;
   ApproverRemarks: string;

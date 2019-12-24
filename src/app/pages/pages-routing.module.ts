@@ -37,7 +37,7 @@ const routes: Routes = [{
       pathMatch: 'full',
     },
     { path: "Dashboard", component: DashboardComponent, canActivate: [AuthGuard] },
-    { path: "MPRDetails", component: MPRPageComponent, canActivate: [AuthGuard] },
+    { path: "MPRForm", component: MPRPageComponent, canActivate: [AuthGuard] },
     { path: "MPRDetails/:MPRRevisionId", component: MPRPageComponent, canActivate: [AuthGuard] },
     { path: "MPRList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRCheckerList", component: MPRListComponent, canActivate: [AuthGuard] },

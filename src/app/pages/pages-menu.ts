@@ -13,7 +13,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     expanded: false,
     children: [
       {
-        title: 'MPR Details',
+        title: 'MPR Form',
         link: '/SCM/MPRDetails',
         icon:'list-outline'
       },
