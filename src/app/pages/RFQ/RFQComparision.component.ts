@@ -29,7 +29,7 @@ export class RFQComparisionComponent implements OnInit {
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      JSON.parse(localStorage.getItem("Employee"))[0];
+      JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
     this.frozenCols = [

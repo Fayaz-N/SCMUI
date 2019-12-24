@@ -62,7 +62,7 @@ export class MPRPageComponent implements OnInit {
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"))[0];
+      this.employee = JSON.parse(localStorage.getItem("Employee"));
     }
     else {
       this.router.navigateByUrl("Login");
