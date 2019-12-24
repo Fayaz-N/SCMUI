@@ -14,7 +14,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     children: [
       {
         title: 'MPR Form',
-        link: '/SCM/MPRDetails',
+        link: '/SCM/MPRForm',
         icon:'list-outline'
       },
       {

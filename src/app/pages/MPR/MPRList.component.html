@@ -106,7 +106,7 @@
         <td>
           {{ri+1}}
         </td>
-        <td class="ptable-cell"><a [routerLink]="['/SCM/MPRDetails',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+        <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
         <td class="ptable-cell">{{rowData.PreparedName}}</td>
         <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
