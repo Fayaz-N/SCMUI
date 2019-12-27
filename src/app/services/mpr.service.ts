@@ -37,7 +37,6 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/GetListItems/', search)
     .pipe(map(data=>{
      const object = Object.assign({}, ...data);
-     console.log(object);
       localStorage.setItem('Employee',JSON.stringify(object));
      this.currentUserSubject.next(object);
      return object;
