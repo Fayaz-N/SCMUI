@@ -200,7 +200,7 @@ export class MPRPageComponent implements OnInit {
         //check count of MPR Pending List
         var preapredBy = this.employee.EmployeeNo.toString();
         this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
-          if (data >= 0) {
+          if (data > 0) {
             this.router.navigateByUrl('/SCM/MPRPendingList');
           }
           else {

@@ -983,28 +983,28 @@
       <div class="col-md-6 pt-2">Status History</div>
       <div class="col-md-3 pt-2"></div>
     </div>
-  <div class="form-control" style="height:100%;border-radius:0px;">
-    <p-table [value]="mprRevisionDetails.MPRStatusTrackDetails">
-      <ng-template pTemplate="header">
-        <tr>
-          <th>Employee Name</th>
-          <th>Status</th>
-          <th>Status Updated On</th>
-          <th>Remarks</th>
+    <div class="form-control" style="height:100%;border-radius:0px;">
+      <p-table [value]="mprRevisionDetails.MPRStatusTrackDetails">
+        <ng-template pTemplate="header">
+          <tr>
+            <th>Employee Name</th>
+            <th>Status</th>
+            <th>Status Updated On</th>
+            <th>Remarks</th>
 
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-        <tr>
-          <td>{{rowData.Name}}</td>
-          <td>{{rowData.Status}}</td>
-          <td>{{rowData.UpdatedDate  | date :  constants.dateFormat}}</td>
-          <td>{{rowData.Remarks}}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr>
+            <td>{{rowData.Name}}</td>
+            <td>{{rowData.Status}}</td>
+            <td>{{rowData.UpdatedDate  | date :  constants.dateFormat}}</td>
+            <td>{{rowData.Remarks}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div>
+  </div>
   <div *ngIf="showForm1EditBtn" class="icon-bar">
     <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Form1"><i class="fa fa-home"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-search"></i></a>
@@ -1019,24 +1019,24 @@
   <div *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
-        <button type="button"  *ngIf="showAcknowledge"  class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
+        <button type="button" *ngIf="showAcknowledge" class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
       </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
-          &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
-            <option value="Select">Select</option>
-            <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
-          </select>&nbsp;
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
-          <label class="form-label">Remarks:</label>&nbsp;
-          <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-          <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
-        </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+        &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
+          <option value="Select">Select</option>
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+        </select>&nbsp;
       </div>
-
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+        <label class="form-label">Remarks:</label>&nbsp;
+        <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
+      </div>
     </div>
+
+  </div>
 
   <div>
     <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">
@@ -1077,12 +1077,19 @@
             </div>
             <div class="ui-g-6 form-group">
               <label class="form-label">Units</label>
-              <select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
+              <div class="form-inline-list">
+                <input type="text" formControlName="UnitId" [value]="MPRItemDetailsForm.controls.UnitId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}" (keyup)="bindSearchListData($event,'MPRItemDetailsForm','UnitId',MPRItemDetailsForm.controls.UnitId.value,undefined)">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','UnitId','',undefined)"></button>
+                </span>
+                <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
+              </div>
+              <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
                 <option value="select" selected>Select</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
-              </select>
-              <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
+              </select>-->
+              
             </div>
           </div>
           <div class="ui-g-12">
