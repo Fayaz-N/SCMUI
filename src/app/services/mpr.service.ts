@@ -56,7 +56,9 @@ export class MprService {
   getMPRList(mprFilterParams: mprFilterParams): Observable<mprRevision[]> {
     return this.http.post<mprRevision[]>(this.url + 'MPR/getMPRList/', mprFilterParams, this.httpOptions);
   }
-
+  ChechMPRlendingList(preparedBy: string): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/getMPRPendingListCnt/'+ preparedBy, this.httpOptions);
+  }
   getMprRevisionList(RequisitionId: number): Observable<mprRevision[]> {
     return this.http.get<any>(this.url + 'MPR/getMprRevisionList/' + RequisitionId);
   }
@@ -83,9 +85,10 @@ export class MprService {
     return this.http.get<any>(this.url + 'MPR/getStatusList/', this.httpOptions);
   }
 
-  updateMPRVendor(mprVendor: MPRVendorDetail[], RevisionId: number): Observable<any[]> {
-    return this.http.post<any[]>(this.url + 'MPR/updateMPRVendor/' + RevisionId, mprVendor, this.httpOptions);
+  updateMPRVendor(mprVendor: MPRVendorDetail[], RevisionId: number): Observable<boolean> {
+    return this.http.post<boolean>(this.url + 'MPR/updateMPRVendor/' + RevisionId, mprVendor, this.httpOptions);
   }
+ 
   //added masters
 
   getDBMastersList(search: DynamicSearchResult): Observable<any> {
@@ -103,11 +106,19 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/updateDataToDBMasters', updateData, httpOptions);
   }
   //Login
-
-  ValidateLoginCredentials(search: DynamicSearchResult): Observable<any> {
-    const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-    return this.http.post<any>(this.url + 'MPR/ValidateLoginCredentials', search, httpOptions);
+  ValidateLoginCredentials(search: DynamicSearchResult) {
+    // const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    return this.http.post<any>(this.url + 'MPR/ValidateLoginCredentials/', search)
+      .pipe(map(data => {
+        if (data.EmployeeNo != null) {
+          //const object = Object.assign({}, ...data);
+          localStorage.setItem('Employee', JSON.stringify(data));
+          this.currentUserSubject.next(data);
+        }
+        return data;
+      }))
   }
+
   getMPRBuyerGroups(): Observable<any> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.get<MPRBuyerGroup[]>(this.url + 'RFQ/GetAllMPRBuyerGroups', httpOptions);

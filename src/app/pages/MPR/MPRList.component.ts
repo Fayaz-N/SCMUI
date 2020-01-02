@@ -30,7 +30,6 @@ export class MPRListComponent implements OnInit {
   public typeOfList: string;
   public statusList: Array<any> = [];
   loading: boolean;
-
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
@@ -42,6 +41,7 @@ export class MPRListComponent implements OnInit {
     this.mprTitle = "MPR List";
     this.typeOfList = this.route.routeConfig.path;
     this.mprFilterParams = new mprFilterParams();
+    this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
     this.mprFilterParams.ToDate = new Date();
     this.mprFilterParams.FromDate = new Date(new Date().setDate(new Date().getDate() - 30));
 
@@ -56,8 +56,9 @@ export class MPRListComponent implements OnInit {
       CheckerStatus: ['', [Validators.required]],
       ApprovalStatus: ['', [Validators.required]]
     });
+    this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
-      this.mprTitle = "MPR Checker List";
+      this.mprTitle = "MPR Checker List";    
       this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
       this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
     }
@@ -65,6 +66,10 @@ export class MPRListComponent implements OnInit {
       this.mprTitle = "MPR Approver List";
       this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
       this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
+    }
+    else if (this.typeOfList == "MPRPendingList")
+    {
+      this.mprTitle = "MPR Pending List";
     }
     else {
       this.MPRfilterForm.controls["CheckedBy"].setValue("");
@@ -147,7 +152,16 @@ export class MPRListComponent implements OnInit {
     }
     return null;
   }
+  onRowEditInit(mprData: any) {
+    this.constants.RequisitionId = "";
+    this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
+  }
 
+  onRevise(mprData: any) {
+    this.constants.RequisitionId = mprData.RequisitionId;
+    this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
+   
+  }
 }
 
 

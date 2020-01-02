@@ -109,17 +109,24 @@ export class GenerateRFQComponent implements OnInit {
   }
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
-    for (var i = 0; i < this.rfqQuoteModel.length; i++) {
-      if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
-        alert("vendor already exist");
-        break;
-        return false;
+    if (this.rfqQuoteModel.length > 0) {
+      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+        if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
+          alert("vendor already exist");
+          break;
+          return false;
+        }
+        else {
+          this.showList = false;
+          this.vendorDetails.Vendorid = item.code;
+          this.vendorDetails.VendorName = item.name;
+        }
       }
-      else {
-        this.showList = false;
-        this.vendorDetails.Vendorid = item.code;
-        this.vendorDetails.VendorName = item.name;
-      }
+    }
+    else {
+      this.showList = false;
+      this.vendorDetails.Vendorid = item.code;
+      this.vendorDetails.VendorName = item.name;
     }
   }
 
@@ -134,9 +141,16 @@ export class GenerateRFQComponent implements OnInit {
         this.vendorDetailsArray = [];
         this.vendorDetailsArray.push(this.vendorDetails);
         this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
-          this[dialogName] = false;
-          this.vendorDetailsArray = data;
-          this.preapreManualRfqlist();
+          if (data) {
+            this.dynamicData = new DynamicSearchResult();
+            this.dynamicData.tableName = "MPRVendorDetails";
+            this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+              this.vendorDetailsArray = data;
+            });
+            //this.vendorDetailsArray = data;
+            this[dialogName] = false;
+            this.preapreManualRfqlist();
+          }
         });
       }
     }
@@ -170,6 +184,7 @@ export class GenerateRFQComponent implements OnInit {
       else {
         let manualdetails = new Object();
         manualdetails["MPRItemDetailsid"] = this.rfqQuoteModel[i].MPRItemDetailsid;
+        manualdetails["MPRRevisionId"] = this.MPRRevisionId;
         manualdetails["ItemId"] = this.rfqQuoteModel[i].ItemId;
         manualdetails["ItemName"] = this.rfqQuoteModel[i].ItemName;
         manualdetails["VendorId"] = this.vendorDetails.Vendorid;

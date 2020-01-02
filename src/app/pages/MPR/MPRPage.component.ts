@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 
 
@@ -57,16 +57,17 @@ export class MPRPageComponent implements OnInit {
   public statusList: Array<any> = [];
   public displayFooter: boolean;
   public disableStatusSubmit: boolean = false;
+  public showAcknowledge: boolean = false;
   public showPage: boolean = false;
 
   //page load event
   ngOnInit() {
-    if (localStorage.getItem("Employee")) {
+    if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
-    }
-    else {
+
+    else
       this.router.navigateByUrl("Login");
-    }
+
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();
@@ -77,7 +78,7 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunications = new MPRCommunication();
     this.MPRReminderTrackings = new MPRReminderTracking();
     this.mprStatusUpdate = new MPRStatusUpdate();
-
+    this.mprRevisionDetails = new mprRevision();
     //create static drop down text from 1 to 100
     Array(100).fill(1).map((x, i) => {
       this.numbers.push(i + 1);
@@ -190,16 +191,28 @@ export class MPRPageComponent implements OnInit {
       });
     }
     this.route.params.subscribe(params => {
-      if (params["MPRRevisionId"]) {
+      if (params["MPRRevisionId"] && !this.constants.RequisitionId) {
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
         this.loadMPRData(revisionId);
       }
       else {
-        this.showPage = true;
+        //check count of MPR Pending List
+        var preapredBy = this.employee.EmployeeNo.toString();
+        this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
+          if (data >= 0) {
+            this.router.navigateByUrl('/SCM/MPRPendingList');
+          }
+          else {
+            this.showPage = true;
+            this.mprRevisionModel.RevisionId = 0;
+            this.mprRevisionModel.RequisitionId = parseInt(this.constants.RequisitionId);
+          }          
+        });
       }
+      this.getStatusList();
     });
-    this.getStatusList();
+
   }
 
 
@@ -210,6 +223,7 @@ export class MPRPageComponent implements OnInit {
     }, 10);
   }
 
+ 
   //Binding searchList data
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     this.formName = formName;
@@ -232,6 +246,8 @@ export class MPRPageComponent implements OnInit {
           fName = item[this.constants[name].fieldName] + " - " + item["YGSSAPCustomerCode"];
         else if (name == "venderid")
           fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        else if (name == "ItemId")
+          fName = item[this.constants[name].fieldId] + " - " + item[this.constants[name].fieldName];
         else
           fName = item[this.constants[name].fieldName];
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
@@ -687,13 +703,25 @@ export class MPRPageComponent implements OnInit {
 
     })
   }
-  onstatusUpdate() {
-
-    this.mprStatusUpdate.typeOfuser = "Checker";
+  onstatusUpdate(Acknowledge: string) {
+    if (Acknowledge != "")
+      this.mprStatusUpdate.typeOfuser = Acknowledge;
+    else {
+      if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo)
+        this.mprStatusUpdate.typeOfuser = "Checker";
+      if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo)
+        this.mprStatusUpdate.typeOfuser = "Approver";
+    }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
+    this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
+    this.mprStatusUpdate.PreparedBy = this.mprRevisionModel.PreparedBy;
     this.MprService.statusUpdate(this.mprStatusUpdate).subscribe(data => {
       this.mprRevisionModel = data;
-      this.disableStatusSubmit = true;
+      if (Acknowledge == "")
+        this.disableStatusSubmit = true;
+      else
+        this.showAcknowledge = false;
+
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     })
 
@@ -734,8 +762,19 @@ export class MPRPageComponent implements OnInit {
         this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
         this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
         this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
-        this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
         this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
+        if (this.mprRevisionDetails.StatusId==4)
+          this.showAcknowledge = true;
+        else
+          this.showAcknowledge = false;
+        if (this.mprRevisionDetails.CheckedBy.trim() == "-") {
+          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
+        }
+        else {
+          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
+        }
+
+
         this.bindStatusDetails();
         this.showPage = true;
         this.spinner.hide();
@@ -747,10 +786,12 @@ export class MPRPageComponent implements OnInit {
   bindStatusDetails() {
     this.mprStatusUpdate.status = this.mprRevisionModel.CheckStatus;
     this.mprStatusUpdate.Remarks = this.mprRevisionModel.CheckerRemarks;
-    if (this.mprRevisionModel.CheckStatus == "Pending" || this.mprRevisionModel.CheckStatus == "Submitted" || this.mprRevisionModel.CheckStatus == "Sent for Modification")
+    if ((this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.CheckStatus == "Pending" || this.mprRevisionModel.CheckStatus == "Submitted" || this.mprRevisionModel.CheckStatus == "Sent for Modification")
       this.displayFooter = true;
+    else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification")
+    this.displayFooter = true;
     else
-      this.displayFooter = false;
+    this.displayFooter = false;
   }
 
   bindMPRPageForm(formName: string, data: any) {

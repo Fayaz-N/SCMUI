@@ -9,7 +9,7 @@
           <span *ngIf="mprRevisionList.length > 0" class="form-inline ml-2">
             Revision No:<span *ngFor="let revision of mprRevisionList">
               &nbsp;&nbsp;
-              <a href='#/' [ngClass]="{'active': revision.RevisionId == mprRevisionModel.RevisionId,'disabled':revision.RevisionId != mprRevisionModel.RevisionId}" [routerLink]="['/dashboard/mpr',revision.RevisionId]">{{revision.RevisionNo}}</a>
+              <a href='#/' [ngClass]="{'active': revision.RevisionId == mprRevisionModel.RevisionId,'disabled':revision.RevisionId != mprRevisionModel.RevisionId}" [routerLink]="['/SCM/MPRForm',revision.RevisionId]">{{revision.RevisionNo}}</a>
             </span>
           </span>
         </div>
@@ -977,6 +977,34 @@
       </div>
     </div>
   </div>
+  <br />
+  <div *ngIf="showForm1EditBtn && mprRevisionDetails.MPRStatusTrackDetails">
+    <div class="head-text pl-0">
+      <div class="col-md-6 pt-2">Status History</div>
+      <div class="col-md-3 pt-2"></div>
+    </div>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <p-table [value]="mprRevisionDetails.MPRStatusTrackDetails">
+      <ng-template pTemplate="header">
+        <tr>
+          <th>Employee Name</th>
+          <th>Status</th>
+          <th>Status Updated On</th>
+          <th>Remarks</th>
+
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr>
+          <td>{{rowData.Name}}</td>
+          <td>{{rowData.Status}}</td>
+          <td>{{rowData.UpdatedDate  | date :  constants.dateFormat}}</td>
+          <td>{{rowData.Remarks}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+    </div>
   <div *ngIf="showForm1EditBtn" class="icon-bar">
     <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Form1"><i class="fa fa-home"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-search"></i></a>
@@ -990,22 +1018,25 @@
 
   <div *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
-      <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
-        &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
-          <option value="Select">Select</option>
-          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
-        </select>&nbsp;
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+        <button type="button"  *ngIf="showAcknowledge"  class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
-        <label class="form-label">Remarks:</label>&nbsp;
-        <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
+        <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+          &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
+            <option value="Select">Select</option>
+            <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+          </select>&nbsp;
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+          <label class="form-label">Remarks:</label>&nbsp;
+          <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+          <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
+        </div>
       </div>
-      <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
-        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate()" label="Save">Submit</button>
-      </div>
-    </div>
 
-  </div>
+    </div>
 
   <div>
     <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">

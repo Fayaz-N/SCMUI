@@ -16,7 +16,7 @@ export class searchParams {
   fieldName: string;
   fieldId: string;
   condition: string;
-  entityName: string;
+  fieldAliasName: string;
 }
 export class searchList {
   listName: string;
@@ -135,6 +135,7 @@ export class mprRevision {
   MPRStatusTracks: MPRStatusTrack;
   MPRTargetedSpendSupportingDocs: MPRTargetedSpendSupportingDoc;
   MPRVendorDetails: Array<MPRVendorDetail> = [];
+  MPRStatusTrackDetails: Array<any> = []
   MPRDetail: MPRDetail;
   RequisitionId: number;
   DepartmentId: number;
@@ -226,17 +227,21 @@ export class mprRevision {
 
 export class MPRStatusUpdate {
   RevisionId: number;
+  RequisitionId: number;
+  PreparedBy: string;
   status: string = "Select";
   Remarks: string;
   typeOfuser: string;
 }
 
 export class mprFilterParams {
+  ListType: string;
   DocumentNo: string;
   DocumentDescription: string;
   FromDate: Date;
   ToDate: Date;
   Status: string;
+  PreparedBy: string = "";
   CheckedBy: string = "";
   ApprovedBy: string = "";
 }
