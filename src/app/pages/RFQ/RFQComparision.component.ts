@@ -124,7 +124,7 @@ export class RFQComparisionComponent implements OnInit {
     this.status = "";
     if (!checkAll) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
-      if (index < 0 && event.target.checked == true ) {
+      if (index < 0 && event.target.checked == true) {
         this.selectedVendorList.push(vendor);
         const totalQty = this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
         if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).length > 1)) {
@@ -147,30 +147,31 @@ export class RFQComparisionComponent implements OnInit {
       this.rfqQuoteModel.forEach((item, rowIndex: number) => {
         var itmVendor = item.suggestedVendorDetails[vendorIndex];
         var checked = (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked;
-         index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
+        index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
         if (itmVendor && itmVendor.VendorId == vendor.VendorId && index < 0 && event.target.checked == true && checked == false) {
-            (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
-            this.selectedVendorList.push(itmVendor);
-            const totalQty = this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
+          (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
+          this.selectedVendorList.push(itmVendor);
+          const totalQty = this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
           if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).length > 1)) {
             this.statusList.push(rowindex + 1);
-              (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
+            (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
             event.target.checked = false;
             index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
-            if (index >=0)
+            if (index >= 0)
               this.selectedVendorList.splice(index, 1);
-              //return;
-            }
+            //return;
           }
+        }
         else {
           index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
           if (index >= 0)
             this.selectedVendorList.splice(index, 1);
-            (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
-          }
+          (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
+        }
       })
     }
-    this.status = " Quantity Exceeded at row number " + " " + this.statusList.toString();
+    if (this.statusList.length > 0)
+      this.status = " Quantity Exceeded at row number " + " " + this.statusList.toString();
 
   }
 

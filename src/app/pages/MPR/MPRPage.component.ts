@@ -405,6 +405,7 @@ export class MPRPageComponent implements OnInit {
 
   showInchargeDialogToAdd(dialog: string) {
     this.mprIncharges = new MPRIncharge();
+    this.mprIncharges.CanReceiveMailNotification = true;
     this.MPRInchargeForm.controls.Incharge.value = "";
     var index = this.selectedlist.findIndex(x => x.listName == 'Incharge');
     if (index > -1)

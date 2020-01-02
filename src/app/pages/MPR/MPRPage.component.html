@@ -816,9 +816,9 @@
             <button type="button" [disabled]="communicationFormEdit" pButton icon="fa fa-plus" (click)="showCommunicationDialogToAdd('displayCommunicationDialog')"></button>
           </div>
           <div class="col-lg-8 col-md-8 col-sm-8">
-            <i class="glyphicon glyphicon-time"></i>&nbsp;Reminder&nbsp;
-            <i style="color:green" class="glyphicon glyphicon-time"></i>&nbsp;Reminder Mail Sent&nbsp;
-            <i style="color:green" class="glyphicon glyphicon-envelope"></i>&nbsp;Mail Sent
+            <i class="fa fa-clock-o"></i>&nbsp;Reminder&nbsp;
+            <i style="color:green" class="fa fa-clock-o"></i>&nbsp;Reminder Mail Sent&nbsp;
+            <i style="color:green" class="fa fa-envelope"></i>&nbsp;Mail Sent
           </div>
         </div><br />
         <div class="form-group row" style="margin:0px">
@@ -831,12 +831,12 @@
                   <th>Communication By</th>
                   <th>Date</th>
                   <th>Remarks</th>
-                  <th> Communication To</th>
+                  <th>Communication To</th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
                 <tr>
-                  <td>{{getEmployeename(rowData.RemarksFrom)}}</td>
+                  <td>{{employee.Name}}</td>
                   <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
                   <td>
                     {{rowData.Remarks}}
@@ -844,7 +844,7 @@
                   <td>
                     <span *ngFor="let trackData of rowData.MPRReminderTrackings">
                       <span [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{getEmployeename(trackData.MailTo)}}</span>&nbsp;
-                      <i *ngIf="rowData.SendEmail==1" style="color:green" class="glyphicon glyphicon-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="glyphicon glyphicon-time"></i>&nbsp;
+                      <i *ngIf="rowData.SendEmail==1" style="color:green" class="fa fa-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="fa fa-clock-o"></i>&nbsp;
                     </span>
                   </td>
                 </tr>
@@ -857,7 +857,7 @@
     </div>
   </form><br />
 
-  <div *ngIf="showForm1EditBtn" id="MPRStatusId" class="my-animation">
+  <div *ngIf="form1Edit" id="MPRStatusId" class="my-animation">
     <div class="head-text pl-0">
       <div class="col-md-6 pt-2">Status</div>
       <div class="col-md-3 pt-2"></div>
@@ -978,7 +978,7 @@
     </div>
   </div>
   <br />
-  <div *ngIf="showForm1EditBtn && mprRevisionDetails.MPRStatusTrackDetails">
+  <div *ngIf="form1Edit && mprRevisionDetails.MPRStatusTrackDetails">
     <div class="head-text pl-0">
       <div class="col-md-6 pt-2">Status History</div>
       <div class="col-md-3 pt-2"></div>
@@ -1005,7 +1005,7 @@
       </p-table>
     </div>
   </div>
-  <div *ngIf="showForm1EditBtn" class="icon-bar">
+  <div *ngIf="form1Edit" class="icon-bar">
     <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Form1"><i class="fa fa-home"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-search"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRVendorId','mprPage2')" pTooltip="MPR VendorForm"><i class="fa fa-search"></i></a>
@@ -1098,7 +1098,7 @@
               <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
             </div>
             <div class="ui-g-6 form-group">
-              <label class="form-label">Reference No</label>
+              <label class="form-label">Reference If Any</label>
               <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
             </div>
           </div>
@@ -1227,7 +1227,7 @@
             </div>
             <div class="ui-g-5">
               <label for="CompType">Can ReceiveMail Notification:</label>&nbsp;&nbsp;
-              <p-checkbox formControlName="CanReceiveMailNotification" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true"></p-checkbox>
+              <p-checkbox formControlName="CanReceiveMailNotification" [disabled]="true" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true" ></p-checkbox>
             </div>
           </div>
         </form>
