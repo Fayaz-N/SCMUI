@@ -15,8 +15,6 @@
           <option value=false>RFQ Created Date</option>
         </select>
       </div>
-    </div>
-    <div class="row" style="margin-top:10px">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">From Date</label><br />
         <p-calendar formControlName="FromDate" [(ngModel)]="rfqFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
@@ -25,6 +23,8 @@
         <label class="form-label">To Date</label>&nbsp;<br />
         <p-calendar formControlName="ToDate" [(ngModel)]="rfqFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
       </div>
+    </div>
+    <div class="row" style="margin-top:10px">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="SaleOrderNo" class="form-label">RFQ No</label>
         <input class="form-control" formControlName="RFQNo" [(ngModel)]="rfqFilterParams.RFQNo">

@@ -244,6 +244,13 @@ export class mprFilterParams {
   PreparedBy: string = "";
   CheckedBy: string = "";
   ApprovedBy: string = "";
+  IssuePurposeId: string;
+  JobCode: string;
+  ItemDescription: string;
+  DepartmentId: string;
+  GEPSApprovalId: string;
+  BuyerGroupId: string;
+
 }
 export class MPRScope {
   ScopeId: number;

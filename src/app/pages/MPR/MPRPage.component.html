@@ -46,7 +46,7 @@
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="form-label lblEdit">Purpose Issuing MPR  </label>
-            <span class="valueEdit">{{MPRPageForm1.value.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</span>
+            <span class="valueEdit">{{mprRevisionModel.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</span>
           </div>
         </div>
 
@@ -836,14 +836,14 @@
               </ng-template>
               <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
                 <tr>
-                  <td>{{employee.Name}}</td>
+                  <td>{{rowData.Employee.Name}}</td>
                   <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
                   <td>
                     {{rowData.Remarks}}
                   </td>
                   <td>
                     <span *ngFor="let trackData of rowData.MPRReminderTrackings">
-                      <span [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{getEmployeename(trackData.MailTo)}}</span>&nbsp;
+                      <span [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
                       <i *ngIf="rowData.SendEmail==1" style="color:green" class="fa fa-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="fa fa-clock-o"></i>&nbsp;
                     </span>
                   </td>
@@ -851,7 +851,6 @@
               </ng-template>
             </p-table>
           </div>
-
         </div><br />
       </div>
     </div>

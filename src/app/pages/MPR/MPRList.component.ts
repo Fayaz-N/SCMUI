@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { Employee, DynamicSearchResult, searchList, mprFilterParams } from 'src/app/Models/mpr';
+import { validateVerticalPosition } from '@angular/cdk/overlay';
+import { debounce } from 'rxjs-compat/operator/debounce';
 
 @Component({
   selector: 'app-MPRList',
@@ -54,7 +56,13 @@ export class MPRListComponent implements OnInit {
       CheckedBy: ['', [Validators.required]],
       ApprovedBy: ['', [Validators.required]],
       CheckerStatus: ['', [Validators.required]],
-      ApprovalStatus: ['', [Validators.required]]
+      ApprovalStatus: ['', [Validators.required]],
+      IssuePurposeId: ['', [Validators.required]],
+      DepartmentId: ['', [Validators.required]],
+      JobCode: ['', [Validators.required]],
+      ItemDescription: ['', [Validators.required]],
+      GEPSApprovalId: ['', [Validators.required]],
+      BuyerGroupId: ['', [Validators.required]]
     });
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
@@ -98,6 +106,7 @@ export class MPRListComponent implements OnInit {
 
   //bind mpr list
   bindList() {
+    debugger;
     this.mprFilterParams.FromDate = new Date(this.mprFilterParams.FromDate);
     this.mprFilterParams.ToDate = new Date(this.mprFilterParams.ToDate);
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
