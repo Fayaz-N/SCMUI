@@ -22,6 +22,7 @@ import { LoginComponent } from './Login/Login.component';
 import { AuthGuard } from '../common/auth.guard';
 import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
 import { RFQListComponent } from './RFQ/RFQList.component';
+import { VendorQuotationListComponent } from './RFQ/VendorQuotationList.component';
 
 const routes: Routes = [{
   path: '',
@@ -44,6 +45,7 @@ const routes: Routes = [{
     { path: "MPRApproverList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRPendingList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "RFQList", component: RFQListComponent },
+    { path: "VendorQuotationList/:VendorId", component: VendorQuotationListComponent },
     { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent, canActivate: [AuthGuard] },
     { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent, canActivate: [AuthGuard] },
     { path: 'VendorQuoteView/:RFQRevisionId', component: VendorQuotationViewComponent },
