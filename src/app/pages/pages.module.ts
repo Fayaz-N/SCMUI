@@ -13,6 +13,7 @@ import { RoleAccessComponent } from './Authorization/RoleAccess.component';
 import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { MPRListComponent } from './MPR/MPRList.component';
 import { RFQListComponent } from './RFQ/RFQList.component';
+import { VendorQuotationListComponent } from './RFQ/VendorQuotationList.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
 import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
@@ -84,6 +85,7 @@ import { LoginComponent } from './Login/Login.component';
     ViewAccessComponent,
     MPRListComponent,
     RFQListComponent,
+    VendorQuotationListComponent,
     ApproversComponent,
     BuyerGroupsComponent,
     DepartmentComponent,
