@@ -1,7 +1,7 @@
 <div class="row">
-  <div class="col-md-4" style="text-decoration: underline;"><h4>{{mprTitle}}</h4></div>
+  <div class="col-md-4"><h4>{{mprTitle}}</h4></div>
   <div class="col-md-6"></div>
-  <div class="col-md-2">
+  <div class="col-md-2 text-right">
     <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand"></i>
   </div>
 </div><br />
@@ -10,19 +10,19 @@
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">From Date</label><br />
-        <p-calendar formControlName="FromDate" [(ngModel)]="mprFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+        <p-calendar class="mprldatepick" formControlName="FromDate" [(ngModel)]="mprFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">To Date</label>&nbsp;<br />
-        <p-calendar formControlName="ToDate" [(ngModel)]="mprFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+        <p-calendar class="mprldatepick" formControlName="ToDate" [(ngModel)]="mprFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="docNo" class="form-label">Document Number</label>
-        <input class="form-control" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
+        <input class="form-control border-secondary" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="SaleOrderNo" class="form-label">Document Description</label>
-        <input class="form-control" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
+        <input class="form-control border-secondary" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
       </div>
     </div>
 
@@ -115,22 +115,22 @@
     <div class="row">
       <div class="ui-g-4 ui-md-4">
       </div>
-      <div class="ui-g-4 ui-md-4">
+      <div class="ui-g-8 ui-md-8 text-right pr-3">
         <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
       </div>
     </div>
-  </div><br />
+  </div>
 </form>
-<div class="form-control" style="height:100%;border-radius:0px;">
+<div class="form-control h-100 p-0" style="border-radius:0px;">
   <p-table #dt [value]="mprList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true" [loading]="loading">
-    <ng-template pTemplate="caption">
+    <ng-template pTemplate="caption p-0">
       <!--<div style="text-align: right">
         <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
         <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
       </div>-->
     </ng-template>
     <ng-template pTemplate="header">
-      <tr>
+      <tr class="mprltbldata">
         <th>S.No</th>
         <th>MPR Document Number</th>
         <th>Description</th>
@@ -162,7 +162,7 @@
       </tr>-->
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-      <tr>
+      <tr  class="mprltbldata">
         <td>
           {{ri+1}}
         </td>
@@ -180,11 +180,11 @@
         <td class="ptable-cell">{{rowData.CheckStatus }}</td>
         <td class="ptable-cell">{{rowData.ApproverName}}</td>
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
-        <td><button *ngIf="typeOfList=='MPRList' && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit(rowData)"></button></td>
-        <td><button *ngIf="typeOfList=='MPRList'&& rowData.CheckStatus=='Approved' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info" (click)="onRevise(rowData)"></button></td>
+        <td><button *ngIf="typeOfList=='MPRList' && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
+        <td><button *ngIf="typeOfList=='MPRList'&& rowData.CheckStatus=='Approved' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
       </tr>
     </ng-template>
-  </p-table><br />
+  </p-table>
 </div>
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid">

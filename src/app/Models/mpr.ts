@@ -267,6 +267,7 @@ export class Employee {
   Name: string;
   DeptID: number;
   DOL: Date;
+  RoleId: number;
 } 
 export class MPRBuyerGroup {
   BuyerGroupId: number;
