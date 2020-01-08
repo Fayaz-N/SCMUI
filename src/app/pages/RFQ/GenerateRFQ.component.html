@@ -9,36 +9,74 @@
 <span><b>Dis - </b>Discount</span>&nbsp;&nbsp;&nbsp;&nbsp;
 <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
 <br /><br />
-<div class="form-control form-inline" style="height:100%;width:100%">
-  <div *ngFor="let Item of rfqQuoteModel;let k=index">
-    <div class="form-control form-inline" style="height:100%;width:100%">
-      <div class="form-inline">
+
+<div class="bg-white p-2">
+  <div class="container-fluid pl-0 pr-0 border-0 bg-transparent" *ngFor="let Item of rfqQuoteModel;let k=index">
+    <div class="row">
+      <div class="col-md-12">
         <label class="form-label font-weight-bold">Item Name :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
         <label class="form-label font-weight-bold">Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
         <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.QuotationQty}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-
-      </div><br />
-      <div class="row form-inline m-0">
-        <div *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
-          <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
-            <span class="form-inline"><input type="checkbox" class="checkmark" (click)="selectVendorList($event,k,i,'SQty',vendor,true)">&nbsp;<b class="fixed-text" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span><br />
-            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control" value={{Item.QuotationQty}} /></span><br />
-            <span class="form-inline"><b>PQP : </b>&nbsp;{{vendor.UnitPrice}}&nbsp;&nbsp;&nbsp;&nbsp; <b>Q : </b>&nbsp;{{vendor.vendorQuoteQty}}</span><br />
-            <span class="form-inline"><b>Dis : </b>&nbsp;{{vendor.Discount}}&nbsp;&nbsp;&nbsp;&nbsp; <b>PT : </b>&nbsp;{{vendor.PaymentTermCode}}</span>
-          </div>&nbsp;&nbsp;
-        </div>
-        <div *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
-          <div class="form-control manual-List">
-            <span class="form-inline"><input type="checkbox" class="checkmark" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)">&nbsp;<b class="fixed-text" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span><br />
-            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control" value={{Item.QuotationQty}} /></span><br />
-            <span class="form-inline"><b>PQP : </b>&nbsp;{{mvendor.UnitPrice}}&nbsp;&nbsp;&nbsp;&nbsp; <b>Q : </b>&nbsp;{{mvendor.vendorQuoteQty}}</span><br />
-            <span class="form-inline"><b>Dis : </b>&nbsp;{{mvendor.Discount}}&nbsp;&nbsp;&nbsp;&nbsp; <b>PT : </b>&nbsp;{{mvendor.PaymentTermCode}}</span>
-          </div>&nbsp;&nbsp;
-        </div>
       </div>
     </div>
+
+      <div class="row">
+        <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
+          <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
+            <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.QuotationQty}} /></span>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <b>PQP : </b>&nbsp;{{vendor.UnitPrice}}
+              </div>
+              <div class="col-sm-6">
+                <b>Q : </b>&nbsp;{{vendor.vendorQuoteQty}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <b>Dis : </b>&nbsp;{{vendor.Discount}}
+              </div>
+              <div class="col-sm-6">
+                <b>PT : </b>&nbsp;{{vendor.PaymentTermCode}}
+              </div>
+            </div>
+           
+          </div>
+        </div>
+        <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
+          <div class="form-control manual-List">
+            <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.QuotationQty}} /></span>
+
+            <div class="row">
+              <div class="col-sm-6">
+                <b>PQP : </b>&nbsp;{{mvendor.UnitPrice}}
+              </div>
+              <div class="col-sm-6">
+                <b>Q : </b>&nbsp;{{mvendor.vendorQuoteQty}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <b>Dis : </b>&nbsp;{{mvendor.Discount}}
+              </div>
+              <div class="col-sm-6">
+                <b>PT : </b>&nbsp;{{mvendor.PaymentTermCode}}
+              </div>
+            </div>
+
+
+          
+          </div>
+        </div>
+      </div>
+  
   </div>
 </div>
+
+
 
 <div class="footer">
   <div class="row form-inline pt-2">

@@ -124,7 +124,7 @@ body .ui-widget {
 .lblEdit {
   display: inline-block;
   width: 100%;
-  font-weight:bold;
+  font-weight: bold;
   /*padding-right: 10px;*/
 }
 
@@ -306,7 +306,7 @@ a.disabled {
   height: 20px;
   width: 20px;
   padding: 12px;
-  margin: auto !important;
+  margin-right: 5px !important;
 }
 
 .sug-icon {
@@ -325,14 +325,14 @@ a.disabled {
 
 .manual-List {
   height: 100% !important;
-  margin-top: 10px !important;
+  /*margin-top: 10px !important;*/
   cursor: pointer !important;
   background-color: hsla(89, 43%, 51%, 0.3) !important;
 }
 
 .suggested-List {
   height: 100% !important;
-  margin-top: 10px !important;
+  /*margin-top: 10px !important;*/
   cursor: pointer !important;
   background-color: hsla(0, 43%, 51%, 0.3) !important;
 }
@@ -356,10 +356,11 @@ a.disabled {
   -moz-animation: 1s blinker linear infinite;
   color: red;
 }
+
 .expand {
   font-size: 25px;
   color: #598bff;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 @-moz-keyframes blinker {
@@ -471,4 +472,179 @@ fieldset.scheduler-border {
 .ptable-cell {
   white-space: pre-wrap;
   word-wrap: break-word
+}
+
+.mprldatepick span {
+  width: 100%;
+}
+
+.mprldatepick span input {
+  width: 100%;
+  border-color: #6c757d !important;
+}
+
+.mprltbldata > th {
+  background: #428bca !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+
+.mprltbldata > td {
+  font-size: 12px !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**************************************Testing******************************************/
+/*.card {
+  font-weight: 400;
+  border: 0;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+.card {
+  position: relative;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+}
+
+.testimonial-card .card-up {
+  height: 120px;
+  overflow: hidden;
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+}
+
+
+.indigo.lighten-1 {
+  background-color: #5c6bc0 !important;
+}
+
+
+.card {
+  font-weight: 400;
+  }
+
+
+.testimonial-card .avatar {
+  width: 120px;
+  margin-top: -60px;
+  overflow: hidden;
+  border: 5px solid #fff;
+  border-radius: 50%;
+}
+
+
+.white, .picker__list-item, .picker__box .picker__header .picker__select--month.browser-default, .picker__box .picker__header .picker__select--year.browser-default {
+  background-color: #fff !important;
+}
+
+
+.ml-auto, .mx-auto {
+  margin-left: auto !important;
+}
+
+
+
+.mr-auto, .mx-auto {
+  margin-right: auto !important;
+}
+
+
+
+.testimonial-card .avatar img {
+  width: 100%;
+}
+
+
+.rounded-circle {
+  border-radius: 50% !important;
+}
+
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
+
+.testimonial-card .card-body {
+  text-align: center;
+}*/
+
+
+
+
+.avatar {
+  border: 0.3rem solid rgba(255, 255, 255, 0.3);
+  margin-top: -5rem;
+  margin-bottom: 1rem;
+  max-width: 7rem;
+  max-height: 7rem;
+  height: 80px;
+  width: 80px;
+  background: #ccc;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mprtst {
+  height: 100px;
+  background: #ffa500d9 !important;
+  text-align: center;
+  color: #ffffff;
+}
+
+.mprtst h4 {
+  color: #fff !important;
+  font-size: 100% !important;
+  margin: 3% 0 !important;
+}
+
+.avatar p {
+  font-size: 20px !important;
+  font-weight: bold !important;
+  margin-top: 37% !important;
+  text-align: center !important;
+}
+
+.numbox {
+  width: 36% !important;
+}
+
+.sug_lst_masn {
+  padding: 10px;
+  border-radius: 3px;
+}
+
+.sug_lst_masn span {
+  width: 50%;
+}
+
+
+.vndorinputchk {
+  width: 20px;
+}
+
+.bvendor{
+  width : 87%;
 }
