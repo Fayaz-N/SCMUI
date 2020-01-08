@@ -10,7 +10,7 @@ import { constants } from '../Models/MPRConstants'
   providedIn: 'root'
 })
 export class MprService {
- 
+
   public url = this.constants.url;
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
   private currentUserSubject: BehaviorSubject<Employee>;
@@ -22,8 +22,8 @@ export class MprService {
   public get currentUserValue(): Employee {
     return this.currentUserSubject.value;
   }
- 
- 
+
+
   getRecordsCount(search: DynamicSearchResult): Observable<number> {
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<number>(this.url + 'MPR/GetRecordsCount/', search, httpOptions);
@@ -35,12 +35,12 @@ export class MprService {
   GetLoginListItems(search: DynamicSearchResult) {
     // const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
     return this.http.post<any>(this.url + 'MPR/GetListItems/', search)
-    .pipe(map(data=>{
-     const object = Object.assign({}, ...data);
-      localStorage.setItem('Employee',JSON.stringify(object));
-     this.currentUserSubject.next(object);
-     return object;
-    }))
+      .pipe(map(data => {
+        const object = Object.assign({}, ...data);
+        localStorage.setItem('Employee', JSON.stringify(object));
+        this.currentUserSubject.next(object);
+        return object;
+      }))
   }
 
   updateMPR(mpr: mprRevision): Observable<any> {
@@ -57,7 +57,7 @@ export class MprService {
     return this.http.post<mprRevision[]>(this.url + 'MPR/getMPRList/', mprFilterParams, this.httpOptions);
   }
   ChechMPRlendingList(preparedBy: string): Observable<any> {
-    return this.http.post<any>(this.url + 'MPR/getMPRPendingListCnt/'+ preparedBy, this.httpOptions);
+    return this.http.post<any>(this.url + 'MPR/getMPRPendingListCnt/' + preparedBy, this.httpOptions);
   }
   getMprRevisionList(RequisitionId: number): Observable<mprRevision[]> {
     return this.http.get<any>(this.url + 'MPR/getMprRevisionList/' + RequisitionId);
@@ -88,7 +88,7 @@ export class MprService {
   updateMPRVendor(mprVendor: MPRVendorDetail[], RevisionId: number): Observable<boolean> {
     return this.http.post<boolean>(this.url + 'MPR/updateMPRVendor/' + RevisionId, mprVendor, this.httpOptions);
   }
- 
+
   //added masters
 
   getDBMastersList(search: DynamicSearchResult): Observable<any> {
@@ -148,4 +148,14 @@ export class MprService {
     this.currentUserSubject.next(null);
     //window.location.reload();
   }
+  uploadFile(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
+  DownloadFile(fileName: string): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/DownloadFile/' + fileName, this.httpOptions);
+  }
 }
+

@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Input } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 
-
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -14,7 +14,7 @@ import { constants } from 'src/app/Models/MPRConstants';
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   protected dialogElement: ElementRef;
 
@@ -24,7 +24,7 @@ export class MPRPageComponent implements OnInit {
   public showMaterialForm; showVendorForm; showOtherDetailsForm; communicationFormEdit; showCommunicationForm: boolean = false;
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
   public MPRForm1Submitted; MPRItemDetailsSubmitted; vendorSubmitted; MPRForm2Submitted; MPRForm3Submitted; MPRCommunicationSubmitted = false;
-  public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog: boolean = false;
+  public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog; showFileViewer: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
   public searchresult: Array<object> = [];
@@ -59,7 +59,7 @@ export class MPRPageComponent implements OnInit {
   public disableStatusSubmit: boolean = false;
   public showAcknowledge: boolean = false;
   public showPage: boolean = false;
-
+  public doc: SafeResourceUrl;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -107,7 +107,8 @@ export class MPRPageComponent implements OnInit {
       Quantity: ['', [Validators.required]],
       UnitId: ['', [Validators.required]],
       SOLineItemNo: ['', [Validators.required]],
-      // SaleOrderNo: ['', [Validators.required]], 
+      MfgPartNumber: ['', [Validators.required]],
+      MfgModelNumber: ['', [Validators.required]],
       ReferenceDocNo: ['', [Validators.required]],
       TargetSpend: ['', [Validators.required]]
 
@@ -168,6 +169,8 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm1.controls['JobName'].clearValidators();
     this.MPRPageForm1.controls['GEPSApprovalId'].clearValidators();
     this.MPRItemDetailsForm.controls['SOLineItemNo'].clearValidators();
+    this.MPRItemDetailsForm.controls['MfgPartNumber'].clearValidators();
+    this.MPRItemDetailsForm.controls['MfgModelNumber'].clearValidators();
     this.MPRItemDetailsForm.controls['ReferenceDocNo'].clearValidators();
     this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
     this.MPRPageForm1.controls['SaleOrderNo'].clearValidators();
@@ -207,7 +210,7 @@ export class MPRPageComponent implements OnInit {
             this.showPage = true;
             this.mprRevisionModel.RevisionId = 0;
             this.mprRevisionModel.RequisitionId = parseInt(this.constants.RequisitionId);
-          }          
+          }
         });
       }
       this.getStatusList();
@@ -223,7 +226,7 @@ export class MPRPageComponent implements OnInit {
     }, 10);
   }
 
- 
+
   //Binding searchList data
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     this.formName = formName;
@@ -733,20 +736,21 @@ export class MPRPageComponent implements OnInit {
       let file: File = fileList[0];
       let formData: FormData = new FormData();
       formData.append('uploadFile', file, file.name);
-      var data = new Blob([file], { type: 'text/plain;charset=utf-8' });
-      //saveAs(data, file.name, { type: file.type });
-      this.mprDocuments = new MPRDocument();
-      this.mprDocuments.DocumentName = file.name;
-      if (formName == "supportingDocument") {
-        this.mprDocuments.ItemDetailsId = null;
-        this.mprDocuments.DocumentTypeid = 2;
-        //this.MPR3Documents.push(this.mprDocuments);
-      }
-      else {
-        this.mprDocuments.DocumentTypeid = 1;
-        this.mprDocuments.ItemDetailsId = this.itemDetails.Itemdetailsid;
-      }
-      this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
+      this.MprService.uploadFile(formData).subscribe(data => {
+        this.mprDocuments = new MPRDocument();
+        this.mprDocuments.Path = data;
+        this.mprDocuments.DocumentName = file.name;
+        if (formName == "supportingDocument") {
+          this.mprDocuments.ItemDetailsId = null;
+          this.mprDocuments.DocumentTypeid = 2;
+          //this.MPR3Documents.push(this.mprDocuments);
+        }
+        else {
+          this.mprDocuments.DocumentTypeid = 1;
+          this.mprDocuments.ItemDetailsId = this.itemDetails.Itemdetailsid;
+        }
+        this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
+      });
     }
   }
 
@@ -754,6 +758,7 @@ export class MPRPageComponent implements OnInit {
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
       this.mprRevisionModel = data;
+
       this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
         this.mprRevisionList = data;
         this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
@@ -764,7 +769,7 @@ export class MPRPageComponent implements OnInit {
         this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
         this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
         this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
-        if (this.mprRevisionDetails.StatusId==4)
+        if (this.mprRevisionDetails.StatusId == 4)
           this.showAcknowledge = true;
         else
           this.showAcknowledge = false;
@@ -790,9 +795,9 @@ export class MPRPageComponent implements OnInit {
     if ((this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.CheckStatus == "Pending" || this.mprRevisionModel.CheckStatus == "Submitted" || this.mprRevisionModel.CheckStatus == "Sent for Modification")
       this.displayFooter = true;
     else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification")
-    this.displayFooter = true;
+      this.displayFooter = true;
     else
-    this.displayFooter = false;
+      this.displayFooter = false;
   }
 
   bindMPRPageForm(formName: string, data: any) {
@@ -838,6 +843,15 @@ export class MPRPageComponent implements OnInit {
     if (this.EmployeeList.filter(li => li.EmployeeNo == empNo).length > 0)
       return this.EmployeeList.filter(li => li.EmployeeNo == empNo)[0].Name;
   }
+  viewDocument(path: string, documentname: string) {
+    //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
+    var path1 = path.replace(/\\/g, "/");
+    path1 = "http://10.29.15.68:90/SCMDocs/" + path1;
+    window.open(path1);
+    //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
+    //this.showFileViewer = true;    
+  }
+
   scrollToView(id, navId) {
     var elmnt = document.getElementById(id);
     elmnt.scrollIntoView();

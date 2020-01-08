@@ -37,11 +37,12 @@ export class MPRItemInfoes {
   UnitId: string;
   SaleOrderNo: string;
   SOLineItemNo: string;
+  MfgPartNumber: string;
+  MfgModelNumber: string;
   ReferenceDocNo: string;
   TargetSpend: string;
   DeleteFlag: boolean
 }
-
 
 
 export class MPRDocumentations {
@@ -264,6 +265,8 @@ export class MPRApprovers {
 export class Employee {
   EmployeeNo: string;
   Name: string;
+  DeptID: number;
+  DOL: Date;
 } 
 export class MPRBuyerGroup {
   BuyerGroupId: number;

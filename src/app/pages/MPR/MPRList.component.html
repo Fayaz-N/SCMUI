@@ -60,7 +60,7 @@
         </select>&nbsp;
       </div>
     </div>
-    <div *ngIf="employee.DeptID==14"  class="row">
+    <div *ngIf="employee.DeptID==14 && employee.DOL==null" class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department</label>&nbsp;
         <div class="form-inline-list">
@@ -85,7 +85,6 @@
           <p-radioButton class="form-inline" name="group1" value="1" label="For Enquiry" [(ngModel)]="mprFilterParams.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt1"></p-radioButton>
           <p-radioButton class="form-inline" name="group1" value="2" label="For Issuing PO" [(ngModel)]="mprFilterParams.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt2"></p-radioButton>
         </div>
-        <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.IssuePurposeId.errors" class="invalid-feedback">Purpose Issuing MPR Required</span>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Item Description</label>
@@ -97,12 +96,11 @@
 
         </div>
       </div>
-
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label for="GEPSApprovalId" class="form-label">Ge Ps Approval Id</label>
-        <input type="text" id="GEPSApprovalId" formControlName="GEPSApprovalId" [(ngModel)]="MPRfilterForm.GEPSApprovalId" class="form-control">
+        <label  class="form-label">Ge Ps Approval Id</label>
+        <input class="form-control" type="text" formControlName="GEPSApprovalId" [(ngModel)]="mprFilterParams.GEPSApprovalId">
       </div>
-
+    
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
         <div class="form-inline-list  ml-2 ">
@@ -136,12 +134,12 @@
         <th>S.No</th>
         <th>MPR Document Number</th>
         <th>Description</th>
-        <th *ngIf="employee.DeptID==14" >Job Code</th>
-        <th *ngIf="employee.DeptID==14" >Job Name</th>
-        <th *ngIf="employee.DeptID==14" >Purpose of issuing MPR</th>
-        <th *ngIf="employee.DeptID==14" >Item Description</th>
-        <th *ngIf="employee.DeptID==14" >Ge Ps Approval Id</th>
-        <th *ngIf="employee.DeptID==14" >Buyer Group Name</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Job Code</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Job Name</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Purpose of issuing MPR</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Item Description</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Ge Ps Approval Id</th>
+        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Buyer Group Name</th>
         <th>Preapared By</th>
         <th>Preapared On</th>
         <th>Check By</th>
@@ -170,12 +168,12 @@
         </td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.JobCode}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.JobName}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.ItemDescription}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
-        <td *ngIf="employee.DeptID==14"  class="ptable-cell">{{rowData.BuyerGroupName}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.JobCode}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.JobName}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
+        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.BuyerGroupName}}</td>
         <td class="ptable-cell">{{rowData.PreparedName}}</td>
         <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
         <td class="ptable-cell">{{rowData.CheckedName}}</td>

@@ -1,6 +1,6 @@
 <form [formGroup]="VendorQuotationList">
 	<!--<div class="row form-control" style="margin-left: 5px;margin-right: 10px;height: 100%;border-radius: 0px;">-->
-		<p-table *ngIf="rfqMastersModel.length>0" [value]="rfqMastersModel" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true" [loading]="loading">
+		<p-table *ngIf="rfqMastersModel.length>0" [value]="rfqMastersModel" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true">
 			<ng-template pTemplate="header">
 				<tr class="text-center">
 					<th>S.No</th>

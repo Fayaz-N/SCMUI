@@ -211,16 +211,16 @@
               <td>{{rowData.TargetSpend}}</td>
               <td>
                 <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+                  <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-eye" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="View"></i>&nbsp;
                   <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
                 </div>
               </td>
               <td style="text-align:center" *ngIf="!editing">
-                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData,'ItemId')"></button>
+                <button   [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData,'ItemId')"></button>
               </td>
               <td style="text-align:center" *ngIf="!editing">
                 <button *ngIf="!editing" [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
               </td>
-
             </tr>
           </ng-template>
         </p-table><br /><br />
@@ -1036,8 +1036,16 @@
     </div>
 
   </div>
-
   <div>
+    <p-dialog [(visible)]="showFileViewer" [style]="{width: '800px', height: '600px'}"  [contentStyle]="{'overflow':'visible'}">
+      <iframe style="width:780px;height:550px" [src]="doc"></iframe>
+      <!--<ngx-doc-viewer [url]="doc" viewer="google" style="width:100%;height:50vh;"></ngx-doc-viewer>-->
+      <!--<p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showFileViewer')" label="Cancel"></button>
+      </div>
+    </p-footer>-->
+    </p-dialog>
     <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">
       <div class="ui-g ui-fluid">
         <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
@@ -1084,11 +1092,11 @@
                 <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
               </div>
               <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
-                <option value="select" selected>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>-->
-              
+              <option value="select" selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>-->
+
             </div>
           </div>
           <div class="ui-g-12">
@@ -1099,6 +1107,16 @@
             <div class="ui-g-6 form-group">
               <label class="form-label">Reference If Any</label>
               <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
+            </div>
+          </div>
+          <div class="ui-g-12">
+            <div class="ui-g-6 form-group">
+              <label class="form-label">Mfg. Part Number</label>
+              <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.MfgPartNumber" class="form-control" />
+            </div>
+            <div class="ui-g-6 form-group">
+              <label class="form-label">Mfg. Model Number </label>
+              <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.MfgModelNumber" class="form-control" />
             </div>
           </div>
           <div class="ui-g-12">
@@ -1226,7 +1244,7 @@
             </div>
             <div class="ui-g-5">
               <label for="CompType">Can ReceiveMail Notification:</label>&nbsp;&nbsp;
-              <p-checkbox formControlName="CanReceiveMailNotification" [disabled]="true" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true" ></p-checkbox>
+              <p-checkbox formControlName="CanReceiveMailNotification" [disabled]="true" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true"></p-checkbox>
             </div>
           </div>
         </form>
