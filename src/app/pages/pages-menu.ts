@@ -123,5 +123,36 @@ export const MENU_ITEMS: NbMenuItem[] = [
     
     
   },
-  
+    {
+        title: 'Purchase Authorization',
+        icon: 'lock-outline',
+        expanded: true,
+        children: [
+            {
+                title: 'MPRPA',
+                link: '/SCM/mprpa',
+                icon: 'layers-outline'
+            },
+            {
+                title: 'PA Details',
+                link: '/SCM/PADetails',
+                icon: 'layers-outline'
+            },
+            {
+                title: 'Employee Configuration',
+                link: '/SCM/EmployeeConfiguration',
+                icon: 'layers-outline'
+            },
+            {
+                title: 'CreditDays',
+                link: '/SCM/CreditDays',
+                icon: 'layers-outline'
+            },
+            {
+                title: 'MPRPAList',
+                link: '/SCM/MPRPAList',
+                icon: 'layers-outline'
+            }
+        ],
+    },
 ];

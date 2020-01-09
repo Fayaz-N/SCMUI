@@ -44,7 +44,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { SelectfilterPipe } from '../common/selectfilter.pipe';
 import { LoginComponent } from './Login/Login.component';
-
+import { PurchaseAuthorizationDetailsComponent } from './purchase-authorization/PurchaseAuthorizationDetails.component';
+import { purchasePaymentComponent } from './purchase-authorization/purchasePayment.component';
+import { PurchaseAuthorizationComponent } from './purchase-authorization/purchase-authorization.component';
+import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
+import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 
 @NgModule({
   imports: [
@@ -97,8 +101,12 @@ import { LoginComponent } from './Login/Login.component';
     RFQComparisionComponent,
     VendorQuotationViewComponent,
     ConfirmationDialogComponent,
-    SelectfilterPipe
-    
+    SelectfilterPipe,
+      PurchaseAuthorizationDetailsComponent,
+      purchasePaymentComponent,
+      PurchaseAuthorizationComponent,
+      CreditAuthorizationComponent,
+      purchasePaymentListComponent
     
   ],
   providers:[MessageService, ConfirmationService],

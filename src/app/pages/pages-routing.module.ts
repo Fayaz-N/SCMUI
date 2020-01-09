@@ -23,6 +23,12 @@ import { AuthGuard } from '../common/auth.guard';
 import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
 import { RFQListComponent } from './RFQ/RFQList.component';
 import { VendorQuotationListComponent } from './RFQ/VendorQuotationList.component';
+import { PurchaseAuthorizationDetailsComponent } from './purchase-authorization/PurchaseAuthorizationDetails.component';
+import { PurchaseAuthorizationComponent } from './purchase-authorization/purchase-authorization.component';
+import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
+import { purchasePaymentComponent } from './purchase-authorization/purchasePayment.component';
+import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
+import { Subject } from 'rxjs';
 
 const routes: Routes = [{
   path: '',
@@ -60,7 +66,12 @@ const routes: Routes = [{
     { path: 'Authorizationitem', component: AuthorizationItemComponent, canActivate: [AuthGuard] },
     { path: 'Viewaccess', component: ViewAccessComponent, canActivate: [AuthGuard] },
     { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
-
+      { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
+      { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
+      { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },
+      { path: "mprpa", component: purchasePaymentComponent, canActivate: [AuthGuard] },
+      { path: "MPRPAList", component: purchasePaymentListComponent, canActivate: [AuthGuard] },
+      { path: "mprpa/:PAId", component: purchasePaymentComponent, canActivate: [AuthGuard] },
 
 
     // {

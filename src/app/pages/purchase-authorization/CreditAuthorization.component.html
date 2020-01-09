@@ -1,0 +1,88 @@
+<div style="margin-bottom:10px">
+  <div class="row">
+    <div class="col-md-6">
+      <h3 style="text-align:left">Credit Days:</h3>&nbsp;
+    </div>
+    <div class="col-md-4" style="text-align:right">
+      <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="AddCreditMaster()" label="CreditMaster"></button>
+    </div>
+  </div>
+  <form [formGroup]="Approveform">
+    <div class="container" style="margin-top:20px">
+      <div class="row selectgrow">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="procSrc"> Credit Slabs :</label>
+          </div>
+          <div class="ui-g-5">
+            <select class="form-control dropdown" [(ngModel)]="creditApprovers.Authid" formControlName="Authid" [value]="Approveform.controls.Authid.value" [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.Authid.errors}">
+              <option *ngFor="let cre of authorization" [value]="cre.Authid">{{cre.MinPAValue}}-{{cre.MaxPAValue}}</option>
+              <option [value]="0">Select</option>
+            </select>
+            <span *ngIf="approveSubmitted && Approveform.controls.Authid.errors" class="invalid-feedback">Slabs Required</span>
+          </div>
+        </div>
+      </div>
+      <div class="row selectgrow">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="procSrc"> Employee Select:</label>
+          </div>
+          <div class="ui-g-5">
+            <select class="form-control dropdown" [(ngModel)]="creditApprovers.EmployeeNo" formControlName="EmployeeNo" [value]="Approveform.controls.EmployeeNo.value"  [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.EmployeeNo.errors}">
+              <option *ngFor="let emp of employeeslist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+              <option [value]="0">Select</option>
+            </select>
+            <span *ngIf="approveSubmitted && Approveform.controls.EmployeeNo.errors" class="invalid-feedback">Employee Required</span>
+          </div>
+        </div>
+      </div>
+      <div class="row selectgrow">
+        <div class="ui-g-12">
+          <div class="ui-g-2">
+            <label for="procSrc"> Credit Days:</label>
+          </div>
+          <div class="ui-g-5">
+            <select class="form-control dropdown" [(ngModel)]="creditApprovers.CreditDaysid" formControlName="CreditDaysid">
+              <option *ngFor="let days of creditdays" [value]="days.CreditDaysid">{{days.MinDays}}-{{days.MaxDays}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="Approvecredit(creditApprovers)" label="Insert"></button>
+      </div>
+    </div>
+  </form>
+</div>
+<form [formGroup]="creditform">
+  <p-dialog header="Add" [(visible)]="addialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">MinDays :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="MinDays" [(ngModel)]="credit.MinDays" class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MinDays.errors}" />
+        <span *ngIf="crSubmitted && creditform.controls.MinDays.errors" class="invalid-feedback">Mindays Required.</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">MaxDays :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="MaxDays" [(ngModel)]="credit.MaxDays"  class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MaxDays.errors}" />
+        
+        <span *ngIf="crSubmitted && creditform.controls.MaxDays.errors" class="invalid-feedback">Maxdays Required </span>
+      </div>
+    </div>
+
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success"  (click)="Submit(credit)" label="Insert"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</form>

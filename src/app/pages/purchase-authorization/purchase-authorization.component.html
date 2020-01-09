@@ -1,0 +1,167 @@
+<div style="margin-bottom: 10%">
+
+  <div class="row col-md-10">
+    <div class="col-md-6">
+      <h3 style="text-align:left">Employee Configuration:</h3>&nbsp;
+    </div>
+    <div class="col-md-4" style="text-align:right">
+      <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="showDialogAddDepartment()" label="Add Slabs"></button>
+    </div>
+  </div>
+  <form id="paform">
+    <div class="container" style="margin-top:25px">
+      <div class="row selectgrow">
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Department:</label>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
+          <select (change)="selecteSlabs($event)" class="form-control">
+            <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
+            <!--<option [value]="0">Select</option>-->
+          </select>
+          <!--<p>Selected Department:{{SelectedDepartment}}</p>-->
+        </div>
+      </div>
+
+      <div class="row selectgrow">
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Slabs:</label>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
+          <select [(ngModel)]="employemapping.Authid" class="form-control">
+            <option *ngFor="let sla of slbaslist" [value]="sla.Authid">{{sla.MinPAValue}}-{{sla.MaxPAValue}}</option>
+          </select>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+        </div>
+      </div>
+      <div class="row selectgrow">
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Employee:</label>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
+          <select [(ngModel)]="employemapping.Employeeid" class="form-control">
+            <option *ngFor="let emp of employeelist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+            ">
+          </select>
+          <!--<p>Selected Employee:{{employemapping.Employeeid}}</p>-->
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-6">
+        </div>
+      </div>
+      <div class="row selectgrow">
+        <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+          <label for="GroupName" class="form-label label" style="margin-left: 12px;">Functional Roles:</label>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
+          <select [(ngModel)]="employemapping.FunctionalRoleId" class="form-control">
+            <option *ngFor="let role of RolesList" [value]="role.FunctionalRoleId">{{role.FunctionalRole}}</option>
+          </select>
+        </div>
+
+        <div class="col-sm-12 col-md-6 col-lg-6">
+        </div>
+      </div><br />
+
+      <div class="row selectgrow">
+        <div class="col-lg-2 col-md-2 col-sm-2">
+          <label for="GroupName" class="form-label label" style="margin-left: 12px;">Budget:</label>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 form-inline accessgdiv2">
+          <div class="radio col-lg-3 col-md-3 col-sm-3">
+            <label class="form-label label">
+              <input type="radio" name="Budget" [value]="LessBudget" (click)="setradio($event)">
+              LessBudget
+            </label>
+          </div>&nbsp;&nbsp;
+          <div class="radio col-lg-3 col-md-3 col-sm-3">
+            <label class="form-label label">
+              <input type="radio" name="Budget" [value]="MoreBudget" (click)="setradio($event)">
+              MoreBudget
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6 col-lg-6 col-sm-6" style="text-align: center; margin-top:10px">
+        <button type="button" class="btn btn-success" label="Save" (click)="InsertEmployeeMapping(employemapping)">Add Employee</button>
+      </div>
+
+      <!--<div class="form-control" style="display:contents">
+      <div class="row head-text pl-0">
+        <div class="col-md-6 pt-2">
+          Slabs Configuration :
+        </div>
+      </div>
+      <div class="row form-control" style="height:100%;border-radius:0px;">
+        <p-dropdown [options]="departments" [(ngModel)]="selectedDepartment" placeholder="Select  Slabs"></p-dropdown>
+      </div>
+    </div>-->
+    </div>
+  </form>
+</div>
+<form [formGroup]="detailsform">
+  <p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">Department :</label>
+      </div>
+      <div class="ui-g-5">
+        <!--<input type="text"  ngModel maxlength="20" [(ngModel)]="SelectedDepartment" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />-->
+        <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptID" required [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && paauthorization.DeptId!=0}">
+          <option [value]="0">Select</option>
+          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}}</option>
+        </select>
+        <span *ngIf="paSubmitted && paauthorization.DeptId!=0" class="invalid-feedback">Department Required</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">MinPAValue :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="MinPAValue" [(ngModel)]="paauthorization.MinPAValue" class="form-control" [ngClass]="{ 'is-invalid': paSubmitted && detailsform.controls.MinPAValue.errors}" />
+        <span *ngIf="paSubmitted && detailsform.controls.MinPAValue.errors" class="invalid-feedback">MinPAValue Required.</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">MaxPAValue :</label>
+      </div>
+      <div class="ui-g-5">
+        <input type="text" formControlName="MaxPAValue" [(ngModel)]="paauthorization.MaxPAValue" class="form-control" [ngClass]="{ 'is-invalid':   paSubmitted && detailsform.controls.MaxPAValue.errors}" />
+        <span *ngIf="paSubmitted && detailsform.controls.MaxPAValue.errors" class="invalid-feedback">MaxPAValue Required.</span>
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">Authorization Type :</label>
+      </div>
+      <div class="ui-g-5">
+        <select class="form-control" formControlName="AuthorizationType" [(ngModel)]="paauthorization.AuthorizationType" [ngClass]="{ 'is-invalid': paSubmitted && detailsform.controls.AuthorizationType.errors}">
+          <option value="select">Select</option>
+          <option value="PA">Purchase</option>
+          <option value="CR">Credit</option>
+        </select>
+        <span *ngIf="paSubmitted && detailsform.controls.AuthorizationType.errors" class="invalid-feedback">Authorization Type Required.</span>
+      </div>
+    </div>
+    <!--<div class="ui-g-12">
+      <div class="ui-g-2">
+        <label for="procSrc">Created By :</label>
+      </div>
+      <div class="ui-g-5">
+        <input  [(ngModel)]="paauthorization.CreatedBy" />
+        <p>{{employee.Name}}</p>
+      </div>
+    </div>-->
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="Submit(paauthorization)" label="Insert"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+</form>
+
+
