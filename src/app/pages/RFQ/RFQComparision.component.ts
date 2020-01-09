@@ -23,7 +23,6 @@ export class RFQComparisionComponent implements OnInit {
   public rfqQuoteModel: Array<rfqQuoteModel> = [];
   public vendorDetails: VendorDetails;
   public cols: any[];
-  frozenCols: any[];
   public status: string;
   public statusList: Array<any> = [];
   //page load event
@@ -32,12 +31,7 @@ export class RFQComparisionComponent implements OnInit {
       JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
-    this.frozenCols = [
-      { field: 'ItemName', header: 'ItemName' }
-      //{ field: 'ItemDescription', header: 'ItemDescription' },
-      //{ field: 'Quantity', header: 'Quantity' },
-    ];
-
+   
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
@@ -185,11 +179,14 @@ export class RFQComparisionComponent implements OnInit {
   }
 
   statusSubmit() {
-    alert(this.selectedVendorList.length);
-    this.RfqService.statusUpdate(this.selectedVendorList).subscribe(data => {
-      if (data)
-        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated sucessfully' });
-    })
+    if (this.selectedVendorList.length > 0) {
+      this.RfqService.statusUpdate(this.selectedVendorList).subscribe(data => {
+        if (data)
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated sucessfully' });
+      })
+    }
+    else
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select at leat one item' });
   }
 }
 

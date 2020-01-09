@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, MPRStatusUpdate, MPRDetail } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, MPRStatusUpdate, MPRDetail, AccessList } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 
@@ -20,11 +20,13 @@ export class MPRPageComponent implements OnInit {
 
   //variable Declarations start
   public employee: Employee;
+  public AccessList: Array<AccessList> = [];
   public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm: FormGroup;
   public showMaterialForm; showVendorForm; showOtherDetailsForm; communicationFormEdit; showCommunicationForm: boolean = false;
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
   public MPRForm1Submitted; MPRItemDetailsSubmitted; vendorSubmitted; MPRForm2Submitted; MPRForm3Submitted; MPRCommunicationSubmitted = false;
   public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog; showFileViewer: boolean = false;
+  public showRfqGen; showCompareRfq; hideDeleteBtn: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
   public searchresult: Array<object> = [];
@@ -67,7 +69,15 @@ export class MPRPageComponent implements OnInit {
 
     else
       this.router.navigateByUrl("Login");
-
+    if (localStorage.getItem("AccessList")) {
+      this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
+    }
+    if (this.AccessList.length > 0) {
+      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
+        this.showRfqGen = true;
+      if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
+        this.showCompareRfq = true;
+    }
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();
@@ -429,6 +439,7 @@ export class MPRPageComponent implements OnInit {
       this.showList = false;
       this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == name && li.code == details.Itemid)[0].name;
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
+      this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity()
     });
 
   }
@@ -780,6 +791,11 @@ export class MPRPageComponent implements OnInit {
           this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
         }
 
+        //Access based functionalities
+        if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
+          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
+        if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
+          this.hideDeleteBtn = true;
 
         this.bindStatusDetails();
         this.showPage = true;

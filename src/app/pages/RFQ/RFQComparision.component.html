@@ -1,3 +1,4 @@
+<label *ngIf="RfqCompareItems.length==0" style="color:red">No Items to Compare</label>
 <div *ngIf="RfqCompareItems.length>0">
   <div class="row " style="margin-top:10px">
     <div class="col-md-6 pt-2">
@@ -127,6 +128,9 @@
                   </div>
                 </div>
               </div>
+            
+              <!--<label class="form-label">Remarks</label>
+              <input type="text" class="form-control" />-->
             </td>
           </tr>
         </ng-template>

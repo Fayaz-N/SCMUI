@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { searchParams } from '../Models/mpr';
+import { searchParams, AccessList } from '../Models/mpr';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ export class constants {
   //public url = 'http://10.29.15.68:90/Api/';
   public url = 'http://localhost:49659/Api/';
   public dateFormat = "MM/dd/yyyy";
-  public RequisitionId: string="";
+  public RequisitionId: string = "";
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: "", fieldAliasName: "DepartmentName" };
   public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m2' and ", fieldAliasName: "ProjectManagerName" };
   public ClientName: searchParams = { tableName: 'CustomerMasterYGS', fieldId: 'CustomerId', fieldName: 'CustomerName1', condition: "CustomerMasterTypeId=1 and ", fieldAliasName: "ClientName" };

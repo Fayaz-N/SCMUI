@@ -1,13 +1,9 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
-
-
 import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { Employee, DynamicSearchResult, searchList, mprFilterParams } from 'src/app/Models/mpr';
-import { validateVerticalPosition } from '@angular/cdk/overlay';
-import { debounce } from 'rxjs-compat/operator/debounce';
+import { Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
 
 @Component({
   selector: 'app-MPRList',
@@ -17,17 +13,18 @@ export class MPRListComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
   public mprTitle: string;
   public employee: Employee;
+  public AccessList: Array<AccessList> = [];
   public MPRfilterForm: FormGroup;
   public formName: string;
   public txtName: string;
   public dynamicData = new DynamicSearchResult();
-  public showList: boolean = false;
+  public showList; showFilterBlock; showCMMFilter: boolean = false;
   public searchItems: Array<searchList> = [];
   public selectedlist: Array<searchList> = [];
   public selectedItem: searchList;
   public searchresult: Array<object> = [];
   public mprList: Array<any> = [];
-  public showFilterBlock: boolean = false
+
   public mprFilterParams: mprFilterParams;
   public typeOfList: string;
   public statusList: Array<any> = [];
@@ -40,13 +37,20 @@ export class MPRListComponent implements OnInit {
     else {
       this.router.navigateByUrl("Login");
     }
+    if (localStorage.getItem("AccessList")) {
+      this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
+    }
+    if (this.AccessList.filter(li => li.AccessName == "MPRCMMList").length > 0)
+      this.showCMMFilter = true;
     this.mprTitle = "MPR List";
     this.typeOfList = this.route.routeConfig.path;
     this.mprFilterParams = new mprFilterParams();
-    this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
+    if (this.showCMMFilter)
+      this.mprFilterParams.PreparedBy = "";
+    else
+      this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
     this.mprFilterParams.ToDate = new Date();
     this.mprFilterParams.FromDate = new Date(new Date().setDate(new Date().getDate() - 30));
-
 
     this.MPRfilterForm = this.formBuilder.group({
       DocumentNo: ['', [Validators.required]],
@@ -66,7 +70,7 @@ export class MPRListComponent implements OnInit {
     });
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
-      this.mprTitle = "MPR Checker List";    
+      this.mprTitle = "MPR Checker List";
       this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
       this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
     }
@@ -75,8 +79,7 @@ export class MPRListComponent implements OnInit {
       this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
       this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
     }
-    else if (this.typeOfList == "MPRPendingList")
-    {
+    else if (this.typeOfList == "MPRPendingList") {
       this.mprTitle = "MPR Pending List";
     }
     else {
@@ -88,7 +91,7 @@ export class MPRListComponent implements OnInit {
     }
     this.getStatusList();
 
-    
+
   }
   //show and hide filter parmas
   showHideFilterBlock() {
@@ -169,7 +172,7 @@ export class MPRListComponent implements OnInit {
   onRevise(mprData: any) {
     this.constants.RequisitionId = mprData.RequisitionId;
     this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
-   
+
   }
 }
 

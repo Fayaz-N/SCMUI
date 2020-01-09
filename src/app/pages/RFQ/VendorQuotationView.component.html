@@ -36,7 +36,7 @@
             <th>Item Description</th>
             <th>Quantity</th>
             <th>HSN Code</th>
-            <th>Unit Price</th>
+            <th *ngIf="RFQPriceVisibility">Unit Price</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -46,7 +46,7 @@
             <td>{{rowData.ItemDescription}}</td>
             <td>{{rowData.QuotationQty}}</td>
             <td>{{rowData.HSNCode}}</td>
-            <td>{{rowData.ItemUnitPrice}}</td>
+            <td  *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
           </tr>
         </ng-template>
       </p-table>

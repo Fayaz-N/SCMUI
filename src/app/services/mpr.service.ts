@@ -85,6 +85,9 @@ export class MprService {
     return this.http.get<any>(this.url + 'MPR/getStatusList/', this.httpOptions);
   }
 
+  getAccessList(roleId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/getAccessList/' + roleId, this.httpOptions);
+  }
   updateMPRVendor(mprVendor: MPRVendorDetail[], RevisionId: number): Observable<boolean> {
     return this.http.post<boolean>(this.url + 'MPR/updateMPRVendor/' + RevisionId, mprVendor, this.httpOptions);
   }

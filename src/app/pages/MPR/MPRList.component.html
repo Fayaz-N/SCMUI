@@ -60,7 +60,7 @@
         </select>&nbsp;
       </div>
     </div>
-    <div *ngIf="employee.DeptID==14 && employee.DOL==null" class="row">
+    <div *ngIf="showCMMFilter" class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department</label>&nbsp;
         <div class="form-inline-list">
@@ -115,7 +115,7 @@
     <div class="row">
       <div class="ui-g-4 ui-md-4">
       </div>
-      <div class="ui-g-8 ui-md-8 text-right pr-3">
+      <div class="ui-g-4 ui-md-4 text-center pr-3">
         <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
       </div>
     </div>
@@ -131,15 +131,15 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr class="mprltbldata">
-        <th>S.No</th>
+        <th style="width:50px">S.No</th>
         <th>MPR Document Number</th>
         <th>Description</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Job Code</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Job Name</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Purpose of issuing MPR</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Item Description</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Ge Ps Approval Id</th>
-        <th *ngIf="employee.DeptID==14 && employee.DOL==null" >Buyer Group Name</th>
+        <th *ngIf="showCMMFilter" >Job Code</th>
+        <th *ngIf="showCMMFilter" >Job Name</th>
+        <th *ngIf="showCMMFilter" >Purpose of issuing MPR</th>
+        <th *ngIf="showCMMFilter" >Item Description</th>
+        <th *ngIf="showCMMFilter" >Ge Ps Approval Id</th>
+        <th *ngIf="showCMMFilter" >Buyer Group Name</th>
         <th>Preapared By</th>
         <th>Preapared On</th>
         <th>Check By</th>
@@ -163,17 +163,17 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
       <tr  class="mprltbldata">
-        <td>
+        <td style="width:50px">
           {{ri+1}}
         </td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.JobCode}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.JobName}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.ItemDescription}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
-        <td *ngIf="employee.DeptID==14 && employee.DOL==null"  class="ptable-cell">{{rowData.BuyerGroupName}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.JobCode}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.JobName}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
+        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.BuyerGroupName}}</td>
         <td class="ptable-cell">{{rowData.PreparedName}}</td>
         <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
         <td class="ptable-cell">{{rowData.CheckedName}}</td>

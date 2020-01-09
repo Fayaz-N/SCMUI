@@ -2,11 +2,12 @@ import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } fr
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { MprService } from 'src/app/services/mpr.service';
 import { Router } from '@angular/router';
-import { Employee, DynamicSearchResult } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, AccessList } from 'src/app/Models/mpr';
 import { constants } from 'src/app/Models/MPRConstants';
 import { first } from 'rxjs/operators';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
+import { MENU_ITEMS } from '../pages-menu';
 
 @Component({
   selector: 'app-Login',
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
 
   public LoginForm: FormGroup;
   public employee: Employee;
+  public AccessList: Array<AccessList> = [];
   public LoginSubmitted: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public dataSaved: boolean = false;
@@ -35,7 +37,6 @@ export class LoginComponent implements OnInit {
   }
 
   Login() {
-
     this.LoginSubmitted = true;
     if (this.LoginForm.invalid) {
       return;
@@ -53,7 +54,14 @@ export class LoginComponent implements OnInit {
           this.spinner.hide();
           if (data1.EmployeeNo != null) {
             this.employee = data1;
-            //localStorage.setItem("Employee", JSON.stringify(this.employee));
+            this.MprService.getAccessList(this.employee.RoleId).subscribe(data => {
+              localStorage.setItem("AccessList", JSON.stringify(data));
+              this.AccessList = data;
+              if (this.AccessList.filter(li => li.AccessName == "CreateMPR").length <= 0) {
+                var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
+                MENU_ITEMS[1].children.splice(index, 1);
+              }
+            })
             this.LoginForm.reset();
             this.router.navigateByUrl('/SCM/Dashboard');
 

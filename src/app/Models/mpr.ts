@@ -268,7 +268,7 @@ export class Employee {
   DeptID: number;
   DOL: Date;
   RoleId: number;
-} 
+}
 export class MPRBuyerGroup {
   BuyerGroupId: number;
   BuyerGroup: string;
@@ -294,7 +294,15 @@ export class ProjectManager {
   EmployeeNo: string;
   Name: string;
 }
-
+export class AccessList {
+  RoleId: number;
+  RoleName: string;
+  UpdatedBy; string;
+  AccessNameID: number;
+  AccessName: string;
+  RoleAccessNameid: number;
+  AccessNameStatus: boolean;
+}
 
 
 
