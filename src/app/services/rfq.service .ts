@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments } from '../Models/rfq';
 
 @Injectable({
 	providedIn: 'root'
@@ -38,10 +38,13 @@ export class RfqService {
 	}
 	GetItemsByRevisionId(RevisionId: number): Observable<any> {
 		return this.http.get<any>(this.url + 'RFQ/GetItemsByRevisionId/' + RevisionId);
-	}
-	GetRfqDetailsById(RevisionId: number): Observable<any> {
-		return this.http.get<any>(this.url + 'RFQ/GetRfqDetailsById/' + RevisionId);
-	}
+  }
+  GetRfqDetailsById(RevisionId: number): Observable<QuoteDetails> {
+    return this.http.get<QuoteDetails>(this.url + 'RFQ/GetRfqDetailsById/' + RevisionId);
+  }
+  updateRfqDocumentStatus(rfqDocs: RFQDocuments[]): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/updateRfqDocStatus/', rfqDocs, this.httpOptions);
+  }
 	GetUnitMasterList(): Observable<any> {
 		return this.http.get<any>(this.url + 'RFQ/GetUnitMasterList', this.httpOptions);
 	}

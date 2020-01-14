@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -92,6 +92,9 @@ export class MprService {
     return this.http.post<boolean>(this.url + 'MPR/updateMPRVendor/' + RevisionId, mprVendor, this.httpOptions);
   }
 
+  addNewVendor(newVendordetails: VendorMaster): Observable<any> {
+    return this.http.post<boolean>(this.url + 'MPR/addNewVendor',  newVendordetails, this.httpOptions);
+  }
   //added masters
 
   getDBMastersList(search: DynamicSearchResult): Observable<any> {

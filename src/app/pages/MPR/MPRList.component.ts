@@ -4,13 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
+import { DatePipe } from '@angular/common';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-MPRList',
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
   public mprTitle: string;
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
@@ -29,6 +31,9 @@ export class MPRListComponent implements OnInit {
   public typeOfList: string;
   public statusList: Array<any> = [];
   loading: boolean;
+  public fromDate: Date;
+  public toDate: Date
+
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
@@ -49,8 +54,8 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.PreparedBy = "";
     else
       this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
-    this.mprFilterParams.ToDate = new Date();
-    this.mprFilterParams.FromDate = new Date(new Date().setDate(new Date().getDate() - 30));
+    this.toDate = new Date();
+    this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
 
     this.MPRfilterForm = this.formBuilder.group({
       DocumentNo: ['', [Validators.required]],
@@ -109,12 +114,13 @@ export class MPRListComponent implements OnInit {
 
   //bind mpr list
   bindList() {
-    debugger;
-    this.mprFilterParams.FromDate = new Date(this.mprFilterParams.FromDate);
-    this.mprFilterParams.ToDate = new Date(this.mprFilterParams.ToDate);
+    this.spinner.show();
+    this.mprFilterParams.FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
+    this.mprFilterParams.ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
       this.loading = false;
+      this.spinner.hide();
     })
   }
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {

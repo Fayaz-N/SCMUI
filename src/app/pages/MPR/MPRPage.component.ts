@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, MPRStatusUpdate, MPRDetail, AccessList } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, VendorMaster, MPRStatusUpdate, MPRDetail, AccessList } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 
@@ -21,7 +21,7 @@ export class MPRPageComponent implements OnInit {
   //variable Declarations start
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
-  public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm: FormGroup;
+  public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm; newVendor: FormGroup;
   public showMaterialForm; showVendorForm; showOtherDetailsForm; communicationFormEdit; showCommunicationForm: boolean = false;
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
   public MPRForm1Submitted; MPRItemDetailsSubmitted; vendorSubmitted; MPRForm2Submitted; MPRForm3Submitted; MPRCommunicationSubmitted = false;
@@ -62,6 +62,9 @@ export class MPRPageComponent implements OnInit {
   public showAcknowledge: boolean = false;
   public showPage: boolean = false;
   public doc: SafeResourceUrl;
+  public showNewVendor: boolean = false;
+  public newVendorDetails: VendorMaster;
+  public RfqGeneratedList: Array<any> = [];
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -89,6 +92,8 @@ export class MPRPageComponent implements OnInit {
     this.MPRReminderTrackings = new MPRReminderTracking();
     this.mprStatusUpdate = new MPRStatusUpdate();
     this.mprRevisionDetails = new mprRevision();
+    this.newVendorDetails = new VendorMaster();
+    this.RfqGeneratedList = [];
     //create static drop down text from 1 to 100
     Array(100).fill(1).map((x, i) => {
       this.numbers.push(i + 1);
@@ -117,8 +122,8 @@ export class MPRPageComponent implements OnInit {
       Quantity: ['', [Validators.required]],
       UnitId: ['', [Validators.required]],
       SOLineItemNo: ['', [Validators.required]],
-      MfgPartNumber: ['', [Validators.required]],
-      MfgModelNumber: ['', [Validators.required]],
+      MfgPartNo: ['', [Validators.required]],
+      MfgModelNo: ['', [Validators.required]],
       ReferenceDocNo: ['', [Validators.required]],
       TargetSpend: ['', [Validators.required]]
 
@@ -173,14 +178,19 @@ export class MPRPageComponent implements OnInit {
       ccEmail: ['', [Validators.required]]
 
     })
+    this.newVendor = this.formBuilder.group({
+      VendorName: ['', [Validators.required]],
+      Emailid: ['', [Validators.required]],
+      ContactNo: ['', [Validators.required]]
+    })
     //remove validation for unwanted fields.
     this.MPRPageForm1.controls['docNo'].clearValidators();
     this.MPRPageForm1.controls['JobCode'].clearValidators();
     this.MPRPageForm1.controls['JobName'].clearValidators();
     this.MPRPageForm1.controls['GEPSApprovalId'].clearValidators();
     this.MPRItemDetailsForm.controls['SOLineItemNo'].clearValidators();
-    this.MPRItemDetailsForm.controls['MfgPartNumber'].clearValidators();
-    this.MPRItemDetailsForm.controls['MfgModelNumber'].clearValidators();
+    this.MPRItemDetailsForm.controls['MfgPartNo'].clearValidators();
+    this.MPRItemDetailsForm.controls['MfgModelNo'].clearValidators();
     this.MPRItemDetailsForm.controls['ReferenceDocNo'].clearValidators();
     this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
     this.MPRPageForm1.controls['SaleOrderNo'].clearValidators();
@@ -188,6 +198,7 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm2.controls['TargetSpend'].clearValidators();
     this.MPRPageForm2.controls["TargetedSpendRemarks"].clearValidators();
     this.MPRPageForm3.controls['GuaranteePeriod'].clearValidators();
+    this.MPRPageForm3.controls['TrainingManWeeks'].clearValidators();
     this.MPRPageForm3.controls['InspectionComments'].clearAsyncValidators();
     this.MPRPageForm3.controls['supplyMonths'].clearValidators();
     this.MPRPageForm3.controls['commissionMonths'].clearValidators();
@@ -208,6 +219,7 @@ export class MPRPageComponent implements OnInit {
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
         this.loadMPRData(revisionId);
+        this.getRfqGeneratedList(revisionId);
       }
       else {
         //check count of MPR Pending List
@@ -239,6 +251,8 @@ export class MPRPageComponent implements OnInit {
 
   //Binding searchList data
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
+    if (e.type == "keyup" && searchTxt && searchTxt.length < 3)
+      return;
     this.formName = formName;
     this.dialogTop = e.clientY + 30 + "px";
     this.txtName = name;
@@ -246,6 +260,8 @@ export class MPRPageComponent implements OnInit {
       searchTxt = "";
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    if (this.dynamicData.searchCondition && name == "ItemId")
+      this.dynamicData.searchCondition += " OR Material" + " like '%" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -281,7 +297,7 @@ export class MPRPageComponent implements OnInit {
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
     this.showList = false;
-    if (item.listName == "ItemId")
+    if (item.listName == "ItemId" || item.listName == "UnitId")
       this.itemDetails[this.txtName] = item.code;
     if (item.listName == "venderid") {
       if (this.mprRevisionModel.MPRVendorDetails.filter(li => li.Vendorid == item.code).length > 0) {
@@ -289,7 +305,8 @@ export class MPRPageComponent implements OnInit {
         return false;
       }
       this.vendorDetails.Vendorid = item.code;
-      this.vendorDetails.VendorName = item.name
+      this.vendorDetails.VendorName = item.name;
+      this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
       //this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
     }
     if (item.listName == "DocumentationDescriptionId") {
@@ -432,16 +449,24 @@ export class MPRPageComponent implements OnInit {
       return this.mprRevisionModel.MPRItemInfoes.map(li => li.TargetSpend).reduce((prev, next) => prev + next);
   }
 
-  onRowEditInit(e: any, formName: string, details: MPRItemInfoes, name: string) {
+  onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
     this.itemDetails = details;
     this.displayItemDialog = true;
     this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
       this.showList = false;
-      this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == name && li.code == details.Itemid)[0].name;
+      if (details.Itemid == "0000")
+        this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
+      else
+        this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
       this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity()
     });
-
+    this.bindSearchListData(e, formName, 'UnitId', "", (): any => {
+      this.showList = false;
+      this.MPRItemDetailsForm.controls.UnitId.value = this.searchItems.filter(li => li.listName == "UnitId" && li.code == details.UnitId)[0].name;
+      this.MPRItemDetailsForm.value.UnitId = details.UnitId;
+      this.MPRItemDetailsForm.controls['UnitId'].updateValueAndValidity()
+    });
   }
 
   onMPRInfoDelete(details: MPRItemInfoes, index: number) {
@@ -470,6 +495,7 @@ export class MPRPageComponent implements OnInit {
   EditVendor(dialogName: string, vendorDetails: MPRVendorDetail) {
     this.vendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorDetails.VendorName = vendorDetails.VendorMaster.VendorName;
+    this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
     this[dialogName] = true;
   }
 
@@ -630,13 +656,31 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionModel.MPRItemInfoes = [];
     if (type == "vendorDetails") {
       this.vendorSubmitted = true;
-      if (!this.vendorDetails.VendorName)
-        return;
+      this.mprRevisionModel.MPRDocuments = [];
+      this.mprRevisionModel.MPRDocumentations = [];
+      if (this.showNewVendor) {
+        if (this.newVendor.invalid) {
+          return;
+        }
+        else {
+          this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
+            this.vendorSubmitted = false;
+            this.vendorDetails.Vendorid = data;
+            this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
+            this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
+            this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
+            this.updateDocumentation(dialogName);
+          })
+        }
+      }
       else {
-        this.vendorSubmitted = false;
-        this.mprRevisionModel.MPRDocuments = [];
-        this.mprRevisionModel.MPRDocumentations = [];
-        this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
+        if (!this.vendorDetails.VendorName)
+          return;
+        else {
+          this.vendorSubmitted = false;
+          this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
+          this.updateDocumentation(dialogName);
+        }
       }
     }
     else if (type == "documentDetails") {
@@ -644,13 +688,18 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel.MPRDocumentations = [];
       this.MPR3Documents.push(this.mprDocuments);
       this.mprRevisionModel.MPRDocuments = this.MPR3Documents;
+      this.updateDocumentation(dialogName);
     }
     else if (type == "documentations") {
       this.mprRevisionModel.MPRDocuments = [];
       this.mprRevisionModel.MPRVendorDetails = [];
       this.mprRevisionModel.MPRDocumentations.push(this.MPRDocumentations);
-
+      this.updateDocumentation(dialogName);
     }
+
+  }
+
+  public updateDocumentation(dialogName: string) {
     this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
       this.mprRevisionModel = data;
       this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
@@ -660,7 +709,6 @@ export class MPRPageComponent implements OnInit {
     });
   }
 
-
   //Communication Block
 
   showCommunicationDialogToAdd(dialogName: string) {
@@ -668,7 +716,7 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunications = new MPRCommunication();
   }
 
-  getComName(code: number) {
+  getComName(code: string) {
     if (code)
       return this.searchItems.filter(li => li.code == code)[0].name
   }
@@ -716,6 +764,13 @@ export class MPRPageComponent implements OnInit {
     this.MprService.getStatusList().subscribe(data => {
       this.statusList = data;
 
+    })
+  }
+  getRfqGeneratedList(revisionId: string) {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select RFQRevisions.rfqRevisionId, RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions on  RFQRevisions.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.RfqGeneratedList = data;
     })
   }
   onstatusUpdate(Acknowledge: string) {
@@ -769,7 +824,7 @@ export class MPRPageComponent implements OnInit {
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
       this.mprRevisionModel = data;
-
+      this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
       this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
         this.mprRevisionList = data;
         this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
@@ -873,6 +928,34 @@ export class MPRPageComponent implements OnInit {
     elmnt.scrollIntoView();
     //var navelmnt = document.getElementById(navId);
     // navelmnt.classList.add("active");
+  }
+  //Binding selected units
+  public BindUnits(unitId: number) {
+    if (unitId == 1)
+      return "Nos"
+    if (unitId == 2)
+      return "Set"
+    if (unitId == 3)
+      return "Kgs"
+
+  }
+  //Adding new vendor
+  public addNewVendor() {
+    this.showNewVendor = true;
+  }
+  //bind rfq link in vendor details
+  getRfqData(vendorId: string, type: string) {
+    if (this.RfqGeneratedList.length > 0) {
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
+      if (res) {
+        if (type == "rfqLink")
+          return res.RFQNo;
+        else
+          return res.rfqRevisionId;
+      }
+      else
+        return "";
+    }
   }
 }
 

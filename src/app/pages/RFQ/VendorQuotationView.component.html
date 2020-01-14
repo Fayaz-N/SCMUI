@@ -26,7 +26,7 @@
       <label>RFQ Valid Date :</label>&nbsp;<span>{{quoteDetails.RfqValidDate | date : constants.dateFormat}}</span>
     </div>
   </div>
-  <div class="row form-control" style="height:100%; border-radius:0px;">
+  <div class="form-control" style="height:100%; border-radius:0px;">
     <div class="row" style="margin-left: 0px; margin-right: 0px">
       <p-table [value]="quoteDetails.rfqitem">
         <ng-template pTemplate="header">
@@ -37,6 +37,9 @@
             <th>Quantity</th>
             <th>HSN Code</th>
             <th *ngIf="RFQPriceVisibility">Unit Price</th>
+            <th *ngIf="MPRPriceVisibilty">Documents</th>
+            <th *ngIf="MPRPriceVisibilty">Status</th>
+            <th *ngIf="MPRPriceVisibilty">Remarks</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -46,13 +49,32 @@
             <td>{{rowData.ItemDescription}}</td>
             <td>{{rowData.QuotationQty}}</td>
             <td>{{rowData.HSNCode}}</td>
-            <td  *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
+            <td *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
+            <td *ngIf="MPRPriceVisibilty">
+              <div *ngFor="let document of rowData.RFQDocuments">
+                <i class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
+              </div>
+            </td>
+            <td *ngIf="MPRPriceVisibilty">
+              <select *ngIf="rfqDocuments[ri]" class="form-control dropdown" [(ngModel)]="rfqDocuments[ri].Status">
+                <option value="Pending">Pending</option>
+                <option value="Approved">Approved</option>
+                <option value="Rejected">Rejected</option>
+              </select>
+            </td>
+            <td *ngIf="MPRPriceVisibilty"><input *ngIf="rfqDocuments[ri]" type="text" class="form-control" [(ngModel)]="rfqDocuments[ri].StatusRemarks" /></td>
           </tr>
         </ng-template>
       </p-table>
-    </div><br /><br />
-    <h4 style="text-decoration: underline;">Terms & Conditions :</h4>
+    </div><br />
+    <div *ngIf="MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
+      <div class="col-xs-4 col-md-4 col-sm-4"></div>
+      <div class="col-xs-4 col-md-4 col-sm-4">
+        <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>
+      </div>
+    </div>
     <div class="row" style="margin-left: 0px; margin-right: 0px">
+      <h4 style="text-decoration: underline;">Terms & Conditions :</h4>
       <p-table [value]="quoteDetails.RFQTerms">
         <ng-template pTemplate="header">
           <tr class="text-center">

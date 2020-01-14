@@ -20,7 +20,7 @@ export class searchParams {
 }
 export class searchList {
   listName: string;
-  code: number;
+  code: string;
   name: string;
 }
 export class MPRDetail {
@@ -30,15 +30,15 @@ export class MPRDetail {
 }
 export class MPRItemInfoes {
   Itemdetailsid: number;
-  Itemid: number;
+  Itemid: string;
   RevisionId: number;
   ItemDescription: string;
   Quantity: string;
   UnitId: string;
   SaleOrderNo: string;
   SOLineItemNo: string;
-  MfgPartNumber: string;
-  MfgModelNumber: string;
+  MfgPartNo: string;
+  MfgModelNo: string;
   ReferenceDocNo: string;
   TargetSpend: string;
   DeleteFlag: boolean
@@ -125,6 +125,13 @@ export class MPRVendorDetail {
   VendorMaster: any;
 }
 
+export class VendorMaster {
+  Vendorid: number;
+  VendorCode: string;
+  VendorName: string;
+  Emailid: string;
+  ContactNo: string;
+}
 
 export class mprRevision {
 
@@ -239,8 +246,8 @@ export class mprFilterParams {
   ListType: string;
   DocumentNo: string;
   DocumentDescription: string;
-  FromDate: Date;
-  ToDate: Date;
+  FromDate: string;
+  ToDate: string;
   Status: string;
   PreparedBy: string = "";
   CheckedBy: string = "";

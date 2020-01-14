@@ -75,6 +75,9 @@
   <span><b>APD - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>DP - </b>Delivery period</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b><i class="fa fa-clock-o  times-color"></i> - </b>Pending</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b><i class="fa fa-check check-color"></i> - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b><i class="fa fa-times times-color"></i> - </b>Rejected</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <br />
   <div class="ui-g">
     <div class="ui-g-12 ui-lg-12 ui-md-12">
@@ -110,7 +113,11 @@
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
-                    <span class="valueEdit"></span>
+                    <span class="valueEdit">
+                      <i *ngIf="vendor.RfqDocStatus=='Pending'" class="fa fa-clock-o times-color"></i>
+                      <i *ngIf="vendor.RfqDocStatus=='Approved'" class="fa fa-check check-color"></i>
+                      <i *ngIf="vendor.RfqDocStatus=='Rejected'" class="fa fa-times times-color"></i>
+                    </span>
                   </div>
                 </div>
                 <div class="row">
@@ -128,7 +135,7 @@
                   </div>
                 </div>
               </div>
-            
+
               <!--<label class="form-label">Remarks</label>
               <input type="text" class="form-control" />-->
             </td>

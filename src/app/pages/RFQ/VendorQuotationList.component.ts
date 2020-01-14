@@ -21,7 +21,8 @@ export class VendorQuotationListComponent implements OnInit {
 			if (params["VendorId"]) {
 				this.VendorId = params["VendorId"];
 			}
-		});
+      });
+
 		//this.VendorId = 7;
 		this.rfqMastersModel = []
 		this.rfqRevisions = new RFQRevisionData();

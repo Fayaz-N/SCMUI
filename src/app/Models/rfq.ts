@@ -8,6 +8,7 @@ export class rfqQuoteModel {
   vendorQuoteQty: string;
   UnitPrice: string;
   leastPrice: string;
+  RfqDocStatus: string;
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
 
@@ -121,6 +122,7 @@ export class RfqItemModel {
   SyncDate: Date;
   SyncStatus: boolean;
   iteminfo: Array<RfqItemInfoModel> = [];
+  RFQDocuments: Array<RFQDocuments> = [];
 }
 
 export class rfqFilterParams {
@@ -135,10 +137,26 @@ export class QuoteDetails {
   CreatedDate: Date;
   RfqValidDate: Date;
   rfqmaster: RFQMaster;
-  rfqitem: Array<any>;
+  rfqitem: Array<RfqItemModel>;
   RFQTerms: Array<any>;
+  mprIncharges: Array<any>;
 }
 export class RFQMaster {
   RfqNo: string;
   Vendor: VendorDetails;
+}
+export class RFQDocuments {
+  RfqDocumentId: number;
+  RfqRevisionId: number;
+  RfqItemsId: number;
+  DocumentName: string;
+  DocumentType: number
+  Path: string;
+  UploadedBy: string
+  UploadedDate: Date;
+  StatusRemarks: string;
+  Status: string;
+  Statusdate: Date
+  StatusBy: string;
+  DeleteFlag: boolean;
 }

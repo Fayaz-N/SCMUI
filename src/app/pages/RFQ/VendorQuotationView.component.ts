@@ -1,10 +1,11 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { RfqService } from 'src/app/services/rfq.service ';
-import { QuoteDetails} from 'src/app/Models/rfq';
+import { QuoteDetails, RFQDocuments } from 'src/app/Models/rfq';
 import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, AccessList } from 'src/app/Models/mpr';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-VendorQuotationView',
@@ -13,12 +14,15 @@ import { Employee, AccessList } from 'src/app/Models/mpr';
 
 export class VendorQuotationViewComponent implements OnInit {
 
-  constructor(public RfqService: RfqService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
+  constructor(public RfqService: RfqService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   public RfqRevisionId: number = 0;
   public quoteDetails: QuoteDetails;
-  public RFQPriceVisibility: boolean = false; 
+  public rfqDocuments: Array<RFQDocuments> = [];
+  public RFQPriceVisibility: boolean = false;
+  public MPRPriceVisibilty: boolean = false;
+
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -29,6 +33,8 @@ export class VendorQuotationViewComponent implements OnInit {
     }
     if (this.AccessList.filter(li => li.AccessName == "RFQPriceVisibility").length > 0)
       this.RFQPriceVisibility = true;
+    if (this.AccessList.filter(li => li.AccessName == "MPRPriceVisibilty").length > 0)
+      this.MPRPriceVisibilty = true;
     this.quoteDetails = new QuoteDetails();
     this.route.params.subscribe(params => {
       if (params["RFQRevisionId"]) {
@@ -41,6 +47,28 @@ export class VendorQuotationViewComponent implements OnInit {
   loadQuotationDetails() {
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
       this.quoteDetails = data;
+      if (this.quoteDetails.mprIncharges.filter(li => li.Incharge == this.employee.EmployeeNo).length > 0)
+        this.MPRPriceVisibilty = true;
+      for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
+        this.quoteDetails.rfqitem[i].RFQDocuments.forEach(doc => {
+          if (this.rfqDocuments.filter(li => li.RfqItemsId = doc.RfqItemsId).length == 0) {
+            doc.StatusBy = this.employee.EmployeeNo;
+            doc.Statusdate = new Date();
+            this.rfqDocuments.push(doc);
+          }
+        });
+      }
+    });
+  }
+  viewDocument(path: string, documentname: string) {
+    var path1 = path.replace(/\\/g, "/");
+    path1 = "http://10.29.15.68:90/SCMDocs/" + path1;
+    window.open(path1);
+  }
+  updateRfqDocumentStatus() {
+    this.RfqService.updateRfqDocumentStatus(this.rfqDocuments).subscribe(data => {
+      if (data)
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     });
   }
 }

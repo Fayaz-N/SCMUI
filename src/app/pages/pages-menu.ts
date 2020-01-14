@@ -126,7 +126,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     {
         title: 'Purchase Authorization',
         icon: 'lock-outline',
-        expanded: true,
+        expanded: false,
         children: [
             {
                 title: 'MPRPA',

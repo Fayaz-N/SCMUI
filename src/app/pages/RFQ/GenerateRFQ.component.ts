@@ -69,7 +69,7 @@ export class GenerateRFQComponent implements OnInit {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = "select term.TermId,term.TermGroupId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-      this.YILTermsAndConditions = data;
+      this.YILTermsAndConditions = data;     
     })
   }
   openVendorDialog(dialogName: string) {
@@ -140,6 +140,7 @@ export class GenerateRFQComponent implements OnInit {
         this.vendorSubmitted = false;
         this.vendorDetailsArray = [];
         this.vendorDetailsArray.push(this.vendorDetails);
+        this.vendorDetailsArray.forEach((el) => { el.UpdatedBy = this.employee.EmployeeNo; })
         this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
           if (data) {
             this.dynamicData = new DynamicSearchResult();
@@ -276,6 +277,7 @@ export class GenerateRFQComponent implements OnInit {
       item.DeliveryMinWeeks = this.RFQRevisionData.DeliveryMinWeeks;
       item.DeliveryMaxWeeks = this.RFQRevisionData.DeliveryMaxWeeks;
     });
+    this.YILTermsAndConditions.forEach((el) => { el.CreatedBy = this.employee.EmployeeNo; })
     this.RfqService.updateVendorQuotes(this.selectedVendorList, this.YILTermsAndConditions).subscribe(data => {
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Updated sucessfully' });

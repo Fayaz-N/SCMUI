@@ -7,6 +7,7 @@ import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails } from 'src/app/Models/rfq';
+import { Employee } from 'src/app/Models/mpr';
 
 @Component({
   selector: 'app-RFQComparision',
@@ -17,6 +18,7 @@ export class RFQComparisionComponent implements OnInit {
   constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
 
   //variable Declarations
+  public employee: Employee;
   public MPRRevisionId: number;
   public selectedVendorList: Array<any> = [];
   public RfqCompareItems: Array<any> = [];
@@ -28,7 +30,7 @@ export class RFQComparisionComponent implements OnInit {
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
-      JSON.parse(localStorage.getItem("Employee"));
+      this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
    
@@ -61,6 +63,7 @@ export class RFQComparisionComponent implements OnInit {
         rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
         rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
         rfqQuoteItems.UnitPrice = this.RfqCompareItems[i].UnitPrice;//rfqitemsinfo
+        rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
         this.cols.forEach(vendor => {
           this.vendorDetails = new VendorDetails();
           if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.ItemId == this.RfqCompareItems[i].ItemId)[0])
@@ -180,6 +183,7 @@ export class RFQComparisionComponent implements OnInit {
 
   statusSubmit() {
     if (this.selectedVendorList.length > 0) {
+      this.selectedVendorList.forEach((el) => { el.CreatedBy = this.employee.EmployeeNo; })
       this.RfqService.statusUpdate(this.selectedVendorList).subscribe(data => {
         if (data)
           this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated sucessfully' });

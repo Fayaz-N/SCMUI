@@ -10,11 +10,11 @@
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">From Date</label><br />
-        <p-calendar class="mprldatepick" formControlName="FromDate" [(ngModel)]="mprFilterParams.FromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+        <p-calendar class="mprldatepick" formControlName="FromDate" [(ngModel)]="fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">To Date</label>&nbsp;<br />
-        <p-calendar class="mprldatepick" formControlName="ToDate" [(ngModel)]="mprFilterParams.ToDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+        <p-calendar class="mprldatepick" formControlName="ToDate" [(ngModel)]="toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="docNo" class="form-label">Document Number</label>
@@ -30,10 +30,10 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Checked By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)">
-          <div class="input-group-append">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)">
+          <!--<div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy','',undefined)"></button>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
@@ -47,10 +47,10 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Approved By : </label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
-          <div class="input-group-append">
+          <input type="text" disabled="true"  class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
+          <!--<div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy','',undefined)"></button>
-          </div>
+          </div>-->
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
@@ -180,8 +180,8 @@
         <td class="ptable-cell">{{rowData.CheckStatus }}</td>
         <td class="ptable-cell">{{rowData.ApproverName}}</td>
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
-        <td><button *ngIf="typeOfList=='MPRList' && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
-        <td><button *ngIf="typeOfList=='MPRList'&& rowData.CheckStatus=='Approved' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
+        <td><button *ngIf="typeOfList=='MPRList' || typeOfList=='MPRPendingList' && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
+        <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
       </tr>
     </ng-template>
   </p-table>
