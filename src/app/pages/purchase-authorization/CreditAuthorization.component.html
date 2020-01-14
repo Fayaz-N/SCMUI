@@ -29,7 +29,7 @@
             <label for="procSrc"> Employee Select:</label>
           </div>
           <div class="ui-g-5">
-            <select class="form-control dropdown" [(ngModel)]="creditApprovers.EmployeeNo" formControlName="EmployeeNo" [value]="Approveform.controls.EmployeeNo.value"  [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.EmployeeNo.errors}">
+            <select class="form-control dropdown" [(ngModel)]="creditApprovers.EmployeeNo" formControlName="EmployeeNo" [value]="Approveform.controls.EmployeeNo.value" [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.EmployeeNo.errors}">
               <option *ngFor="let emp of employeeslist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
               <option [value]="0">Select</option>
             </select>
@@ -54,8 +54,37 @@
       </div>
     </div>
   </form>
+</div><br />
+<div class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+  <p-table [value]="mappedcredit" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width: 5em">Sl No</th>
+        <th>MinPAValue</th>
+        <th>MaxPAValue</th>
+        <th>EmployeeName</th>
+        <th>AuthorizationType</th>
+        <th>Creditdays</th>
+        <th style="width: 5em"></th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr>
+        <td class="text-center">{{ri+1}}</td>
+        <td>{{rowData.MinPAValue}}</td>
+        <td>{{rowData.MaxPAValue}}</td>
+        <td>{{rowData.Name}}</td>
+        <td>{{rowData.AuthorizationType}}</td>
+        <td>{{rowData.MinDays}}-{{rowData.MaxDays}}</td>
+        <td class="text-center">
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" class="ui-button-danger" (click)="deletecreditrow(rowData)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table><br />
 </div>
-<form [formGroup]="creditform">
+<br />
+<form #myForm="ngForm" [formGroup]="creditform">
   <p-dialog header="Add" [(visible)]="addialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
 
     <div class="ui-g-12">
@@ -72,15 +101,15 @@
         <label for="procSrc">MaxDays :</label>
       </div>
       <div class="ui-g-5">
-        <input type="text" formControlName="MaxDays" [(ngModel)]="credit.MaxDays"  class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MaxDays.errors}" />
-        
+        <input type="text" formControlName="MaxDays" [(ngModel)]="credit.MaxDays" class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MaxDays.errors}" />
+
         <span *ngIf="crSubmitted && creditform.controls.MaxDays.errors" class="invalid-feedback">Maxdays Required </span>
       </div>
     </div>
 
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="button" pButton icon="fa fa-check" class="ui-button-success"  (click)="Submit(credit)" label="Insert"></button>
+        <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="Submit(credit)" label="Insert"></button>
         <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
       </div>
     </p-footer>

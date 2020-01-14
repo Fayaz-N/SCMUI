@@ -68,6 +68,12 @@ export class purchaseauthorizationservice {
     LoadAllCreditDays(): Observable<PACreditDaysMasterModel[]> {
         return this.http.get<PACreditDaysMasterModel[]>(this.url + 'RFQ/GetAllCreditDays', this.httpOptions);
     }
+    LoadAllMappedCredits(): Observable<any>{
+        return this.http.get<any>(this.url + 'RFQ/GetCreditSlabsandemployees', this.httpOptions);
+    }
+    LoadEmployeemappedPurchases(): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/GetPurchaseSlabsandMappedemployees', this.httpOptions);
+    }
     LoadAllmprpapurchasemodes(): Observable<mprpapurchasemodesmodel[]> {
         return this.http.get<mprpapurchasemodesmodel[]>(this.url + 'RFQ/GetAllMprPAPurchaseModes', this.httpOptions);
     }
@@ -77,8 +83,8 @@ export class purchaseauthorizationservice {
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/InsertPurchaseAuthorization', purchasedetails, this.httpOptions);
     }
-    LoadMprPADeatilsbyid(PID: number): Observable<any> {
-        return this.http.get<any>(this.url + 'RFQ/GetMPRPADeatilsByPAID/'+ PID, this.httpOptions);
+    LoadMprPADeatilsbyid(PID: number): Observable<mprpadetailsmodel> {
+        return this.http.get<mprpadetailsmodel>(this.url + 'RFQ/GetMPRPADeatilsByPAID/'+ PID, this.httpOptions);
     }
     LoadMprPAList(): Observable<any> {
         return this.http.get<any>(this.url + 'RFQ/GetAllMPRPAList', this.httpOptions);
@@ -86,10 +92,18 @@ export class purchaseauthorizationservice {
     LoadAllmprBuyerGroups(): Observable<any> {
         return this.http.get<any>(this.url + 'RFQ/GetAllMPRBuyerGroups', this.httpOptions);
     }
-
+    RemovePACreditDaysApprover(mappingdata: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/RemovePACreditDaysApprover', mappingdata, this.httpOptions);
+    }
+    RemovePurchaseApprover(mappingdata: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/RemovePurchaseApprover', mappingdata, this.httpOptions);
+    }
 
     getdata(data: any,data1:any) {
         debugger;
         this._datasource.next(data);
+    }
+    LoadVendorbymprdeptids(MPRItemDetailsid: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/LoadVendorByMprDetailsId', MPRItemDetailsid, this.httpOptions);
     }
 }

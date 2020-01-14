@@ -25,6 +25,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     public authid: number;
     public slbaslist = [];
     public authorizationtype = [];
+    public mappedpurchase: Array<any> = [];
     public AddDialog: boolean;
     public paauthorization: PAAuthorizationLimitModel;
     public employemapping: PAAuthorizationEmployeeMappingModel;
@@ -54,9 +55,10 @@ export class PurchaseAuthorizationComponent implements OnInit {
         })
         this.paauthorization = new PAAuthorizationLimitModel();
         this.employemapping = new PAAuthorizationEmployeeMappingModel();
-        debugger;
+        this.mappedpurchase = new Array<any>();
         this.LoadAllemployess();
         this.LoadAllFunctionalMappings();
+        this.LoadEmployeemappedPurchases();
         this.paService.LoadAllDepartments().subscribe(data => {
             debugger;
             this.departmentlist = data;
@@ -95,7 +97,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     }
     Submit(paauthorization: PAAuthorizationLimitModel) {
         debugger;
-        paauthorization.CreatedBy = this.employee[0].EmployeeNo;
+        paauthorization.CreatedBy = this.employee.EmployeeNo;
         this.paSubmitted = true;
         if (this.detailsform.invalid) {
             return;
@@ -104,19 +106,28 @@ export class PurchaseAuthorizationComponent implements OnInit {
             debugger;
             this.paService.InsertPAAuthorizationLimits(paauthorization).subscribe(data => {
                 this.authid = data;
+                this.detailsform
             })
         }
+        //this.detailsform.clearValidators();
+        //this.detailsform.reset();
     }
 
     InsertEmployeeMapping(employemapping: PAAuthorizationEmployeeMappingModel) {
         if (employemapping.FunctionalRoleId) {
-            employemapping.CreatedBY = this.employee[0].EmployeeNo;
+            employemapping.CreatedBY = this.employee.EmployeeNo;
             this.paService.InsertEmployeeMapping(employemapping).subscribe(data => {
                 this.authid = data;
+                this.LoadEmployeemappedPurchases();
             })
         }
         else
             alert("Select Functional Role");
+    }
+    LoadEmployeemappedPurchases() {
+        this.paService.LoadEmployeemappedPurchases().subscribe(data => {
+            this.mappedpurchase = data;
+        })
     }
     toggle(event): void {
         event.target.classList.toggle("active");
@@ -134,7 +145,12 @@ export class PurchaseAuthorizationComponent implements OnInit {
             this.employemapping.MoreBudget = true;
         }
     }
-
+    deletePurchaserow(mappingdata: any) {
+        this.paService.RemovePurchaseApprover(mappingdata).subscribe(data => {
+            this.authid = data;
+            this.LoadEmployeemappedPurchases();
+        })
+    }
 }
 
 

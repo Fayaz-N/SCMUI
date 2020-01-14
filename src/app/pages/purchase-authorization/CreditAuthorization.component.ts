@@ -14,6 +14,7 @@ export class CreditAuthorizationComponent implements OnInit {
     public credit: PACreditDaysMasterModel;
     public creditdays: PACreditDaysMasterModel[];
     public authorization: PAAuthorizationLimitModel[];
+    public mappedcredit: Array<any> = [];
     public employeeslist = [];
     public employee: Employee;
     public creditdaysid: number;
@@ -33,6 +34,7 @@ export class CreditAuthorizationComponent implements OnInit {
 
         this.credit = new PACreditDaysMasterModel();
         this.creditApprovers = new PACreditDaysApproverModel();
+        this.mappedcredit = new Array<any>();
         this.creditform = this.formBuilder.group({
             MinDays: ['', [Validators.required]],
             MaxDays: ['', [Validators.required]]
@@ -47,13 +49,16 @@ export class CreditAuthorizationComponent implements OnInit {
         this.LoadAllCredits();
         this.LoadEmployeeforCreditApproval();
         this.loadallcreditdays();
+        this.LoadAllMappedCredits();
+        this.Approveform.reset();
+
     }
     AddCreditMaster() {
         this.addialog = true;
     }
     Submit(credit: PACreditDaysMasterModel) {
         this.crSubmitted = true;
-        credit.CreatedBy = this.employee[0].EmployeeNo;
+        credit.CreatedBy = this.employee.EmployeeNo;
         if (this.creditform.invalid) {
             return;
         }
@@ -62,6 +67,11 @@ export class CreditAuthorizationComponent implements OnInit {
                 this.creditdaysid = data;
             })
         }
+        this.creditform.reset();
+        this.loadallcreditdays()
+        //this.myForm.resetForm();
+        //this.creditform.controls['MinDays'].clearValidators();
+        //this.creditform.controls['MaxDays'].clearValidators();
     }
     Cancel() {
         this.addialog = false;
@@ -82,8 +92,13 @@ export class CreditAuthorizationComponent implements OnInit {
             this.creditdays = data;
         })
     }
+    LoadAllMappedCredits() {
+        this.paService.LoadAllMappedCredits().subscribe(data => {
+            this.mappedcredit = data;
+        })
+    }
     Approvecredit(creditApprovers: PACreditDaysApproverModel) {
-        creditApprovers.Createdby = this.employee[0].EmployeeNo;
+        creditApprovers.Createdby = this.employee.EmployeeNo;
         this.approveSubmitted = true;
         if (this.Approveform.invalid) {
             return;
@@ -91,7 +106,15 @@ export class CreditAuthorizationComponent implements OnInit {
         else {
             this.paService.InsertCreditApprovers(creditApprovers).subscribe(data => {
                 this.approvalid = data;
+                this.LoadAllMappedCredits();
             })
         }
+       
+    }
+    deletecreditrow(mappingdata: any) {
+        this.paService.RemovePurchaseApprover(mappingdata).subscribe(data => {
+            this.creditdaysid = data;
+            this.LoadAllMappedCredits();
+        })
     }
 }

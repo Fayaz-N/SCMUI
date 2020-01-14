@@ -3,24 +3,26 @@
     <h3>Purchase Authorization Details</h3>
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;padding:30px">
-    <div class="row">
-      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+    <div class="row form-group">
+      <div class="col-lg-3 col-md-3 col-sm-3">
         <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
         <input class="form-control" type="text" [(ngModel)]="padetails.DocumentNumber">
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3">
         <label for="SaleOrderNo" class="form-label">MPR RevisionID:</label> &nbsp;
         <input class="form-control" [(ngModel)]="padetails.RevisionID">
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3">
         <label class="form-label">RfqNo:</label> &nbsp;
         <input class="form-control" [(ngModel)]="padetails.RFQNo">
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3">
         <label class="form-label">SaleOrderNumber:</label>&nbsp;
         <input class="form-control" [(ngModel)]="padetails.SaleOrderNo">
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+    </div><br />
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department:</label>&nbsp;
         <div class="form-inline-list">
           <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }" (keyup)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)">
@@ -30,9 +32,7 @@
           <span *ngIf="Departmentsubmittted && !padetails.DepartmentName" class="invalid-feedback">Select Department.</span>
         </div>
       </div>
-    </div><br />
-    <div class="row">
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">VendorName:</label>&nbsp;
         <div class="form-inline-list">
           <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
@@ -42,7 +42,7 @@
           <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
         </div>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">BuyerGroup:</label>&nbsp;
         <div class="form-inline-list">
           <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }" (keyup)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)">
@@ -50,6 +50,16 @@
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId','',undefined)"></button>
           </span>
           <span *ngIf="MPRForm1Submitted && !buyergroups.BuyerGroup" class="invalid-feedback">Select BuyerGroup.</span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Project Manager:</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','EmployeeNo',projectmanger.Name,undefined)">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','EmployeeNo','',undefined)"></button>
+          </span>
+          <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
         </div>
       </div>
     </div>
@@ -66,32 +76,36 @@
           <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
           <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
           <th style="width: 5em">Sl No</th>
+          <th>Department</th>
+          <th>Vendor Name</th>
           <th>Item Description</th>
           <th style="width: 6em">Quantity</th>
-          <th>Vendor Name</th>
-          <th>MPR NO</th>
-          <th>TargetSpend</th>
           <th style="width:6em">Price</th>
+          <th style="width:6em">Total Price</th>
+          <th>TargetSpend</th>
           <th>SaleOrder</th>
           <th>PaymentTerm</th>
+          <th>MPR NO</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
         <tr>
           <td>
-            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-            <!--<input type="checkbox" (change)="onChange(rowData,$event.target.checked)">-->
+            <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
+            <input type="checkbox" (change)="onChange(rowData,$event.target.checked)">
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
           </td>
           <td class="text-center">{{ri+1}}</td>
+          <td>{{rowData.Department}}</td>
+          <td>{{rowData.VendorName}}</td>
           <td>{{rowData.ItemDescription}}</td>
           <td>{{rowData.QuotationQty}}</td>
-          <td>{{rowData.VendorName}}</td>
-          <td>{{rowData.DocumentNo}}</td>
-          <td>{{rowData.TargetSpend}}</td>
           <td>{{rowData.UnitPrice}}</td>
+          <td>{{rowData.itemsum}}</td>
+          <td>{{rowData.TargetSpend}}</td>
           <td>{{rowData.SaleOrderNo}}</td>
           <td>{{rowData.PaymentTermCode}}</td>
+          <td>{{rowData.DocumentNo}}</td>
         </tr>
       </ng-template>
     </p-table>

@@ -4,7 +4,7 @@
 
     <!--<div class="row form-inline" style="text-align:right">
     <h5>Add Items</h5>
-      <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Add Items</button>
+      <button type="button"  label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Add Items</button>
   </div><br />-->
     <!--<div class="row head-text pl-0">
     <div class="col-md-6 pt-2">
@@ -14,43 +14,43 @@
       <button type="button" class="btn btn-success pull-right" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Add Items</button>
     </div>
   </div><br />-->
-    <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
+    <div *ngIf="!pasubmitted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
       <div class="col-md-6 pt-2">Item Details</div>
-      <div class="col-md-3 pt-2"></div>
+      <div class="col-md-3 pt-2">
+        <a [routerLink]="['/SCM/PADetails']" routerLinkActive="active">Add Items</a>
+        <!--<button type="button" class="btn pull-right" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Add Items</button>-->
+      </div>
     </div>
     <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px;">
-      <p-table [value]="selectedItems" [paginator]="true" [rows]="10"  [resizableColumns]="true" p columnResizeMode="expand">
-        <ng-template pTemplate="caption">
-          <div style="display:inline">
-            <span style="float:left">Item Details : </span>
-            <span style="text-align:right;padding-left: 500px !important;"><a [routerLink]="['/SCM/PADetails']" routerLinkActive="active">Add Items</a></span>
-          </div>
-        </ng-template>
+      <p-table [value]="selectedItems" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
         <ng-template pTemplate="header">
           <tr>
-
             <th style="width: 5em">Sl No</th>
+            <th>Department</th>
+            <th>Vendor Name</th>
             <th>Item Description</th>
             <th style="width: 6em">Quantity</th>
-            <th>Vendor Name</th>
-            <th>MPR NO</th>
-            <th>TargetSpend</th>
             <th style="width:6em">Price</th>
+            <th style="width:6em">Total Price</th>
+            <th>TargetSpend</th>
             <th>SaleOrder</th>
             <th>PaymentTerm</th>
+            <th>MPR NO</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
           <tr>
             <td class="text-center">{{ri+1}}</td>
+            <td>{{rowData.Department}}</td>
+            <td>{{rowData.VendorName}}</td>
             <td>{{rowData.ItemDescription}}</td>
             <td>{{rowData.QuotationQty}}</td>
-            <td>{{rowData.VendorName}}</td>
-            <td>{{rowData.DocumentNo}}</td>
-            <td>{{rowData.TargetSpend}}</td>
             <td>{{rowData.UnitPrice}}</td>
+            <td>{{rowData.itemsum}}</td>
+            <td>{{rowData.TargetSpend}}</td>
             <td>{{rowData.SaleOrderNo}}</td>
             <td>{{rowData.PaymentTermCode}}</td>
+            <td>{{rowData.DocumentNo}}</td>
           </tr>
         </ng-template>
         <ng-template pTemplate="footer">
@@ -60,8 +60,10 @@
             <td></td>
             <td></td>
             <td></td>
-            <td>{{target}}</td>
+            <td></td>
             <td>{{sum}}</td>
+            <td>{{target}}</td>
+            <td></td>
             <td></td>
             <td></td>
           </tr>
@@ -83,6 +85,7 @@
             <th>MPR NO</th>
             <th>TargetSpend</th>
             <th style="width:6em">Price</th>
+            <th>Total Price</th>
             <th>SaleOrder</th>
             <th>PaymentTerm</th>
           </tr>
@@ -96,37 +99,74 @@
             <td>{{rowData.DocumentNo}}</td>
             <td>{{rowData.TargetSpend}}</td>
             <td>{{rowData.UnitPrice}}</td>
+            <td>{{rowData.UnitPrice * rowData.QuotationQty}}</td>
             <td>{{rowData.SaleOrderNo}}</td>
             <td>{{rowData.PaymentTermCode}}</td>
           </tr>
         </ng-template>
-      </p-table><br /><br />
+        <ng-template pTemplate="footer">
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{target}}</td>
+            <td>{{sum}}</td>
+            <td></td>
+            <td></td>
+          </tr>
+        </ng-template>
+      </p-table>
     </div><br />
-    <div *ngIf="showemployee" class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-      <!--<div class="form-inline">
-      <label class="form-label label" *ngFor="let List of employee" style="margin-left:20px;">Assigned Employee:&nbsp;{{List.Name}}</label>
-    </div>-->
-      <p-table [value]="employee" [paginator]="true" [rows]="10"  [resizableColumns]="true" p columnResizeMode="expand">
-
+    <div *ngIf="showemployee" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+      <p-table [value]="employeelist.Approvers" [paginator]="false" [resizableColumns]="true" p columnResizeMode="expand">
         <ng-template pTemplate="header">
           <tr>
             <th style="width: 5em">Sl No</th>
+            <th>EmployeeNo</th>
             <th>ApproverName</th>
-            <th>ApproveDate</th>
-            <th>ApprovedBy</th>
+            <th>AuthorizationType</th>
+            <th>Role</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
           <tr>
             <td class="text-center">{{ri+1}}</td>
-            <td>{{rowData.Name}}</td>
-            <td></td>
-            <td></td>
+            <td>{{rowData.EmployeeNo}}</td>
+            <td>{{rowData.ApproverName}}</td>
+            <td>{{rowData.AuthorizationType}}</td>
+            <td>{{rowData.Role}}</td>
           </tr>
         </ng-template>
       </p-table><br />
     </div><br />
-    <div class="row form-inline">
+
+    <div class="row form-inline" style="width:100%">
+      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 col-md-6 form-inline">
+        <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
+        <select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;">
+          <option *ngFor="let buy of buyergroups" [value]="buy.BuyerGroupId">{{buy.BuyerGroup}} </option>
+          <option [value]="0">Select</option>
+        </select>
+      </div>
+      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 col-md-6  form-inline">
+        <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
+        <span class="BuyerGroup">{{purchasedetails.buyergroup.BuyerGroup}}</span>
+      </div>
+      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 col-md-6 form-inline">
+        <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
+        <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;">
+          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
+          <option [value]="0">Select</option>
+        </select>
+      </div>
+      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 col-md-6  form-inline">
+        <label for="DepartMent" class="form-label label" style="margin-left: 12px;">DepartMent:</label>&nbsp;&nbsp;&nbsp;
+        <span class="DepartMent">{{purchasedetails.department.Department}}</span>
+      </div>
+    </div><br />
+    <div class="row form-inline" style="width:100%">
       <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 col-md-6 form-inline">
         <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:</label>&nbsp;
         <select [(ngModel)]="purchasedetails.PurchaseTypeId" class="form-control">
@@ -151,52 +191,47 @@
       </div>
     </div><br />
     <div class="row form-inline" style="width:100%">
-      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 col-md-6 form-inline">
-        <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;">
-          <option *ngFor="let buy of buyergroups" [value]="buy.BuyerGroupId">{{buy.BuyerGroup}} </option>
-          <option [value]="0">Select</option>
-        </select>
+      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 form-inline">
+        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
+        <input type="text" [(ngModel)]="purchasedetails.ProjectName" class="form-control" />
       </div>
-      <!--<div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 col-md-6  form-inline">
-      <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;
-      <span class="purchasetype">{{purchasetypes.PurchaseType}}</span>
-    </div>-->
-      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 col-md-6 form-inline">
-        <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 30px;">
-          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
-          <option [value]="0">Select</option>
-        </select>
-      </div>
-      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 col-md-6  form-inline">
-        <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">DepartMent:</label>&nbsp;&nbsp;&nbsp;
-        <span class="purchasetype">{{purchasedetails.department.DepartmentName}}</span>
-      </div>
-    </div><br />
-
-    <div class="row form-inline" style="width:100%">
-      <div class="col-lg-6 col-sm-6 form-inline">
+      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 form-inline">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
         <span class="Supplier">{{purchasedetails.ProjectName}}</span>
       </div>
-      <div class="col-md-6 form-inline">
+      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 form-inline">
+        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Code:</label>&nbsp;&nbsp;&nbsp;
+        <input type="text" [(ngModel)]="purchasedetails.ProjectCode" class="form-control" />
+      </div>
+      <div *ngIf="pasubmitted" class="col-md-6 form-inline">
         <label for="ProjectCode" class="form-label label" style="margin-left: 12px;">Project Code:</label>&nbsp;&nbsp;&nbsp;
         <span class="Supplier">{{purchasedetails.ProjectCode}}</span>
       </div>
     </div><br />
-    <h6>Budget Details:</h6>
+    <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
+      <div class="col-md-6 pt-2">Considered Vendors:</div>
+    </div>&nbsp;&nbsp;
+    <div class="row form-control" style="height:70px;margin-left:2px">
+      <div *ngFor="let ven of vendor" class="col-xs-4">
+        <span class="Vendor">{{ven.VendorName}} - </span>&nbsp;&nbsp;&nbsp;
+      </div>
+    </div>
+    <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
+      <div class="col-md-6 pt-2">Budget Details:</div>
+    </div>&nbsp;&nbsp;
     <div class="row form-inline" style="width:100%">
-      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 form-inline" style="width:100%">
+      <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 form-inline">
         <label for="Supplier" class="form-label label" style="margin-left: 12px;">Supplier Reference Name:</label>&nbsp;&nbsp;
         <input type="text" [(ngModel)]="purchasedetails.SupplierReference" class="form-control" />
       </div>
-      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 form-inline" style="width:100%">
+      <div *ngIf="pasubmitted" class="col-lg-6 col-sm-6 form-inline">
         <label for="Supplier" class="form-label label" style="margin-left: 12px;">Supplier Reference Name:</label>&nbsp;&nbsp;
         <span class="Supplier">{{purchasedetails.SupplierReference}}</span>
       </div>
-    </div><br />
-    <h5>Terms and Conditions:</h5>
+    </div>&nbsp;
+    <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
+      <div class="col-md-6 pt-2">Terms and Conditions:</div>
+    </div>&nbsp;
     <div class="row form-inline">
       <div *ngIf="!pasubmitted" class="col-lg-6 col-sm-6 form-inline">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Packing And Forwarding:</label>&nbsp;&nbsp;
@@ -334,7 +369,7 @@
         <span class="SpecialInstructions col-lg-8 col-sm-8" style="margin-left: 56px;">{{purchasedetails.SpecialRemarks}}</span>
       </div>
     </div>&nbsp;&nbsp;
-    <div style="margin-top:10px;text-align:center">
+    <div *ngIf="!pasubmitted" style="margin-top:10px;text-align:center">
       <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Add PA</button>
     </div>
   </div>

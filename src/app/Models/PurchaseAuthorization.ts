@@ -63,9 +63,11 @@ export class PADetailsModel {
     DepartmentName: string;
 }
 export class ItemsViewModel {
+    RFQItemsId: number;
     ItemDescription: string;
-    DocumentyNo: string;
-    QuotationQty: string;
+    Department: string;
+    DocumentNo: string;
+    QuotationQty: number;
     VendorName: string;
     TargetSpend: number;
     UnitPrice: number;
@@ -73,16 +75,40 @@ export class ItemsViewModel {
     PaymentTermCode: string;
     selectAll: boolean;
     DepartmentId: number;
+    itemsum: number;
     EmployeeNo: number;
     Name: string;
+    sum: number;
+    TragetSpend: number;
 }
 export class EmployeeModel {
     EmployeeNo: number;
     Name: string;
+    BuyerGroupManager: string;
+    BuyerGroupNo: string;
+    ProjectManager: string;
+    ProjectMangerNo: string;
+    Vendor: Array<VendorMasterModel>[];
+    Approvers: Array<PurchaseCreditApproversModel>[];
 }
+export class PurchaseCreditApproversModel {
+    ApproverName: string
+    AuthorizationType: string
+    Role: string;
+    EmployeeNo: string;
+}
+
 export class ConfigurationModel {
     minvalue: number;
     maxvalue: number;
+    PAValue: number;
+    Creditdays: number;
+    Budgetvalue: number;
+    DeptId: number;
+    TargetSpend: number;
+    UnitPrice: number;
+    PaymentTermCode: string
+    MPRItemDetailsid: Array<number>[];
 }
 export class ChangedModel {
     selectedDepartment: number;
@@ -91,6 +117,7 @@ export class ChangedModel {
 export class DepartmentModel {
     DepartmentID: number;
     DepartmentName: string;
+    Department: string;
 }
 export class mprpapurchasetypesmodel {
     PurchaseTypeId: number;
@@ -118,6 +145,7 @@ export class mprpadetailsmodel {
     Taxes: string;
     Freight: string;
     Insurance: string;
+    UnitPrice: number;
     DeliveryCondition: string;
     ShipmentMode: string;
     PaymentTerms: string;
@@ -132,5 +160,36 @@ export class mprpadetailsmodel {
     purchasemodes: mprpapurchasemodesmodel;
     purchasetypes: mprpapurchasetypesmodel;
     department: DepartmentModel;
-    Item: ItemsViewModel;
+    Item: Array<ItemsViewModel>[];
+    buyergroup: BuyerGroupModel;
+}
+export class BuyerGroupModel {
+    BuyerGroupId: number;
+    BuyerGroup: string;
+}
+export class EmployeemappingtocreditModel {
+    Authid: number;
+    MinPAValue: number;
+    MaxPAValue: number;
+    DeptId: number;
+    EmployeeNo: number;
+    Name: string;
+    AuthorizationType: string;
+    CreditdaysId: number;
+    MinDays: number;
+    MaxDays: number;
+}
+export class ApproverInputModel {
+    DeptId: number;
+    itemsum: number;
+    TargetSpend: number;
+    UnitPrice: number;
+}
+export class ProjectManager {
+    EmployeeNo: string;
+    Name: string;
+}
+export class VendorMasterModel {
+    VendorName: string;
+    Vendorid: number;
 }

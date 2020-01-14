@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
-import { PADetailsModel, ItemsViewModel, EmployeeModel } from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, ProjectManager } from 'src/app/Models/PurchaseAuthorization'
 import { MPRVendorDetail, DynamicSearchResult, searchList, mprRevision, MPRItemInfoes, MPRBuyerGroup, Employee, Department } from 'src/app/Models/mpr'
 import { constants } from 'src/app/Models/MPRConstants'
 import { MprService } from 'src/app/services/mpr.service';
@@ -13,6 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
     templateUrl: './purchaseAuthorizationDetails.component.html',
 })
 export class PurchaseAuthorizationDetailsComponent implements OnInit {
+    selectedItems1=[];
 
     constructor(public paService: purchaseauthorizationservice, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) { }
     public hivalue = true;
@@ -20,6 +21,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public MPRPageForm1: FormGroup;
     public department: Department;
     public buyergroups: MPRBuyerGroup;
+    public projectmanger: ProjectManager;
     public padetails: PADetailsModel;
     public employee: EmployeeModel[];
     public paitemdetails: Array<ItemsViewModel> = [];
@@ -37,9 +39,10 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public mprRevisionModel: mprRevision;
     public dialogTop: string;
     public multiSelect: boolean = true;
-    public vendorSubmitted; MPRForm1Submitted;Departmentsubmittted;
+    public vendorSubmitted; MPRForm1Submitted; Departmentsubmittted;projectmangersubmitted;
     public selectedbox: any[];
     public selectedItems: Array<any> = [];
+    public VendorName: string;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -50,10 +53,15 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.padetails = new PADetailsModel();
         this.vendorDetails = new MPRVendorDetail();
         this.buyergroups = new MPRBuyerGroup();
+        this.projectmanger = new ProjectManager();
     }
     displayitems(padetails: PADetailsModel) {
         this.paService.LoadItems(this.padetails).subscribe(data => {
+            //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
             this.paitemdetails = data;
+            for (var i = 0; i < this.paitemdetails.length; i++) {
+                this.paitemdetails[i].itemsum = this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice;
+            }
         })
     }
     public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
@@ -185,7 +193,56 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     onclickbox(selectitems: any[]) {
         this.paitemdetails = selectitems;
     }
-    onChange(itemdetails: ItemsViewModel[], isChecked: boolean) {
+    //onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
+    //    debugger;
+
+    //    this.VendorName = this.selectedItems[0].VendorName;
+    //    let element = itemdetails;
+    //    // this.selectedItems = [];
+    //    if (isChecked) {
+    //        if (this.selectedItems.length === 0) {
+    //            this.selectedItems.push(itemdetails);
+    //            //this.selectedItems1.push(itemdetails)
+    //            console.log("first", this.selectedItems)
+    //        }
+    //        else if (this.VendorName === itemdetails.VendorName) {
+    //            this.selectedItems.push(itemdetails);
+    //        }
+    //        else {
+    //            alert("please select Single Vendor")
+    //        }
+    //        this.selectedItems.forEach((element, index) => {
+    //            console.log(`Current index: ${index}`);
+
+    //            if (element.VendorName === itemdetails.VendorName) {
+    //                this.selectedItems1.push(itemdetails);
+    //            }
+    //            else {
+    //                alert(itemdetails.VendorName);
+    //            }
+
+    //        });
+    //    }
+    //    else if (!isChecked) {
+    //        alert(!isChecked)
+    //    }
+      
+        
+       
+
+    //    //if (isChecked) {
+    //    //    for (var i = 0; i < itemdetails.length; i++) {
+    //    //        if (this.VendorName == itemdetails[i].VendorName) {
+    //    //            this.selectedItems.push(itemdetails[i])
+    //    //        }
+    //    //    }
+    //    //    this.selectedItems.push(itemdetails);
+    //    //} else {
+    //    //    let index = this.selectedItems.indexOf(itemdetails);
+    //    //    this.selectedItems.splice(index, 1);
+    //    //}
+    //}
+    onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
         debugger;
         if (isChecked) {
             this.selectedItems.push(itemdetails);
