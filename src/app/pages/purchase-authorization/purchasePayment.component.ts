@@ -152,7 +152,6 @@ export class purchasePaymentComponent implements OnInit {
             console.log(this.selectedItems);
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data;
-                this.employeelist.Approvers = data.Approvers;
                 //document.getElementsByClassName("displayemployee")[0].scrollIntoView(true)
             })
         }
