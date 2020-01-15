@@ -36,6 +36,7 @@ export class GenerateRFQComponent implements OnInit {
   public cols: any[];
   public RFQRevisionData: RFQRevisionData;
   public YILTermsAndConditions: Array<any> = [];
+  public mprVendors: boolean = false;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee")) 
@@ -57,12 +58,18 @@ export class GenerateRFQComponent implements OnInit {
     this.RfqService.getRFQItems(this.MPRRevisionId).subscribe(data => {
       this.totalRfqItems = data;
       this.dynamicData = new DynamicSearchResult();
-      this.dynamicData.tableName = "MPRVendorDetails";
+      //this.dynamicData.tableName = "MPRVendorDetails";
+      this.dynamicData.query = "select mat.Materialdescription as ItemName,mi.Itemid as ItemId,mi.Itemdetailsid as MPRItemDetailsid, vm.Vendorid as VendorId,mi.RevisionId as MPRRevisionId, mi.Quantity as MprQuantity,* from MPRVendorDetails mv inner join MPRItemInfo mi on mi.RevisionId=mv.RevisionId inner join MaterialMasterYGS mat on mat.Material = mi.itemid inner join  VendorMaster vm on vm.Vendorid = mv.Vendorid where mi.RevisionId = " + this.MPRRevisionId + "";
       this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
         this.vendorDetailsArray = data;
+        if (this.totalRfqItems.length == 0) {
+          this.totalRfqItems = data;
+          this.mprVendors = true;
+        }
+        this.prepareRfQItems();
         this.getYILTermsAndConditions();
       })
-      this.prepareRfQItems();
+      
     })
   }
   getYILTermsAndConditions() {
@@ -159,20 +166,28 @@ export class GenerateRFQComponent implements OnInit {
 
   //pepare top 3 Suggested vendors
   prepareRfQItems() {
-    for (var i = 0; i < this.totalRfqItems.length; i++) {
-      var res = this.rfqQuoteModel.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
-      if (res.length == 0) {
-        var rfqQuoteItems = new rfqQuoteModel();
-        rfqQuoteItems.MPRItemDetailsid = this.totalRfqItems[i].MPRItemDetailsid;
-        rfqQuoteItems.ItemId = this.totalRfqItems[i].ItemId;
-        rfqQuoteItems.ItemName = this.totalRfqItems[i].ItemName;
-        rfqQuoteItems.ItemDescription = this.totalRfqItems[i].ItemDescription;
-        rfqQuoteItems.TargetSpend = this.totalRfqItems[i].TargetSpend;
-        rfqQuoteItems.QuotationQty = this.totalRfqItems[i].QuotationQty;//rfqitems
-        rfqQuoteItems.vendorQuoteQty = this.totalRfqItems[i].vendorQuoteQty;//rfqitemsinfo
-        rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
-        rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
-        this.rfqQuoteModel.push(rfqQuoteItems);
+    if (this.totalRfqItems.length > 0) {
+      for (var i = 0; i < this.totalRfqItems.length; i++) {
+        var res = this.rfqQuoteModel.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+        if (res.length == 0) {
+          var rfqQuoteItems = new rfqQuoteModel();
+          rfqQuoteItems.MPRItemDetailsid = this.totalRfqItems[i].MPRItemDetailsid;
+          rfqQuoteItems.ItemId = this.totalRfqItems[i].ItemId;
+          rfqQuoteItems.ItemName = this.totalRfqItems[i].ItemName;
+          rfqQuoteItems.ItemDescription = this.totalRfqItems[i].ItemDescription;
+          rfqQuoteItems.TargetSpend = this.totalRfqItems[i].TargetSpend;
+          rfqQuoteItems.MprQuantity = this.totalRfqItems[i].MprQuantity;
+          rfqQuoteItems.QuotationQty = this.totalRfqItems[i].QuotationQty;//rfqitems
+          rfqQuoteItems.vendorQuoteQty = this.totalRfqItems[i].vendorQuoteQty;//rfqitemsinfo
+          if (this.mprVendors) {
+            rfqQuoteItems.manualvendorDetails = this.totalRfqItems.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+          }
+          else {
+            rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+            rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
+          }
+          this.rfqQuoteModel.push(rfqQuoteItems);
+        }
       }
     }
   }

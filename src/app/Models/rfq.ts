@@ -4,6 +4,7 @@ export class rfqQuoteModel {
   ItemName: string;
   ItemDescription: string;
   TargetSpend: string;
+  MprQuantity: string;
   QuotationQty: string;
   vendorQuoteQty: string;
   UnitPrice: string;

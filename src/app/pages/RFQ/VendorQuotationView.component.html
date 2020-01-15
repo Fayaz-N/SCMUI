@@ -67,7 +67,7 @@
         </ng-template>
       </p-table>
     </div><br />
-    <div *ngIf="MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
+    <div *ngIf="quoteDetails.rfqitem.length>0 && MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
       <div class="col-xs-4 col-md-4 col-sm-4"></div>
       <div class="col-xs-4 col-md-4 col-sm-4">
         <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>

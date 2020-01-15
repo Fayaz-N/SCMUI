@@ -16,7 +16,7 @@
       <div class="col-md-12">
         <label class="form-label font-weight-bold">Item Name :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
         <label class="form-label font-weight-bold">Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
-        <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.QuotationQty}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+        <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
       </div>
     </div>
 
@@ -24,7 +24,7 @@
         <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
           <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
             <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
-            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.QuotationQty}} /></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
             <div class="row">
               <div class="col-sm-6">
@@ -48,7 +48,7 @@
         <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
           <div class="form-control manual-List">
             <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
-            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.QuotationQty}} /></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (change)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
             <div class="row">
               <div class="col-sm-6">

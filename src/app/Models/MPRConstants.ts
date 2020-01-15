@@ -5,7 +5,7 @@ import { searchParams, AccessList } from '../Models/mpr';
   providedIn: 'root'
 }) 
 export class constants {
-  //public url = 'http://10.29.15.68:90/Api/';
+ // public url = 'http://10.29.15.68:90/Api/';
   public url = 'http://localhost:49659/Api/';
   public dateFormat = "MM/dd/yyyy";
   public RequisitionId: string = "";
