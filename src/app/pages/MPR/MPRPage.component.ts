@@ -717,7 +717,7 @@ export class MPRPageComponent implements OnInit {
   }
 
   getComName(code: string) {
-    if (code)
+    if (code && this.searchItems.filter(li => li.code == code)[0])
       return this.searchItems.filter(li => li.code == code)[0].name
   }
 
@@ -848,7 +848,7 @@ export class MPRPageComponent implements OnInit {
 
         //Access based functionalities
         if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
-          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
+          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn  = false;
         if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
           this.hideDeleteBtn = true;
 
