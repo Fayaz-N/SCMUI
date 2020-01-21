@@ -17,6 +17,7 @@ export class searchParams {
   fieldId: string;
   condition: string;
   fieldAliasName: string;
+  updateColumns: string;
 }
 export class searchList {
   listName: string;

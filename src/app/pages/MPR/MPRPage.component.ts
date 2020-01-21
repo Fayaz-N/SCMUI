@@ -181,7 +181,7 @@ export class MPRPageComponent implements OnInit {
     this.newVendor = this.formBuilder.group({
       VendorName: ['', [Validators.required]],
       Emailid: ['', [Validators.required]],
-      ContactNo: ['', [Validators.required]]
+      ContactNo: ['', [Validators.required, Validators.maxLength(10)]]
     })
     //remove validation for unwanted fields.
     this.MPRPageForm1.controls['docNo'].clearValidators();
@@ -273,13 +273,14 @@ export class MPRPageComponent implements OnInit {
       this.searchresult.forEach(item => {
         if (name == 'ClientName')
           fName = item[this.constants[name].fieldName] + " - " + item["YGSSAPCustomerCode"];
-        else if (name == "venderid")
+        else if (name == "venderid") {
           fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        }
         else if (name == "ItemId")
           fName = item[this.constants[name].fieldId] + " - " + item[this.constants[name].fieldName];
         else
           fName = item[this.constants[name].fieldName];
-        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
+        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns : item[this.constants[name].updateColumns]  };
         this.searchItems.push(value);
       });
       if (this.selectedlist.length > 0) {
@@ -304,6 +305,13 @@ export class MPRPageComponent implements OnInit {
         alert("vendor already exist");
         return false;
       }
+      if (item.updateColumns && item.updateColumns!="NULL") 
+        this.newVendorDetails.Emailid = item.updateColumns;
+      this.newVendorDetails.Vendorid = item.code;
+      this.newVendor.controls['ContactNo'].clearValidators();
+      this.newVendor.controls['VendorName'].clearValidators();
+      this.newVendor.controls['ContactNo'].updateValueAndValidity();
+      this.newVendor.controls['VendorName'].updateValueAndValidity();
       this.vendorDetails.Vendorid = item.code;
       this.vendorDetails.VendorName = item.name;
       this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
@@ -496,6 +504,7 @@ export class MPRPageComponent implements OnInit {
     this.vendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorDetails.VendorName = vendorDetails.VendorMaster.VendorName;
     this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
+    this.newVendorDetails.Emailid = vendorDetails.VendorMaster.Emailid;
     this[dialogName] = true;
   }
 
@@ -658,30 +667,29 @@ export class MPRPageComponent implements OnInit {
       this.vendorSubmitted = true;
       this.mprRevisionModel.MPRDocuments = [];
       this.mprRevisionModel.MPRDocumentations = [];
-      if (this.showNewVendor) {
-        if (this.newVendor.invalid) {
-          return;
-        }
-        else {
-          this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
-            this.vendorSubmitted = false;
-            this.vendorDetails.Vendorid = data;
-            this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
-            this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
-            this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
-            this.updateDocumentation(dialogName);
-          })
-        }
+      if (this.newVendor.invalid) {
+        return;
       }
       else {
-        if (!this.vendorDetails.VendorName)
-          return;
-        else {
+        this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.vendorSubmitted = false;
+          this.vendorDetails.Vendorid = data;
+          this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
+          this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
           this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
           this.updateDocumentation(dialogName);
-        }
+        })
       }
+    //}
+      //else {
+      //  if (!this.vendorDetails.VendorName)
+      //    return;
+      //  else {
+      //    this.vendorSubmitted = false;
+      //    this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
+      //    this.updateDocumentation(dialogName);
+      //  }
+      //}
     }
     else if (type == "documentDetails") {
       this.mprRevisionModel.MPRVendorDetails = [];
@@ -956,6 +964,11 @@ export class MPRPageComponent implements OnInit {
       else
         return "";
     }
+  }
+  showVendorClick() {
+    this.newVendorDetails.Vendorid = 0;
+    this.newVendor.controls['VendorName'].setValidators([Validators.required]);
+    this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
   }
 }
 

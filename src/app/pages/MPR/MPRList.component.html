@@ -47,7 +47,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Approved By : </label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" disabled="true"  class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
           <!--<div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy','',undefined)"></button>
           </div>-->
@@ -97,10 +97,10 @@
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label  class="form-label">Ge Ps Approval Id</label>
+        <label class="form-label">Ge Ps Approval Id</label>
         <input class="form-control" type="text" formControlName="GEPSApprovalId" [(ngModel)]="mprFilterParams.GEPSApprovalId">
       </div>
-    
+
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
         <div class="form-inline-list  ml-2 ">
@@ -134,12 +134,12 @@
         <th style="width:50px">S.No</th>
         <th>MPR Document Number</th>
         <th>Description</th>
-        <th *ngIf="showCMMFilter" >Job Code</th>
-        <th *ngIf="showCMMFilter" >Job Name</th>
-        <th *ngIf="showCMMFilter" >Purpose of issuing MPR</th>
-        <th *ngIf="showCMMFilter" >Item Description</th>
-        <th *ngIf="showCMMFilter" >Ge Ps Approval Id</th>
-        <th *ngIf="showCMMFilter" >Buyer Group Name</th>
+        <th *ngIf="showCMMFilter">Job Code</th>
+        <th *ngIf="showCMMFilter">Job Name</th>
+        <th *ngIf="showCMMFilter">Purpose of issuing MPR</th>
+        <th *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
+        <th *ngIf="showCMMFilter">Ge Ps Approval Id</th>
+        <th *ngIf="showCMMFilter">Buyer Group Name</th>
         <th>Preapared By</th>
         <th>Preapared On</th>
         <th>Check By</th>
@@ -162,18 +162,18 @@
       </tr>-->
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-      <tr  class="mprltbldata">
+      <tr class="mprltbldata">
         <td style="width:50px">
           {{ri+1}}
         </td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.JobCode}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.JobName}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.ItemDescription}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
-        <td *ngIf="showCMMFilter"  class="ptable-cell">{{rowData.BuyerGroupName}}</td>
+        <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobCode}}</td>
+        <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobName}}</td>
+        <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
+        <td *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
+        <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.BuyerGroupName}}</td>
         <td class="ptable-cell">{{rowData.PreparedName}}</td>
         <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
         <td class="ptable-cell">{{rowData.CheckedName}}</td>

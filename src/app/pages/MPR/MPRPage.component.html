@@ -1189,23 +1189,28 @@
         <div class="ui-g-4 form-group">
           <label class="form-label">Add New Vendor</label>
           <div class="form-inline ml-4">
-            <p-inputSwitch [(ngModel)]="showNewVendor"></p-inputSwitch>
+            <p-inputSwitch [(ngModel)]="showNewVendor" (click)="showVendorClick()"></p-inputSwitch>
             &nbsp;&nbsp;<span class="form-label">{{showNewVendor==true?'Yes':'No'}}</span>
           </div>
         </div>
       </div>
-      
-      <form [formGroup]="newVendor" *ngIf="showNewVendor">
+
+      <form [formGroup]="newVendor">
         <div class="ui-g-12">
-          <label class="form-label">Vendor Name</label>
-          <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
-          <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
+          <div *ngIf="showNewVendor">
+            <label class="form-label">Vendor Name</label>
+            <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
+            <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
+          </div>
+
           <label class="form-label">Email Id</label>
           <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
           <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
-          <label class="form-label">Contact No</label>
-          <input type="number" class="form-control" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
-          <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+          <div *ngIf="showNewVendor">
+            <label class="form-label">Contact No</label>
+            <input type="number" class="form-control"  maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
+            <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+          </div>
         </div>
       </form>
 
