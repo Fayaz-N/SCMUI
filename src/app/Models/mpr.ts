@@ -200,10 +200,12 @@ export class mprRevision {
   ApprovalStatus: string;
   ApproverRemarks: string;
   SecondApprover: string;
+  SecondApproverName: string;
   SecondApprovedOn: Date;
   SecondApproversStatus: string;
   SecondApproverRemarks: string;
   ThirdApprover: string;
+  ThirdApproverName: string;
   ThirdApproverStatus: string;
   ThirdApproverStatusChangedOn: Date;
   ThirdApproverRemarks: string;
@@ -253,6 +255,7 @@ export class mprFilterParams {
   PreparedBy: string = "";
   CheckedBy: string = "";
   ApprovedBy: string = "";
+  SecOrThirdApprover: string = "";
   IssuePurposeId: string;
   JobCode: string;
   ItemDescription: string;

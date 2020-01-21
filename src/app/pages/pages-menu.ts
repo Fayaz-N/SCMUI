@@ -25,12 +25,18 @@ export const MENU_ITEMS: NbMenuItem[] = [
       {
         title: 'MPR Checker List',
         link: '/SCM/MPRCheckerList',
-        icon:'checkmark-circle-2-outline'
+        icon:'list-outline'
       },
       {
         title: 'MPR Approver List',
         link: '/SCM/MPRApproverList',
         icon:'list-outline'
+      }
+      ,
+      {
+        title: 'Single Vendor Approver List',
+        link: '/SCM/MPRSingleVendorList',
+        icon: 'list-outline'
       }
       
     ],

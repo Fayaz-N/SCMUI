@@ -60,6 +60,7 @@ export class MPRPageComponent implements OnInit {
   public displayFooter: boolean;
   public disableStatusSubmit: boolean = false;
   public showAcknowledge: boolean = false;
+  public showStatusDetails: boolean = false;
   public showPage: boolean = false;
   public doc: SafeResourceUrl;
   public showNewVendor: boolean = false;
@@ -204,6 +205,7 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm3.controls['commissionMonths'].clearValidators();
     this.MPRPageForm3.controls['TrainingRemarks'].clearValidators();
     this.MPRPageForm3.controls['Remarks'].clearValidators();
+    this.MPRCommunicationForm.controls['ccEmail'].clearValidators();
 
     if (localStorage.getItem("EmployeeList"))
       this.EmployeeList = JSON.parse(localStorage.getItem("EmployeeList"));
@@ -280,7 +282,7 @@ export class MPRPageComponent implements OnInit {
           fName = item[this.constants[name].fieldId] + " - " + item[this.constants[name].fieldName];
         else
           fName = item[this.constants[name].fieldName];
-        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns : item[this.constants[name].updateColumns]  };
+        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
         this.searchItems.push(value);
       });
       if (this.selectedlist.length > 0) {
@@ -305,7 +307,7 @@ export class MPRPageComponent implements OnInit {
         alert("vendor already exist");
         return false;
       }
-      if (item.updateColumns && item.updateColumns!="NULL") 
+      if (item.updateColumns && item.updateColumns != "NULL")
         this.newVendorDetails.Emailid = item.updateColumns;
       this.newVendorDetails.Vendorid = item.code;
       this.newVendor.controls['ContactNo'].clearValidators();
@@ -680,7 +682,7 @@ export class MPRPageComponent implements OnInit {
           this.updateDocumentation(dialogName);
         })
       }
-    //}
+      //}
       //else {
       //  if (!this.vendorDetails.VendorName)
       //    return;
@@ -744,9 +746,10 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunicationSubmitted = true;
     if (this.MPRCommunications.SetReminder == false) {
       this.MPRCommunicationForm.controls['ReminderDate'].clearValidators();
-      this.MPRCommunicationForm.controls['ReminderDate'].updateValueAndValidity()
+      this.MPRCommunicationForm.controls['ReminderDate'].updateValueAndValidity();
     }
     else {
+      this.MPRCommunicationForm.controls['ReminderDate'].setValidators([Validators.required]);
       this.MPRCommunicationForm.controls['sendemail'].clearValidators();
       this.MPRCommunicationForm.controls['sendemail'].updateValueAndValidity()
     }
@@ -785,10 +788,14 @@ export class MPRPageComponent implements OnInit {
     if (Acknowledge != "")
       this.mprStatusUpdate.typeOfuser = Acknowledge;
     else {
-      if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo)
+      if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "Checker";
-      if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo)
+      else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo)
         this.mprStatusUpdate.typeOfuser = "Approver";
+      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo)
+        this.mprStatusUpdate.typeOfuser = "SecondApprover";
+      else (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo)
+      this.mprStatusUpdate.typeOfuser = "ThirdApprover";
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
     this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
@@ -843,10 +850,6 @@ export class MPRPageComponent implements OnInit {
         this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
         this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
         this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
-        if (this.mprRevisionDetails.StatusId == 4)
-          this.showAcknowledge = true;
-        else
-          this.showAcknowledge = false;
         if (this.mprRevisionDetails.CheckedBy.trim() == "-") {
           this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
         }
@@ -856,7 +859,7 @@ export class MPRPageComponent implements OnInit {
 
         //Access based functionalities
         if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
-          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn  = false;
+          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
         if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
           this.hideDeleteBtn = true;
 
@@ -869,11 +872,36 @@ export class MPRPageComponent implements OnInit {
   }
   //bind Status Details
   bindStatusDetails() {
-    this.mprStatusUpdate.status = this.mprRevisionModel.CheckStatus;
-    this.mprStatusUpdate.Remarks = this.mprRevisionModel.CheckerRemarks;
-    if ((this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.CheckStatus == "Pending" || this.mprRevisionModel.CheckStatus == "Submitted" || this.mprRevisionModel.CheckStatus == "Sent for Modification")
-      this.displayFooter = true;
-    else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification")
+
+    if ((this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.CheckStatus == "Pending" || this.mprRevisionModel.CheckStatus == "Submitted" || this.mprRevisionModel.CheckStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.CheckStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.CheckerRemarks;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.ApprovalStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.ApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo) && this.mprRevisionModel.SecondApproversStatus == "Pending" || this.mprRevisionModel.SecondApproversStatus == "Submitted" || this.mprRevisionModel.SecondApproversStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.SecondApproversStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.SecondApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo) && this.mprRevisionModel.ThirdApproverStatus == "Pending" || this.mprRevisionModel.ThirdApproverStatus == "Submitted" || this.mprRevisionModel.ThirdApproverStatus == "Sent for Modification")
+    {
+      this.mprStatusUpdate.status = this.mprRevisionModel.ThirdApproverStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.ThirdApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else
+      this.showStatusDetails = false;
+
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0 && this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0 && this.showStatusDetails == false) //acknowledged or not
+      this.showAcknowledge = true;
+    else
+      this.showAcknowledge = false;
+    if (this.showStatusDetails || this.showAcknowledge)
       this.displayFooter = true;
     else
       this.displayFooter = false;

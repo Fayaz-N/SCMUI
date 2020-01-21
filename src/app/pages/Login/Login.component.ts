@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { MprService } from 'src/app/services/mpr.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Employee, DynamicSearchResult, AccessList } from 'src/app/Models/mpr';
 import { constants } from 'src/app/Models/MPRConstants';
 import { first } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { MENU_ITEMS } from '../pages-menu';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private router: Router, public constants: constants, private messageService: MessageService, private spinner: NgxSpinnerService) { }
+  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private route: ActivatedRoute, private router: Router, public constants: constants, private messageService: MessageService, private spinner: NgxSpinnerService) { }
 
   public LoginForm: FormGroup;
   public employee: Employee;
@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   public LoginSubmitted: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public dataSaved: boolean = false;
+  public returnUrl: string
 
   ngOnInit() {
 
@@ -30,6 +31,7 @@ export class LoginComponent implements OnInit {
     localStorage.removeItem('Employee');
     //localStorage.removeItem('currentUser');
     //localStorage.removeItem('EmployeeList');
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
     this.LoginForm = this.formBuilder.group({
       DomainId: ['', [Validators.required]],
       Password: ['', [Validators.required]],
@@ -63,7 +65,10 @@ export class LoginComponent implements OnInit {
               }
             })
             this.LoginForm.reset();
-            this.router.navigateByUrl('/SCM/Dashboard');
+            if (this.returnUrl)
+              this.router.navigateByUrl(this.returnUrl);
+            else
+              this.router.navigateByUrl('/SCM/Dashboard');
 
           }
           else {

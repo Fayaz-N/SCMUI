@@ -845,7 +845,7 @@
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-                <tr>
+                <tr *ngIf="rowData.Employee">
                   <td>{{rowData.Employee.Name}}</td>
                   <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
                   <td>
@@ -853,7 +853,7 @@
                   </td>
                   <td>
                     <span *ngFor="let trackData of rowData.MPRReminderTrackings">
-                      <span [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
+                      <span *ngIf="trackData.Employee" [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
                       <i *ngIf="rowData.SendEmail==1" style="color:green" class="fa fa-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="fa fa-clock-o"></i>&nbsp;
                     </span>
                   </td>
@@ -940,7 +940,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionDetails.SecondApprover}}</td>
+              <td style="width:20%">{{mprRevisionDetails.SecondApproverName}}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -967,7 +967,7 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{mprRevisionDetails.ThirdApprover}}</td>
+              <td style="width:20%">{{mprRevisionDetails.ThirdApproverName}}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -1027,20 +1027,20 @@
 
   <div *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
-        <button type="button" *ngIf="showAcknowledge" class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
+        <button type="button" class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+      <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
           <option value="Select">Select</option>
           <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
         </select>&nbsp;
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+      <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         <label class="form-label">Remarks:</label>&nbsp;
         <textarea type="text" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline">
         <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
       </div>
     </div>
@@ -1208,7 +1208,7 @@
           <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
           <div *ngIf="showNewVendor">
             <label class="form-label">Contact No</label>
-            <input type="number" class="form-control"  maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
+            <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
             <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
           </div>
         </div>
@@ -1299,7 +1299,8 @@
           <div class="ui-g-12">
             <div class="ui-g-8">
               <label class="form-label">Remarks</label>&nbsp;
-              <textarea type="text" formControlName="Remarks" [(ngModel)]="MPRCommunications.Remarks" [value]="MPRCommunicationForm.controls.Remarks.value" class="form-control"></textarea>
+              <textarea type="text" formControlName="Remarks" [(ngModel)]="MPRCommunications.Remarks" [value]="MPRCommunicationForm.controls.Remarks.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.Remarks.errors }" class="form-control"></textarea>
+              <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.Remarks.errors" class="invalid-feedback">Remarks Required.</span><br />
             </div>
             <div class="ui-g-4 form-inline">
               <label class="form-label">Set Reminder</label>&nbsp;&nbsp;
@@ -1312,11 +1313,12 @@
           </div>
           <div *ngIf="MPRCommunications.SetReminder" class="ui-g-12 form-inline">
             <label class="form-label">Reminder Date: </label>&nbsp;
-            <input type="date" #myDate [value]="MPRCommunications.ReminderDate | date:'yyyy-MM-dd'" (input)="MPRCommunications.ReminderDate=parseDate($event.target.value)" formControlName="ReminderDate" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }" />
+            <input type="date" #myDate [value]="MPRCommunications.ReminderDate | date:'yyyy-MM-dd'" (input)="MPRCommunications.ReminderDate=parseDate($event.target.value)" formControlName="ReminderDate" class="form-control" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.ReminderDate.errors }" />
+            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ReminderDate.errors" class="invalid-feedback">Reminder Date Required.</span><br />
           </div>
           <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
             <label class="form-label">Add To Emails : </label>&nbsp;
-            <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRCommunicationForm.controls.toEmail.value,undefined)">
+            <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.toEmail.errors }" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRCommunicationForm.controls.toEmail.value,undefined)">
             <div class="input-group-append">
               <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','toEmail','',undefined)"></button>
             </div> &nbsp;
@@ -1326,10 +1328,11 @@
                 <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
               </label>&nbsp;
             </div>
+            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.toEmail.errors" class="invalid-feedback">To email  Required.</span><br />
           </div>
           <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
             <label class="form-label">Add CC Emails : </label>&nbsp;
-            <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRCommunicationForm.controls.ccEmail.value,undefined)">
+            <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.ccEmail.errors }" class="form-control" (keyup)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRCommunicationForm.controls.ccEmail.value,undefined)">
             <div class="input-group-append">
               <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','ccEmail','',undefined)"></button>
             </div>
@@ -1339,6 +1342,7 @@
                 <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
               </label>&nbsp;
             </div>
+            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ccEmail.errors" class="invalid-feedback">CC email  Required.</span><br />
           </div>
         </form>
       </div>

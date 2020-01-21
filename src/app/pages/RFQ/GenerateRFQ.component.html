@@ -123,7 +123,7 @@
       <div *ngIf="showNewVendor">
         <label class="form-label">Vendor Name</label>
         <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
-        <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
+        <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="invalid-feedback">vendor Name Required.</span><br />
       </div>
 
       <label class="form-label">Email Id</label>

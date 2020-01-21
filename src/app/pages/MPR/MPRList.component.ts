@@ -78,14 +78,21 @@ export class MPRListComponent implements OnInit {
       this.mprTitle = "MPR Checker List";
       this.MPRfilterForm.controls["CheckedBy"].setValue(this.employee.Name);
       this.mprFilterParams.CheckedBy = this.employee.EmployeeNo;
+      this.mprFilterParams.PreparedBy = "";
     }
     else if (this.typeOfList == "MPRApproverList") {
       this.mprTitle = "MPR Approver List";
       this.MPRfilterForm.controls["ApprovedBy"].setValue(this.employee.Name);
       this.mprFilterParams.ApprovedBy = this.employee.EmployeeNo;
+      this.mprFilterParams.PreparedBy = "";
     }
     else if (this.typeOfList == "MPRPendingList") {
       this.mprTitle = "MPR Pending List";
+    }
+    else if (this.typeOfList == "MPRSingleVendorList") {
+      this.mprTitle = "Single Vendor Approver List";
+      this.mprFilterParams.PreparedBy = "";
+      this.mprFilterParams.SecOrThirdApprover = this.employee.EmployeeNo;
     }
     else {
       this.MPRfilterForm.controls["CheckedBy"].setValue("");
