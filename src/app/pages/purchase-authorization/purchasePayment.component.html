@@ -146,7 +146,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;">
+        <select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let buy of buyergroups" [value]="buy.BuyerGroupId">{{buy.BuyerGroup}} </option>
           <option [value]="0">Select</option>
         </select>
@@ -159,7 +159,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;">
+        <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
           <option [value]="0">Select</option>
         </select>
@@ -174,7 +174,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:</label>
-        <select [(ngModel)]="purchasedetails.PurchaseTypeId" class="form-control" style="margin-left: 12px;">
+        <select [(ngModel)]="purchasedetails.PurchaseTypeId" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let pty of purchasetypes" [value]="pty.PurchaseTypeId">{{pty.PurchaseType}} </option>
           <option [value]="0">Select</option>
         </select>
@@ -187,7 +187,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Purchase Mode:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.PurchaseModeId" class="form-control" style="margin-left: 12px;">
+        <select [(ngModel)]="purchasedetails.PurchaseModeId" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let pur of purchasemodes" [value]="pur.PurchaseModeId">{{pur.PurchaseMode}} </option>
           <option [value]="0">Select</option>
         </select>
@@ -202,7 +202,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
-        <input type="text" [(ngModel)]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;" />
+        <input type="text" [(ngModel)]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
       <div *ngIf="pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
@@ -212,7 +212,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Code:</label>
-        <input type="text" [(ngModel)]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;" />
+        <input type="text" [(ngModel)]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
       <div *ngIf="pasubmitted">
         <label for="ProjectCode" class="form-label label" style="margin-left: 12px;">Project Code:</label>&nbsp;&nbsp;

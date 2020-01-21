@@ -76,12 +76,12 @@
       <ng-template pTemplate="header">
         <tr class="text-left" style="text-align:left">
           <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
-          <th style="width: 3em"><p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+          <!--<th style="width: 3em"><input type="checkbox" *ngIf="vendorDetails.VendorName!=null"  [(ngModel)]="paitemdetails.selectAll" (change)="selectAll($event)"></th>-->
           <th style="width: 5em">Sl No</th>
           <th>Department</th>
           <th>Vendor Name</th>
           <th>Item Description</th>
-          <th style="width: 6em">Quantity</th>
+          <th style="width:6em">Quantity</th>
           <th style="width:6em">Price</th>
           <th style="width:6em">Total Price</th>
           <th>TargetSpend</th>
@@ -94,7 +94,7 @@
         <tr>
           <td>
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
-            <input type="checkbox" ([ngModel])="checkbox"  (change)="onChange(rowData,$event.target.checked)">
+            <input type="checkbox" (change)="onChange1(rowData,$event.target.checked,$event)">
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
           </td>
           <td class="text-center">{{ri+1}}</td>

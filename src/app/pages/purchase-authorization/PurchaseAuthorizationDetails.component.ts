@@ -19,7 +19,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public hivalue = true;
     public Vendorid: number;
     public approvevalue = false;
-    public checkbox: boolean;
+    //public checked: boolean;
     public MPRPageForm1: FormGroup;
     public department: Department;
     public buyergroups: MPRBuyerGroup;
@@ -56,13 +56,13 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.vendorDetails = new MPRVendorDetail();
         this.buyergroups = new MPRBuyerGroup();
         this.projectmanger = new ProjectManager();
-        this.checkbox = false;
+        //this.checked = false;
     }
     displayitems(padetails: PADetailsModel) {
         this.paService.LoadItems(this.padetails).subscribe(data => {
             //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
             this.paitemdetails = data;
-            if (this.paitemdetails.length>0) {
+            if (this.paitemdetails.length > 0) {
                 for (var i = 0; i < this.paitemdetails.length; i++) {
                     this.paitemdetails[i].itemsum = this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice;
                 }
@@ -99,7 +99,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
                 var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
                 this.searchItems.push(value);
             });
-            //if (this.selectedlist.length > 0) {
+            //if (this.selectedItem.name == null) {
             //    var list = this.selectedlist.filter(li => li.listName == name);
             //    if (list.length > 0)
             //        this.selectedItem = this.searchItems.filter(li => li.code == list[0].code)[0];
@@ -113,12 +113,16 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     dialogCancel(dialogName) {
         this[dialogName] = false;
     }
-    selectAll(event) {
-        //const checked = event.target.checked;
+    selectAll(itemsview: ItemsViewModel[], event) {
+        
+        if (event.target.checked) {
+
+        }
         this.paitemdetails.forEach(item => item.selectAll = event.target.checked)
-        //for (var i = 0; i < this.paitemdetails.length; i++) {
-        //    this.paitemdetails[i].selectAll = this.multiSelect;
-        //}
+        for (var i = 0; i < this.paitemdetails.length; i++) {
+            this.selectedItems.push(itemsview)
+        }
+        this.selectedItems.push(itemsview);
     }
     //displayapproveitems() {
 
@@ -201,103 +205,103 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             this.buyergroups.BuyerGroupId = item.code;
             this.buyergroups.BuyerGroup = item.name;
             this.padetails.BuyerGroupId = item.code;
-        } 
+        }
     }
     onclickbox(selectitems: any[]) {
         this.paitemdetails = selectitems;
     }
-    //onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
-    //    debugger;
-    //    if (this.selectedItems.length == 0)
-    //        this.Vendorid = itemdetails.VendorId;
-    //    if (isChecked) {
-    //        if (this.selectedItems.length === 0) {
-    //            this.selectedItems.push(itemdetails);
-    //        }
-    //        else if (this.Vendorid === itemdetails.VendorId) {
-    //            this.selectedItems.push(itemdetails);
-    //        }
-    //        else {
-    //            alert("choose single vendor");
-    //            this.checkbox = false;
-    //        }
+    onChange1(itemdetails: ItemsViewModel, isChecked: boolean, event) {
+        debugger;
+        if (this.selectedItems.length === 0)
+            this.Vendorid = itemdetails.VendorId;
+        if (isChecked) {
+            if (this.selectedItems.length === 0) {
+                this.selectedItems.push(itemdetails);
+            }
+            else if (this.Vendorid === itemdetails.VendorId) {
+                this.selectedItems.push(itemdetails);
+            }
+            else {
+                event.target.checked = false;
+                alert("choose single vendor");
+            }
+        }
+        else {
+            let index = this.selectedItems.indexOf(itemdetails);
+            this.selectedItems.splice(index, 1);
+        }
+    }
+    //this.selectedItems.push(itemdetails);
+    ////itemdetails.VendorId = this.Vendorid;
+    ////this.VendorName = this.selectedItems[0].VendorName;
+    //let element = itemdetails;
+    //// this.selectedItems = [];
+    //if (isChecked) {
+    //    if (this.selectedItems.length === 0) {
+    //        this.selectedItems.push(itemdetails);
+    //        //this.selectedItems1.push(itemdetails)
+    //        console.log("first", this.selectedItems)
+    //    }
+    //    else if (this.Vendorid === itemdetails.VendorId) {
+    //        this.selectedItems.push(itemdetails);
     //    }
     //    else {
+    //        alert("please select Single Vendor")
+    //    }
+    //    this.selectedItems.forEach((element, index) => {
+    //        console.log(`Current index: ${index}`);
+
+    //        if (element.VendorName === itemdetails.VendorName) {
+    //            this.selectedItems1.push(itemdetails);
+    //        }
+    //        else {
+    //            alert(itemdetails.VendorName);
+    //        }
+
+    //    });
+    //}
+    //else if (!isChecked) {
+    //    alert(!isChecked)
+    //}
+
+
+
+
+    //    //if (isChecked) {
+    //    //    for (var i = 0; i < itemdetails.length; i++) {
+    //    //        if (this.VendorName == itemdetails[i].VendorName) {
+    //    //            this.selectedItems.push(itemdetails[i])
+    //    //        }
+    //    //    }
+    //    //    this.selectedItems.push(itemdetails);
+    //    //} else {
+    //    //    let index = this.selectedItems.indexOf(itemdetails);
+    //    //    this.selectedItems.splice(index, 1);
+    //    //}
+    //}
+
+
+
+
+    onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
+        debugger;
+        if (isChecked) {
+            this.selectedItems.push(itemdetails);
+        } else {
+            let index = this.selectedItems.indexOf(itemdetails);
+            this.selectedItems.splice(index, 1);
+        }
+    }
+
+    //onChange1(itemdetails: ItemsViewModel, isChecked: boolean) {
+    //    debugger;
+    //    this.VendorName = this.selectedItems[0].VendorName;
+    //    if (isChecked) {
+    //        this.selectedItems.push(itemdetails);
+    //    } else {
     //        let index = this.selectedItems.indexOf(itemdetails);
     //        this.selectedItems.splice(index, 1);
     //    }
     //}
-        //this.selectedItems.push(itemdetails);
-        ////itemdetails.VendorId = this.Vendorid;
-        ////this.VendorName = this.selectedItems[0].VendorName;
-        //let element = itemdetails;
-        //// this.selectedItems = [];
-        //if (isChecked) {
-        //    if (this.selectedItems.length === 0) {
-        //        this.selectedItems.push(itemdetails);
-        //        //this.selectedItems1.push(itemdetails)
-        //        console.log("first", this.selectedItems)
-        //    }
-        //    else if (this.Vendorid === itemdetails.VendorId) {
-        //        this.selectedItems.push(itemdetails);
-        //    }
-        //    else {
-        //        alert("please select Single Vendor")
-        //    }
-        //    this.selectedItems.forEach((element, index) => {
-        //        console.log(`Current index: ${index}`);
 
-        //        if (element.VendorName === itemdetails.VendorName) {
-        //            this.selectedItems1.push(itemdetails);
-        //        }
-        //        else {
-        //            alert(itemdetails.VendorName);
-        //        }
-
-        //    });
-        //}
-        //else if (!isChecked) {
-        //    alert(!isChecked)
-        //}
-
-
-
-
-        //    //if (isChecked) {
-        //    //    for (var i = 0; i < itemdetails.length; i++) {
-        //    //        if (this.VendorName == itemdetails[i].VendorName) {
-        //    //            this.selectedItems.push(itemdetails[i])
-        //    //        }
-        //    //    }
-        //    //    this.selectedItems.push(itemdetails);
-        //    //} else {
-        //    //    let index = this.selectedItems.indexOf(itemdetails);
-        //    //    this.selectedItems.splice(index, 1);
-        //    //}
-        //}
-
-
-
-
-        onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
-            debugger;
-            if (isChecked) {
-                this.selectedItems.push(itemdetails);
-            } else {
-                let index = this.selectedItems.indexOf(itemdetails);
-                this.selectedItems.splice(index, 1);
-            }
-        }
-
-        //onChange1(itemdetails: ItemsViewModel, isChecked: boolean) {
-        //    debugger;
-        //    this.VendorName = this.selectedItems[0].VendorName;
-        //    if (isChecked) {
-        //        this.selectedItems.push(itemdetails);
-        //    } else {
-        //        let index = this.selectedItems.indexOf(itemdetails);
-        //        this.selectedItems.splice(index, 1);
-        //    }
-        //}
-    
 }
