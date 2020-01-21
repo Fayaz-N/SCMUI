@@ -49,6 +49,7 @@ import { purchasePaymentComponent } from './purchase-authorization/purchasePayme
 import { PurchaseAuthorizationComponent } from './purchase-authorization/purchase-authorization.component';
 import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
+import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
 
 @NgModule({
   imports: [
@@ -106,7 +107,8 @@ import { purchasePaymentListComponent } from './purchase-authorization/purchaseP
       purchasePaymentComponent,
       PurchaseAuthorizationComponent,
       CreditAuthorizationComponent,
-      purchasePaymentListComponent
+      purchasePaymentListComponent,
+      MPRPAApproversListComponent
     
   ],
   providers:[MessageService, ConfirmationService],

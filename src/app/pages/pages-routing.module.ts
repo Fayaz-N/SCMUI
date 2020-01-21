@@ -28,7 +28,8 @@ import { PurchaseAuthorizationComponent } from './purchase-authorization/purchas
 import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
 import { purchasePaymentComponent } from './purchase-authorization/purchasePayment.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
-import { Subject } from 'rxjs';
+import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
+
 
 const routes: Routes = [{
   path: '',
@@ -72,7 +73,7 @@ const routes: Routes = [{
       { path: "mprpa", component: purchasePaymentComponent, canActivate: [AuthGuard] },
       { path: "MPRPAList", component: purchasePaymentListComponent, canActivate: [AuthGuard] },
       { path: "mprpa/:PAId", component: purchasePaymentComponent, canActivate: [AuthGuard] },
-
+      { path: "MPRPAApproverList", component: MPRPAApproversListComponent, canActivate: [AuthGuard] }
 
     // {
     //      path: '',

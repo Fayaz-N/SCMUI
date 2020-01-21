@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, PurchaseCreditApproversModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
@@ -13,6 +13,7 @@ export class purchasePaymentComponent implements OnInit {
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
+    public PAApprovers: MPRPAApproversModel;
     public vendor: Array<VendorMasterModel> = [];
     public Approvers = PurchaseCreditApproversModel;
     public configuration: ConfigurationModel;
@@ -24,8 +25,10 @@ export class purchasePaymentComponent implements OnInit {
     public displayItemDialog: boolean;
     public showemployee: boolean;
     public paid: number;
+    public approvedemployee: boolean;
     public buyergroups: any[];
     public departmentlist: any[];
+    public MPRItemDetailsid: any[];
     public purchasedetails: mprpadetailsmodel;
     public selectedItems: Array<any> = [];
     public RFQItemID: Array<any> = []
@@ -40,7 +43,9 @@ export class purchasePaymentComponent implements OnInit {
         }
 
         //this.paitemdetails = this.paService.itemvalues;
+        this.PAApprovers = new MPRPAApproversModel();
         this.showemployee = false;
+        this.approvedemployee = false;
         this.purchasemodes = new Array<mprpapurchasemodesmodel>();
         this.purchasetypes = new Array<mprpapurchasetypesmodel>();
         this.purchasedetails = new mprpadetailsmodel();
@@ -49,6 +54,7 @@ export class purchasePaymentComponent implements OnInit {
         this.paitemdetails = new Array<ItemsViewModel>();
         this.buyergroups = new Array<any>();
         this.departmentlist = new Array<any>();
+        this.MPRItemDetailsid = new Array<any>();
         this.selectedItems = new Array<any>();
         this.RFQItemID = new Array<any>();
         this.configuration = new ConfigurationModel();
@@ -59,8 +65,8 @@ export class purchasePaymentComponent implements OnInit {
 
         this.route.params.subscribe(params => {
             if (params["PAId"]) {
-                var paid = params["PAId"];
-                this.getmprpabyid(paid);
+                this.paid = params["PAId"];
+                this.getmprpabyid(this.paid);
             }
         })
         if (localStorage.getItem("PADetails")) {
@@ -86,14 +92,22 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasetypes = data;
         })
     }
+    
+
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
         this.purchasedetails.Item = [];
+        this.purchasedetails.ApproversList = [];
+
+        //console.log(this.employeelist.Approvers, "approver");
         for (var i = 0; i < this.selectedItems.length; i++) {
             this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
             this.paitemdetails.push(this.selectedItems[i]);
             this.purchasedetails.Item.push(this.selectedItems[i]);
             //this.purchasedetails.Item = this.RFQItemID;
             //this.purchasedetails.Item = this.paitemdetails;
+        }
+        for (var i = 0; i < this.employeelist.Approvers.length; i++) {
+            this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
         }
         this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
         //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
@@ -117,12 +131,28 @@ export class purchasePaymentComponent implements OnInit {
     getmprpabyid(paid: any) {
         debugger;
         //this.paitemdetails = new Array<ItemsViewModel>[];
-        this.selectedItems;
+        this.MPRItemDetailsid = [];
         this.paService.LoadMprPADeatilsbyid(paid).subscribe(data => {
             this.purchasedetails = data;
             this.purchasedetails.Item = data.Item;
+            this.purchasedetails.ApproversList = data.ApproversList;
             this.pasubmitted = true;
-            this.displayapproveEmployee();
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
+                //item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
+            }
+            this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            for (var i = 0; i < this.purchasedetails.ApproversList.length; i++) {
+                var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo
+                if (employeeapprove == false) {
+                    this.approvedemployee = false
+                }
+                else {
+                    this.approvedemployee = true;
+                }
+            }
+           
+            //this.displayapproveEmployee();
             this.showemployee = true;
         })
     }
@@ -134,7 +164,7 @@ export class purchasePaymentComponent implements OnInit {
 
     displayapproveEmployee() {
         debugger;
-        this.departmentlist = [];
+        this.MPRItemDetailsid = [];
         //this.employeelist.Approvers = [];
         console.log(this.selectedItems);
         let item = new ConfigurationModel();
@@ -145,28 +175,28 @@ export class purchasePaymentComponent implements OnInit {
             item["DeptID"] = this.selectedItems[0].DepartmentId;
             item["PaymentTermCode"] = this.selectedItems[0].PaymentTermCode;
             for (var i = 0; i < this.selectedItems.length; i++) {
-                this.departmentlist.push(this.selectedItems[i].MPRItemDetailsid)
+                this.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid)
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
-            this.LoadVendorbymprdeptids(this.departmentlist);
+            this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
             console.log(this.selectedItems);
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data;
+                //this.employeelist.Approvers = data;
                 //document.getElementsByClassName("displayemployee")[0].scrollIntoView(true)
             })
         }
     }
-    LoadVendorbymprdeptids(departmentlist: any) {
-        this.paService.LoadVendorbymprdeptids(departmentlist).subscribe(data => {
+    LoadVendorbymprdeptids(MPRItemDetailsid: any) {
+        debugger;
+        var distinct = [];
+        this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
             this.vendor = data;
-            this.vendor.forEach((item, index) => {
-                if (index !== this.vendor.findIndex(i => i.VendorName === item.VendorName)) {
-                    this.vendor.splice(index,1)
-                }
-            })
-            
+            //Array.from(new Set(this.vendor.map((items: any) => items.VendorName)))
+            //this.vendor.map(x => x.Vendorid).filter((value, index, self) => self.indexOf(value) === index)
         })
     }
+
     showItemDialogToAdd() {
         this.displayItemDialog = true;
     }
@@ -174,5 +204,10 @@ export class purchasePaymentComponent implements OnInit {
     public ispagerefresh() {
         window.history.back();
     }
-
+    Approvepa(approvers: MPRPAApproversModel) {
+        approvers.PAId = this.paid;
+        this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
+            this.getmprpabyid = data;
+        })
+    }
 }

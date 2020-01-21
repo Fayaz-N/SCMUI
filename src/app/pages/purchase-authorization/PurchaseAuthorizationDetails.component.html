@@ -55,22 +55,24 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Project Manager:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','EmployeeNo',projectmanger.Name,undefined)">
+          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','ProjectManager',projectmanger.Name,undefined)">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','EmployeeNo','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','ProjectManager','',undefined)"></button>
           </span>
           <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
         </div>
       </div>
     </div>
   </div><br />
+  
   <div class="row" style="margin-bottom:10px">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="displayitems(padetails)">Submit</button>
     </div>
   </div>
-  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;">
-    <p-table [value]="paitemdetails" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
+  
+  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
+    <p-table [value]="paitemdetails" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
       <ng-template pTemplate="header">
         <tr class="text-left" style="text-align:left">
           <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
@@ -92,7 +94,7 @@
         <tr>
           <td>
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
-            <input type="checkbox" (change)="onChange(rowData,$event.target.checked)">
+            <input type="checkbox" ([ngModel])="checkbox"  (change)="onChange(rowData,$event.target.checked)">
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
           </td>
           <td class="text-center">{{ri+1}}</td>
@@ -110,10 +112,10 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="row" style="margin-top:10px">
-    <div class="col-md-12" style="text-align:center">
-      <button type="button" class="btn btn-success" (click)="displayapproveitems()">Submit</button>
-    </div>
+  <div class="footer row" style="position:sticky;margin-left:1px;margin-top:10px">
+      <div class="col-md-10" style="text-align:center">
+        <button type="button" class="btn btn-success" (click)="displayapproveitems()">Submit</button>
+      </div>
   </div>
   <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
     <div class="ui-g ui-fluid">

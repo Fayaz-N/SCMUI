@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -99,11 +99,21 @@ export class purchaseauthorizationservice {
         return this.http.post<any>(this.url + 'RFQ/RemovePurchaseApprover', mappingdata, this.httpOptions);
     }
 
-    getdata(data: any,data1:any) {
+    LoadVendorbymprdeptids(MPRItemDetailsid: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/LoadVendorByMprDetailsId', MPRItemDetailsid, this.httpOptions);
+    }
+    loadAllmprpaapproverslist(): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/GetAllApproversList', this.httpOptions);
+    }
+
+    getdata(data: any, data1: any) {
         debugger;
         this._datasource.next(data);
     }
-    LoadVendorbymprdeptids(MPRItemDetailsid: any): Observable<any> {
-        return this.http.post<any>(this.url + 'RFQ/LoadVendorByMprDetailsId', MPRItemDetailsid, this.httpOptions);
+    LoadmprApproverDetailsbySearch(inputsearch: PAApproverDetailsInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/GetMprApproverDetailsBySearch', inputsearch, this.httpOptions);
+    }
+    Updatepaapproverstatus(approvers: MPRPAApproversModel): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/UpdateMprpaApproverStatus', approvers, this.httpOptions);
     }
 }

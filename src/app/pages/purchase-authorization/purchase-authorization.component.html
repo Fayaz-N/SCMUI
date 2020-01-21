@@ -93,9 +93,11 @@
         <th style="width: 5em">Sl No</th>
         <th>MinPAValue</th>
         <th>MaxPAValue</th>
+        <th>Department</th>
         <th>EmployeeName</th>
         <th>AuthorizationType</th>
-        <th >LessBudget</th>
+        <th>FunctionalRole</th>
+        <th>LessBudget</th>
         <th>MoreBudget</th>
         <th style="width: 5em"></th>
       </tr>
@@ -105,10 +107,12 @@
         <td pEditableColumn class="text-center">{{ri+1}}</td>
         <td pEditableColumn>{{rowData.MinPAValue}}</td>
         <td pEditableColumn>{{rowData.MaxPAValue}}</td>
+        <td pEditableColumn>{{rowData.DepartmentName}}</td>
         <td pEditableColumn>{{rowData.Name}}</td>
         <td pEditableColumn>{{rowData.AuthorizationType}}</td>
-        <td pEditableColumn class="positive">{{rowData.LessBudget}}</td>
-        <td pEditableColumn class="positive">{{rowData.MoreBudget}}</td>
+        <td pEditableColumn>{{rowData.FunctionalRoleId}}</td>
+        <td pEditableColumn>{{rowData.LessBudget}}</td>
+        <td pEditableColumn>{{rowData.MoreBudget}}</td>
         <td class="text-center">
           <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletePurchaserow(rowData)" class="ui-button-danger"></button>
         </td>

@@ -1,4 +1,5 @@
 import { NumberValueAccessor } from '@angular/forms';
+import { Data } from '@angular/router';
 
 export class PAAuthorizationLimitModel {
     Authid: number;
@@ -61,6 +62,7 @@ export class PADetailsModel {
     RFQNo: string;
     DeptID: number;
     DepartmentName: string;
+    EmployeeNo: string;
 }
 export class ItemsViewModel {
     RFQItemsId: number;
@@ -68,6 +70,7 @@ export class ItemsViewModel {
     Department: string;
     DocumentNo: string;
     QuotationQty: number;
+    VendorId: number;
     VendorName: string;
     TargetSpend: number;
     UnitPrice: number;
@@ -86,6 +89,8 @@ export class EmployeeModel {
     Name: string;
     BuyerGroupManager: string;
     BuyerGroupNo: string;
+    BGRole: string;
+    PMRole: string;
     ProjectManager: string;
     ProjectMangerNo: string;
     Vendor: Array<VendorMasterModel>[];
@@ -94,8 +99,16 @@ export class EmployeeModel {
 export class PurchaseCreditApproversModel {
     ApproverName: string
     AuthorizationType: string
-    Role: string;
+    RoleName: string;
     EmployeeNo: string;
+    RoleId: string;
+    ApproverLevel: number;
+    ApproversRemarks: string;
+    ApprovalStatus: string;
+    ApprovedOn: Date;
+    Approver: string;
+    ApproverId: number;
+    PAId: number;
 }
 
 export class ConfigurationModel {
@@ -162,6 +175,19 @@ export class mprpadetailsmodel {
     department: DepartmentModel;
     Item: Array<ItemsViewModel>[];
     buyergroup: BuyerGroupModel;
+    ApproversList: Array<MPRPAApproversModel>[];
+}
+export class MPRPAApproversModel {
+    ApproverId: number;
+    ApproverLevel: number;
+    RoleName: string;
+    ApproverName: string;
+    ApproversRemarks: string;
+    ApprovalStatus: string;
+    ApprovedOn: Date;
+    RoleId: string;
+    EmployeeNo: string;
+    PAId: number;
 }
 export class BuyerGroupModel {
     BuyerGroupId: number;
@@ -192,4 +218,11 @@ export class ProjectManager {
 export class VendorMasterModel {
     VendorName: string;
     Vendorid: number;
+}
+export class PAApproverDetailsInputModel {
+    Paid: number;
+    FromDate: Date;
+    ToDate: Date;
+    Status: string;
+    CreatedBy: string;
 }

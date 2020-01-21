@@ -152,6 +152,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'MPRPAList',
                 link: '/SCM/MPRPAList',
                 icon: 'layers-outline'
+            },
+            {
+                title: 'MprApprovers',
+                link: '/SCM/MPRPAApproverList',
+                icon: 'layers-outline'
             }
         ],
     },

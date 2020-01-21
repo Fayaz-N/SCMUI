@@ -9,15 +9,17 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
-  selector: 'app-purchaseAuthorizationDetails',
+    selector: 'app-purchaseAuthorizationDetails',
     templateUrl: './purchaseAuthorizationDetails.component.html',
 })
 export class PurchaseAuthorizationDetailsComponent implements OnInit {
-    selectedItems1=[];
+    selectedItems1 = [];
 
     constructor(public paService: purchaseauthorizationservice, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) { }
     public hivalue = true;
+    public Vendorid: number;
     public approvevalue = false;
+    public checkbox: boolean;
     public MPRPageForm1: FormGroup;
     public department: Department;
     public buyergroups: MPRBuyerGroup;
@@ -31,7 +33,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public txtName: string;
     public dynamicData = new DynamicSearchResult();
     public searchresult: Array<object> = [];
-    public searchItems: Array<searchList> = []; 
+    public searchItems: Array<searchList> = [];
     public showList: boolean = false;
     public selectedlist: Array<searchList> = [];
     public selectedItem: searchList;
@@ -39,7 +41,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public mprRevisionModel: mprRevision;
     public dialogTop: string;
     public multiSelect: boolean = true;
-    public vendorSubmitted; MPRForm1Submitted; Departmentsubmittted;projectmangersubmitted;
+    public vendorSubmitted; MPRForm1Submitted; Departmentsubmittted; projectmangersubmitted;
     public selectedbox: any[];
     public selectedItems: Array<any> = [];
     public VendorName: string;
@@ -54,13 +56,19 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.vendorDetails = new MPRVendorDetail();
         this.buyergroups = new MPRBuyerGroup();
         this.projectmanger = new ProjectManager();
+        this.checkbox = false;
     }
     displayitems(padetails: PADetailsModel) {
         this.paService.LoadItems(this.padetails).subscribe(data => {
             //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
             this.paitemdetails = data;
-            for (var i = 0; i < this.paitemdetails.length; i++) {
-                this.paitemdetails[i].itemsum = this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice;
+            if (this.paitemdetails.length>0) {
+                for (var i = 0; i < this.paitemdetails.length; i++) {
+                    this.paitemdetails[i].itemsum = this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice;
+                }
+            }
+            else {
+                alert("No items")
             }
         })
     }
@@ -81,11 +89,11 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             this.searchItems = [];
             var fName = "";
             this.searchresult.forEach(item => {
-               
-                 if (name == "venderid")
-                     fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
-                 //else if
-                 //    fName = item[this.constants[name].fieldname] + " - " + item[""]
+
+                if (name == "venderid")
+                    fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+                //else if
+                //    fName = item[this.constants[name].fieldname] + " - " + item[""]
                 else
                     fName = item[this.constants[name].fieldName];
                 var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
@@ -113,7 +121,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         //}
     }
     //displayapproveitems() {
-       
+
     //    console.log(this.selectedItems);
     //    let obj;
     //    let itemarray = [];
@@ -133,7 +141,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     //            this.paitemdetails = data;
     //        })
     //    }
-        
+
     //}
 
     //displayapproveitems() {
@@ -159,7 +167,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     //}
     displayapproveitems() {
         debugger;
-        
+
         let dataa: any = this.selectedItems;
         localStorage.setItem("PADetails", JSON.stringify(this.selectedItems));
         this.routing.navigateByUrl("/SCM/mprpa");
@@ -169,7 +177,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         let dataa: any = this.selectedItems;
         this.paService.getdata(this.paitemdetails, dataa);
     }
-        
+
     public onSelectedOptionsChange(item: any, index: number) {
         debugger;
         this.showList = false;
@@ -184,71 +192,112 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             this.padetails.DeptID = item.code;
             this.padetails.DepartmentName = item.name;
         }
+        else if (item.listName == "ProjectManager") {
+            this.projectmanger.EmployeeNo = item.code;
+            this.projectmanger.Name = item.name;
+            this.padetails.EmployeeNo = item.code;
+        }
         else {
             this.buyergroups.BuyerGroupId = item.code;
             this.buyergroups.BuyerGroup = item.name;
             this.padetails.BuyerGroupId = item.code;
-        }
+        } 
     }
     onclickbox(selectitems: any[]) {
         this.paitemdetails = selectitems;
     }
     //onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
     //    debugger;
-
-    //    this.VendorName = this.selectedItems[0].VendorName;
-    //    let element = itemdetails;
-    //    // this.selectedItems = [];
+    //    if (this.selectedItems.length == 0)
+    //        this.Vendorid = itemdetails.VendorId;
     //    if (isChecked) {
     //        if (this.selectedItems.length === 0) {
     //            this.selectedItems.push(itemdetails);
-    //            //this.selectedItems1.push(itemdetails)
-    //            console.log("first", this.selectedItems)
     //        }
-    //        else if (this.VendorName === itemdetails.VendorName) {
+    //        else if (this.Vendorid === itemdetails.VendorId) {
     //            this.selectedItems.push(itemdetails);
     //        }
     //        else {
-    //            alert("please select Single Vendor")
+    //            alert("choose single vendor");
+    //            this.checkbox = false;
     //        }
-    //        this.selectedItems.forEach((element, index) => {
-    //            console.log(`Current index: ${index}`);
-
-    //            if (element.VendorName === itemdetails.VendorName) {
-    //                this.selectedItems1.push(itemdetails);
-    //            }
-    //            else {
-    //                alert(itemdetails.VendorName);
-    //            }
-
-    //        });
     //    }
-    //    else if (!isChecked) {
-    //        alert(!isChecked)
+    //    else {
+    //        let index = this.selectedItems.indexOf(itemdetails);
+    //        this.selectedItems.splice(index, 1);
     //    }
-      
-        
-       
-
-    //    //if (isChecked) {
-    //    //    for (var i = 0; i < itemdetails.length; i++) {
-    //    //        if (this.VendorName == itemdetails[i].VendorName) {
-    //    //            this.selectedItems.push(itemdetails[i])
-    //    //        }
-    //    //    }
-    //    //    this.selectedItems.push(itemdetails);
-    //    //} else {
-    //    //    let index = this.selectedItems.indexOf(itemdetails);
-    //    //    this.selectedItems.splice(index, 1);
-    //    //}
     //}
-    onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
-        debugger;
-        if (isChecked) {
-            this.selectedItems.push(itemdetails);
-        } else {
-            let index = this.selectedItems.indexOf(itemdetails);
-            this.selectedItems.splice(index, 1);
+        //this.selectedItems.push(itemdetails);
+        ////itemdetails.VendorId = this.Vendorid;
+        ////this.VendorName = this.selectedItems[0].VendorName;
+        //let element = itemdetails;
+        //// this.selectedItems = [];
+        //if (isChecked) {
+        //    if (this.selectedItems.length === 0) {
+        //        this.selectedItems.push(itemdetails);
+        //        //this.selectedItems1.push(itemdetails)
+        //        console.log("first", this.selectedItems)
+        //    }
+        //    else if (this.Vendorid === itemdetails.VendorId) {
+        //        this.selectedItems.push(itemdetails);
+        //    }
+        //    else {
+        //        alert("please select Single Vendor")
+        //    }
+        //    this.selectedItems.forEach((element, index) => {
+        //        console.log(`Current index: ${index}`);
+
+        //        if (element.VendorName === itemdetails.VendorName) {
+        //            this.selectedItems1.push(itemdetails);
+        //        }
+        //        else {
+        //            alert(itemdetails.VendorName);
+        //        }
+
+        //    });
+        //}
+        //else if (!isChecked) {
+        //    alert(!isChecked)
+        //}
+
+
+
+
+        //    //if (isChecked) {
+        //    //    for (var i = 0; i < itemdetails.length; i++) {
+        //    //        if (this.VendorName == itemdetails[i].VendorName) {
+        //    //            this.selectedItems.push(itemdetails[i])
+        //    //        }
+        //    //    }
+        //    //    this.selectedItems.push(itemdetails);
+        //    //} else {
+        //    //    let index = this.selectedItems.indexOf(itemdetails);
+        //    //    this.selectedItems.splice(index, 1);
+        //    //}
+        //}
+
+
+
+
+        onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
+            debugger;
+            if (isChecked) {
+                this.selectedItems.push(itemdetails);
+            } else {
+                let index = this.selectedItems.indexOf(itemdetails);
+                this.selectedItems.splice(index, 1);
+            }
         }
-    }
+
+        //onChange1(itemdetails: ItemsViewModel, isChecked: boolean) {
+        //    debugger;
+        //    this.VendorName = this.selectedItems[0].VendorName;
+        //    if (isChecked) {
+        //        this.selectedItems.push(itemdetails);
+        //    } else {
+        //        let index = this.selectedItems.indexOf(itemdetails);
+        //        this.selectedItems.splice(index, 1);
+        //    }
+        //}
+    
 }
