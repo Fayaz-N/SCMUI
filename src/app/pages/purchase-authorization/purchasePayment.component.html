@@ -116,14 +116,14 @@
           <!--<th>AuthorizationType</th>-->
           <th>Role</th>
           <!--<th>BuyerGroup</th>
-          <th>Project Manager</th>-->
+      <th>Project Manager</th>-->
         </tr>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <ng-template pTemplate="body"  let-editing="editing" let-ri="rowIndex">
         <tr>
-          <td class="text-center">{{ri+1}}</td>
-          <td>{{rowData.ApproverName}}</td>
-          <td>{{rowData.RoleName}}</td>
+          <td class="text-center" >{{ri+1}}</td>
+          <td>{{app.ApproverName}}</td>
+          <td>{{app.RoleId}}</td>
         </tr>
         <tr>
           <td class="text-center">{{ri+1}}</td>
@@ -136,7 +136,6 @@
           <td>{{employeelist.PMRole}}</td>
         </tr>
       </ng-template>
-      
     </p-table><br />
   </div>
 </div>

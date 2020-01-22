@@ -16,7 +16,7 @@
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
           <select (change)="selecteSlabs($event)" class="form-control">
-            <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
+            <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}} </option>
             <!--<option [value]="0">Select</option>-->
           </select>
           <!--<p>Selected Department:{{SelectedDepartment}}</p>-->
@@ -130,7 +130,7 @@
         <!--<input type="text"  ngModel maxlength="20" [(ngModel)]="SelectedDepartment" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />-->
         <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptId" required [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && paauthorization.DeptId!=0}">
           <option [value]="0">Select</option>
-          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}}</option>
+          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}}</option>
         </select>
         <span *ngIf="paSubmitted && paauthorization.DeptId!=0" class="invalid-feedback">Department Required</span>
       </div>

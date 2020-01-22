@@ -37,7 +37,7 @@ export class purchaseauthorizationservice {
     }
 
     LoadAllDepartments(): Observable<any> {
-        return this.http.get<any>(this.url + 'RFQ/GetAllDepartments', this.httpOptions);
+        return this.http.get<any>(this.url + 'RFQ/GetAllMPRDepartments', this.httpOptions);
     }
 
     LoadSlabsByDepartmentID(deptID: number): Observable<any> {
