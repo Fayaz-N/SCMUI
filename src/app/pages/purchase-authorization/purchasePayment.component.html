@@ -107,36 +107,30 @@
     </p-table>
   </div><br />
   <div *ngIf="showemployee && !pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <p-table *ngIf="employeelist && employeelist.Approvers.length>0" [value]="employeelist.Approvers" [paginator]="false" [resizableColumns]="true" p columnResizeMode="expand">
-      <ng-template pTemplate="header">
-        <tr>
-          <th style="width: 5em">Sl No</th>
-          <!--<th>EmployeeNo</th>-->
-          <th>ApproverName</th>
-          <!--<th>AuthorizationType</th>-->
-          <th>Role</th>
-          <!--<th>BuyerGroup</th>
-      <th>Project Manager</th>-->
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body"  let-editing="editing" let-ri="rowIndex">
-        <tr>
-          <td class="text-center" >{{ri+1}}</td>
-          <td>{{app.ApproverName}}</td>
-          <td>{{app.RoleId}}</td>
-        </tr>
-        <tr>
-          <td class="text-center">{{ri+1}}</td>
-          <td>{{employeelist.BuyerGroupManager}}</td>
-          <td>{{employeelist.BGRole}}</td>
-        </tr>
-        <tr>
-          <td class="text-center">{{ri+1}}</td>
-          <td>{{employeelist.ProjectManager}}</td>
-          <td>{{employeelist.PMRole}}</td>
-        </tr>
-      </ng-template>
-    </p-table><br />
+    <div *ngIf="employeelist && employeelist.Approvers.length>0" class="col-lg-8 col-md-8 col-sm-8">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><span style="float:left">ApproverName </span> </th>
+            <th><span style="float:left">Role </span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of employeelist.Approvers">
+            <td>{{app.ApproverName}}</td>
+            <td>{{app.RoleId}}</td>
+          </tr>
+          <tr>
+            <td>{{employeelist.BuyerGroupManager}}</td>
+            <td>{{employeelist.BGRole}}</td>
+          </tr>
+          <tr>
+            <td>{{employeelist.ProjectManager}}</td>
+            <td>{{employeelist.PMRole}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>
 <br />
@@ -219,21 +213,22 @@
       </div>
     </div>
   </div>
-</div><br />
+</div>
+<br />
 
-  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
-    <div class="col-md-6 pt-2">Considered Vendors:</div>
+<div class="row head-text pl-0" style="margin-left:0px;width:100%">
+  <div class="col-md-6 pt-2">Considered Vendors:</div>
+</div>
+<div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+  <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+    <span class="Vendor">{{ven.VendorName}} </span>
   </div>
-  <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
-      <span class="Vendor">{{ven.VendorName}} </span>
-    </div>
+</div>
+<div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+  <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+    <span class="Vendor">{{ven.VendorName}} </span>
   </div>
-  <div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
-      <span class="Vendor">{{ven.VendorName}} </span>
-    </div>
-  </div>
+</div>
 
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Budget Details:</div>
@@ -243,7 +238,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="Supplier" class="form-label label" style="margin-left: 12px;">Supplier Reference Name:</label>&nbsp;&nbsp;
-        <input type="text" [(ngModel)]="purchasedetails.SupplierReference" class="form-control" style="width:60%;margin-left: 12px;"/>
+        <input type="text" [(ngModel)]="purchasedetails.SupplierReference" class="form-control" style="width:60%;margin-left: 12px;" />
       </div>
       <div *ngIf="pasubmitted">
         <label for="Supplier" class="form-label label" style="margin-left: 12px;">Supplier Reference Name:</label>&nbsp;&nbsp;
@@ -358,7 +353,7 @@
         <div style="overflow-wrap:break-word;margin-left:12px">
           <span class="Warranty">{{purchasedetails.Warranty}}</span>
         </div>
-        
+
       </div>
     </div>
   </div>
