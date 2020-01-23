@@ -60,15 +60,13 @@ export class PurchaseAuthorizationComponent implements OnInit {
         this.LoadAllFunctionalMappings();
         this.LoadEmployeemappedPurchases();
         this.paService.LoadAllDepartments().subscribe(data => {
-            debugger;
             this.departmentlist = data;
-            //this.SelectedDepartment = 0;
+            this.SelectedDepartment = 0;
         });
 
     }
     selecteSlabs(event: any) {
         this.deptid = event.target.value;
-        debugger;
         this.paService.LoadSlabsByDepartmentID(this.deptid).subscribe(data => {
             debugger;
             this.slbaslist = data;
@@ -77,7 +75,6 @@ export class PurchaseAuthorizationComponent implements OnInit {
 
     }
     LoadAllemployess() {
-        debugger;
         this.paService.LoadAllemployees().subscribe(data => {
             this.employeelist = data;
             this.employemapping.Employeeid = "0";
@@ -96,21 +93,28 @@ export class PurchaseAuthorizationComponent implements OnInit {
         this.AddDialog = false;
     }
     Submit(paauthorization: PAAuthorizationLimitModel) {
-        debugger;
         paauthorization.CreatedBy = this.employee.EmployeeNo;
         this.paSubmitted = true;
         if (this.detailsform.invalid) {
             return;
         }
         else {
-            debugger;
             this.paService.InsertPAAuthorizationLimits(paauthorization).subscribe(data => {
                 this.authid = data;
-                this.detailsform
+                this.detailsform.clearValidators();
+                this.reset();
             })
         }
         //this.detailsform.clearValidators();
         //this.detailsform.reset();
+    }
+    reset() {
+        
+        this.detailsform.controls['DeptId'].clearValidators();
+        this.detailsform.controls['MinPAValue'].clearValidators();
+        this.detailsform.controls['MaxPAValue'].clearValidators();
+        this.detailsform.controls['AuthorizationType'].clearValidators();
+        this.detailsform.reset();
     }
 
     InsertEmployeeMapping(employemapping: PAAuthorizationEmployeeMappingModel) {
@@ -132,9 +136,8 @@ export class PurchaseAuthorizationComponent implements OnInit {
     toggle(event): void {
         event.target.classList.toggle("active");
     }
+    
     setradio(e) {
-        debugger
-
         this.employemapping.checked = e.target.checked;
         if (e.target.value === "LessBudget") {
             this.employemapping.LessBudget = true;

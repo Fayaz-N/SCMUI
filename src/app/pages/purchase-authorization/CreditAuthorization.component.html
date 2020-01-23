@@ -12,7 +12,7 @@
       <div class="row selectgrow">
         <div class="ui-g-12">
           <div class="ui-g-2">
-            <label for="procSrc"> Credit Slabs :</label>
+            <label for="procSrc"> Credit Slabs : <span class="required-asterisk" style="color:red">*</span></label>
           </div>
           <div class="ui-g-5">
             <select class="form-control dropdown" [(ngModel)]="creditApprovers.Authid" formControlName="Authid" [value]="Approveform.controls.Authid.value" [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.Authid.errors}">
@@ -26,7 +26,7 @@
       <div class="row selectgrow">
         <div class="ui-g-12">
           <div class="ui-g-2">
-            <label for="procSrc"> Employee Select:</label>
+            <label for="procSrc"> Employee Select: <span class="required-asterisk" style="color:red">*</span></label>
           </div>
           <div class="ui-g-5">
             <select class="form-control dropdown" [(ngModel)]="creditApprovers.EmployeeNo" formControlName="EmployeeNo" [value]="Approveform.controls.EmployeeNo.value" [ngClass]="{ 'is-invalid': approveSubmitted  && Approveform.controls.EmployeeNo.errors}">
@@ -40,7 +40,7 @@
       <div class="row selectgrow">
         <div class="ui-g-12">
           <div class="ui-g-2">
-            <label for="procSrc"> Credit Days:</label>
+            <label for="procSrc"> Credit Days: <span class="required-asterisk" style="color:red">*</span></label>
           </div>
           <div class="ui-g-5">
             <select class="form-control dropdown" [(ngModel)]="creditApprovers.CreditDaysid" formControlName="CreditDaysid">
@@ -89,7 +89,7 @@
 
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">MinDays :</label>
+        <label for="procSrc">MinDays : <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <input type="text" formControlName="MinDays" [(ngModel)]="credit.MinDays" class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MinDays.errors}" />
@@ -98,7 +98,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">MaxDays :</label>
+        <label for="procSrc">MaxDays : <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <input type="text" formControlName="MaxDays" [(ngModel)]="credit.MaxDays" class="form-control" [ngClass]="{ 'is-invalid': crSubmitted && creditform.controls.MaxDays.errors}" />

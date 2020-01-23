@@ -8,18 +8,17 @@
       <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="showDialogAddDepartment()" label="Add Slabs"></button>
     </div>
   </div>
-
+  <form [formGroup]="paform">
     <div class="container" style="margin-top:25px">
       <div class="row selectgrow">
         <div class="col-lg-2 col-md-2 col-sm-2 form-group">
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Department:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select (change)="selecteSlabs($event)" class="form-control">
+          <select (change)="selecteSlabs($event)" class="form-control" formControlName="Department">
+            <option [value]="0">Select</option>
             <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}} </option>
-            <!--<option [value]="0">Select</option>-->
           </select>
-          <!--<p>Selected Department:{{SelectedDepartment}}</p>-->
         </div>
       </div>
 
@@ -28,19 +27,20 @@
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Slabs:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.Authid" class="form-control">
+          <select [(ngModel)]="employemapping.Authid" class="form-control" formControlName="Authid">
             <option *ngFor="let sla of slbaslist" [value]="sla.Authid">{{sla.MinPAValue}}-{{sla.MaxPAValue}}</option>
           </select>
         </div>
         <div class="col-sm-12 col-md-6 col-lg-6">
         </div>
       </div>
+
       <div class="row selectgrow">
         <div class="col-lg-2 col-md-2 col-sm-2 form-group">
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Employee:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.Employeeid" class="form-control">
+          <select [(ngModel)]="employemapping.Employeeid" class="form-control" formControlName="Employeeid">
             <option *ngFor="let emp of employeelist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
           </select>
           <!--<p>Selected Employee:{{employemapping.Employeeid}}</p>-->
@@ -48,16 +48,16 @@
         <div class="col-sm-12 col-md-6 col-lg-6">
         </div>
       </div>
+
       <div class="row selectgrow">
         <div class="col-lg-2 col-md-2 col-sm-2 form-group">
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Functional Roles:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.FunctionalRoleId" class="form-control">
+          <select [(ngModel)]="employemapping.FunctionalRoleId" class="form-control" formControlName="FunctionalRoleId">
             <option *ngFor="let role of RolesList" [value]="role.FunctionalRoleId">{{role.FunctionalRole}}</option>
           </select>
         </div>
-
         <div class="col-sm-12 col-md-6 col-lg-6">
         </div>
       </div><br />
@@ -85,6 +85,7 @@
         <button type="button" class="btn btn-success" label="Save" (click)="InsertEmployeeMapping(employemapping)">Add Employee</button>
       </div>
     </div>
+  </form>
 </div>
 <div class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="mappedpurchase" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
@@ -124,20 +125,20 @@
   <p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">Department :</label>
+        <label for="procSrc">Department: <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <!--<input type="text"  ngModel maxlength="20" [(ngModel)]="SelectedDepartment" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />-->
-        <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptId" required [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && paauthorization.DeptId!=0}">
+        <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptId" [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && paauthorization.DeptId!=0}">
           <option [value]="0">Select</option>
           <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}}</option>
         </select>
-        <span *ngIf="paSubmitted && paauthorization.DeptId!=0" class="invalid-feedback">Department Required</span>
+        <span *ngIf="paSubmitted && paauthorization.DeptId==0" class="invalid-feedback">Department Required</span>
       </div>
     </div>
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">MinPAValue :</label>
+        <label for="procSrc">MinPAValue: <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <input type="text" formControlName="MinPAValue" [(ngModel)]="paauthorization.MinPAValue" class="form-control" [ngClass]="{ 'is-invalid': paSubmitted && detailsform.controls.MinPAValue.errors}" />
@@ -146,7 +147,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">MaxPAValue :</label>
+        <label for="procSrc">MaxPAValue: <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <input type="text" formControlName="MaxPAValue" [(ngModel)]="paauthorization.MaxPAValue" class="form-control" [ngClass]="{ 'is-invalid':   paSubmitted && detailsform.controls.MaxPAValue.errors}" />
@@ -155,7 +156,7 @@
     </div>
     <div class="ui-g-12">
       <div class="ui-g-2">
-        <label for="procSrc">Authorization Type :</label>
+        <label for="procSrc">Authorization Type: <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
         <select class="form-control" formControlName="AuthorizationType" [(ngModel)]="paauthorization.AuthorizationType" [ngClass]="{ 'is-invalid': paSubmitted && detailsform.controls.AuthorizationType.errors}">

@@ -65,17 +65,19 @@ export class CreditAuthorizationComponent implements OnInit {
         else {
             this.paService.InsertCreditMaster(credit).subscribe(data => {
                 this.creditdaysid = data;
+                this.ResetForm();
             })
         }
-        this.creditform.reset();
         this.loadallcreditdays()
-        //this.myForm.resetForm();
-        //this.creditform.controls['MinDays'].clearValidators();
-        //this.creditform.controls['MaxDays'].clearValidators();
     }
     Cancel() {
         this.addialog = false;
     }
+    ResetForm() {
+        this.creditform.controls['MinDays'].clearValidators();
+        this.creditform.controls['MaxDays'].clearValidators();
+        this.creditform.reset();
+    } 
     LoadAllCredits() {
         this.paService.GetAllCredits().subscribe(data => {
             this.authorization = data;
@@ -107,9 +109,16 @@ export class CreditAuthorizationComponent implements OnInit {
             this.paService.InsertCreditApprovers(creditApprovers).subscribe(data => {
                 this.approvalid = data;
                 this.LoadAllMappedCredits();
+                this.ResetApproveForm();
             })
         }
        
+    }
+    ResetApproveForm() {
+        this.Approveform.controls['Authid'].clearValidators();
+        this.Approveform.controls['EmployeeNo'].clearValidators();
+        this.Approveform.controls['CreditDaysid'].clearValidators();
+        this.Approveform.reset();
     }
     deletecreditrow(mappingdata: any) {
         this.paService.RemovePurchaseApprover(mappingdata).subscribe(data => {

@@ -1,3 +1,28 @@
+<!--<div class="alert alert-danger" role="alert" *ngIf="alert" style="position:relative">
+  Please Select Single Vendor
+</div>-->
+
+<!--<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top" *ngIf="alert">
+  Choose Single Vendor
+</button>-->
+
+<!--<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" *ngIf="alert">
+  <div class="toast" style="position: absolute; top: 0; right: 0;">
+    <div class="toast-header">
+      <img src="..." class="rounded mr-2" alt="...">
+      <strong class="mr-auto">Bootstrap</strong>
+      <small>11 mins ago</small>
+      <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="toast-body">
+      Hello, world! This is a toast message.
+    </div>
+  </div>
+</div>-->
+
+
 <div *ngIf="hivalue" style="margin-bottom: 10%;">
   <div class="" style="text-align:center">
     <h3>Purchase Authorization Details</h3>
@@ -64,13 +89,13 @@
       </div>
     </div>
   </div><br />
-  
+
   <div class="row" style="margin-bottom:10px">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="displayitems(padetails)">Submit</button>
     </div>
   </div>
-  
+
   <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
     <p-table [value]="paitemdetails" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
       <ng-template pTemplate="header">
@@ -114,9 +139,9 @@
     </p-table>
   </div>
   <div class="footer row" style="position:sticky;margin-left:1px;margin-top:10px">
-      <div class="col-md-10" style="text-align:center">
-        <button type="button" class="btn btn-success" (click)="displayapproveitems()">Submit</button>
-      </div>
+    <div class="col-md-10" style="text-align:center">
+      <button type="button" class="btn btn-success" (click)="displayapproveitems()">Submit</button>
+    </div>
   </div>
   <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
     <div class="ui-g ui-fluid">
