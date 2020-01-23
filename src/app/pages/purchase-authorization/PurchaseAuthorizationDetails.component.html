@@ -82,7 +82,7 @@
         <div class="form-inline-list">
           <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','ProjectManager',projectmanger.Name,undefined)">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','ProjectManager','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager','',undefined)"></button>
           </span>
           <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
         </div>

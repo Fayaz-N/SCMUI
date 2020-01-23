@@ -225,7 +225,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
                 event.target.checked = false;
                 alert("choose single vendor");
                 //this.alert = 'helooo';
-                  
             }
         }
         else {
