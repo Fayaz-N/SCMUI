@@ -157,7 +157,7 @@
       <tr>
         <td>{{rowData.ItemName}}</td>
         <td *ngFor="let col of columns">
-          <i [ngClass]="bindCheckeMark(col,rowData.ItemId)?'pi pi-check check-color':'pi pi-times times-color'"></i>
+          <i [ngClass]="bindCheckeMark(col,rowData.MPRItemDetailsid)?'pi pi-check check-color':'pi pi-times times-color'"></i>
         </td>
       </tr>
     </ng-template>

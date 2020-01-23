@@ -200,7 +200,7 @@ export class GenerateRFQComponent implements OnInit {
   prepareRfQItems() {
     if (this.totalRfqItems.length > 0) {
       for (var i = 0; i < this.totalRfqItems.length; i++) {
-        var res = this.rfqQuoteModel.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+        var res = this.rfqQuoteModel.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
         if (res.length == 0) {
           var rfqQuoteItems = new rfqQuoteModel();
           rfqQuoteItems.MPRItemDetailsid = this.totalRfqItems[i].MPRItemDetailsid;
@@ -212,10 +212,10 @@ export class GenerateRFQComponent implements OnInit {
           rfqQuoteItems.QuotationQty = this.totalRfqItems[i].QuotationQty;//rfqitems
           rfqQuoteItems.vendorQuoteQty = this.totalRfqItems[i].vendorQuoteQty;//rfqitemsinfo
           if (this.mprVendors) {
-            rfqQuoteItems.manualvendorDetails = this.totalRfqItems.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+            rfqQuoteItems.manualvendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
           }
           else {
-            rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.ItemId == this.totalRfqItems[i].ItemId);
+            rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
             rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
           }
           this.rfqQuoteModel.push(rfqQuoteItems);
@@ -281,8 +281,8 @@ export class GenerateRFQComponent implements OnInit {
 
   }
 
-  bindCheckeMark(vendor: any, ItemId: number) {
-    return this.selectedVendorList.filter(li => (li.VendorId == vendor.VendorId) && (li.ItemId == ItemId)).length > 0 ? true : false;
+  bindCheckeMark(vendor: any, MPRItemDetailsid: number) {
+    return this.selectedVendorList.filter(li => (li.VendorId == vendor.VendorId) && (li.MPRItemDetailsid == MPRItemDetailsid)).length > 0 ? true : false;
 
   }
 
@@ -308,6 +308,8 @@ export class GenerateRFQComponent implements OnInit {
     var date = new Date();
     if (this.RFQRevisionData.RfqValidDate)
       date.setDate(date.getDate() + parseInt(this.RFQRevisionData.RfqValidDate.toString()));
+    else
+      date.setDate(date.getDate() + this.constants.rfqValidDays);
     this.selectedVendorList.forEach(item => {
       item.CreatedBy = this.employee.EmployeeNo;
       item.CreatedDate = new Date();

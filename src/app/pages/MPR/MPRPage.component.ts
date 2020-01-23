@@ -790,11 +790,11 @@ export class MPRPageComponent implements OnInit {
     else {
       if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "Checker";
-      else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo)
+      else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "Approver";
-      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo)
+      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo &&  this.mprRevisionModel.SecondApproversStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "SecondApprover";
-      else (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo)
+      else (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo &&  this.mprRevisionModel.ThirdApproverStatus != 'Approved')
       this.mprStatusUpdate.typeOfuser = "ThirdApprover";
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
