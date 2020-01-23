@@ -45,7 +45,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public selectedbox: any[];
     public selectedItems: Array<any> = [];
     public VendorName: string;
-    alert;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
