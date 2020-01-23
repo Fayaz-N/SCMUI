@@ -175,6 +175,7 @@ export class GenerateRFQComponent implements OnInit {
           this.vendorSubmitted = false;
           this.vendorDetailsArray = [];
           this.vendorDetails.Vendorid = data;
+          if (this.newVendorDetails.VendorName)
           this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
           this.vendorDetailsArray.push(this.vendorDetails);
           this.vendorDetailsArray.forEach((el) => { el.UpdatedBy = this.employee.EmployeeNo; })

@@ -5,15 +5,15 @@ import { searchParams, AccessList } from '../Models/mpr';
   providedIn: 'root'
 })
 export class constants {
-  //public url = 'http://10.29.15.68:90/Api/';
-  public url = 'http://localhost:49659/Api/';
+  public url = 'http://10.29.15.68:90/Api/';
+  //public url = 'http://localhost:49659/Api/';
 
   public dateFormat = "MM/dd/yyyy";
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;
 
-  public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: "", fieldAliasName: "DepartmentName", updateColumns: "" };
-  public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m2' and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
+  public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
+  public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "DOL IS NULL and  ((Grade IN(SELECT Grades.Grade FROM Grades WHERE (Grades.Hierarchy>=(SELECT Grades.Hierarchy FROM Grades WHERE Grades.Grade='M2')))))  and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
   public ClientName: searchParams = { tableName: 'CustomerMasterYGS', fieldId: 'CustomerId', fieldName: 'CustomerName1', condition: "CustomerMasterTypeId=1 and ", fieldAliasName: "ClientName", updateColumns: "" };
   public BuyerGroupId: searchParams = { tableName: 'MPRBuyerGroups', fieldId: 'BuyerGroupId', fieldName: 'BuyerGroup', condition: "", fieldAliasName: "BuyerGroupName", updateColumns: "" };
   public ItemId: searchParams = { tableName: 'MaterialMasterYGS', fieldId: 'Material', fieldName: 'Materialdescription', condition: "", fieldAliasName: "", updateColumns: "" };
@@ -26,7 +26,7 @@ export class constants {
 
   public ProcurementSourceId: searchParams = { tableName: 'MPRProcurementSources', fieldId: 'ProcurementSourceId', fieldName: 'ProcurementSource', condition: "", fieldAliasName: "ProcurementSource", updateColumns: "" };
   public CustomsDutyId: searchParams = { tableName: 'MPRCustomsDuty', fieldId: 'CustomsDutyId', fieldName: 'CustomsDuty', condition: "", fieldAliasName: "CustomDuty", updateColumns: "" };
-  public ProjectDutyApplicableId: searchParams = { tableName: 'MPRProjectDutyApplicable', fieldId: 'ProjectDutyApplicableId', fieldName: 'ProjectDutyApplicable', condition: "", fieldAliasName: "ProjectDutyApplicable", updateColumns: "" };
+  //public ProjectDutyApplicableId: searchParams = { tableName: 'MPRProjectDutyApplicable', fieldId: 'ProjectDutyApplicableId', fieldName: 'ProjectDutyApplicable', condition: "", fieldAliasName: "ProjectDutyApplicable", updateColumns: "" };
   public DocumentationDescriptionId: searchParams = { tableName: 'MPRDocumentationDescriptions', fieldId: 'DocumentationDescriptionId', fieldName: 'DocumentationDescription', condition: "", fieldAliasName: "", updateColumns: "" };
   public CheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade<'m2' and ", fieldAliasName: "CheckedName", updateColumns: "" };
   public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade>'m2' and ", fieldAliasName: "ApproverName", updateColumns: "" };

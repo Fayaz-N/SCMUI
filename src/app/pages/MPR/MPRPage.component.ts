@@ -8,6 +8,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, VendorMaster, MPRStatusUpdate, MPRDetail, AccessList } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-MPRPage',
@@ -95,9 +96,9 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionDetails = new mprRevision();
     this.newVendorDetails = new VendorMaster();
     this.RfqGeneratedList = [];
-    //create static drop down text from 1 to 100
+    //create static drop down text from 0 to 100
     Array(100).fill(1).map((x, i) => {
-      this.numbers.push(i + 1);
+      this.numbers.push(i);
     });
 
     //form 1 validation declararion.
@@ -158,13 +159,13 @@ export class MPRPageComponent implements OnInit {
       supplyMonths: ['', [Validators.required]],
       commissionMonths: ['', [Validators.required]],
       GuaranteePeriod: ['', [Validators.required]],
-      NoOfSetsOfQAP: ['', [Validators.required]],
+      //NoOfSetsOfQAP: ['', [Validators.required]],
       InspectionRequired: ['', [Validators.required]],
       InspectionComments: ['', [Validators.required]],
       NoOfSetsOfTestCertificates: ['', [Validators.required]],
       ProcurementSourceId: ['', [Validators.required]],
       CustomsDutyId: ['', [Validators.required]],
-      ProjectDutyApplicableId: ['', [Validators.required]],
+      //ProjectDutyApplicableId: ['', [Validators.required]],
       Remarks: ['', [Validators.required]],
       CheckedBy: ['', [Validators.required]],
       ApprovedBy: ['', [Validators.required]]
@@ -200,7 +201,7 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm2.controls["TargetedSpendRemarks"].clearValidators();
     this.MPRPageForm3.controls['GuaranteePeriod'].clearValidators();
     this.MPRPageForm3.controls['TrainingManWeeks'].clearValidators();
-    this.MPRPageForm3.controls['InspectionComments'].clearAsyncValidators();
+    this.MPRPageForm3.controls['InspectionComments'].clearValidators();
     this.MPRPageForm3.controls['supplyMonths'].clearValidators();
     this.MPRPageForm3.controls['commissionMonths'].clearValidators();
     this.MPRPageForm3.controls['TrainingRemarks'].clearValidators();
@@ -264,6 +265,7 @@ export class MPRPageComponent implements OnInit {
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "ItemId")
       this.dynamicData.searchCondition += " OR Material" + " like '%" + searchTxt + "%'";
+    this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -279,7 +281,7 @@ export class MPRPageComponent implements OnInit {
           fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
         }
         else if (name == "ItemId")
-          fName = item[this.constants[name].fieldId] + " - " + item[this.constants[name].fieldName];
+          fName = item[this.constants[name].fieldName] + " - " + item[this.constants[name].fieldId];
         else
           fName = item[this.constants[name].fieldName];
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
@@ -575,14 +577,34 @@ export class MPRPageComponent implements OnInit {
     }
   }
 
+  trainingRequiredChange() {
+    if (this.mprRevisionModel.TrainingRequired) {
+      this.MPRPageForm3.controls['TrainingManWeeks'].setValidators([Validators.required]);
+    }
+    else {
+      this.MPRPageForm3.controls['TrainingManWeeks'].clearValidators();
+      this.mprRevisionModel.TrainingManWeeks = 0;
+    }
+    this.MPRPageForm3.controls['TrainingManWeeks'].updateValueAndValidity()
+  }
   guranteeChanges() {
     if (this.mprRevisionModel.GuaranteePeriod[0] == "Not Applicable") {
       this.MPRPageForm3.controls["supplyMonths"].setValue("");
       this.MPRPageForm3.controls["commissionMonths"].setValue("");
+      this.MPRPageForm3.controls["supplyMonths"].clearValidators();
+      this.MPRPageForm3.controls["commissionMonths"].clearValidators();
+      this.MPRPageForm3.controls["GuaranteePeriod"].setValidators([Validators.required]);
       this.mprRevisionModel.GuaranteePeriod == "Not Applicable";
     }
+    else {
+      this.MPRPageForm3.controls["GuaranteePeriod"].clearValidators();
+      this.MPRPageForm3.controls["supplyMonths"].setValidators([Validators.required]);
+      this.MPRPageForm3.controls["commissionMonths"].setValidators([Validators.required]);
+    }
+    this.MPRPageForm3.controls['supplyMonths'].updateValueAndValidity();
+    this.MPRPageForm3.controls['commissionMonths'].updateValueAndValidity();
+    this.MPRPageForm3.controls['GuaranteePeriod'].updateValueAndValidity();
   }
-
   inspectionChanges(event: any) {
     if (this.mprRevisionModel.InspectionRequired && this.mprRevisionModel.InspectionComments == "Inspection & Test shall be carried out in accordance with the mutually agreed procedure")
       this.mprRevisionModel.NoOfSetsOfTestCertificates = null;
@@ -591,6 +613,7 @@ export class MPRPageComponent implements OnInit {
   monthChanges() {
     this.mprRevisionModel.GuaranteePeriod = "";
   }
+
 
   onInchargeDeatilsSubmit(dialog: string) {
 
@@ -792,10 +815,10 @@ export class MPRPageComponent implements OnInit {
         this.mprStatusUpdate.typeOfuser = "Checker";
       else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "Approver";
-      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo &&  this.mprRevisionModel.SecondApproversStatus != 'Approved')
+      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.SecondApproversStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "SecondApprover";
-      else (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo &&  this.mprRevisionModel.ThirdApproverStatus != 'Approved')
-      this.mprStatusUpdate.typeOfuser = "ThirdApprover";
+      else if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.ThirdApproverStatus != 'Approved')
+        this.mprStatusUpdate.typeOfuser = "ThirdApproverThirdApprover";
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
     this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
@@ -804,8 +827,10 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel = data;
       if (Acknowledge == "")
         this.disableStatusSubmit = true;
-      else
+      else {
         this.showAcknowledge = false;
+        this.showRfqGen = true;
+      }
 
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     })
@@ -839,6 +864,10 @@ export class MPRPageComponent implements OnInit {
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
       this.mprRevisionModel = data;
+      if (this.mprRevisionModel.DeliveryRequiredBy)
+        this.mprRevisionModel.DeliveryRequiredBy = new Date(this.mprRevisionModel.DeliveryRequiredBy);
+      else
+        this.mprRevisionModel.DeliveryRequiredBy = new Date();
       this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
       this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
         this.mprRevisionList = data;
@@ -878,18 +907,17 @@ export class MPRPageComponent implements OnInit {
       this.mprStatusUpdate.Remarks = this.mprRevisionModel.CheckerRemarks;
       this.showStatusDetails = true;
     }
-    else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification") {
+    else if ((this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus == "Approved" ) && this.mprRevisionModel.ApprovalStatus == "Pending" || this.mprRevisionModel.ApprovalStatus == "Submitted" || this.mprRevisionModel.ApprovalStatus == "Sent for Modification") {
       this.mprStatusUpdate.status = this.mprRevisionModel.ApprovalStatus;
       this.mprStatusUpdate.Remarks = this.mprRevisionModel.ApproverRemarks;
       this.showStatusDetails = true;
     }
-    else if ((this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo) && this.mprRevisionModel.SecondApproversStatus == "Pending" || this.mprRevisionModel.SecondApproversStatus == "Submitted" || this.mprRevisionModel.SecondApproversStatus == "Sent for Modification") {
+    else if ((this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus == "Approved" ) && this.mprRevisionModel.SecondApproversStatus == "Pending" || this.mprRevisionModel.SecondApproversStatus == "Submitted" || this.mprRevisionModel.SecondApproversStatus == "Sent for Modification") {
       this.mprStatusUpdate.status = this.mprRevisionModel.SecondApproversStatus;
       this.mprStatusUpdate.Remarks = this.mprRevisionModel.SecondApproverRemarks;
       this.showStatusDetails = true;
     }
-    else if ((this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo) && this.mprRevisionModel.ThirdApproverStatus == "Pending" || this.mprRevisionModel.ThirdApproverStatus == "Submitted" || this.mprRevisionModel.ThirdApproverStatus == "Sent for Modification")
-    {
+    else if ((this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.SecondApproversStatus == "Approved") && this.mprRevisionModel.ThirdApproverStatus == "Pending" || this.mprRevisionModel.ThirdApproverStatus == "Submitted" || this.mprRevisionModel.ThirdApproverStatus == "Sent for Modification") {
       this.mprStatusUpdate.status = this.mprRevisionModel.ThirdApproverStatus;
       this.mprStatusUpdate.Remarks = this.mprRevisionModel.ThirdApproverRemarks;
       this.showStatusDetails = true;
@@ -905,29 +933,46 @@ export class MPRPageComponent implements OnInit {
       this.displayFooter = true;
     else
       this.displayFooter = false;
+    if (this.showAcknowledge)
+      this.showRfqGen = this.showCompareRfq = false
+    else
+      this.showRfqGen = this.showCompareRfq = true
   }
 
   bindMPRPageForm(formName: string, data: any) {
     for (let item in this[formName].controls) {
       if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
-        this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
+        (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
+        //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
       }
       else {
-        if (this.constants[item]) {
-          this.bindSearchListData("", formName, item, "", (): any => {
-            this.showList = false;
-            if (this.searchItems.filter(li => li.code == data[item]).length > 0)
-              this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
-            else {
-              if (item == "DispatchLocation") {
-                this.specifyDispatchDisply = false;
-                this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
-                this[formName].controls[item].setValue("Others");
-              }
-            }
-          });
+        (data[item] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[item]));
+        //this[formName].controls[item].setValue(data[item]);
+        if (item == "DeliveryRequiredBy") {
+          (data[item] != null ? this[formName].controls[item].setValue(new Date(data[item])) : this[formName].controls[item].setValue(new Date()))
+        }
+        if (item == "DispatchLocation") {
+          this.specifyDispatchDisply = false;
+          this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+          this[formName].controls[item].setValue("Others");
         }
       }
+
+      //if (this.constants[item]) {
+      //  this.bindSearchListData("", formName, item, "", (): any => {
+      //    this.showList = false;
+      //    if (this.searchItems.filter(li => li.code == data[item]).length > 0)
+      //      this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
+      //    else {
+      //      if (item == "DispatchLocation") {
+      //        this.specifyDispatchDisply = false;
+      //        this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
+      //        this[formName].controls[item].setValue("Others");
+      //      }
+      //    }
+      //  });
+      //}
+      //}
     }
   }
 
@@ -953,7 +998,7 @@ export class MPRPageComponent implements OnInit {
   viewDocument(path: string, documentname: string) {
     //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
     var path1 = path.replace(/\\/g, "/");
-    path1 = "http://10.29.15.68:90/SCMDocs/" + path1;
+    // path1 = "http://10.29.15.68:90/SCMDocs/" + path1;
     window.open(path1);
     //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
     //this.showFileViewer = true;    
