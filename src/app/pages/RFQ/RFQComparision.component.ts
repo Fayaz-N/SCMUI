@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { rfqQuoteModel, VendorDetails } from 'src/app/Models/rfq';
+import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
 import { Employee } from 'src/app/Models/mpr';
 
 @Component({
@@ -22,18 +22,20 @@ export class RFQComparisionComponent implements OnInit {
   public MPRRevisionId: number;
   public selectedVendorList: Array<any> = [];
   public RfqCompareItems: Array<any> = [];
+  public rfqTermsList: Array<any> = [];
   public rfqQuoteModel: Array<rfqQuoteModel> = [];
   public vendorDetails: VendorDetails;
   public cols: any[];
   public status: string;
   public statusList: Array<any> = [];
+  public termCols: Array<rfqTerms>=[]
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
-   
+
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
@@ -43,14 +45,18 @@ export class RFQComparisionComponent implements OnInit {
   }
   getRFQCompareItemsById() {
     this.RfqService.getRFQCompareItems(this.MPRRevisionId).subscribe(data => {
-      this.RfqCompareItems = data;
+      this.RfqCompareItems = data["CompareTable"];
+      this.rfqTermsList = data["RfqtermsTable"];
       this.prepareRfQItems();
+      if (this.rfqTermsList.length > 0)
+        this.prepareTermNames();
     })
   }
 
   //pepare top 3 Suggested vendors
   prepareRfQItems() {
     this.prepareColsData();
+    this.prepareTermNames();
     for (var i = 0; i < this.RfqCompareItems.length; i++) {
       var res = this.rfqQuoteModel.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
       if (res.length == 0) {
@@ -81,6 +87,32 @@ export class RFQComparisionComponent implements OnInit {
 
   }
 
+  prepareTermNames() {
+    this.rfqTermsList.forEach(item => {
+      var rfqTermObj = new rfqTerms();
+      if (this.termCols.filter(li => li.Terms == item.Terms).length == 0) {
+        if (this.termCols.filter(li => li.RFQrevisionId == item.RFQrevisionId).length == 0) {
+          rfqTermObj.Terms = item.Terms;
+          rfqTermObj.RFQrevisionId = item.RFQrevisionId;
+          rfqTermObj.Remarks = item.Remarks;
+          rfqTermObj.VendorResponse = item.VendorResponse;
+          rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
+          this.termCols.push(rfqTermObj);
+        }
+      }     
+    });
+  }
+
+  getTerm(revisionId, term: rfqTerms) {
+    var termRes = this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0];
+    if (termRes.VendorResponse)
+      return termRes.VendorResponse;
+    else
+      return "";
+  }
+  getRemarks(revisionId, term: rfqTerms) {
+    return this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0].Remarks;
+  }
   createEmptyVendor() {
     this.vendorDetails.VendorCode = "";
     this.vendorDetails.VendorName = "";

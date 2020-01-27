@@ -174,6 +174,7 @@ export class mprRevision {
   InspectionRequired: boolean = false;
   InspectionRequiredNew: number;
   InspectionComments: string;
+  InspectionRemarks: string;
   NoOfSetsOfTestCertificates: number;
   ProcurementSourceId: number;
   CustomsDutyId: number;

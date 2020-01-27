@@ -141,10 +141,30 @@ export class QuoteDetails {
   rfqitem: Array<RfqItemModel>;
   RFQTerms: Array<any>;
   mprIncharges: Array<any>;
+  rfqCommunications: Array<any>;
 }
 export class RFQMaster {
   RfqNo: string;
   Vendor: VendorDetails;
+}
+
+export class RFQCommunication {
+  RfqCCid: number;
+  RfqItemsId: number;
+  RfqRevisionId: number;
+  RemarksTo: string = "";
+  RemarksFrom: string;
+  RemarksDate: Date;
+  Remarks: string;
+  DeleteFlag: boolean;
+}
+
+export class rfqTerms {
+  Terms: string;
+  RFQrevisionId: string;
+  VendorResponse: string;
+  Remarks: string;
+  termsList: Array<any> = [];
 }
 export class RFQDocuments {
   RfqDocumentId: number;

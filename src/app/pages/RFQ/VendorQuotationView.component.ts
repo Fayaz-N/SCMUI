@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { RfqService } from 'src/app/services/rfq.service ';
-import { QuoteDetails, RFQDocuments } from 'src/app/Models/rfq';
+import { QuoteDetails, RFQDocuments, RFQMaster, RFQCommunication } from 'src/app/Models/rfq';
 import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, AccessList } from 'src/app/Models/mpr';
@@ -22,12 +22,15 @@ export class VendorQuotationViewComponent implements OnInit {
   public rfqDocuments: Array<RFQDocuments> = [];
   public RFQPriceVisibility: boolean = false;
   public MPRPriceVisibilty: boolean = false;
+  public RFQCommunications: RFQCommunication;
+  public displayCommunicationDialog: boolean = false;
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
+    this.RFQCommunications = new RFQCommunication();
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
@@ -36,6 +39,10 @@ export class VendorQuotationViewComponent implements OnInit {
     if (this.AccessList.filter(li => li.AccessName == "MPRPriceVisibilty").length > 0)
       this.MPRPriceVisibilty = true;
     this.quoteDetails = new QuoteDetails();
+    this.quoteDetails.rfqmaster = new RFQMaster();
+    this.quoteDetails.rfqitem = [];
+    this.quoteDetails.rfqCommunications = [];
+
     this.route.params.subscribe(params => {
       if (params["RFQRevisionId"]) {
         this.RfqRevisionId = params["RFQRevisionId"];
@@ -60,9 +67,30 @@ export class VendorQuotationViewComponent implements OnInit {
       }
     });
   }
+  showRfqCommunicationDialogToAdd() {
+    this.RFQCommunications = new RFQCommunication();
+    this.displayCommunicationDialog = true;
+  }
+
+  dialogCancel() {
+    this.displayCommunicationDialog = false;
+  }
+  onCommnicationSubmit() {
+    this.RFQCommunications.RfqRevisionId = this.RfqRevisionId;
+    this.RFQCommunications.RemarksFrom = this.employee.EmployeeNo;
+    this.RFQCommunications.RemarksDate = new Date();
+    this.RfqService.UpdateVendorCommunication(this.RFQCommunications).subscribe(data => {
+      if (data) {
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Added' });
+        this.displayCommunicationDialog = false;
+        this.quoteDetails.rfqCommunications.push(this.RFQCommunications);
+      }
+    });
+  }
+
   viewDocument(path: string, documentname: string) {
     var path1 = path.replace(/\\/g, "/");
-    path1 = "http://10.29.15.68:90/SCMDocs/" + path1;
+    path1 = this.constants.vendorDocumentPath + path1;
     window.open(path1);
   }
   updateRfqDocumentStatus() {
