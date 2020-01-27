@@ -88,7 +88,7 @@
               <th>Communication By</th>
               <th>Date</th>
               <th>Remarks</th>
-              <th>Communication To</th>
+              <!--<th>Communication To</th>-->
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -99,7 +99,7 @@
               <td>
                 {{rowData.Remarks}}
               </td>
-              <td> {{rowData.RemarksTo}}</td>
+              <!--<td> {{rowData.RemarksTo}}</td>-->
               <!--<td>
                 <span *ngFor="let trackData of rowData.MPRReminderTrackings">
                   <span *ngIf="trackData.Employee" [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
