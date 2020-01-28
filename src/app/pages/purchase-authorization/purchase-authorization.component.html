@@ -8,14 +8,14 @@
       <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="showDialogAddDepartment()" label="Add Slabs"></button>
     </div>
   </div>
-  <form [formGroup]="paform">
+
     <div class="container" style="margin-top:25px">
       <div class="row selectgrow">
         <div class="col-lg-2 col-md-2 col-sm-2 form-group">
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Department:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select (change)="selecteSlabs($event)" class="form-control" formControlName="Department">
+          <select (change)="selecteSlabs($event)" class="form-control">
             <option [value]="0">Select</option>
             <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}} </option>
           </select>
@@ -27,7 +27,7 @@
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Slabs:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.Authid" class="form-control" formControlName="Authid">
+          <select [(ngModel)]="employemapping.Authid" class="form-control">
             <option *ngFor="let sla of slbaslist" [value]="sla.Authid">{{sla.MinPAValue}}-{{sla.MaxPAValue}}</option>
           </select>
         </div>
@@ -40,7 +40,7 @@
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Employee:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.Employeeid" class="form-control" formControlName="Employeeid">
+          <select [(ngModel)]="employemapping.Employeeid" class="form-control">
             <option *ngFor="let emp of employeelist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
           </select>
           <!--<p>Selected Employee:{{employemapping.Employeeid}}</p>-->
@@ -54,7 +54,7 @@
           <label for="GroupName" class="form-label label" style="margin-left: 12px;">Functional Roles:</label>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-          <select [(ngModel)]="employemapping.FunctionalRoleId" class="form-control" formControlName="FunctionalRoleId">
+          <select [(ngModel)]="employemapping.FunctionalRoleId" class="form-control">
             <option *ngFor="let role of RolesList" [value]="role.FunctionalRoleId">{{role.FunctionalRole}}</option>
           </select>
         </div>
@@ -85,7 +85,7 @@
         <button type="button" class="btn btn-success" label="Save" (click)="InsertEmployeeMapping(employemapping)">Add Employee</button>
       </div>
     </div>
-  </form>
+  
 </div>
 <div class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="mappedpurchase" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">

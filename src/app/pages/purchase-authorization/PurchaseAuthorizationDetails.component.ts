@@ -7,7 +7,6 @@ import { constants } from 'src/app/Models/MPRConstants'
 import { MprService } from 'src/app/services/mpr.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
-
 @Component({
     selector: 'app-purchaseAuthorizationDetails',
     templateUrl: './purchaseAuthorizationDetails.component.html',
@@ -73,7 +72,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         })
     }
     public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
-        debugger;
         this.dialogTop = e.clientY + 30 + "px";
         this.txtName = name;
         if (searchTxt == undefined)
@@ -114,7 +112,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this[dialogName] = false;
     }
     selectAll(itemsview: ItemsViewModel[], event) {
-        
+
         if (event.target.checked) {
 
         }
@@ -170,8 +168,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     //    this.paService.itemvalues.push(this.selectedItems);
     //}
     displayapproveitems() {
-        debugger;
-
         let dataa: any = this.selectedItems;
         localStorage.setItem("PADetails", JSON.stringify(this.selectedItems));
         this.routing.navigateByUrl("/SCM/mprpa");
@@ -183,7 +179,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     }
 
     public onSelectedOptionsChange(item: any, index: number) {
-        debugger;
         this.showList = false;
         if (item.listName == "venderid") {
             this.vendorDetails.Vendorid = item.code;
@@ -211,7 +206,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.paitemdetails = selectitems;
     }
     onChange1(itemdetails: ItemsViewModel, isChecked: boolean, event) {
-        debugger;
         if (this.selectedItems.length === 0)
             this.Vendorid = itemdetails.VendorId;
         if (isChecked) {
@@ -223,8 +217,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             }
             else {
                 event.target.checked = false;
-                alert("choose single vendor");
-                //this.alert = 'helooo';
+                alert("select single vendor");
             }
         }
         else {
@@ -232,6 +225,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             this.selectedItems.splice(index, 1);
         }
     }
+
     //this.selectedItems.push(itemdetails);
     ////itemdetails.VendorId = this.Vendorid;
     ////this.VendorName = this.selectedItems[0].VendorName;
@@ -285,7 +279,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
 
 
     onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
-        debugger;
         if (isChecked) {
             this.selectedItems.push(itemdetails);
         } else {
