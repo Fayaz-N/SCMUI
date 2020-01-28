@@ -128,12 +128,10 @@
         <label for="procSrc">Department: <span class="required-asterisk" style="color:red">*</span></label>
       </div>
       <div class="ui-g-5">
-        <!--<input type="text"  ngModel maxlength="20" [(ngModel)]="SelectedDepartment" [ngClass]="{ 'is-invalid': DeptAddSubmitted && DeptAddForm.controls.Department.errors }" class="form-control" />-->
-        <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptId" [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && paauthorization.DeptId!=0}">
-          <option [value]="0">Select</option>
+        <select class="form-control dropdown" [(ngModel)]="paauthorization.DeptId" formControlName="DeptId" [value]="detailsform.controls.DeptId.value" [ngClass]="{ 'is-invalid': paSubmitted  && detailsform.controls.DeptId.errors}">
           <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}}</option>
         </select>
-        <span *ngIf="paSubmitted && paauthorization.DeptId==0" class="invalid-feedback">Department Required</span>
+        <span *ngIf="paSubmitted && detailsform.controls.DeptId.errors" class="invalid-feedback">Department Required</span>
       </div>
     </div>
     <div class="ui-g-12">

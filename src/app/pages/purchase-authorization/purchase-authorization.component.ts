@@ -89,9 +89,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     showDialogAddDepartment() {
         this.AddDialog = true;
     }
-    Cancel() {
-        this.AddDialog = false;
-    }
+   
     Submit(paauthorization: PAAuthorizationLimitModel) {
         paauthorization.CreatedBy = this.employee.EmployeeNo;
         this.paSubmitted = true;
@@ -107,6 +105,9 @@ export class PurchaseAuthorizationComponent implements OnInit {
         }
         //this.detailsform.clearValidators();
         //this.detailsform.reset();
+    }
+    Cancel() {
+        this.AddDialog = false;
     }
     reset() {
         

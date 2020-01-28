@@ -20,6 +20,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     public approvevalue = false;
     //public checked: boolean;
     public MPRPageForm1: FormGroup;
+    public disableSubmit: boolean = true;
     public department: Department;
     public buyergroups: MPRBuyerGroup;
     public projectmanger: ProjectManager;
@@ -206,6 +207,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.paitemdetails = selectitems;
     }
     onChange1(itemdetails: ItemsViewModel, isChecked: boolean, event) {
+        this.disableSubmit = false;
         if (this.selectedItems.length === 0)
             this.Vendorid = itemdetails.VendorId;
         if (isChecked) {
@@ -223,6 +225,9 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         else {
             let index = this.selectedItems.indexOf(itemdetails);
             this.selectedItems.splice(index, 1);
+            if (this.selectedItems.length==0) {
+                this.disableSubmit = true;
+            }
         }
     }
 
