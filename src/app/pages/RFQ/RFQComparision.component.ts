@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { rfqQuoteModel, VendorDetails } from 'src/app/Models/rfq';
+import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
 import { Employee } from 'src/app/Models/mpr';
 
 @Component({
@@ -22,18 +22,20 @@ export class RFQComparisionComponent implements OnInit {
   public MPRRevisionId: number;
   public selectedVendorList: Array<any> = [];
   public RfqCompareItems: Array<any> = [];
+  public rfqTermsList: Array<any> = [];
   public rfqQuoteModel: Array<rfqQuoteModel> = [];
   public vendorDetails: VendorDetails;
   public cols: any[];
   public status: string;
   public statusList: Array<any> = [];
+  public termCols: Array<rfqTerms>=[]
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
-   
+
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
@@ -43,21 +45,26 @@ export class RFQComparisionComponent implements OnInit {
   }
   getRFQCompareItemsById() {
     this.RfqService.getRFQCompareItems(this.MPRRevisionId).subscribe(data => {
-      this.RfqCompareItems = data;
+      this.RfqCompareItems = data["CompareTable"];
+      this.rfqTermsList = data["RfqtermsTable"];
       this.prepareRfQItems();
+      if (this.rfqTermsList.length > 0)
+        this.prepareTermNames();
     })
   }
 
   //pepare top 3 Suggested vendors
   prepareRfQItems() {
     this.prepareColsData();
+    this.prepareTermNames();
     for (var i = 0; i < this.RfqCompareItems.length; i++) {
-      var res = this.rfqQuoteModel.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
+      var res = this.rfqQuoteModel.filter(li => li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid);
       if (res.length == 0) {
         var rfqQuoteItems = new rfqQuoteModel();
         rfqQuoteItems.MPRItemDetailsid = this.RfqCompareItems[i].MPRItemDetailsid;
         rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
         rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
+        rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
         rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
         rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
         rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
@@ -66,8 +73,8 @@ export class RFQComparisionComponent implements OnInit {
         rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
         this.cols.forEach(vendor => {
           this.vendorDetails = new VendorDetails();
-          if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.ItemId == this.RfqCompareItems[i].ItemId)[0])
-            this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.ItemId == this.RfqCompareItems[i].ItemId)[0];
+          if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0])
+            this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0];
           else {
             this.createEmptyVendor();
           }
@@ -81,6 +88,36 @@ export class RFQComparisionComponent implements OnInit {
 
   }
 
+  prepareTermNames() {
+    this.rfqTermsList.forEach(item => {
+      var rfqTermObj = new rfqTerms();
+      if (this.termCols.filter(li => li.Terms == item.Terms).length == 0) {
+        //if (this.termCols.filter(li => li.RFQrevisionId == item.RFQrevisionId).length == 0) {
+          rfqTermObj.Terms = item.Terms;
+          rfqTermObj.RFQrevisionId = item.RFQrevisionId;
+          rfqTermObj.Remarks = item.Remarks;
+          rfqTermObj.VendorResponse = item.VendorResponse;
+          //rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
+          this.termCols.push(rfqTermObj);
+        //}
+      }     
+    });
+  }
+
+  getTerm(revisionId, term: rfqTerms) {
+    var termRes = this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0];
+    if (termRes && termRes.VendorResponse)
+      return termRes.VendorResponse;
+    else
+      return "";
+  }
+  getRemarks(revisionId, term: rfqTerms) {
+    var termRes = this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0];
+    if (termRes && termRes.Remarks)
+      return termRes.Remarks;
+    else
+      return "";
+  }
   createEmptyVendor() {
     this.vendorDetails.VendorCode = "";
     this.vendorDetails.VendorName = "";
@@ -123,8 +160,8 @@ export class RFQComparisionComponent implements OnInit {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
       if (index < 0 && event.target.checked == true) {
         this.selectedVendorList.push(vendor);
-        const totalQty = this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-        if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).length > 1)) {
+        const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
+        if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
           this.statusList.push(rowindex + 1);
           event.target.checked = false;
           this.selectedVendorList.splice(index, 1);
@@ -148,8 +185,8 @@ export class RFQComparisionComponent implements OnInit {
         if (itmVendor && itmVendor.VendorId == vendor.VendorId && index < 0 && event.target.checked == true && checked == false) {
           (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
           this.selectedVendorList.push(itmVendor);
-          const totalQty = this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-          if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).length > 1)) {
+          const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
+          if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).length > 1)) {
             this.statusList.push(rowindex + 1);
             (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
             event.target.checked = false;

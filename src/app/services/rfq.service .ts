@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication } from '../Models/rfq';
 
 @Injectable({
 	providedIn: 'root'
@@ -63,5 +63,8 @@ export class RfqService {
 	}
 	//getallrfqlist(): Observable<any> {
 	//	return this.http.get<any>(this.url + 'RFQ/getallrfqlist', this.httpOptions);
-	//}
+  //}
+  UpdateVendorCommunication(rfqCommunication: RFQCommunication): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/UpdateVendorCommunication/', rfqCommunication, this.httpOptions);
+  }  
 }

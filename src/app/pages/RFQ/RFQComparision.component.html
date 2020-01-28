@@ -129,10 +129,10 @@
                     <label class="form-label lblEdit">DP</label>
                     <span class="valueEdit">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}} &nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p> </span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">PT</label>
                     <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
-                  </div>
+                  </div>-->
                 </div>
               </div>
 
@@ -146,16 +146,35 @@
             <td [attr.colspan]="3" style="color: #17a2b8;">Totals</td>
             <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">Price :&nbsp;{{calculateTotalPrice(colInd)}}</td>
           </tr>
+          <tr><td [attr.colspan]="3">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
+          <tr *ngFor="let term of termCols">
+            <td [attr.colspan]="3" style="font-weight: 500;">{{term.Terms}}</td>
+            <td *ngFor="let col1 of cols;let colInd=index">
+              <span *ngIf="getTerm(col1.rfqRevisionId,term)==''">-</span>
+              <span *ngIf="getTerm(col1.rfqRevisionId,term)=='Agree'" class="pi pi-check check-color"></span>
+              <span *ngIf="getTerm(col1.rfqRevisionId,term)=='NotAgree'" class="pi pi-times times-color"></span>
+              <span *ngIf="getTerm(col1.rfqRevisionId,term)=='NotApplicable'">NA</span>&nbsp;
+              <span *ngIf="getRemarks(col1.rfqRevisionId,term)" style="font-weight: 500;"> , {{getRemarks(col1.rfqRevisionId,term)}}</span>
+            </td>
+            <!--<td *ngFor="let rf of term.termsList">
+                <span *ngIf="rf.VendorResponse=='Agree'" class="pi pi-check check-color"></span>
+                <span *ngIf="rf.VendorResponse=='NotAgree'" class="pi pi-times times-color"></span>
+                <span *ngIf="rf.VendorResponse=='NotApplicable'">NA</span>&nbsp;
+                <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
+            </td>-->
+          </tr>
         </ng-template>
       </p-table>
     </div>
   </div>
-  <div class="form-control" style="height:100%;border-radius:0px;">
+  <!--<div class="form-control" style="height:100%;border-radius:0px;">
     <label style="text-decoration: underline">Terms & Conditions:</label><br />
     <div class="row">
       <div class="col-lg-2 col-md-2 col-sm-2 form-group">
         <label class="form-label lblEdit">Payment Term Days   </label>
-        <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
+        <span class="valueEdit">
+          {{RfqCompareItems[0].PaymentTermRemarks}}
+        </span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2 form-group">
         <label class="form-label lblEdit">Frieght</label>
@@ -173,7 +192,7 @@
       </div>
 
     </div>
-  </div>
+  </div>-->
   <br />
   <br />
   <br />
