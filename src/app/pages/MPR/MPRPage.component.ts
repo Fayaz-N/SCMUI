@@ -610,6 +610,7 @@ export class MPRPageComponent implements OnInit {
     else {
       this.MPRPageForm3.controls['TrainingManWeeks'].clearValidators();
       this.mprRevisionModel.TrainingManWeeks = 0;
+      this.mprRevisionModel.TrainingRemarks = "";
     }
     this.MPRPageForm3.controls['TrainingManWeeks'].updateValueAndValidity()
   }
@@ -954,7 +955,7 @@ export class MPRPageComponent implements OnInit {
     else
       this.showStatusDetails = false;
 
-    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0 && this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0 && this.showStatusDetails == false) //acknowledged or not
+    if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.mprRevisionModel.CheckStatus == "Approved" && this.mprRevisionModel.ApprovalStatus == "Approved" && this.mprRevisionModel.SecondApprover != "-" && this.mprRevisionModel.SecondApproversStatus == "Approved" && this.mprRevisionModel.ThirdApprover != "" && this.mprRevisionModel.ThirdApproverStatus=="Approved")) //acknowledged or not
       this.showAcknowledge = true;
     else
       this.showAcknowledge = false;

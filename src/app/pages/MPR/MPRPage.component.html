@@ -473,7 +473,7 @@
               </div>-->
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Training Required</label>&nbsp;<span style="color:red">*</span>
+              <label class="form-label">Training Required</label>
               <div class="form-inline ml-4">
                 <p-inputSwitch [(ngModel)]="mprRevisionModel.TrainingRequired" (click)="trainingRequiredChange()" formControlName="TrainingRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.TrainingRequired.errors }"></p-inputSwitch>
                 &nbsp;&nbsp;<span class="form-label">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
@@ -740,12 +740,11 @@
           </div>
           <div class="form-group row" style="margin:0px">
             <div class="col-lg-5 col-md-5 col-sm-5">
-              fo
               <label for="InchargeName" class="form-label">Incharge Names </label>&nbsp;&nbsp;
               <button type="button" [disabled]="form3Edit" pButton icon="fa fa-plus" (click)="showInchargeDialogToAdd('displayInchargeDialog')"></button>
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Remarks</label>&nbsp;<span style="color:red">*</span>
+              <label class="form-label">Remarks</label>
               <div class="form-inline">
                 <textarea [(ngModel)]="mprRevisionModel.Remarks" id="Remarks" formControlName="Remarks" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted  &&  MPRPageForm3.controls.Remarks.errors }"></textarea>
                 <span *ngIf="MPRForm3Submitted && MPRPageForm3.controls.Remarks.errors" class="invalid-feedback">Remarks Required.</span>
@@ -1136,7 +1135,7 @@
           </div>
           <div class="ui-g-12">
             <div class="ui-g-6 form-group">
-              <label class="form-label">Item No</label>
+              <label class="form-label">Sale Order Line Item No</label>
               <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
             </div>
             <div class="ui-g-6 form-group">
@@ -1273,7 +1272,7 @@
             </select>
           </div>
         </div>
-        <div class="ui-g-12">
+        <!--<div class="ui-g-12">
           <div class="ui-g-5 form-group">
             <label class="form-label">No. of sets of Quality Assurance Plan Required </label>
             <div class="form-inline">
@@ -1283,7 +1282,7 @@
 
             </div>
           </div>
-        </div>
+        </div>-->
       </div>
       <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">

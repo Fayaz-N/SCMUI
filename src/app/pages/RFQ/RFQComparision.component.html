@@ -146,10 +146,11 @@
             <td [attr.colspan]="3" style="color: #17a2b8;">Totals</td>
             <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">Price :&nbsp;{{calculateTotalPrice(colInd)}}</td>
           </tr>
-          <tr><td [attr.colspan]="3">Description</td><td *ngFor="let term of termCols">Response</tr>
+          <tr><td [attr.colspan]="3">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
           <tr *ngFor="let term of termCols">
             <td [attr.colspan]="3" style="font-weight: 500;">{{term.Terms}}</td>
             <td *ngFor="let col1 of cols;let colInd=index">
+              <span *ngIf="getTerm(col1.rfqRevisionId,term)==''">-</span>
               <span *ngIf="getTerm(col1.rfqRevisionId,term)=='Agree'" class="pi pi-check check-color"></span>
               <span *ngIf="getTerm(col1.rfqRevisionId,term)=='NotAgree'" class="pi pi-times times-color"></span>
               <span *ngIf="getTerm(col1.rfqRevisionId,term)=='NotApplicable'">NA</span>&nbsp;

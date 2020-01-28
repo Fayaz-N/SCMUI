@@ -58,12 +58,13 @@ export class RFQComparisionComponent implements OnInit {
     this.prepareColsData();
     this.prepareTermNames();
     for (var i = 0; i < this.RfqCompareItems.length; i++) {
-      var res = this.rfqQuoteModel.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
+      var res = this.rfqQuoteModel.filter(li => li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid);
       if (res.length == 0) {
         var rfqQuoteItems = new rfqQuoteModel();
         rfqQuoteItems.MPRItemDetailsid = this.RfqCompareItems[i].MPRItemDetailsid;
         rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
         rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
+        rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
         rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
         rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
         rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
@@ -72,8 +73,8 @@ export class RFQComparisionComponent implements OnInit {
         rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
         this.cols.forEach(vendor => {
           this.vendorDetails = new VendorDetails();
-          if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.ItemId == this.RfqCompareItems[i].ItemId)[0])
-            this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.ItemId == this.RfqCompareItems[i].ItemId)[0];
+          if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0])
+            this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0];
           else {
             this.createEmptyVendor();
           }
@@ -91,27 +92,31 @@ export class RFQComparisionComponent implements OnInit {
     this.rfqTermsList.forEach(item => {
       var rfqTermObj = new rfqTerms();
       if (this.termCols.filter(li => li.Terms == item.Terms).length == 0) {
-        if (this.termCols.filter(li => li.RFQrevisionId == item.RFQrevisionId).length == 0) {
+        //if (this.termCols.filter(li => li.RFQrevisionId == item.RFQrevisionId).length == 0) {
           rfqTermObj.Terms = item.Terms;
           rfqTermObj.RFQrevisionId = item.RFQrevisionId;
           rfqTermObj.Remarks = item.Remarks;
           rfqTermObj.VendorResponse = item.VendorResponse;
-          rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
+          //rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
           this.termCols.push(rfqTermObj);
-        }
+        //}
       }     
     });
   }
 
   getTerm(revisionId, term: rfqTerms) {
     var termRes = this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0];
-    if (termRes.VendorResponse)
+    if (termRes && termRes.VendorResponse)
       return termRes.VendorResponse;
     else
       return "";
   }
   getRemarks(revisionId, term: rfqTerms) {
-    return this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0].Remarks;
+    var termRes = this.rfqTermsList.filter(li => li.RFQrevisionId == revisionId && li.Terms == term.Terms)[0];
+    if (termRes && termRes.Remarks)
+      return termRes.Remarks;
+    else
+      return "";
   }
   createEmptyVendor() {
     this.vendorDetails.VendorCode = "";
@@ -155,8 +160,8 @@ export class RFQComparisionComponent implements OnInit {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
       if (index < 0 && event.target.checked == true) {
         this.selectedVendorList.push(vendor);
-        const totalQty = this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-        if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == vendor.ItemId).length > 1)) {
+        const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
+        if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
           this.statusList.push(rowindex + 1);
           event.target.checked = false;
           this.selectedVendorList.splice(index, 1);
@@ -180,8 +185,8 @@ export class RFQComparisionComponent implements OnInit {
         if (itmVendor && itmVendor.VendorId == vendor.VendorId && index < 0 && event.target.checked == true && checked == false) {
           (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
           this.selectedVendorList.push(itmVendor);
-          const totalQty = this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
-          if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.ItemId == itmVendor.ItemId).length > 1)) {
+          const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
+          if (totalQty > item.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == itmVendor.Itemdetailsid).length > 1)) {
             this.statusList.push(rowindex + 1);
             (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = false;
             event.target.checked = false;

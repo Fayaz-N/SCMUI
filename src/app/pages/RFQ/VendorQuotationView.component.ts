@@ -81,7 +81,7 @@ export class VendorQuotationViewComponent implements OnInit {
     this.RFQCommunications.RemarksDate = new Date();
     this.RfqService.UpdateVendorCommunication(this.RFQCommunications).subscribe(data => {
       if (data) {
-        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Added' });
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });
         this.displayCommunicationDialog = false;
         this.quoteDetails.rfqCommunications.push(this.RFQCommunications);
       }

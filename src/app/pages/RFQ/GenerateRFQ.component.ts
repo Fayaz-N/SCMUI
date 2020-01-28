@@ -63,6 +63,7 @@ export class GenerateRFQComponent implements OnInit {
         this.getRFQItems();
       }
     });
+    //this.RFQRevisionData.RfqValidDate = this.constants.rfqValidDays;;
   }
 
   //Get total generated RFQ Items
@@ -183,6 +184,7 @@ export class GenerateRFQComponent implements OnInit {
             if (data) {
               this.dynamicData = new DynamicSearchResult();
               this.dynamicData.tableName = "MPRVendorDetails";
+              this.dynamicData.searchCondition = "Where RevisionId=" + this.MPRRevisionId+""
               this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
                 this.vendorDetailsArray = data;
               });

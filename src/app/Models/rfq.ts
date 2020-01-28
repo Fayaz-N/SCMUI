@@ -1,5 +1,6 @@
 export class rfqQuoteModel {
   MPRItemDetailsid: number;
+  Itemdetailsid: number;
   ItemId: number;
   ItemName: string;
   ItemDescription: string;
