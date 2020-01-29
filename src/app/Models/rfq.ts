@@ -18,7 +18,7 @@ export class rfqQuoteModel {
 export class RFQRevisionData {
   CreatedBy: number;
   CreatedDate: Date;
-  RfqValidDate: Date;
+  RfqValidDate: number;
   PackingForwading: string;
   ExciseDuty: string;
   salesTax: string;

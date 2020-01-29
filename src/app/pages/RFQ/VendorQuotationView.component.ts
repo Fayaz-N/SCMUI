@@ -83,7 +83,8 @@ export class VendorQuotationViewComponent implements OnInit {
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });
         this.displayCommunicationDialog = false;
-        this.quoteDetails.rfqCommunications.push(this.RFQCommunications);
+        this.loadQuotationDetails();
+        //this.quoteDetails.rfqCommunications.push(this.RFQCommunications);
       }
     });
   }

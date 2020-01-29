@@ -153,7 +153,7 @@
       <div *ngIf="!pasubmitted">
         <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
         <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;width:60%">
-          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.DepartmentName}} </option>
+          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.Department}} </option>
           <option [value]="0">Select</option>
         </select>
       </div>

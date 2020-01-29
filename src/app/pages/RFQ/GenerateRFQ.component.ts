@@ -63,7 +63,7 @@ export class GenerateRFQComponent implements OnInit {
         this.getRFQItems();
       }
     });
-    //this.RFQRevisionData.RfqValidDate = this.constants.rfqValidDays;;
+    this.RFQRevisionData.RfqValidDate = this.constants.rfqValidDays;;
   }
 
   //Get total generated RFQ Items

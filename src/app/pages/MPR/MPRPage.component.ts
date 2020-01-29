@@ -860,6 +860,7 @@ export class MPRPageComponent implements OnInit {
       else {
         this.showAcknowledge = false;
         this.showRfqGen = true;
+        this.showCompareRfq = true;
       }
 
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
@@ -954,133 +955,139 @@ export class MPRPageComponent implements OnInit {
     }
     else
       this.showStatusDetails = false;
-
-    if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.mprRevisionModel.CheckStatus == "Approved" && this.mprRevisionModel.ApprovalStatus == "Approved" && this.mprRevisionModel.SecondApprover != "-" && this.mprRevisionModel.SecondApproversStatus == "Approved" && this.mprRevisionModel.ThirdApprover != "" && this.mprRevisionModel.ThirdApproverStatus=="Approved")) //acknowledged or not
+    //acknowledged or not
+    if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.mprRevisionModel.CheckStatus == "Approved" && this.mprRevisionModel.ApprovalStatus == "Approved") && (this.mprRevisionModel.SecondApprover == "-" || this.mprRevisionModel.SecondApprover == null)) {
       this.showAcknowledge = true;
-    else
-      this.showAcknowledge = false;
-    if (this.showStatusDetails || this.showAcknowledge)
-      this.displayFooter = true;
-    else
-      this.displayFooter = false;
-    if (this.showAcknowledge)
-      this.showRfqGen = this.showCompareRfq = false
-    else
-      this.showRfqGen = this.showCompareRfq = true
-  }
-
-  bindMPRPageForm(formName: string, data: any) {
-    for (let item in this[formName].controls) {
-      if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
-        (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
-        //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
-      }
-      else {
-        (data[item] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[item]));
-        //this[formName].controls[item].setValue(data[item]);
-        if (item == "DeliveryRequiredBy") {
-          (data[item] != null ? this[formName].controls[item].setValue(new Date(data[item])) : this[formName].controls[item].setValue(new Date()))
-        }
-        if (item == "JustificationForSinglePreferredVendor") {
-          if (data[item])
-            this.justificationDisply = false;
-          else
-            this.justificationDisply = true;
-        }
-        if (item == "DispatchLocation") {
-          this.specifyDispatchDisply = false;
-          this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
-          this[formName].controls[item].setValue("Others");
-        }
-      }
-
-      //if (this.constants[item]) {
-      //  this.bindSearchListData("", formName, item, "", (): any => {
-      //    this.showList = false;
-      //    if (this.searchItems.filter(li => li.code == data[item]).length > 0)
-      //      this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
-      //    else {
-      //      if (item == "DispatchLocation") {
-      //        this.specifyDispatchDisply = false;
-      //        this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
-      //        this[formName].controls[item].setValue("Others");
-      //      }
-      //    }
-      //  });
-      //}
-      //}
     }
+    else {
+      if ((this.mprRevisionModel.SecondApproversStatus == "Approved") && (this.mprRevisionModel.ThirdApprover != null && this.mprRevisionModel.ThirdApproverStatus == "Approved"))
+        this.showAcknowledge = true;
+      else
+        this.showAcknowledge = false;
+    }
+
+if (this.showStatusDetails || this.showAcknowledge)
+  this.displayFooter = true;
+else
+  this.displayFooter = false;
+if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
+  this.showRfqGen = this.showCompareRfq = true;
+else
+  this.showRfqGen = this.showCompareRfq = false;
   }
+
+bindMPRPageForm(formName: string, data: any) {
+  for (let item in this[formName].controls) {
+    if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
+      (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
+      //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
+    }
+    else {
+      (data[item] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[item]));
+      //this[formName].controls[item].setValue(data[item]);
+      if (item == "DeliveryRequiredBy") {
+        (data[item] != null ? this[formName].controls[item].setValue(new Date(data[item])) : this[formName].controls[item].setValue(new Date()))
+      }
+      if (item == "JustificationForSinglePreferredVendor") {
+        if (data[item])
+          this.justificationDisply = false;
+        else
+          this.justificationDisply = true;
+      }
+      if (item == "DispatchLocation") {
+        this.specifyDispatchDisply = false;
+        this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+        this[formName].controls[item].setValue("Others");
+      }
+    }
+
+    //if (this.constants[item]) {
+    //  this.bindSearchListData("", formName, item, "", (): any => {
+    //    this.showList = false;
+    //    if (this.searchItems.filter(li => li.code == data[item]).length > 0)
+    //      this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
+    //    else {
+    //      if (item == "DispatchLocation") {
+    //        this.specifyDispatchDisply = false;
+    //        this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
+    //        this[formName].controls[item].setValue("Others");
+    //      }
+    //    }
+    //  });
+    //}
+    //}
+  }
+}
 
   public animateCSS(formId, animatepostion) {
-    const element = document.getElementById(formId);
-    element.classList.add('animated', animatepostion);
-    element.addEventListener('animationend', function () {
-      element.classList.remove('animated', animatepostion);
-    })
-  }
+  const element = document.getElementById(formId);
+  element.classList.add('animated', animatepostion);
+  element.addEventListener('animationend', function () {
+    element.classList.remove('animated', animatepostion);
+  })
+}
 
-  parseDate(dateString: string): Date {
-    if (dateString) {
-      return new Date(dateString);
-    }
-    return null;
+parseDate(dateString: string): Date {
+  if (dateString) {
+    return new Date(dateString);
   }
+  return null;
+}
 
-  getEmployeename(empNo: number) {
-    if (this.EmployeeList.filter(li => li.EmployeeNo == empNo).length > 0)
-      return this.EmployeeList.filter(li => li.EmployeeNo == empNo)[0].Name;
-  }
-  viewDocument(path: string, documentname: string) {
-    //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
-    var path1 = path.replace(/\\/g, "/");
-    path1 = this.constants.Documnentpath + path1;
-    window.open(path1);
-    //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
-    //this.showFileViewer = true;    
-  }
+getEmployeename(empNo: number) {
+  if (this.EmployeeList.filter(li => li.EmployeeNo == empNo).length > 0)
+    return this.EmployeeList.filter(li => li.EmployeeNo == empNo)[0].Name;
+}
+viewDocument(path: string, documentname: string) {
+  //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
+  var path1 = path.replace(/\\/g, "/");
+  path1 = this.constants.Documnentpath + path1;
+  window.open(path1);
+  //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
+  //this.showFileViewer = true;    
+}
 
-  scrollToView(id, navId) {
-    var elmnt = document.getElementById(id);
-    elmnt.scrollIntoView();
-    //var navelmnt = document.getElementById(navId);
-    // navelmnt.classList.add("active");
-  }
+scrollToView(id, navId) {
+  var elmnt = document.getElementById(id);
+  elmnt.scrollIntoView();
+  //var navelmnt = document.getElementById(navId);
+  // navelmnt.classList.add("active");
+}
   //Binding selected units
   public BindUnits(unitId: number) {
-    if (unitId == 1)
-      return "Nos"
-    if (unitId == 2)
-      return "Set"
-    if (unitId == 3)
-      return "Kgs"
-    else
-      return "";
+  if (unitId == 1)
+    return "Nos"
+  if (unitId == 2)
+    return "Set"
+  if (unitId == 3)
+    return "Kgs"
+  else
+    return "";
 
-  }
+}
   //Adding new vendor
   public addNewVendor() {
-    this.showNewVendor = true;
-  }
-  //bind rfq link in vendor details
-  getRfqData(vendorId: string, type: string) {
-    if (this.RfqGeneratedList.length > 0) {
-      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
-      if (res) {
-        if (type == "rfqLink")
-          return res.RFQNo;
-        else
-          return res.rfqRevisionId;
-      }
+  this.showNewVendor = true;
+}
+//bind rfq link in vendor details
+getRfqData(vendorId: string, type: string) {
+  if (this.RfqGeneratedList.length > 0) {
+    var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
+    if (res) {
+      if (type == "rfqLink")
+        return res.RFQNo;
       else
-        return "";
+        return res.rfqRevisionId;
     }
+    else
+      return "";
   }
-  showVendorClick() {
-    this.newVendorDetails.Vendorid = 0;
-    this.newVendor.controls['VendorName'].setValidators([Validators.required]);
-    this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
-  }
+}
+showVendorClick() {
+  this.newVendorDetails.Vendorid = 0;
+  this.newVendor.controls['VendorName'].setValidators([Validators.required]);
+  this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
+}
 }
 
 

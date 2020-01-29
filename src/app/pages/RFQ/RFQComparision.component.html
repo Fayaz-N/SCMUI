@@ -71,10 +71,13 @@
   <br />
   <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Least Price</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>TP - </b>Total Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><img src="../assets/technics.png" style="height: 15px;width: 15px;"> - Technical Clearance</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>APD - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>DP - </b>Delivery period</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>PFA - </b>PF Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>FRA - </b>Friegt Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b><i class="fa fa-clock-o  times-color"></i> - </b>Pending</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b><i class="fa fa-check check-color"></i> - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
   <span><b><i class="fa fa-times times-color"></i> - </b>Rejected</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -112,6 +115,12 @@
                     <span class="valueEdit">{{vendor.UnitPrice}}</span>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">TP</label>
+                    <span class="valueEdit">{{vendor.UnitPrice * vendor.vendorQuoteQty}}</span>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
                     <span class="valueEdit">
                       <i *ngIf="vendor.RfqDocStatus=='Pending'" class="fa fa-clock-o times-color"></i>
@@ -119,8 +128,6 @@
                       <i *ngIf="vendor.RfqDocStatus=='Rejected'" class="fa fa-times times-color"></i>
                     </span>
                   </div>
-                </div>
-                <div class="row">
                   <div class="col-lg-2 col-md-2 col-sm-2 form-group">
                     <label class="form-label lblEdit">APD</label>
                     <span class="valueEdit"></span>
@@ -134,10 +141,18 @@
                     <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
                   </div>-->
                 </div>
-              </div>
+                <div class="row">
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">FRA</label>
+                    <span class="valueEdit">{{vendor.FreightAmount}}</span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">PFA</label>
+                    <span class="valueEdit">{{vendor.PFAmount}}</span>
+                  </div>
 
-              <!--<label class="form-label">Remarks</label>
-              <input type="text" class="form-control" />-->
+                </div>
+              </div>
             </td>
           </tr>
         </ng-template>
@@ -163,7 +178,11 @@
                 <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
             </td>-->
           </tr>
+          em
         </ng-template>
+
+
+        ab
       </p-table>
     </div>
   </div>
