@@ -92,7 +92,8 @@
             <th style="width:100px !important;">Quantity</th>
             <th *ngFor="let col of columns;let colInd=index" style="width:100px !important;">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
-              {{col.VendorName}}<br /><label>RFQ NO : </label>&nbsp;<span><a [routerLink]="['/SCM/VendorQuoteView',col.rfqRevisionId]">{{col.RFQNo}}</a></span><br />
+              {{col.VendorName}}<br /><label>Revision No : </label>&nbsp;<span *ngFor="let item of RfqCompareItems"><a *ngIf="item.RfqMasterId==col.RfqMasterId" [ngClass]="{'active': col.rfqRevisionId == item.rfqRevisionId,'disabled':col.rfqRevisionId != item.rfqRevisionId}" [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]">{{item.RevisionNo}}</a></span><br />
+              <label>RFQ No : </label>&nbsp;<span style="color:#11d3b8c9"> {{col.RFQNo}}</span><br />
               <label>Date : </label>&nbsp;<span style="color:#11d3b8c9">{{col.RFQValidDate | date :  constants.dateFormat}}</span>
             </th>
           </tr>
@@ -104,9 +105,9 @@
             <td style="width:100px !important">{{rowData.QuotationQty}}</td>
             <td *ngFor="let vendor of rowData.suggestedVendorDetails;let colIndex=index" style="width:100px !important;">
               <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
-                <input type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
+                <input *ngIf="vendor.Status!='Approved' && vendor.RFQSplitItemId!=null" type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
                 <div class="row">
-                  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">Q</label>
                     <span class="valueEdit">{{vendor.vendorQuoteQty}}</span>
                   </div>
@@ -115,9 +116,30 @@
                     <span class="valueEdit">{{vendor.UnitPrice}}</span>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">TP</label>
-                    <span class="valueEdit">{{vendor.UnitPrice * vendor.vendorQuoteQty}}</span>
+                    <label class="form-label lblEdit">Discount </label>
+                    <span class="valueEdit" *ngIf="vendor.Discount">{{vendor.Discount}}</span>
+                    <span class="valueEdit" *ngIf="vendor.DiscountPercentage">{{(vendor.DiscountPercentage/100)*(vendor.UnitPrice * vendor.vendorQuoteQty)}}</span>
                   </div>
+
+                </div>
+                <div class="row">
+                  <span>{{discountCalculation(vendor)}}</span>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">FRA</label>
+                    <span class="valueEdit">{{calculateFRAmount(vendor)}}</span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">PFA</label>
+                    <span class="valueEdit">{{calculatePFamount(vendor)}}</span>
+                  </div>
+                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">TP</label>
+                    <span class="valueEdit">{{calculateItemToatlPrice(vendor)}}</span>
+                  </div>
+                  <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                    <label class="form-label lblEdit">PT</label>
+                    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
+                  </div>-->
                 </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
@@ -130,27 +152,14 @@
                   </div>
                   <div class="col-lg-2 col-md-2 col-sm-2 form-group">
                     <label class="form-label lblEdit">APD</label>
-                    <span class="valueEdit"></span>
+                    <span *ngIf="vendor.Status=='Approved'" class="valueEdit pi pi-check check-color"></span>
+                    <span *ngIf="vendor.Status!='Approved'" class="valueEdit pi pi-times times-color"></span>
+
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">DP</label>
                     <span class="valueEdit">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}} &nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p> </span>
                   </div>
-                  <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">PT</label>
-                    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
-                  </div>-->
-                </div>
-                <div class="row">
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">FRA</label>
-                    <span class="valueEdit">{{vendor.FreightAmount}}</span>
-                  </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">PFA</label>
-                    <span class="valueEdit">{{vendor.PFAmount}}</span>
-                  </div>
-
                 </div>
               </div>
             </td>
@@ -178,11 +187,8 @@
                 <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
             </td>-->
           </tr>
-          em
         </ng-template>
 
-
-        ab
       </p-table>
     </div>
   </div>

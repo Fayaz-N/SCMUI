@@ -136,7 +136,7 @@ export class MPRListComponent implements OnInit {
     if (searchTxt == undefined)
       searchTxt = "";
     this.dynamicData.tableName = this.constants[name].tableName;
-    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;

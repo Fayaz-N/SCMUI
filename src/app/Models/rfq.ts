@@ -1,4 +1,5 @@
 export class rfqQuoteModel {
+  RFQSplitItemId: number;
   MPRItemDetailsid: number;
   Itemdetailsid: number;
   ItemId: number;
@@ -11,6 +12,7 @@ export class rfqQuoteModel {
   UnitPrice: string;
   leastPrice: string;
   RfqDocStatus: string;
+  ActiveRevision: string;
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
 
@@ -132,7 +134,7 @@ export class rfqFilterParams {
   FromDate: Date;
   ToDate: Date;
   RFQNo: string;
-  VendorName: string;
+  venderid: string;
   DocumentNo: string;
 }
 export class QuoteDetails {
@@ -147,6 +149,7 @@ export class QuoteDetails {
 export class RFQMaster {
   RfqNo: string;
   Vendor: VendorDetails;
+  MPRRevisionId: string;
 }
 
 export class RFQCommunication {

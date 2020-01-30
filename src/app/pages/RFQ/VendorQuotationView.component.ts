@@ -24,6 +24,8 @@ export class VendorQuotationViewComponent implements OnInit {
   public MPRPriceVisibilty: boolean = false;
   public RFQCommunications: RFQCommunication;
   public displayCommunicationDialog: boolean = false;
+  public MPRRevisionId: string;
+  public newRevision: boolean;
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -54,6 +56,7 @@ export class VendorQuotationViewComponent implements OnInit {
   loadQuotationDetails() {
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
       this.quoteDetails = data;
+      this.MPRRevisionId = this.quoteDetails.rfqmaster.MPRRevisionId;
       if (this.quoteDetails.mprIncharges.filter(li => li.Incharge == this.employee.EmployeeNo).length > 0)
         this.MPRPriceVisibilty = true;
       for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
@@ -68,6 +71,7 @@ export class VendorQuotationViewComponent implements OnInit {
     });
   }
   showRfqCommunicationDialogToAdd() {
+    this.newRevision = false;
     this.RFQCommunications = new RFQCommunication();
     this.displayCommunicationDialog = true;
   }
@@ -76,9 +80,27 @@ export class VendorQuotationViewComponent implements OnInit {
     this.displayCommunicationDialog = false;
   }
   onCommnicationSubmit() {
-    this.RFQCommunications.RfqRevisionId = this.RfqRevisionId;
-    this.RFQCommunications.RemarksFrom = this.employee.EmployeeNo;
-    this.RFQCommunications.RemarksDate = new Date();
+    if (this.RFQCommunications.Remarks) {
+      this.RFQCommunications.RfqRevisionId = this.RfqRevisionId;
+      this.RFQCommunications.RemarksFrom = this.employee.EmployeeNo;
+      this.RFQCommunications.RemarksDate = new Date();
+      if (this.newRevision) {
+        this.RfqService.addNewRevision(this.RfqRevisionId).subscribe(data => {
+          if (data)
+            this.RFQCommunications.RfqRevisionId = data;
+          this.updateCommunication();
+        })
+      }
+      else {
+        this.updateCommunication()
+      }
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Enter Remarks' });
+    }
+  }
+
+  updateCommunication() {
     this.RfqService.UpdateVendorCommunication(this.RFQCommunications).subscribe(data => {
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });
@@ -93,6 +115,11 @@ export class VendorQuotationViewComponent implements OnInit {
     var path1 = path.replace(/\\/g, "/");
     path1 = this.constants.vendorDocumentPath + path1;
     window.open(path1);
+  }
+  createNewRevision() {
+    this.newRevision = true;
+    this.RFQCommunications = new RFQCommunication();
+    this.displayCommunicationDialog = true;
   }
   updateRfqDocumentStatus() {
     this.RfqService.updateRfqDocumentStatus(this.rfqDocuments).subscribe(data => {

@@ -28,7 +28,8 @@ export class RFQComparisionComponent implements OnInit {
   public cols: any[];
   public status: string;
   public statusList: Array<any> = [];
-  public termCols: Array<rfqTerms>=[]
+  public termCols: Array<rfqTerms> = []
+  public tp: number = 0;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -53,36 +54,41 @@ export class RFQComparisionComponent implements OnInit {
     })
   }
 
-  //pepare top 3 Suggested vendors
+
   prepareRfQItems() {
     this.prepareColsData();
     this.prepareTermNames();
+    //added active revision 
     for (var i = 0; i < this.RfqCompareItems.length; i++) {
-      var res = this.rfqQuoteModel.filter(li => li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid);
-      if (res.length == 0) {
-        var rfqQuoteItems = new rfqQuoteModel();
-        rfqQuoteItems.MPRItemDetailsid = this.RfqCompareItems[i].MPRItemDetailsid;
-        rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
-        rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
-        rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
-        rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
-        rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
-        rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
-        rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
-        rfqQuoteItems.UnitPrice = this.RfqCompareItems[i].UnitPrice;//rfqitemsinfo
-        rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
-        this.cols.forEach(vendor => {
-          this.vendorDetails = new VendorDetails();
-          if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0])
-            this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0];
-          else {
-            this.createEmptyVendor();
-          }
-          rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
-        });
-        //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
-        rfqQuoteItems.leastPrice = Math.min.apply(Math, rfqQuoteItems.suggestedVendorDetails.filter(li => li.UnitPrice != null).map(function (o) { return o.UnitPrice; }));
-        this.rfqQuoteModel.push(rfqQuoteItems);
+      if (this.RfqCompareItems[i].ActiveRevision) {
+        var res = this.rfqQuoteModel.filter(li => li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid);
+        if (res.length == 0) {
+          var rfqQuoteItems = new rfqQuoteModel();
+          rfqQuoteItems.RFQSplitItemId = this.RfqCompareItems[i].RFQSplitItemId;
+          rfqQuoteItems.MPRItemDetailsid = this.RfqCompareItems[i].MPRItemDetailsid;
+          rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
+          rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
+          rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
+          rfqQuoteItems.ActiveRevision = this.RfqCompareItems[i].ActiveRevision;//from rfq revision_n 
+          rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
+          rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
+          rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
+          rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
+          rfqQuoteItems.UnitPrice = this.RfqCompareItems[i].UnitPrice;//rfqitemsinfo
+          rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
+          this.cols.forEach(vendor => {
+            this.vendorDetails = new VendorDetails();
+            if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0])
+              this.vendorDetails = this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0];
+            else {
+              this.createEmptyVendor();
+            }
+            rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
+          });
+          //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
+          rfqQuoteItems.leastPrice = Math.min.apply(Math, rfqQuoteItems.suggestedVendorDetails.filter(li => li.UnitPrice != null).map(function (o) { return o.UnitPrice; }));
+          this.rfqQuoteModel.push(rfqQuoteItems);
+        }
       }
     }
 
@@ -93,14 +99,14 @@ export class RFQComparisionComponent implements OnInit {
       var rfqTermObj = new rfqTerms();
       if (this.termCols.filter(li => li.Terms == item.Terms).length == 0) {
         //if (this.termCols.filter(li => li.RFQrevisionId == item.RFQrevisionId).length == 0) {
-          rfqTermObj.Terms = item.Terms;
-          rfqTermObj.RFQrevisionId = item.RFQrevisionId;
-          rfqTermObj.Remarks = item.Remarks;
-          rfqTermObj.VendorResponse = item.VendorResponse;
-          //rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
-          this.termCols.push(rfqTermObj);
+        rfqTermObj.Terms = item.Terms;
+        rfqTermObj.RFQrevisionId = item.RFQrevisionId;
+        rfqTermObj.Remarks = item.Remarks;
+        rfqTermObj.VendorResponse = item.VendorResponse;
+        //rfqTermObj.termsList = this.rfqTermsList.filter(li => li.Terms == item.Terms)
+        this.termCols.push(rfqTermObj);
         //}
-      }     
+      }
     });
   }
 
@@ -147,8 +153,10 @@ export class RFQComparisionComponent implements OnInit {
   prepareColsData() {
     this.cols = [];
     this.RfqCompareItems.forEach(vendor => {
-      if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
-        this.cols.push(vendor);
+      if (vendor.ActiveRevision) {
+        if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
+          this.cols.push(vendor);
+        }
       }
     });
   }
@@ -216,6 +224,36 @@ export class RFQComparisionComponent implements OnInit {
         totalPrice += item.suggestedVendorDetails[colIndex].UnitPrice;
     });
     return totalPrice;
+  }
+  discountCalculation(vendor: any) {
+    this.tp = vendor.UnitPrice * vendor.vendorQuoteQty;
+    var PriceDis = 0;
+    if (vendor.DiscountPercentage)
+      PriceDis = this.tp - (this.tp * (vendor.DiscountPercentage / 100));
+    if (vendor.Discount)
+      PriceDis = this.tp - vendor.Discount;
+    if (PriceDis)
+      this.tp = PriceDis;
+  }
+
+  calculateItemToatlPrice(vendor) {
+    var frfAmt = this.calculateFRAmount(vendor);
+    var pfAmnt = this.calculatePFamount(vendor);
+    return this.tp + frfAmt + pfAmnt;
+  }
+  calculateFRAmount(vendor: any) {
+    if (vendor.FreightPercentage) {
+      return (this.tp) * (vendor.FreightPercentage / 100)
+    }
+    else
+      return vendor.FreightAmount;
+  }
+  calculatePFamount(vendor: any) {
+    if (vendor.PFPercentage) {
+      return (this.tp) * (vendor.PFPercentage / 100);
+    }
+    else
+      return vendor.PFAmount;
   }
 
   statusSubmit() {

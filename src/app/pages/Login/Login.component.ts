@@ -68,7 +68,8 @@ export class LoginComponent implements OnInit {
             if (this.returnUrl)
               this.router.navigateByUrl(this.returnUrl);
             else
-              this.router.navigateByUrl('/SCM/Dashboard');
+              this.router.navigateByUrl('/SCM/MPRForm');
+              //this.router.navigateByUrl('/SCM/Dashboard');
 
           }
           else {

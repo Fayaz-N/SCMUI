@@ -77,12 +77,7 @@ export class MPRPageComponent implements OnInit {
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
-    if (this.AccessList.length > 0) {
-      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
-        this.showRfqGen = true;
-      if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
-        this.showCompareRfq = true;
-    }
+
     this.mprRevisionModel = new mprRevision();
     this.mprRevisionModel.MPRDetail = new MPRDetail();
     this.itemDetails = new MPRItemInfoes();
@@ -256,20 +251,20 @@ export class MPRPageComponent implements OnInit {
 
   //Binding searchList data
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
-    if (e.type == "keyup" && searchTxt && searchTxt.length < 3)
-      return;
+    //if (e.type == "keyup" && searchTxt && searchTxt.length < 3)
+    //  return;
     this.formName = formName;
     this.dialogTop = e.clientY + 30 + "px";
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
     this.dynamicData.tableName = this.constants[name].tableName;
-    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "ItemId")
-      this.dynamicData.searchCondition += " OR Material" + " like '%" + searchTxt + "%'";
+      this.dynamicData.searchCondition += " OR Material" + " like '" + searchTxt + "%'";
 
     if (this.dynamicData.searchCondition && name == "ClientName")
-      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '%" + searchTxt + "%'";
+      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'";
 
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
@@ -561,7 +556,7 @@ export class MPRPageComponent implements OnInit {
     this[formEdit] = true;
     this[showform] = true;
     setTimeout(() => {
-      document.getElementById("MPRPageForm3").scrollIntoView(false);
+      document.getElementById("MPRVendorId").scrollIntoView(false);
     }, 10);
   }
 
@@ -966,128 +961,134 @@ export class MPRPageComponent implements OnInit {
         this.showAcknowledge = false;
     }
 
-if (this.showStatusDetails || this.showAcknowledge)
-  this.displayFooter = true;
-else
-  this.displayFooter = false;
-if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
-  this.showRfqGen = this.showCompareRfq = true;
-else
-  this.showRfqGen = this.showCompareRfq = false;
+    if (this.showStatusDetails || this.showAcknowledge)
+      this.displayFooter = true;
+    else
+      this.displayFooter = false;
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
+      this.showRfqGen = this.showCompareRfq = true;
+    else
+      this.showRfqGen = this.showCompareRfq = false;
+    if (this.AccessList.length > 0) {
+      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
+        this.showRfqGen = true;
+      if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
+        this.showCompareRfq = true;
+    }
   }
 
-bindMPRPageForm(formName: string, data: any) {
-  for (let item in this[formName].controls) {
-    if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
-      (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
-      //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
-    }
-    else {
-      (data[item] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[item]));
-      //this[formName].controls[item].setValue(data[item]);
-      if (item == "DeliveryRequiredBy") {
-        (data[item] != null ? this[formName].controls[item].setValue(new Date(data[item])) : this[formName].controls[item].setValue(new Date()))
+  bindMPRPageForm(formName: string, data: any) {
+    for (let item in this[formName].controls) {
+      if ((this.constants[item]) && (data[this.constants[item].fieldAliasName])) {
+        (data[this.constants[item].fieldAliasName] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName]));
+        //this[formName].controls[item].setValue(data[this.constants[item].fieldAliasName])
       }
-      if (item == "JustificationForSinglePreferredVendor") {
-        if (data[item])
-          this.justificationDisply = false;
-        else
-          this.justificationDisply = true;
+      else {
+        (data[item] == '-' ? this[formName].controls[item].setValue("") : this[formName].controls[item].setValue(data[item]));
+        //this[formName].controls[item].setValue(data[item]);
+        if (item == "DeliveryRequiredBy") {
+          (data[item] != null ? this[formName].controls[item].setValue(new Date(data[item])) : this[formName].controls[item].setValue(new Date()))
+        }
+        if (item == "JustificationForSinglePreferredVendor") {
+          if (data[item])
+            this.justificationDisply = false;
+          else
+            this.justificationDisply = true;
+        }
+        if (item == "DispatchLocation") {
+          this.specifyDispatchDisply = false;
+          this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+          this[formName].controls[item].setValue("Others");
+        }
       }
-      if (item == "DispatchLocation") {
-        this.specifyDispatchDisply = false;
-        this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
-        this[formName].controls[item].setValue("Others");
-      }
-    }
 
-    //if (this.constants[item]) {
-    //  this.bindSearchListData("", formName, item, "", (): any => {
-    //    this.showList = false;
-    //    if (this.searchItems.filter(li => li.code == data[item]).length > 0)
-    //      this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
-    //    else {
-    //      if (item == "DispatchLocation") {
-    //        this.specifyDispatchDisply = false;
-    //        this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
-    //        this[formName].controls[item].setValue("Others");
-    //      }
-    //    }
-    //  });
-    //}
-    //}
+      //if (this.constants[item]) {
+      //  this.bindSearchListData("", formName, item, "", (): any => {
+      //    this.showList = false;
+      //    if (this.searchItems.filter(li => li.code == data[item]).length > 0)
+      //      this[formName].controls[item].setValue(this.searchItems.filter(li => li.code == data[item])[0].name);
+      //    else {
+      //      if (item == "DispatchLocation") {
+      //        this.specifyDispatchDisply = false;
+      //        this.MPRPageForm3.controls['specifyDispatchLocation'].setValue(data[item]);
+      //        this[formName].controls[item].setValue("Others");
+      //      }
+      //    }
+      //  });
+      //}
+      //}
+    }
   }
-}
 
   public animateCSS(formId, animatepostion) {
-  const element = document.getElementById(formId);
-  element.classList.add('animated', animatepostion);
-  element.addEventListener('animationend', function () {
-    element.classList.remove('animated', animatepostion);
-  })
-}
-
-parseDate(dateString: string): Date {
-  if (dateString) {
-    return new Date(dateString);
+    const element = document.getElementById(formId);
+    element.classList.add('animated', animatepostion);
+    element.addEventListener('animationend', function () {
+      element.classList.remove('animated', animatepostion);
+    })
   }
-  return null;
-}
 
-getEmployeename(empNo: number) {
-  if (this.EmployeeList.filter(li => li.EmployeeNo == empNo).length > 0)
-    return this.EmployeeList.filter(li => li.EmployeeNo == empNo)[0].Name;
-}
-viewDocument(path: string, documentname: string) {
-  //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
-  var path1 = path.replace(/\\/g, "/");
-  path1 = this.constants.Documnentpath + path1;
-  window.open(path1);
-  //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
-  //this.showFileViewer = true;    
-}
+  parseDate(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString);
+    }
+    return null;
+  }
 
-scrollToView(id, navId) {
-  var elmnt = document.getElementById(id);
-  elmnt.scrollIntoView();
-  //var navelmnt = document.getElementById(navId);
-  // navelmnt.classList.add("active");
-}
+  getEmployeename(empNo: number) {
+    if (this.EmployeeList.filter(li => li.EmployeeNo == empNo).length > 0)
+      return this.EmployeeList.filter(li => li.EmployeeNo == empNo)[0].Name;
+  }
+  viewDocument(path: string, documentname: string) {
+    //this.doc = this.sanitizer.bypassSecurityTrustResourceUrl("http://10.29.15.68:90/SCMDocs/2.xlsx");
+    var path1 = path.replace(/\\/g, "/");
+    path1 = this.constants.Documnentpath + path1;
+    window.open(path1);
+    //window.open("http://10.29.15.68:90/SCMDocs/2.xlsx");
+    //this.showFileViewer = true;    
+  }
+
+  scrollToView(id, navId) {
+    var elmnt = document.getElementById(id);
+    elmnt.scrollIntoView();
+    //var navelmnt = document.getElementById(navId);
+    // navelmnt.classList.add("active");
+  }
   //Binding selected units
   public BindUnits(unitId: number) {
-  if (unitId == 1)
-    return "Nos"
-  if (unitId == 2)
-    return "Set"
-  if (unitId == 3)
-    return "Kgs"
-  else
-    return "";
-
-}
-  //Adding new vendor
-  public addNewVendor() {
-  this.showNewVendor = true;
-}
-//bind rfq link in vendor details
-getRfqData(vendorId: string, type: string) {
-  if (this.RfqGeneratedList.length > 0) {
-    var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
-    if (res) {
-      if (type == "rfqLink")
-        return res.RFQNo;
-      else
-        return res.rfqRevisionId;
-    }
+    if (unitId == 1)
+      return "Nos"
+    if (unitId == 2)
+      return "Set"
+    if (unitId == 3)
+      return "Kgs"
     else
       return "";
+
   }
-}
-showVendorClick() {
-  this.newVendorDetails.Vendorid = 0;
-  this.newVendor.controls['VendorName'].setValidators([Validators.required]);
-  this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
-}
+  //Adding new vendor
+  public addNewVendor() {
+    this.showNewVendor = true;
+  }
+  //bind rfq link in vendor details
+  getRfqData(vendorId: string, type: string) {
+    if (this.RfqGeneratedList.length > 0) {
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
+      if (res) {
+        if (type == "rfqLink")
+          return res.RFQNo;
+        else
+          return res.rfqRevisionId;
+      }
+      else
+        return "";
+    }
+  }
+  showVendorClick() {
+    this.newVendorDetails.Vendorid = 0;
+    this.newVendor.controls['VendorName'].setValidators([Validators.required]);
+    this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
+  }
 }
 
 

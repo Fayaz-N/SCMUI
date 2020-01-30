@@ -30,7 +30,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Checked By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value">
           <!--<div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy','',undefined)"></button>
           </div>-->
@@ -47,7 +47,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Approved By : </label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" disabled="true" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value">
           <!--<div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy','',undefined)"></button>
           </div>-->
@@ -64,18 +64,18 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="DepartmentId" [value]="MPRfilterForm.controls.DepartmentId.value" (keyup)="bindSearchListData($event,'MPRfilterForm','DepartmentId',MPRfilterForm.controls.DepartmentId.value,undefined)">
+          <input type="text" class="form-control forms-input" formControlName="DepartmentId" [value]="MPRfilterForm.controls.DepartmentId.value">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','DepartmentId','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','DepartmentId',MPRfilterForm.controls.DepartmentId.value,undefined)"></button>
           </span>
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Job Code</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="JobCode" [value]="MPRfilterForm.controls.JobCode.value" (keyup)="bindSearchListData($event,'MPRfilterForm','JobCode',MPRfilterForm.controls.JobCode.value,undefined)">
+          <input type="text" class="form-control forms-input" formControlName="JobCode" [value]="MPRfilterForm.controls.JobCode.value">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','JobCode','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','JobCode',MPRfilterForm.controls.JobCode.value,undefined)"></button>
           </span>
         </div>
       </div>
@@ -89,9 +89,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Item Description</label>
         <div class="form-inline-list  ml-2 ">
-          <input type="text" class="form-control forms-input" formControlName="ItemDescription" [value]="MPRfilterForm.controls.ItemDescription.value" (keyup)="bindSearchListData($event,'MPRfilterForm','ItemDescription',MPRfilterForm.controls.ItemDescription.value,undefined)">
+          <input type="text" class="form-control forms-input" formControlName="ItemDescription" [value]="MPRfilterForm.controls.ItemDescription.value">
           <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ItemDescription','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ItemDescription',MPRfilterForm.controls.ItemDescription.value,undefined)"></button>
           </div>
 
         </div>
@@ -104,9 +104,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
         <div class="form-inline-list  ml-2 ">
-          <input type="text" class="form-control forms-input" formControlName="BuyerGroupId" [value]="MPRfilterForm.controls.BuyerGroupId.value" (keyup)="bindSearchListData($event,'MPRfilterForm','BuyerGroupId',MPRfilterForm.controls.BuyerGroupId.value,undefined)">
+          <input type="text" class="form-control forms-input" formControlName="BuyerGroupId" [value]="MPRfilterForm.controls.BuyerGroupId.value">
           <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','BuyerGroupId','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','BuyerGroupId',MPRfilterForm.controls.BuyerGroupId.value,undefined)"></button>
           </div>
 
         </div>

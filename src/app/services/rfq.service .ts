@@ -66,5 +66,8 @@ export class RfqService {
   //}
   UpdateVendorCommunication(rfqCommunication: RFQCommunication): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/UpdateVendorCommunication/', rfqCommunication, this.httpOptions);
-  }  
+  }
+  addNewRevision(RfqRevisionId: number): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/addNewRfqRevision/', RfqRevisionId, this.httpOptions);
+  }
 }
