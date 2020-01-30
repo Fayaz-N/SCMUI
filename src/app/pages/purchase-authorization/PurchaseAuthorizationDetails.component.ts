@@ -6,6 +6,7 @@ import { MPRVendorDetail, DynamicSearchResult, searchList, mprRevision, MPRItemI
 import { constants } from 'src/app/Models/MPRConstants'
 import { MprService } from 'src/app/services/mpr.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 @Component({
     selector: 'app-purchaseAuthorizationDetails',
@@ -14,7 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class PurchaseAuthorizationDetailsComponent implements OnInit {
     selectedItems1 = [];
 
-    constructor(public paService: purchaseauthorizationservice, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) { }
+    constructor(public paService: purchaseauthorizationservice, public messageservice: MessageService, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) { }
     public hivalue = true;
     public Vendorid: number;
     public approvevalue = false;
@@ -219,7 +220,8 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             }
             else {
                 event.target.checked = false;
-                alert("select single vendor");
+                //alert("select single vendor");
+                this.messageservice.add({ severity: 'warn', summary: 'Warning Message', detail: 'Please Select Single Vendor' });
             }
         }
         else {

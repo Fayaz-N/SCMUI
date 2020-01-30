@@ -102,17 +102,17 @@
         <tr class="text-left" style="text-align:left">
           <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
           <!--<input type="checkbox" *ngIf="vendorDetails.VendorName!=null" [(ngModel)]="paitemdetails.selectAll" (change)="selectAll($event)">-->
-          <th style="width: 3em"></th>
+          <th style="width: 4em"></th>
           <th style="width: 5em">Sl No</th>
           <th>Department</th>
           <th>Vendor Name</th>
-          <th>Item Description</th>
+          <th class="ptable-cell">Item Description</th>
           <th style="width:6em">Quantity</th>
           <th style="width:6em">Price</th>
           <th style="width:6em">Total Price</th>
-          <th>TargetSpend</th>
+          <th>Target Spend</th>
           <th>SaleOrder</th>
-          <th>PaymentTerm</th>
+          <th>Payment Term</th>
           <th>MPR NO</th>
         </tr>
       </ng-template>
@@ -123,17 +123,17 @@
             <input type="checkbox" (change)="onChange1(rowData,$event.target.checked,$event)">
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
           </td>
-          <td class="text-center">{{ri+1}}</td>
-          <td>{{rowData.Department}}</td>
-          <td>{{rowData.VendorName}}</td>
-          <td>{{rowData.ItemDescription}}</td>
+          <td>{{ri+1}}</td>
+          <td class="ptable-cell">{{rowData.Department}}</td>
+          <td class="ptable-cell">{{rowData.VendorName}}</td>
+          <td class="ptable-cell">{{rowData.ItemDescription}}</td>
           <td>{{rowData.QuotationQty}}</td>
           <td>{{rowData.UnitPrice}}</td>
           <td>{{rowData.itemsum}}</td>
           <td>{{rowData.TargetSpend}}</td>
           <td>{{rowData.SaleOrderNo}}</td>
           <td>{{rowData.PaymentTermCode}}</td>
-          <td>{{rowData.DocumentNo}}</td>
+          <td class="ptable-cell">{{rowData.DocumentNo}}</td>
         </tr>
       </ng-template>
     </p-table>

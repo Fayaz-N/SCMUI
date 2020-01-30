@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
+import { MessageService } from 'primeng/api';
+import { MprService } from 'src/app/services/mpr.service';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
 @Component({
     selector: 'app-purchasePayment',
@@ -9,7 +11,7 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, Pur
 })
 export class purchasePaymentComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, private route: ActivatedRoute) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private route: ActivatedRoute) { }
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
@@ -17,6 +19,7 @@ export class purchasePaymentComponent implements OnInit {
     public vendor: Array<VendorMasterModel> = [];
     public Approvers = PurchaseCreditApproversModel;
     public configuration: ConfigurationModel;
+    public rfqterms: Array<any> = [];
     public employeelist: EmployeeModel;
     public vendorDetails: MPRVendorDetail;
     public paitemdetails: Array<ItemsViewModel> = [];
@@ -24,14 +27,15 @@ export class purchasePaymentComponent implements OnInit {
     public pasubmitted: boolean;
     public displayItemDialog: boolean;
     public showemployee: boolean;
-    public paid: number;
+    public paid: number
+    public rfqrevisionid: Array<any> = [];
     public approvedemployee: boolean;
     public buyergroups: any[];
     public departmentlist: any[];
     public MPRItemDetailsid: any[];
     public purchasedetails: mprpadetailsmodel;
     public selectedItems: Array<any> = [];
-    public RFQItemID: Array<any> = []
+    public RFQItemID: Array<any> = [];
     public sum: number;
     public target: number;
     ngOnInit() {
@@ -57,6 +61,8 @@ export class purchasePaymentComponent implements OnInit {
         this.MPRItemDetailsid = new Array<any>();
         this.selectedItems = new Array<any>();
         this.RFQItemID = new Array<any>();
+        this.rfqrevisionid = new Array<any>();
+        this.rfqterms = new Array<any>();
         this.configuration = new ConfigurationModel();
         this.loadallpurchasemodes();
         this.loadallpurchasetypes();
@@ -74,6 +80,11 @@ export class purchasePaymentComponent implements OnInit {
             this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
             this.target = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current);
             this.displayapproveEmployee();
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
+            }
+            this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
+            this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
             this.showemployee = true
         }
@@ -97,6 +108,7 @@ export class purchasePaymentComponent implements OnInit {
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
         this.purchasedetails.Item = [];
         this.purchasedetails.ApproversList = [];
+        this.purchasedetails.TermId = [];
 
         //console.log(this.employeelist.Approvers, "approver");
         for (var i = 0; i < this.selectedItems.length; i++) {
@@ -109,10 +121,14 @@ export class purchasePaymentComponent implements OnInit {
         for (var i = 0; i < this.employeelist.Approvers.length; i++) {
             this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
         }
+        for (var i = 0; i < this.rfqterms.length; i++) {
+            this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
+        }
         this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
         //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
         this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
             this.paid = data;
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
         })
     }
     LoadAllBuyerGroups() {
@@ -203,6 +219,11 @@ export class purchasePaymentComponent implements OnInit {
 
     public ispagerefresh() {
         window.history.back();
+    }
+    displayRfqTerms(rfqrevisionid:any) {
+        this.paService.getrfqtermsbyrevisionid(rfqrevisionid).subscribe(data => {
+            this.rfqterms = data;
+        })
     }
     Approvepa(approvers: MPRPAApproversModel) {
         approvers.PAId = this.paid;
