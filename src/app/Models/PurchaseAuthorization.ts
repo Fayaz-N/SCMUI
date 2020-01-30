@@ -170,6 +170,7 @@ export class mprpadetailsmodel {
     FactorsForImports: string;
     SpecialRemarks: string;
     SupplierReference: string;
+    TermId: Array<number>[];
     purchasemodes: mprpapurchasemodesmodel;
     purchasetypes: mprpapurchasetypesmodel;
     department: DepartmentModel;

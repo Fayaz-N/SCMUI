@@ -27,7 +27,8 @@ export class purchasePaymentComponent implements OnInit {
     public pasubmitted: boolean;
     public displayItemDialog: boolean;
     public showemployee: boolean;
-    public paid: number
+    public paid: number;
+    public vendorname: string;
     public rfqrevisionid: Array<any> = [];
     public approvedemployee: boolean;
     public buyergroups: any[];
@@ -84,6 +85,7 @@ export class purchasePaymentComponent implements OnInit {
                 this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
             }
             this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
+            this.vendorname = this.selectedItems[0].VendorName;
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
             this.showemployee = true

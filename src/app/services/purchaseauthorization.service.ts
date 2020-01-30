@@ -116,4 +116,7 @@ export class purchaseauthorizationservice {
     Updatepaapproverstatus(approvers: MPRPAApproversModel): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/UpdateMprpaApproverStatus', approvers, this.httpOptions);
     }
+    getrfqtermsbyrevisionid(rfqrevisionid: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/getrfqtermsbyrevisionid', rfqrevisionid, this.httpOptions);
+    }
 }

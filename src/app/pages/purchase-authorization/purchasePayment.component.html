@@ -157,12 +157,7 @@
       <div *ngIf="!pasubmitted">
         <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
         <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;width:60%">
-<<<<<<< HEAD
           <option *ngFor="let dep of selectedItems" [value]="dep.DepartmentId">{{dep.Department}} </option>
-=======
-          <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentID">{{dep.Department}} </option>
-          <option [value]="0">Select</option>
->>>>>>> 2b6e25580db7e9828a351f901aada975df8f46dd
         </select>
       </div>
       <div *ngIf="pasubmitted">
@@ -222,18 +217,29 @@
 </div>
 <br />
 
-<div class="row head-text pl-0" style="margin-left:0px;width:100%">
-  <div class="col-md-6 pt-2">Considered Vendors:</div>
-</div>
-<div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-  <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
-    <span class="Vendor">{{ven.VendorName}} </span>
+<div class="form-control" style="height:100%">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2">Considered Vendors:</div>
   </div>
-</div>
-<div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-  <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
-    <span class="Vendor">{{ven.VendorName}} </span>
+  <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+      <span class="Vendor">{{ven.VendorName}} </span>
+    </div>
   </div>
+  <div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+      <span class="Vendor">{{ven.VendorName}} </span>
+    </div>
+  </div>
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2">Considered Vendors:</div>
+  </div>
+  <div class="row form-control" style="height:100%;width:100%;margin-left:2px">
+    <div class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+      <span class="Vendor" style="color:#0095ff">{{vendorname}} </span>
+    </div>
+  </div>
+
 </div>
 
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
