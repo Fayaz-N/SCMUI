@@ -890,10 +890,13 @@ export class MPRPageComponent implements OnInit {
     if (fileList.length > 0) {
       let file: File = fileList[0];
       let formData: FormData = new FormData();
-      formData.append('uploadEXcel', file, file.name);
+      var revisionId = this.mprRevisionModel.RevisionId.toString();
+      formData.append(revisionId, file, file.name);
       this.MprService.uploadExcel(formData).subscribe(data => {
-        if (data)
+        if (data) {
+          this.loadMPRData(revisionId);
           this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
+        }
       });
     }
   }
