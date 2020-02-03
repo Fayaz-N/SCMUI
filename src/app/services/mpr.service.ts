@@ -93,7 +93,7 @@ export class MprService {
   }
 
   addNewVendor(newVendordetails: VendorMaster): Observable<any> {
-    return this.http.post<boolean>(this.url + 'MPR/addNewVendor',  newVendordetails, this.httpOptions);
+    return this.http.post<boolean>(this.url + 'MPR/addNewVendor', newVendordetails, this.httpOptions);
   }
   //added masters
 
@@ -156,6 +156,12 @@ export class MprService {
   }
   uploadFile(formdata: FormData): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
+  uploadExcel(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/uploadExcel/', formdata)
       .pipe(map(data => {
         return data;
       }))

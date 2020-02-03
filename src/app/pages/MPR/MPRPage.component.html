@@ -181,7 +181,10 @@
           <ng-template pTemplate="caption">
             <div style="display:inline">
               <span style="float:left">Item Details : </span>
-              <span style="text-align:right;padding-left: 500px !important;"><button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button></span>
+              <span style="text-align:right;padding-left:350px" class="form-inline">
+                <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
+                <input type="file" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx" >
+              </span>
             </div>
           </ng-template>
           <ng-template pTemplate="header">
@@ -385,7 +388,7 @@
   <br />
   <form *ngIf="showOtherDetailsForm" [formGroup]="MPRPageForm3" id="MPRPageForm3">
     <!--<form [formGroup]="MPRPageForm3">-->
-    <div  class="my-animation">
+    <div class="my-animation">
       <div class="head-text pl-0">
         <div class="col-md-6 pt-2">Other Deatils</div>
         <div class="col-md-3 pt-2"></div>
@@ -439,7 +442,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Scope Shall Include</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="ScopeId" [value]="MPRPageForm3.controls.ScopeId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.ScopeId.errors }" >
+                <input type="text" class="form-control forms-input" formControlName="ScopeId" [value]="MPRPageForm3.controls.ScopeId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.ScopeId.errors }">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ScopeId',MPRPageForm3.controls.ScopeId.value,undefined)"></button>
                 </span>
@@ -474,6 +477,7 @@
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Training Required</label>
+              -4
               <div class="form-inline ml-4">
                 <p-inputSwitch [(ngModel)]="mprRevisionModel.TrainingRequired" (click)="trainingRequiredChange()" formControlName="TrainingRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.TrainingRequired.errors }"></p-inputSwitch>
                 &nbsp;&nbsp;<span class="form-label">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
@@ -601,7 +605,7 @@
             </div>-->
             <div *ngIf="!form3Edit" class="col-lg-12 col-md-12 col-sm-12 form-inline">
               <label>Gurantee Period Required</label>&nbsp;&nbsp;&nbsp;&nbsp;
-               
+
               <select class="form-control" formControlName="supplyMonths" (change)="monthChanges();">
                 <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
               </select>&nbsp;&nbsp;
@@ -696,7 +700,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Source Of Procurement</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="ProcurementSourceId" [value]="MPRPageForm3.controls.ProcurementSourceId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ProcurementSourceId.value}" >
+                <input type="text" class="form-control forms-input" formControlName="ProcurementSourceId" [value]="MPRPageForm3.controls.ProcurementSourceId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && !MPRPageForm3.controls.ProcurementSourceId.value}">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ProcurementSourceId',MPRPageForm3.controls.ProcurementSourceId.value,undefined)"></button>
                 </span>
@@ -740,7 +744,7 @@
           </div>
           <div class="form-group row" style="margin:0px">
             <div class="col-lg-5 col-md-5 col-sm-5">
-              <label for="InchargeName" class="form-label">Incharge Names </label>&nbsp;&nbsp;
+              <label for="InchargeName" class="form-label">fIncharge Names </label>&nbsp;&nbsp;
               <button type="button" [disabled]="form3Edit" pButton icon="fa fa-plus" (click)="showInchargeDialogToAdd('displayInchargeDialog')"></button>
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -1097,7 +1101,7 @@
           <div class="ui-g-12">
             <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>
             <div class="form-inline-list">
-              <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}" >
+              <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}">
               <span class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)"></button>
               </span>
@@ -1119,7 +1123,7 @@
             <div class="ui-g-6 form-group">
               <label class="form-label">Units</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
-                <input type="text" formControlName="UnitId" [value]="MPRItemDetailsForm.controls.UnitId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}" >
+                <input type="text" formControlName="UnitId" [value]="MPRItemDetailsForm.controls.UnitId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','UnitId',MPRItemDetailsForm.controls.UnitId.value,undefined)"></button>
                 </span>
@@ -1204,7 +1208,7 @@
         <div class="ui-g-8 form-group">
           <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
           <div class="form-inline-list">
-            <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }" >
+            <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
             <span class="input-group-append">
               <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
             </span>
@@ -1253,7 +1257,7 @@
           <div class="ui-g-5 form-group">
             <label class="form-label">Description</label>
             <div class="form-inline-list">
-              <input type="text" [(ngModel)]="MPRDocumentations.DocumentationDescription" class="form-control" >
+              <input type="text" [(ngModel)]="MPRDocumentations.DocumentationDescription" class="form-control">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DocumentationDescriptionId',MPRDocumentations.DocumentationDescription,undefined)"></button>
               </div>
@@ -1353,7 +1357,7 @@
           </div>
           <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
             <label class="form-label">Add To Emails : </label>&nbsp;<span style="color:red">*</span>&nbsp;
-            <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.toEmail.errors }" class="form-control" >
+            <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.toEmail.errors }" class="form-control">
             <div class="input-group-append">
               <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRCommunicationForm.controls.toEmail.value,undefined)"></button>
             </div> &nbsp;
@@ -1367,7 +1371,7 @@
           </div>
           <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
             <label class="form-label">Add CC Emails : </label>&nbsp;
-            <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value"  class="form-control">
+            <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" class="form-control">
             <div class="input-group-append">
               <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRCommunicationForm.controls.ccEmail.value,undefined)"></button>
             </div>

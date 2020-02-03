@@ -6,13 +6,14 @@ import { searchParams, AccessList } from '../Models/mpr';
 })
 export class constants {
   //public url = 'http://10.29.15.68:90/Api/';
-  public url = 'http://localhost:49659/Api/';
+  //public url = 'http://localhost:49659/Api/';
+  public url = 'http://10.29.15.183:90/Api/';
 
   public dateFormat = "MM/dd/yyyy";
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;
-  public Documnentpath = "http://10.29.15.68:90/SCMDocs/";
-  public vendorDocumentPath = "http://10.29.15.68:92/vscmdocs/";
+  public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
+  public vendorDocumentPath = "http://10.29.15.183:92/vscmdocs/";
 
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
   public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "DOL IS NULL and  ((Grade IN(SELECT Grades.Grade FROM Grades WHERE (Grades.Hierarchy>=(SELECT Grades.Hierarchy FROM Grades WHERE Grades.Grade='M2')))))  and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
@@ -34,9 +35,9 @@ export class constants {
   public CheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade<'m2' and  employeeNo in (190271,220017,030011) and ", fieldAliasName: "CheckedName", updateColumns: "" };
   //public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade>'m2' and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
-  public Incharge: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m1' and ", fieldAliasName: "", updateColumns: "" };
-  public toEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m1' and ", fieldAliasName: "", updateColumns: "" };
-  public ccEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m1' and ", fieldAliasName: "", updateColumns: "" };
+  public Incharge: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade='m1' and DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
+  public toEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
+  public ccEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public JobCode: searchParams = { tableName: 'MPRRevisions', fieldId: 'JobCode', fieldName: 'JobCode', condition: "", fieldAliasName: "", updateColumns: "" };
   public ItemDescription: searchParams = { tableName: 'MPRItemInfo', fieldId: 'ItemDescription', fieldName: 'ItemDescription', condition: "", fieldAliasName: "", updateColumns: "" };
 }

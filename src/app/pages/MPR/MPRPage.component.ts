@@ -885,7 +885,18 @@ export class MPRPageComponent implements OnInit {
       });
     }
   }
-
+  uploadExcel(event: any) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      let formData: FormData = new FormData();
+      formData.append('uploadEXcel', file, file.name);
+      this.MprService.uploadExcel(formData).subscribe(data => {
+        if (data)
+          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
+      });
+    }
+  }
 
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {

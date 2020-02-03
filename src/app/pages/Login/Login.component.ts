@@ -63,12 +63,20 @@ export class LoginComponent implements OnInit {
                 var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
                 MENU_ITEMS[1].children.splice(index, 1);
               }
+              if (this.employee.DeptID != 14)//cmm users
+              {
+                MENU_ITEMS[2].hidden = true;
+                MENU_ITEMS[3].hidden = true;
+                MENU_ITEMS[4].hidden = true;
+                MENU_ITEMS[5].hidden = true;
+              }
             })
+
             this.LoginForm.reset();
             if (this.returnUrl)
               this.router.navigateByUrl(this.returnUrl);
             else
-              this.router.navigateByUrl('/SCM/MPRForm');
+              this.router.navigateByUrl('/SCM/MPRList');
               //this.router.navigateByUrl('/SCM/Dashboard');
 
           }
