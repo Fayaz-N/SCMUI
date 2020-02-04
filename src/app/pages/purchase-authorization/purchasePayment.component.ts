@@ -39,6 +39,7 @@ export class purchasePaymentComponent implements OnInit {
     public RFQItemID: Array<any> = [];
     public sum: number;
     public target: number;
+    public Buyergroup: string;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -84,7 +85,7 @@ export class purchasePaymentComponent implements OnInit {
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
             }
-            this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
+            this.Buyergroup= this.selectedItems[0].BuyerGroup;
             this.vendorname = this.selectedItems[0].VendorName;
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
@@ -184,7 +185,6 @@ export class purchasePaymentComponent implements OnInit {
         debugger;
         this.MPRItemDetailsid = [];
         //this.employeelist.Approvers = [];
-        console.log(this.selectedItems);
         let item = new ConfigurationModel();
         if (this.selectedItems.length > 0) {
             item.MPRItemDetailsid = [];
@@ -197,7 +197,6 @@ export class purchasePaymentComponent implements OnInit {
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
-            console.log(this.selectedItems);
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data;
                 //this.employeelist.Approvers = data;
