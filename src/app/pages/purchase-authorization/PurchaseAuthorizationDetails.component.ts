@@ -69,7 +69,8 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
                 }
             }
             else {
-                alert("No items")
+                //alert("No items")
+                this.messageservice.add({ severity: 'info', summary: 'Alert Message', detail: 'No Items', });
             }
         })
     }

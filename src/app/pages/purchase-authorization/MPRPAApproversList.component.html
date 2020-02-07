@@ -1,18 +1,18 @@
-<div class="form-control" style="height:90px">
-  <div class="row  form-group">
-    <div class="col-lg-3 col-md-3 col-sm-3">
+<div class="form-control" style="height:100%">
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       <label class="form-label label">From Date</label><br />
       <p-calendar class="FromDate" [(ngModel)]="inputsearch.FromDate" [monthNavigator]="true"></p-calendar>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       <label class="form-label label">To Date</label><br />
       <p-calendar class="ToDate" [(ngModel)]="inputsearch.ToDate" [monthNavigator]="true"></p-calendar>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       <label class="form-label label">PA ID</label><br />
       <input class="form-control" [(ngModel)]="inputsearch.Paid">
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       <label class="form-label label">Status</label><br />
       <select class="form-control" [(ngModel)]="inputsearch.Status">
         <option value="Submitted">Submitted</option>
@@ -46,10 +46,10 @@
         <td>
           {{ri+1}}
         </td>
-        <td class="ptable-cell">{{rowData.Approver}}</td>
+        <td class="ptable-cell">{{rowData.Name}}</td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td class="ptable-cell">{{rowData.RoleName}}</td>
-        <td class="ptable-cell">{{rowData.DepartmentID}}</td>
+        <td class="ptable-cell">{{rowData.Department}}</td>
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
         <td class="ptable-cell">{{rowData.ApprovedOn}}</td>
       </tr>

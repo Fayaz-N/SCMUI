@@ -4,6 +4,7 @@ import { ConfigurationModel, ChangedModel, DepartmentModel, PAAuthorizationLimit
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { DropdownModule } from 'primeng/primeng';
 import { SelectItem } from 'primeng/primeng';
+import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { Employee } from '../../Models/mpr';
 
@@ -23,19 +24,21 @@ export class PurchaseAuthorizationComponent implements OnInit {
     public selectedemployee;
     public departmentlist: Array<any> = [];
     public authid: number;
+    public searchemployee: boolean = false;
+    public employeemapping: boolean;
     public slbaslist = [];
     public authorizationtype = [];
     public mappedpurchase: Array<any> = [];
     public AddDialog: boolean;
     public paauthorization: PAAuthorizationLimitModel;
     public employemapping: PAAuthorizationEmployeeMappingModel;
-    public employeelist = [];
+    public employeelist: SelectItem[];
     public RolesList = [];
     public deptid: number;
     public SlabsAddForm: FormGroup;
     LessBudget = "LessBudget";
     MoreBudget = "MoreBudget"
-    constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, public paService: purchaseauthorizationservice) { }
+    constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, public messageService: MessageService, public paService: purchaseauthorizationservice) { }
 
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
@@ -57,6 +60,8 @@ export class PurchaseAuthorizationComponent implements OnInit {
         this.employemapping = new PAAuthorizationEmployeeMappingModel();
         this.mappedpurchase = new Array<any>();
         this.LoadAllemployess();
+        this.employeemapping = true;
+        this.employeelist = new Array<SelectItem>();
         this.LoadAllFunctionalMappings();
         this.LoadEmployeemappedPurchases();
         this.paService.LoadAllDepartments().subscribe(data => {
@@ -101,6 +106,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
                 this.authid = data;
                 this.detailsform.clearValidators();
                 this.reset();
+                this.AddDialog = false;
             })
         }
         //this.detailsform.clearValidators();
@@ -124,6 +130,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
             this.paService.InsertEmployeeMapping(employemapping).subscribe(data => {
                 this.authid = data;
                 this.LoadEmployeemappedPurchases();
+                this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
             })
         }
         else
@@ -132,6 +139,13 @@ export class PurchaseAuthorizationComponent implements OnInit {
     LoadEmployeemappedPurchases() {
         this.paService.LoadEmployeemappedPurchases().subscribe(data => {
             this.mappedpurchase = data;
+        })
+    }
+    LoadEmployeemappedPurchasesByDeptid(deptid: number) {
+        this.paService.LoadEmployeemappedPurchasesBydeptid(deptid).subscribe(data => {
+            this.mappedpurchase = data;
+            this.searchemployee = true;
+            this.employeemapping = false;
         })
     }
     toggle(event): void {
@@ -149,6 +163,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
             this.employemapping.MoreBudget = true;
         }
     }
+
     deletePurchaserow(mappingdata: any) {
         this.paService.RemovePurchaseApprover(mappingdata).subscribe(data => {
             this.authid = data;

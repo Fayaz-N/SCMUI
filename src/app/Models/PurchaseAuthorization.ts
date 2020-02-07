@@ -83,6 +83,12 @@ export class ItemsViewModel {
     Name: string;
     sum: number;
     TragetSpend: number;
+    PONO: string;
+    POItemNo: string;
+    PODate: Date;
+    Remarks: string;
+    paitemid: number;
+    paid: number;
 }
 export class EmployeeModel {
     EmployeeNo: number;

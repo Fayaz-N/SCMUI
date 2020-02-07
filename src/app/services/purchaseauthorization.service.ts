@@ -74,6 +74,9 @@ export class purchaseauthorizationservice {
     LoadEmployeemappedPurchases(): Observable<any> {
         return this.http.get<any>(this.url + 'RFQ/GetPurchaseSlabsandMappedemployees', this.httpOptions);
     }
+    LoadEmployeemappedPurchasesBydeptid(deptid: any): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/GetPurchaseSlabsandMappedemployeesByDeptId/' + deptid, this.httpOptions);
+    }
     LoadAllmprpapurchasemodes(): Observable<mprpapurchasemodesmodel[]> {
         return this.http.get<mprpapurchasemodesmodel[]>(this.url + 'RFQ/GetAllMprPAPurchaseModes', this.httpOptions);
     }
@@ -119,4 +122,7 @@ export class purchaseauthorizationservice {
     getrfqtermsbyrevisionid(rfqrevisionid: any): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/getrfqtermsbyrevisionid', rfqrevisionid, this.httpOptions);
     }
-}
+    InsertPAitems(paitem: ItemsViewModel): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/InsertPaitems', paitem, this.httpOptions);
+    }
+} 

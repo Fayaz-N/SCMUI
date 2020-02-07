@@ -35,6 +35,7 @@ export class MPRPAApproversListComponent implements OnInit {
         this.approverslist = new Array<any>();
         this.paapproverdeatils = new Array<any>();
         this.inputsearch = new PAApproverDetailsInputModel();
+        this.LoadmprApproverDetailsbySearch(this.inputsearch);
     }
 
 

@@ -5,6 +5,7 @@ import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
 import { MprService } from 'src/app/services/mpr.service';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
+import { FormGroup } from '@angular/forms';
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
@@ -12,9 +13,11 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, Pur
 export class purchasePaymentComponent implements OnInit {
 
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private route: ActivatedRoute) { }
+    public itemsform: FormGroup;
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
+    public paitemvalue: boolean = false;
     public PAApprovers: MPRPAApproversModel;
     public vendor: Array<VendorMasterModel> = [];
     public Approvers = PurchaseCreditApproversModel;
@@ -23,12 +26,14 @@ export class purchasePaymentComponent implements OnInit {
     public employeelist: EmployeeModel;
     public vendorDetails: MPRVendorDetail;
     public paitemdetails: Array<ItemsViewModel> = [];
+    public paitem: ItemsViewModel;
     public padetails: PADetailsModel;
     public pasubmitted: boolean;
-    public displayItemDialog: boolean;
+    public EditDialog: boolean;
     public showemployee: boolean;
     public paid: number;
     public vendorname: string;
+    public selectedvendor: string;
     public rfqrevisionid: Array<any> = [];
     public approvedemployee: boolean;
     public buyergroups: any[];
@@ -40,6 +45,8 @@ export class purchasePaymentComponent implements OnInit {
     public sum: number;
     public target: number;
     public Buyergroup: string;
+    public Department: string;
+    public BuyerGroupId: number;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -58,6 +65,7 @@ export class purchasePaymentComponent implements OnInit {
         this.vendorDetails = new MPRVendorDetail();
         this.padetails = new PADetailsModel();
         this.paitemdetails = new Array<ItemsViewModel>();
+        
         this.buyergroups = new Array<any>();
         this.departmentlist = new Array<any>();
         this.MPRItemDetailsid = new Array<any>();
@@ -65,11 +73,13 @@ export class purchasePaymentComponent implements OnInit {
         this.RFQItemID = new Array<any>();
         this.rfqrevisionid = new Array<any>();
         this.rfqterms = new Array<any>();
+        this.paitem = new ItemsViewModel();
         this.configuration = new ConfigurationModel();
         this.loadallpurchasemodes();
         this.loadallpurchasetypes();
         this.LoadAllBuyerGroups();
         this.LoadAllDeaprtments();
+        this.EditDialog = false;
 
         this.route.params.subscribe(params => {
             if (params["PAId"]) {
@@ -85,7 +95,10 @@ export class purchasePaymentComponent implements OnInit {
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
             }
-            this.Buyergroup= this.selectedItems[0].BuyerGroup;
+            this.Buyergroup = this.selectedItems[0].BuyerGroup;
+            this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
+            this.purchasedetails.DepartmentID = this.selectedItems[0].DepartmentId;
+            this.Department = this.selectedItems[0].Department;
             this.vendorname = this.selectedItems[0].VendorName;
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
@@ -137,14 +150,14 @@ export class purchasePaymentComponent implements OnInit {
     LoadAllBuyerGroups() {
         this.paService.LoadAllmprBuyerGroups().subscribe(data => {
             this.buyergroups = data;
-            this.purchasedetails.BuyerGroupId = 0;
+            //this.purchasedetails.BuyerGroupId = 0;
         })
     }
     LoadAllDeaprtments() {
 
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            this.purchasedetails.DepartmentID = 0;
+            //this.purchasedetails.DepartmentID = 0;
         });
     }
     getmprpabyid(paid: any) {
@@ -156,6 +169,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
             this.pasubmitted = true;
+            this.selectedvendor = this.purchasedetails.Item[0]["VendorName"];
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
                 //item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
@@ -170,7 +184,10 @@ export class purchasePaymentComponent implements OnInit {
                     this.approvedemployee = true;
                 }
             }
-           
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                this.rfqrevisionid.push(this.purchasedetails.Item[i]["RFQRevisionId"]);
+            }
+            this.displayRfqTerms(this.rfqrevisionid)
             //this.displayapproveEmployee();
             this.showemployee = true;
         })
@@ -214,9 +231,9 @@ export class purchasePaymentComponent implements OnInit {
         })
     }
 
-    showItemDialogToAdd() {
-        this.displayItemDialog = true;
-    }
+    //showItemDialogToAdd() {
+    //    this.displayItemDialog = true;
+    //}
 
     public ispagerefresh() {
         window.history.back();
@@ -230,6 +247,21 @@ export class purchasePaymentComponent implements OnInit {
         approvers.PAId = this.paid;
         this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
             this.getmprpabyid = data;
+        })
+    }
+    AddPaitem(paitemid:any) {
+        this.EditDialog = true;
+        this.paitem.paitemid = paitemid;
+    }
+    Cancel() {
+        this.EditDialog = false;
+    }
+    SubmitItem(paitem: ItemsViewModel) {
+        //this.paitem.EmployeeNo = this.employee.EmployeeNo;
+        this.paitemvalue = true;
+        this.paService.InsertPAitems(paitem).subscribe(data => {
+            this.paid = data;
+            this.EditDialog = false;
         })
     }
 }

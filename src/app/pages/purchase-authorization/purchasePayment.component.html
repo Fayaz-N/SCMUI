@@ -76,10 +76,11 @@
           <th>Total Price</th>
           <th>SaleOrder</th>
           <th>Payment Term</th>
+          <th>Edit</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-        <tr>
+        <tr [pEditableRow]="rowData">
           <td class="text-center">{{ri+1}}</td>
           <td class="ptable-cell">{{rowData.Department}}</td>
           <td class="ptable-cell">{{rowData.ItemDescription}}</td>
@@ -91,6 +92,9 @@
           <td>{{rowData.UnitPrice * rowData.QuotationQty}}</td>
           <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
           <td>{{rowData.PaymentTermCode}}</td>
+          <td class="text-center">
+            <button pButton type="button" pInitEditableRow icon="pi pi-pencil"  class="ui-button-info" (click)="AddPaitem(rowData.paitemid)"></button>
+          </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -104,6 +108,7 @@
           <td>{{target}}</td>
           <td></td>
           <td>{{sum}}</td>
+          <td></td>
           <td></td>
           <td></td>
         </tr>
@@ -143,10 +148,13 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;width:60%">
+        <!--<select [(ngModel)]="purchasedetails.BuyerGroupId" #BuyerGroup="ngModel" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let buy of selectedItems" [value]="buy.BuyerGroupId">{{buy.BuyerGroup}} </option>
-        </select>
-      <!--<input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%" [value]="Buyergroup">-->
+          <option [value]="0">{{Buyergroup}}</option>
+        </select>-->
+        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%" [value]="Buyergroup">
+        <!--<input class="form-control"  [(ngModel)]="purchasedetails.BuyerGroupId" [value]="BuyerGroupId" style="display:none">-->
+        <!--<span class="BuyerGroup form-control" style="margin-left: 12px;width:60%" [(ngModel)]="purchasedetails.BuyerGroupId">{{Buyergroup}}</span>-->
       </div>
       <div *ngIf="pasubmitted">
         <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
@@ -156,12 +164,13 @@
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div *ngIf="!pasubmitted">
         <label for="Department" class="form-label label" style="margin-left: 12px;">Department:</label>&nbsp;&nbsp;
-        <select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;width:60%">
+        <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%" [value]="Department">
+        <!--<select [(ngModel)]="purchasedetails.DepartmentID" #DepartmentName="ngModel" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let dep of selectedItems" [value]="dep.DepartmentId">{{dep.Department}} </option>
-        </select>
+        </select>-->
       </div>
       <div *ngIf="pasubmitted">
-        <label for="DepartMent" class="form-label label" style="margin-left: 12px;">DepartMent:</label>&nbsp;&nbsp;
+        <label for="DepartMent" class="form-label label" style="margin-left: 12px;">DepartMent:</label>&nbsp;
         <span class="DepartMent">{{purchasedetails.department.Department}}</span>
       </div>
     </div>
@@ -230,16 +239,26 @@
     <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
       <span class="Vendor">{{ven.VendorName}} </span>
     </div>
-  </div>
+  </div><br />
+
   <div class="row head-text pl-0" style="margin-left:0px;width:100%">
     <div class="col-md-6 pt-2">Selected Vendor:</div>
   </div>
-  <div class="row form-control" style="height:100%;width:100%;margin-left:2px">
+  <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
     <div class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
       <span class="Vendor" style="color:#0095ff">{{vendorname}} </span>
     </div>
   </div>
-
+  <!--<div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+    <div class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+      <span class="Vendor" style="color:#0095ff">{{vendorname}} </span>
+    </div>
+  </div>-->
+  <div *ngIf="pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
+    <div  class="col-xs-4 col-sm-4 col-md-4 form-control" style="margin-left:5px;margin-left:5px">
+      <span class="Vendor">{{selectedvendor}} </span>
+    </div>
+  </div>
 </div>
 
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
@@ -264,6 +283,31 @@
 </div>
 <div class="form-control" style="height:100%;width:100%">
   <div *ngIf="!pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+    <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><span style="float:left">Terms </span></th>
+            <th><span style="float:left">RfqRevisionId </span> </th>
+            <th><span colspan="5" style="float:left">RFQNo </span></th>
+          </tr>
+        </thead>
+        <!--<thead>
+          <tr>
+            <td *ngFor="let terms of rfqterms">{{terms.RFQNo}}</td>
+          </tr>
+        </thead>-->
+        <tbody>
+          <tr *ngFor="let terms of rfqterms">
+            <td>{{terms.Terms}}</td>
+            <td>{{terms.RFQrevisionId}}</td>
+            <td>{{terms.RFQNo}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
       <table class="table table-bordered">
         <thead>
@@ -349,6 +393,55 @@
     </div>
   </div>
 </div>
+
+<p-dialog header="Add" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+  <div style="display:none">
+    <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Paitemid:</label>&nbsp;&nbsp;
+    <span class="purchasetype">{{paitem.paitemid}}</span>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">PONo: </label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="paitem.PONO" class="form-control" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">POItemNo: </label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="paitem.POItemNo" class="form-control" />
+      <!--<span *ngIf="paitemvalue && itemsform.controls.POItemNo.errors" class="invalid-feedback">MaxPAValue Required.</span>-->
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">PO Date: </label>
+    </div>
+    <div class="ui-g-5">
+      <!--<input type="text" [(ngModel)]="paitem.PODate" class="form-control" />-->
+      <p-calendar class="PODate" [(ngModel)]="paitem.PODate" [monthNavigator]="true"></p-calendar>
+      <!--<span *ngIf="paitemvalue && itemsform.controls.PODate.errors" class="invalid-feedback">Authorization Type Required.</span>-->
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">Remarks:</label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="paitem.Remarks" class="form-control" />
+      <!--<span *ngIf="paitemvalue && itemsform.controls.Remarks.errors" class="invalid-feedback">Authorization Type Required.</span>-->
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
 
 
 <!--<p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '1000px',height:'1000px'}">
