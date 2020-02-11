@@ -46,8 +46,11 @@ export class GenerateRFQComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
-    else
+    else {
       this.router.navigateByUrl("Login");
+      return true;
+    }
+
     this.vendorDetails = new MPRVendorDetail();
     this.RFQRevisionData = new RFQRevisionData();
     this.newVendorDetails = new VendorMaster();

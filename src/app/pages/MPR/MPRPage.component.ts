@@ -258,13 +258,18 @@ export class MPRPageComponent implements OnInit {
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
+    searchTxt = searchTxt.replace('*', '%');
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "ItemId")
       this.dynamicData.searchCondition += " OR Material" + " like '" + searchTxt + "%'";
 
-    if (this.dynamicData.searchCondition && name == "ClientName")
-      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'";
+    if (this.dynamicData.searchCondition && name == "ClientName") {
+      //this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'";
+      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'" + " OR Address1" + " like '" + searchTxt + "%'" + " OR Address2" + " like '" + searchTxt + "%'" + " OR Address3" + " like '" + searchTxt + "%'" + " OR City" + " like '" + searchTxt + "%'";
+      //this.dynamicData.searchCondition += " OR Address1" + " like '" + searchTxt + "%'";
+    }
+
 
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
@@ -385,7 +390,7 @@ export class MPRPageComponent implements OnInit {
 
     if (this.formName == "MPRPageForm3" && item.listName == "DispatchLocation") {
       this.MPRPageForm3.controls['specifyDispatchLocation'].setValue("");
-      if (item.code == 3) {
+      if (item.code == 3 || item.code == 1) {
         this.specifyDispatchDisply = false;
         this.MPRPageForm3.controls['specifyDispatchLocation'].setValidators([Validators.required]);
       }
@@ -867,7 +872,8 @@ export class MPRPageComponent implements OnInit {
     if (fileList.length > 0) {
       let file: File = fileList[0];
       let formData: FormData = new FormData();
-      formData.append('uploadFile', file, file.name);
+      var revisionId = this.mprRevisionModel.RevisionId.toString();
+      formData.append(revisionId, file, file.name);
       this.MprService.uploadFile(formData).subscribe(data => {
         this.mprDocuments = new MPRDocument();
         this.mprDocuments.Path = data;
@@ -894,7 +900,16 @@ export class MPRPageComponent implements OnInit {
       formData.append(revisionId, file, file.name);
       this.MprService.uploadExcel(formData).subscribe(data => {
         if (data) {
-          this.loadMPRData(revisionId);
+          this.mprDocuments = new MPRDocument();
+          this.mprDocuments.Path = data;
+          this.mprDocuments.DocumentName = file.name;
+          this.mprDocuments.DocumentTypeid = 3;
+          this.mprDocuments.ItemDetailsId = null;
+          this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
+          this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+            this.mprRevisionModel = data;
+            this.displayItemDialog = false;
+          });
           this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
         }
       });
@@ -1102,6 +1117,11 @@ export class MPRPageComponent implements OnInit {
     this.newVendorDetails.Vendorid = 0;
     this.newVendor.controls['VendorName'].setValidators([Validators.required]);
     this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
+  }
+  downLoadExcelFormat() {
+    
+    var path = this.constants.Documnentpath + "MPRItemListFormat.xlsx";
+    window.open(path);
   }
 }
 

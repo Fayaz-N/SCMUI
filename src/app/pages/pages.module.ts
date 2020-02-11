@@ -12,8 +12,8 @@ import { RoleAccessComponent } from './Authorization/RoleAccess.component';
 //import { LoginComponent } from './Login/Login.component';
 import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { MPRListComponent } from './MPR/MPRList.component';
+import { RFQFormComponent } from './RFQ/RFQForm.component'
 import { RFQListComponent } from './RFQ/RFQList.component';
-import { VendorQuotationListComponent } from './RFQ/VendorQuotationList.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
 import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
@@ -50,7 +50,8 @@ import { PurchaseAuthorizationComponent } from './purchase-authorization/purchas
 import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
-
+import { from } from 'rxjs';
+ 
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -89,8 +90,8 @@ import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAAppro
     LoginComponent,
     ViewAccessComponent,
     MPRListComponent,
+    RFQFormComponent,
     RFQListComponent,
-    VendorQuotationListComponent,
     ApproversComponent,
     BuyerGroupsComponent,
     DepartmentComponent,

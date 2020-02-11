@@ -76,6 +76,7 @@ export class RFQListComponent implements OnInit {
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
+    searchTxt = searchTxt.replace('*', '%');
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {

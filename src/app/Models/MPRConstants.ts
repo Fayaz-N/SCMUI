@@ -6,9 +6,10 @@ import { searchParams, AccessList } from '../Models/mpr';
 })
 export class constants {
   //public url = 'http://10.29.15.68:90/Api/';
-  //public url = 'http://localhost:49659/Api/';
-  public url = 'http://10.29.15.183:90/Api/';
+  public url = 'http://localhost:49659/Api/';
+  //public url = 'http://10.29.15.183:90/Api/';
 
+  public accessTokenUrl = "http://localhost:49659/token";
   public dateFormat = "MM/dd/yyyy";
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;

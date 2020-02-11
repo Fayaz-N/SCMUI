@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel } from '../Models/rfq';
 
 @Injectable({
 	providedIn: 'root'
@@ -50,8 +50,8 @@ export class RfqService {
 	}
 	GetAllMasterCurrency(): Observable<any> {
 		return this.http.get<any>(this.url + 'RFQ/GetAllMasterCurrency', this.httpOptions);
-	}
-	InsertRfqItemInfo(rfqItem: RfqItemModel): Observable<any> {
+  }
+  InsertRfqItemInfo(rfqItem: RfqItemInfoModel): Observable<any> {
 		const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
 		return this.http.post<any>(this.url + 'RFQ/InsertRfqItemInfo/', rfqItem, httpOptions);
 	}
@@ -69,5 +69,17 @@ export class RfqService {
   }
   addNewRevision(RfqRevisionId: number): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/addNewRfqRevision/', RfqRevisionId, this.httpOptions);
+  }
+
+  CreateRfq(rfqrevisiondata: RFQRevisionData): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/CreateRfq/', rfqrevisiondata, this.httpOptions);
+  }
+
+  DeleteRfqItemByid(RFQItemId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/DeleteRfqItemByid/' + RFQItemId);
+  }
+
+  DeleteRfqIteminfoByid(spliId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/DeleteRfqIteminfoByid/' + spliId);
   }
 }

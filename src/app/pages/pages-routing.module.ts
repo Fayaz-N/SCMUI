@@ -21,14 +21,15 @@ import { ConfigComponent } from './Authorization/Config.component';
 import { LoginComponent } from './Login/Login.component';
 import { AuthGuard } from '../common/auth.guard';
 import { VendorQuotationViewComponent } from './RFQ/VendorQuotationView.component';
+import { RFQFormComponent } from './RFQ/RFQForm.component';
 import { RFQListComponent } from './RFQ/RFQList.component';
-import { VendorQuotationListComponent } from './RFQ/VendorQuotationList.component';
 import { PurchaseAuthorizationDetailsComponent } from './purchase-authorization/PurchaseAuthorizationDetails.component';
 import { PurchaseAuthorizationComponent } from './purchase-authorization/purchase-authorization.component';
 import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
 import { purchasePaymentComponent } from './purchase-authorization/purchasePayment.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
+import { rfqFilterParams } from '../Models/rfq';
 
 
 const routes: Routes = [{
@@ -52,8 +53,8 @@ const routes: Routes = [{
     { path: "MPRApproverList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRPendingList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRSingleVendorList", component: MPRListComponent, canActivate: [AuthGuard] },
+    { path: "RFQForm", component: RFQFormComponent, canActivate: [AuthGuard] },
     { path: "RFQList", component: RFQListComponent },
-    { path: "VendorQuotationList/:VendorId", component: VendorQuotationListComponent },
     { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent, canActivate: [AuthGuard] },
     { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent, canActivate: [AuthGuard] },
     { path: 'VendorQuoteView/:RFQRevisionId', component: VendorQuotationViewComponent },

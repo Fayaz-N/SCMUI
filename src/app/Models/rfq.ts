@@ -20,6 +20,9 @@ export class rfqQuoteModel {
 export class RFQRevisionData {
   CreatedBy: number;
   CreatedDate: Date;
+  RFQType: string;
+  QuoteValidfrom: Date;
+  QuoteValidTo: Date;
   RfqValidDate: number;
   PackingForwading: string;
   ExciseDuty: string;
@@ -33,7 +36,10 @@ export class RFQRevisionData {
   BankGuarantee: string;
   DeliveryMinWeeks: number;
   DeliveryMaxWeeks: number;
+  rfqmaster: RFQMasters;
+  rfqitem: Array<RfqItemModel> = [];
 }
+
 export class VendorDetails {
   VendorCode: string;
   VendorName: string;
@@ -59,7 +65,10 @@ export class VendorDetails {
   Insurance: string;
 }
 export class RfqItemInfoModel {
+  RFQSplitItemId: number;
   RFQItemsId: number;
+  StartQty: string;
+  EndQty: string;
   Qty: string;
   UOM: number;
   UnitPrice: string;
@@ -69,6 +78,8 @@ export class RfqItemInfoModel {
   CurrencyValue: string;
   Remarks: string;
   DeliveryDate: Date;
+  ValidFrom: Date;
+  validTo: Date;
   DeleteFlag: boolean;
   SyncDate: Date;
   SyncStatus: boolean;
@@ -104,9 +115,10 @@ export class RFQUnitMasters {
   Isdeleted: boolean;
 }
 export class RfqItemModel {
-  RFQItemId: number;
+  RFQItemsId: number;
   RFQRevisionId: number;
   MPRItemDetailsId: number;
+  ItemId: string;
   ItemName: string;
   ItemDescription: string;
   QuotationQty: string;

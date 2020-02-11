@@ -30,8 +30,11 @@ export class VendorQuotationViewComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
-    else
+    else {
       this.router.navigateByUrl("Login");
+      return true;
+    }
+
     this.RFQCommunications = new RFQCommunication();
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
@@ -86,9 +89,11 @@ export class VendorQuotationViewComponent implements OnInit {
       this.RFQCommunications.RemarksDate = new Date();
       if (this.newRevision) {
         this.RfqService.addNewRevision(this.RfqRevisionId).subscribe(data => {
-          if (data)
+          if (data) {
             this.RFQCommunications.RfqRevisionId = data;
-          this.updateCommunication();
+            this.updateCommunication();
+            this.router.navigate(['/SCM/VendorQuoteView', this.RFQCommunications.RfqRevisionId]);
+          }
         })
       }
       else {

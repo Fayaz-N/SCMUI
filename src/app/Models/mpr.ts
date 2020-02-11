@@ -277,7 +277,8 @@ export class MPRApprovers {
 export class Employee {
   EmployeeNo: string;
   Name: string;
-  DeptID: number;
+  OrgDepartmentId: number;
+  OrgDepartmentName: string;
   DOL: Date;
   RoleId: number;
 }

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
+import { mprRevision,Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -26,7 +26,8 @@ export class MPRListComponent implements OnInit {
   public selectedItem: searchList;
   public searchresult: Array<object> = [];
   public mprList: Array<any> = [];
-
+  public depDisable: boolean = true;
+  public mprRevisionModel: mprRevision;
   public mprFilterParams: mprFilterParams;
   public typeOfList: string;
   public statusList: Array<any> = [];
@@ -49,6 +50,7 @@ export class MPRListComponent implements OnInit {
       this.showCMMFilter = true;
     this.mprTitle = "MPR List";
     this.typeOfList = this.route.routeConfig.path;
+    this.mprRevisionModel = new mprRevision();
     this.mprFilterParams = new mprFilterParams();
     if (this.showCMMFilter)
       this.mprFilterParams.PreparedBy = "";
@@ -101,6 +103,15 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.CheckedBy = "";
 
     }
+    if (this.employee.OrgDepartmentId == 14)//cmm
+      this.depDisable = false;
+    else
+      this.depDisable = true;
+    if (this.employee.OrgDepartmentId != null) {
+      this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
+      this.mprFilterParams.DepartmentId = this.employee.OrgDepartmentId.toString();
+    }
+
     this.getStatusList();
 
 
@@ -124,6 +135,8 @@ export class MPRListComponent implements OnInit {
     this.spinner.show();
     this.mprFilterParams.FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
     this.mprFilterParams.ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
+    if (this.MPRfilterForm.controls.DepartmentId.value == "")
+      this.mprFilterParams.DepartmentId = "";
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
       this.loading = false;
@@ -135,6 +148,7 @@ export class MPRListComponent implements OnInit {
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
+    searchTxt = searchTxt.replace('*', '%');
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
@@ -186,6 +200,15 @@ export class MPRListComponent implements OnInit {
     this.constants.RequisitionId = mprData.RequisitionId;
     this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
 
+  }
+  onRevisionCopy(mprData: any) {
+    this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
+    this.mprRevisionModel.RevisionId = mprData.RevisionId;
+    this.mprRevisionModel.RequisitionId = mprData.RequisitionId;
+    this.MprService.copyMprRevision(this.mprRevisionModel).subscribe(data => {
+      this.router.navigate(["/SCM/MPRForm", data.RevisionId]);
+    })
+    
   }
 }
 

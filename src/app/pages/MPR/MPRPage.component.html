@@ -181,9 +181,10 @@
           <ng-template pTemplate="caption">
             <div style="display:inline">
               <span style="float:left">Item Details : </span>
-              <span style="text-align:right;padding-left:350px" class="form-inline">
+              <span style="padding-left:350px" class="form-inline">
                 <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
-                <input type="file" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx" >
+                <label>Item List Upload :</label>&nbsp; <input type="file" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
+               &nbsp; <label>DownLoad format :</label>&nbsp; <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
               </span>
             </div>
           </ng-template>
@@ -1165,12 +1166,12 @@
             <div class="ui-g-6 form-group">
               <label class="form-label">File:</label>
               <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-              <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx" multiple>
+              <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
             </div>
           </div>
           <div class="ui-g-12">
             <div *ngFor="let document of mprRevisionModel.MPRDocuments">
-              <div *ngIf="document.ItemDetailsId==itemDetails.Itemdetailsid">
+              <div *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==itemDetails.Itemdetailsid">
                 <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)"></i>&nbsp;
                 <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
                 <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
@@ -1193,7 +1194,7 @@
       </div>
       <div class="ui-g-6">
         <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-        <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx" multiple>
+        <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
       </div>
       <p-footer>
         <div class="ui-dialog-buttonpane ui-helper-clearfix">

@@ -49,42 +49,48 @@ export class LoginComponent implements OnInit {
       this.dynamicData.tableName = "Employee";
       this.dynamicData.columnValues = loginDetails.DomainId + "," + loginDetails.Password;
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
+      this.MprService.getAuth_token(loginDetails).subscribe(data => {
+        localStorage.setItem('AccessToken', JSON.stringify(data));
 
-      this.MprService.ValidateLoginCredentials(this.dynamicData)
-        .pipe(first())
-        .subscribe(data1 => {
-          this.spinner.hide();
-          if (data1.EmployeeNo != null) {
-            this.employee = data1;
-            this.MprService.getAccessList(this.employee.RoleId).subscribe(data => {
-              localStorage.setItem("AccessList", JSON.stringify(data));
-              this.AccessList = data;
-              if (this.AccessList.filter(li => li.AccessName == "CreateMPR").length <= 0) {
-                var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
-                MENU_ITEMS[1].children.splice(index, 1);
-              }
-              if (this.employee.DeptID != 14)//cmm users
-              {
-                MENU_ITEMS[2].hidden = true;
-                MENU_ITEMS[3].hidden = true;
-                MENU_ITEMS[4].hidden = true;
-                MENU_ITEMS[5].hidden = true;
-              }
-            })
+        this.MprService.ValidateLoginCredentials(this.dynamicData)
+          .pipe(first())
+          .subscribe(data1 => {
+            this.spinner.hide();
+            if (data1.EmployeeNo != null) {
+              this.employee = data1;
 
-            this.LoginForm.reset();
-            if (this.returnUrl)
-              this.router.navigateByUrl(this.returnUrl);
-            else
-              this.router.navigateByUrl('/SCM/MPRList');
+              this.MprService.getAccessList(this.employee.RoleId).subscribe(data => {
+                localStorage.setItem("AccessList", JSON.stringify(data));
+                this.AccessList = data;
+
+                if (this.AccessList.filter(li => li.AccessName == "CreateMPR").length <= 0) {
+                  var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
+                  MENU_ITEMS[1].children.splice(index, 1);
+                }
+                if (this.employee.OrgDepartmentId != 14)//cmm users
+                {
+                  MENU_ITEMS[2].hidden = true;
+                  MENU_ITEMS[3].hidden = true;
+                  MENU_ITEMS[4].hidden = true;
+                  MENU_ITEMS[5].hidden = true;
+                }
+              })
+
+              this.LoginForm.reset();
+              if (this.returnUrl)
+                this.router.navigateByUrl(this.returnUrl);
+              else
+                this.router.navigateByUrl('/SCM/MPRList');
               //this.router.navigateByUrl('/SCM/Dashboard');
 
-          }
-          else {
-            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Invalid Domain Id & Password' });
-            return;
-          }
-        });
+            }
+            else {
+              this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Invalid Domain Id & Password' });
+              return;
+            }
+          });
+      })
     }
+
   }
 }

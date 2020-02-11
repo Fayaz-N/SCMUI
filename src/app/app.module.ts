@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { AppRoutingModule} from './app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DatePipe } from '@angular/common';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive';
 import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button'
 import { ListboxModule } from 'primeng/listbox';
@@ -69,6 +69,7 @@ import { CoreModule } from './@core/core.module';
     //ListViewModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    NgIdleKeepaliveModule.forRoot(),
     TableModule,
     ButtonModule,
     ListboxModule,

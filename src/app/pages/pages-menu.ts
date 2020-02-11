@@ -47,7 +47,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title: 'RFQ',
     icon: 'keypad-outline',
     expanded: false,
-    children: [     
+    children: [
+      {
+        title: 'RFQ Form',
+        link: '/SCM/RFQForm',
+        icon: 'list-outline'
+      },
       {
         title: 'RFQ List',
         link: '/SCM/RFQList',
