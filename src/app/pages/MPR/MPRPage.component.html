@@ -184,7 +184,7 @@
               <span style="padding-left:350px" class="form-inline">
                 <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
                 <label>Item List Upload :</label>&nbsp; <input type="file" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
-               &nbsp; <label>DownLoad format :</label>&nbsp; <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
+                &nbsp; <label>DownLoad format :</label>&nbsp; <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
               </span>
             </div>
           </ng-template>
@@ -745,7 +745,7 @@
           </div>
           <div class="form-group row" style="margin:0px">
             <div class="col-lg-5 col-md-5 col-sm-5">
-              <label for="InchargeName" class="form-label">fIncharge Names </label>&nbsp;&nbsp;
+              <label for="InchargeName" class="form-label">Incharge Names </label>&nbsp;&nbsp;
               <button type="button" [disabled]="form3Edit" pButton icon="fa fa-plus" (click)="showInchargeDialogToAdd('displayInchargeDialog')"></button>
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -1055,10 +1055,30 @@
     <a *ngIf="showCompareRfq" id="mprPage6" [routerLink]="['/SCM/RFQComparision',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
   </div>
 
-  <div *ngIf="displayFooter" class="footer">
+  <div  *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <label class="form-label">Employee</label>
+        <div class="form-inline-list  ml-2 ">
+          <input type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.EmployeeName">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','AssignEmployee',mprStatusUpdate.EmployeeName,undefined)"></button>
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
+        <div class="form-inline-list  ml-2 ">
+          <input [disabled]="mprStatusUpdate.EmployeeName!=''" type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.BuyerGroupName">
+          <div class="input-group-append">
+            <button [disabled]="mprStatusUpdate.EmployeeName!=''" type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',mprStatusUpdate.BuyerGroupName,undefined)"></button>
+          </div>
+        </div>
+      </div>
+
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
-        <button type="button" class="btn btn-success" (click)="onstatusUpdate('Acknowledge')" label="Save">Acknowledge</button>
+        <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge',statusAckTxt)" label="Save">{{statusAckTxt}}</button>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
@@ -1072,6 +1092,14 @@
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline">
         <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
+      </div>
+    </div>
+    <div class="row form-inline pt-2">
+      <div *ngFor="let assignment of mprStatusUpdate.MPRAssignments">
+        <label class="form-control">
+          <span *ngIf="assignment.EmployeeName">{{assignment.EmployeeName}}</span>&nbsp;&nbsp;
+          <i class="fa fa-remove" aria-hidden="true" (click)="removeAssignment(assignment)"></i>
+        </label>&nbsp;
       </div>
     </div>
 
@@ -1290,6 +1318,8 @@
         </div>-->
       </div>
       <p-footer>
+        >
+
         <div class="ui-dialog-buttonpane ui-helper-clearfix">
           <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentationDialog','documentations')" label="Submit"></button>
           <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentationDialog')" label="Cancel"></button>

@@ -92,7 +92,13 @@ export class MPRCommunication {
   DeleteFlag: boolean;
   MPRReminderTrackings: Array<MPRReminderTracking> = [];
 }
-
+export class MPRAssignment {
+  assignmentid: number;
+  MprRevisionId: number;
+  Employeeno: string;
+  EmployeeName: string;
+  Employee: Employee;
+}
 export class MPRReminderTracking {
   ReminderId: number;
   MPRCCId: number;
@@ -137,6 +143,7 @@ export class VendorMaster {
 export class mprRevision {
 
   MPRCommunications: Array<MPRCommunication> = [];
+  MPR_Assignment: Array<MPRAssignment> = [];
   MPRDocumentations: Array<MPRDocumentations> = [];
   MPRDocuments: Array<MPRDocument> = [];
   MPRIncharges: Array<MPRIncharge> = [];
@@ -244,6 +251,10 @@ export class MPRStatusUpdate {
   status: string = "Select";
   Remarks: string;
   typeOfuser: string;
+  BuyerGroupId: number;
+  BuyerGroupName: string="";
+  EmployeeName: string="";
+  MPRAssignments: Array<MPRAssignment> = [];
 }
 
 export class mprFilterParams {

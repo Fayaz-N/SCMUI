@@ -119,6 +119,9 @@ export class RFQListComponent implements OnInit {
     }
     return null;
   }
+  EditRfqdetails(revisionId: any) {
+    this.router.navigate(['/SCM/RFQForm', revisionId]);
+  }
 
 }
 

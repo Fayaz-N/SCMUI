@@ -5,7 +5,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
-import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, VendorMaster, MPRStatusUpdate, MPRDetail, AccessList } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, mprRevision, MPRDocumentations, MPRVendorDetail, MPRIncharge, MPRCommunication, MPRReminderTracking, VendorMaster, MPRStatusUpdate, MPRDetail, AccessList, MPRAssignment } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { element } from 'protractor';
@@ -38,7 +38,7 @@ export class MPRPageComponent implements OnInit {
   public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
   public formEdit = false;
-  public formName: string;
+  public formName; statusAckTxt: string="AckNowledge";
   public txtName: string;
   public mprRevisionModel: mprRevision;
   public mprRevisionList: Array<mprRevision> = [];
@@ -54,6 +54,7 @@ export class MPRPageComponent implements OnInit {
   public numbers: Array<number> = [];
   public mprIncharges: MPRIncharge;
   public MPRCommunications: MPRCommunication;
+  public MPRAssignment: MPRAssignment;
   public MPRReminderTrackings: MPRReminderTracking;
   public EmployeeList: Array<any> = [];
   public mprStatusUpdate: MPRStatusUpdate;
@@ -91,6 +92,7 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionDetails = new mprRevision();
     this.newVendorDetails = new VendorMaster();
     this.RfqGeneratedList = [];
+    this.MPRAssignment = new MPRAssignment();
     //create static drop down text from 0 to 100
     Array(100).fill(1).map((x, i) => {
       this.numbers.push(i);
@@ -401,7 +403,7 @@ export class MPRPageComponent implements OnInit {
 
       }
 
-      this.MPRPageForm3.controls['specifyDispatchLocation'].updateValueAndValidity()
+      this.MPRPageForm3.controls['specifyDispatchLocation'].updateValueAndValidity();
     }
 
     if (this.txtName == "InchargeName") {
@@ -421,6 +423,31 @@ export class MPRPageComponent implements OnInit {
         this.selectedlist.splice(index, 1);
       this.selectedlist.push(item);
     }
+    if (this.formName == "") {
+      if (item.listName == "AssignEmployee") {
+       
+        this.mprStatusUpdate.BuyerGroupName = "";
+        this.mprStatusUpdate.BuyerGroupId = null;
+        this.statusAckTxt = "Acknowledge";
+        this.mprStatusUpdate.EmployeeName = item.name;
+        this.MPRAssignment = new MPRAssignment();
+        this.MPRAssignment.MprRevisionId = this.mprRevisionModel.RevisionId;
+        this.MPRAssignment.Employeeno = item.code;
+        this.MPRAssignment.EmployeeName = item.name;
+        this.mprStatusUpdate.MPRAssignments.push(this.MPRAssignment);
+      }
+      else {
+        //this.mprStatusUpdate.MPRAssignments = [];
+        if (this.mprRevisionModel.BuyerGroupId == item.code) {
+          alert("Buyer Group already exist");
+          return false;
+        }
+        this.mprStatusUpdate.BuyerGroupName = item.name;
+        this.mprStatusUpdate.BuyerGroupId = item.code;
+        this.statusAckTxt = "Change Buyer Group";
+      }
+    }
+
   }
 
   //form1 code started
@@ -789,6 +816,10 @@ export class MPRPageComponent implements OnInit {
     this.MPRCommunications.MPRReminderTrackings.splice(index, 1);
 
   }
+  removeAssignment(details: MPRAssignment) {
+    var index = this.mprStatusUpdate.MPRAssignments.findIndex(x => x.Employeeno == details.Employeeno);
+    this.mprStatusUpdate.MPRAssignments.splice(index, 1);
+  }
 
   onCommnicationSubmit(dialogName: string) {
     this.mprRevisionModel.MPRItemInfoes = [];
@@ -838,8 +869,11 @@ export class MPRPageComponent implements OnInit {
     })
   }
   onstatusUpdate(Acknowledge: string) {
-    if (Acknowledge != "")
+    if (Acknowledge != "") {
       this.mprStatusUpdate.typeOfuser = Acknowledge;
+      if (this.mprStatusUpdate.BuyerGroupId)
+        this.mprStatusUpdate.MPRAssignments = [];
+    }
     else {
       if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "Checker";
@@ -852,7 +886,7 @@ export class MPRPageComponent implements OnInit {
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
     this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
-    this.mprStatusUpdate.PreparedBy = this.mprRevisionModel.PreparedBy;
+    this.mprStatusUpdate.PreparedBy = this.employee.EmployeeNo;
     this.MprService.statusUpdate(this.mprStatusUpdate).subscribe(data => {
       this.mprRevisionModel = data;
       if (Acknowledge == "")

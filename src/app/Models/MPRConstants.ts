@@ -41,5 +41,6 @@ export class constants {
   public ccEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public JobCode: searchParams = { tableName: 'MPRRevisions', fieldId: 'JobCode', fieldName: 'JobCode', condition: "", fieldAliasName: "", updateColumns: "" };
   public ItemDescription: searchParams = { tableName: 'MPRItemInfo', fieldId: 'ItemDescription', fieldName: 'ItemDescription', condition: "", fieldAliasName: "", updateColumns: "" };
+  public AssignEmployee: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " EmployeeNo in(select GroupMember from MPRBuyerGroupMembers) and DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
 }
 
