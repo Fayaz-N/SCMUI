@@ -55,6 +55,7 @@ const routes: Routes = [{
     { path: "MPRPendingList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRSingleVendorList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "RFQForm", component: RFQFormComponent, canActivate: [AuthGuard] },
+    { path: "RFQForm/:RFQRevisionId", component: RFQFormComponent, canActivate: [AuthGuard] },
     { path: "RFQList", component: RFQListComponent },
     { path: 'GenerateRFQ/:MPRRevisionId', component: GenerateRFQComponent, canActivate: [AuthGuard] },
     { path: 'RFQComparision/:MPRRevisionId', component: RFQComparisionComponent, canActivate: [AuthGuard] },

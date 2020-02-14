@@ -1,7 +1,7 @@
 <form [formGroup]="RFQForm">
   <div class="head-text pl-0">
     <div class="col-md-6 pt-2">
-      RFQ Form : <span *ngIf="rfqRevisionModel.rfqmaster.RFQNo" style="color:#dc3545;">{{rfqRevisionModel.rfqmaster.RFQNo}}</span>
+      RFQ Form : <span *ngIf="rfqRevisionModel.rfqmaster && rfqRevisionModel.rfqmaster.RFQNo" style="color:#dc3545;">{{rfqRevisionModel.rfqmaster.RFQNo}}</span>
     </div>
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
@@ -35,6 +35,10 @@
       <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="lblEdit">Rfq Type</label>
         <span class="valueEdit">{{rfqRevisionModel.RFQType}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <p-checkbox [(ngModel)]="rfqRevisionModel.rfqmaster.VendorVisibility" formControlName="VendorVisibility" binary="true"></p-checkbox>
+        &nbsp;&nbsp;Vendor Visibility
       </div>
     </div>
     <div class="row" *ngIf="rfqRevisionModel.RFQType=='Rate Contract'">
@@ -107,18 +111,21 @@
   <p-table [value]="item.iteminfo">
     <ng-template pTemplate="header">
       <tr>
-        <th colspan="9" style="text-align: right">
+        <th colspan="10" style="text-align: right">
           <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Info" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId)"></button>
         </th>
       </tr>
       <tr class="text-center">
         <th>Sl No.</th>
         <th>Split Item Id</th>
-        <th>Start Qty</th>
-        <th>End Qty</th>
-        <th>Qty</th>
+        <th *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'">Start Qty</th>
+        <th *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'">End Qty</th>
+        <th *ngIf="rfqRevisionModel.RFQType == 'Quote'">Qty</th>
         <th>Unit Price</th>
         <th>Currency Value</th>
+        <th>Remarks</th>
+        <th>Valid From</th>
+        <th>Valid To</th>
         <th>Edit</th>
         <th>Remove</th>
       </tr>
@@ -127,11 +134,14 @@
       <tr>
         <td class="text-center">{{ri+1}}</td>
         <td class="text-center">{{rowData.RFQSplitItemId}}</td>
-        <td class="text-right">{{rowData.StartQty}}</td>
-        <td class="text-right">{{rowData.EndQty}}</td>
-        <td class="text-right">{{rowData.Qty}}</td>
+        <td *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="text-right">{{rowData.StartQty}}</td>
+        <td *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="text-right">{{rowData.EndQty}}</td>
+        <td *ngIf="rfqRevisionModel.RFQType == 'Quote'" class="text-right">{{rowData.Qty}}</td>
         <td class="text-right">{{rowData.UnitPrice}}</td>
         <td class="text-right">{{rowData.CurrencyValue}}</td>
+        <td class="text-right">{{rowData.Remarks}}</td>
+        <td class="text-right">{{rowData.ValidFrom | date :  constants.dateFormat}}</td>
+        <td class="text-right">{{rowData.ValidTo | date :  constants.dateFormat}}</td>
         <td style="text-align:center">
           <button pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onItemInfoEdit(rowData)"></button>
         </td>

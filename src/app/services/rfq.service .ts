@@ -39,8 +39,8 @@ export class RfqService {
 	GetItemsByRevisionId(RevisionId: number): Observable<any> {
 		return this.http.get<any>(this.url + 'RFQ/GetItemsByRevisionId/' + RevisionId);
   }
-  GetRfqDetailsById(RevisionId: number): Observable<QuoteDetails> {
-    return this.http.get<QuoteDetails>(this.url + 'RFQ/GetRfqDetailsById/' + RevisionId);
+  GetRfqDetailsById(RevisionId: number): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/GetRfqDetailsById/' + RevisionId);
   }
   updateRfqDocumentStatus(rfqDocs: RFQDocuments[]): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/updateRfqDocStatus/', rfqDocs, this.httpOptions);

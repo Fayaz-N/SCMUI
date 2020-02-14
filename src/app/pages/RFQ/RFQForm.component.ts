@@ -37,7 +37,7 @@ export class RFQFormComponent implements OnInit {
 
   //page load eventl
   ngOnInit() {
-    
+
     if (localStorage.getItem("Employee"))
       this.employee = JSON.parse(localStorage.getItem("Employee"));
 
@@ -55,12 +55,13 @@ export class RFQFormComponent implements OnInit {
     this.rfqItem = new RfqItemModel();
     this.rfqItemInfo = new RfqItemInfoModel();
     this.currncyArray = [];
-   
+
     this.RFQForm = this.formBuilder.group({
       venderid: ['', [Validators.required]],
       RFQType: ['', [Validators.required]],
       QuoteValidfrom: ['', [Validators.required]],
-      QuoteValidTo: ['', [Validators.required]]
+      QuoteValidTo: ['', [Validators.required]],
+      VendorVisibility: ['', [Validators.required]]
     });
 
     this.AddItemForm = this.formBuilder.group({
@@ -102,7 +103,15 @@ export class RFQFormComponent implements OnInit {
     this.addItemInfoForm.controls['StartQty'].clearValidators();
     this.addItemInfoForm.controls['EndQty'].clearValidators();
     this.addItemInfoForm.controls['Qty'].clearValidators();
+
     this.loadCurrency();
+    this.route.params.subscribe(params => {
+      if (params["RFQRevisionId"] && !this.constants.RequisitionId) {
+        var revisionId = params["RFQRevisionId"];
+        this.spinner.show();
+        this.loadRFQData(revisionId);
+      }
+    });
   }
 
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
@@ -168,13 +177,17 @@ export class RFQFormComponent implements OnInit {
   showItemDialog() {
     this.AddItemDialog = true;
     this.rfqItem = new RfqItemModel();
+    this.AddItemForm.controls.ItemId.value = "";
   }
+
   Cancel(dialog: string) {
     this[dialog] = false;
   }
+
   dialogCancel(dialogName) {
     this[dialogName] = false;
   }
+
   onRFQsubmit() {
     this.rfqSubmitted = true;
     
@@ -188,6 +201,8 @@ export class RFQFormComponent implements OnInit {
       this.RfqService.CreateRfq(this.rfqRevisionModel).subscribe(data => {
         this.rfqRevisionModel = data;
         this.showRfqItem = true;
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Submitted' });
+
       })
     }
   }
@@ -204,19 +219,23 @@ export class RFQFormComponent implements OnInit {
       this.RfqService.CreateRfq(this.rfqRevisionModel).subscribe(data => {
         this.rfqRevisionModel = data;
         this.AddItemDialog = false;
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Submitted' });
+        this.itemSubmitted = false;
       })
     }
   }
+
   InsertRFQItemInfo() {
     this.itemInfoSubmitted = true;
     if (this.addItemInfoForm.invalid) {
       return;
     }
     else {
-
       this.RfqService.InsertRfqItemInfo(this.rfqItemInfo).subscribe(data => {
         this.rfqRevisionModel = data;
         this.AddItemInfodialog = false;
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Info Submitted' });
+        this.itemInfoSubmitted = false;
       })
     }
   }
@@ -301,6 +320,7 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo.RFQItemsId = rfqItemId;
     this.rfqItemInfo.CurrencyId = 0;
   }
+
   onItemEdit(e: any,details: RfqItemModel) {
     this.rfqItem = details;
     this.AddItemDialog = true;
@@ -311,25 +331,58 @@ export class RFQFormComponent implements OnInit {
       else
         this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
       this.AddItemForm.value.ItemId = details.ItemId;
-      this.AddItemForm.controls['ItemId'].updateValueAndValidity()
+      this.AddItemForm.controls['ItemId'].updateValueAndValidity();
     });
+    if (details.PFAmount)
+      this.PFAmountChange();
+    if (details.PFPercentage)
+      this.PFPercentageChange();
+    if (details.FreightAmount)
+      this.FreightAmountChange();
+    if (details.FreightPercentage)
+      this.FreightPercentageChange();
+    if (details.IGSTPercentage)
+      this.IGSTPercentageChange();
+    if (details.CGSTPercentage)
+      this.IGSTEnablefromCGSTChange();    
+    if (details.SGSTPercentage)
+      this.IGSTEnablefromSGSTChange();
+   
   }
 
   onItemInfoEdit(details: RfqItemInfoModel) {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
    // this.rfqItemInfo.CurrencyId = details.CurrencyId;
-    this.AddItemInfodialog = true;   
+    this.AddItemInfodialog = true;
+    this.addItemInfoForm.controls["ValidFrom"].setValue(details.ValidFrom);
+    this.addItemInfoForm.controls["ValidTo"].setValue(details.ValidTo);
+    
+   
   }
-  ondeleteRFQItem(rfqItemInfo: RfqItemModel, itemindex: number) {
-    this.RfqService.DeleteRfqIteminfoByid(rfqItemInfo.RFQItemsId).subscribe(data => {
-      this.rfqRevisionModel.rfqitem.splice(itemindex, 1);
+  ondeleteRFQItem(rfqItem: RfqItemModel, itemindex: number) {
+    this.RfqService.DeleteRfqItemByid(rfqItem.RFQItemsId).subscribe(data => {
+      var index1 = this.rfqRevisionModel.rfqitem.findIndex(x => x.RFQItemsId == rfqItem.RFQItemsId);
+       this.rfqRevisionModel.rfqitem.splice(index1, 1);
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Deleted' });
+
     })
   }
 
   ondeleteRFQItemInfo(rfqItemInfo: RfqItemInfoModel,itemindex:number, index: number) {
     this.RfqService.DeleteRfqIteminfoByid(rfqItemInfo.RFQSplitItemId).subscribe(data => {
-      this.rfqRevisionModel.rfqitem[itemindex].iteminfo.splice(index, 1);
+      var index1 = this.rfqRevisionModel.rfqitem[itemindex].iteminfo.findIndex(x => x.RFQSplitItemId == rfqItemInfo.RFQSplitItemId);
+      this.rfqRevisionModel.rfqitem[itemindex].iteminfo.splice(index1, 1);
+      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Deleted' });
+    })
+  }
+  loadRFQData(revisionId: number) {
+    this.RfqService.GetRfqDetailsById(revisionId).subscribe(data => {
+      this.rfqRevisionModel = data;
+      this.showRfqItem = true;
+      this.spinner.hide();
+      this.RFQForm.controls["venderid"].setValue(this.rfqRevisionModel.rfqmaster.Vendor.VendorName);
+      this.rfqTypeChange();
     })
   }
 }

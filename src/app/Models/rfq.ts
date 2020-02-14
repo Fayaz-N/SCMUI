@@ -1,3 +1,5 @@
+import { VendorMaster } from './mpr';
+
 export class rfqQuoteModel {
   RFQSplitItemId: number;
   MPRItemDetailsid: number;
@@ -36,6 +38,7 @@ export class RFQRevisionData {
   BankGuarantee: string;
   DeliveryMinWeeks: number;
   DeliveryMaxWeeks: number;
+  VendorVisibility: boolean
   rfqmaster: RFQMasters;
   rfqitem: Array<RfqItemModel> = [];
 }
@@ -79,7 +82,7 @@ export class RfqItemInfoModel {
   Remarks: string;
   DeliveryDate: Date;
   ValidFrom: Date;
-  validTo: Date;
+  ValidTo: Date;
   DeleteFlag: boolean;
   SyncDate: Date;
   SyncStatus: boolean;
@@ -91,12 +94,14 @@ export class RFQMasters {
   RFQNo: string;
   RFQUniqueNo: number;
   VendorId: number;
+  VendorVisibility: boolean;
   CreatedBy: string;
   CreatedDate: Date;
   DeleteFlag: boolean;
   SyncDate: Date;
   SyncStatus: string;
   RFQRevisions: Array<RFQRevisionData> = [];
+  Vendor: VendorMaster;
 }
 export class RFQCurrencyMaster {
   CurrencyId: number;
