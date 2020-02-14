@@ -1,4 +1,101 @@
-<div class="row form-control" style="height:100%;border-radius:0px;">
+<div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+  <div class="row form-group">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
+      <input class="form-control" type="text" [(ngModel)]="pofilters.DocumentNumber">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="SaleOrderNo" class="form-label">PO NO:</label> &nbsp;
+      <input class="form-control" [(ngModel)]="pofilters.PONO">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label class="form-label">PODate:</label> &nbsp;
+      <input type="date" class="form-control" [(ngModel)]="pofilters.POdate">
+    </div>
+  </div><br />
+  <div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)"  [(ngModel)]="pofilters" placeholder="select Department" [formControl]="mycontrol" />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayfn">
+          <mat-option *ngFor="let option of filtereddepartments | async" [value]="option">
+            {{option.Department}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters.BuyerGroupId" placeholder="select BuyerGroup"  />
+        <mat-autocomplete #auto1="matAutocomplete">
+          <mat-option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+            {{option.BuyerGroup}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters" placeholder="select Vendor"  />
+        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayfn1">
+          <mat-option *ngFor="let option of filteredvendors | async" [value]="option">
+            {{option.VendorName}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  </div><br />
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="GetMprpadetailsBySearch(pofilters)">Submit</button>
+    </div>
+  </div>
+  <!--<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">Department:</label>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }" (keyup)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId','',undefined)"></button>
+        </span>
+        <span *ngIf="Departmentsubmittted && !padetails.DepartmentName" class="invalid-feedback">Select Department.</span>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">VendorName:</label>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid','',undefined)"></button>
+        </span>
+        <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">BuyerGroup:</label>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }" (keyup)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId','',undefined)"></button>
+        </span>
+        <span *ngIf="MPRForm1Submitted && !buyergroups.BuyerGroup" class="invalid-feedback">Select BuyerGroup.</span>
+      </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">Project Manager:</label>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','ProjectManager',projectmanger.Name,undefined)">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager','',undefined)"></button>
+        </span>
+        <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
+      </div>
+    </div>
+  </div>-->
+</div>
+<br />
+
+<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px">
   <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true">
     <ng-template pTemplate="caption">
       <!--<div style="text-align: right">
@@ -8,18 +105,26 @@
     </ng-template>
     <ng-template pTemplate="header">
       <tr>
-        <th>S.No</th>
-        <th>Authorization No</th>
+        <th style="width:4em">S.No</th>
+        <th>MPR NO</th>
+        <th>PA NO</th>
+        <th>Department</th>
+        <th>BuyerGroup</th>
+        <th>Vendor</th>
         <th>RequestedBY</th>
         <th>RequestedOn</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
       <tr>
-        <td>
+        <td style="width:4em">
           {{ri+1}}
         </td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <td class="ptable-cell">{{rowData.DocumentNo}}</td>
+        <td class="ptable-cell">{{rowData.Department}}</td>
+        <td class="ptable-cell">{{rowData.BuyerGroup}}</td>
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
         <td class="ptable-cell">{{rowData.RequestedBy}}</td>
         <td class="ptable-cell">{{rowData.RequestedOn}}</td>
       </tr>

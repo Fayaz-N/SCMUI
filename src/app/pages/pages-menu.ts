@@ -155,6 +155,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 icon: 'layers-outline'
             },
             {
+                title: 'AddSlabs',
+                link: '/SCM/AddSlab',
+                icon: 'layers-outline'
+            },
+            {
                 title: 'CreditDays',
                 link: '/SCM/CreditDays',
                 icon: 'layers-outline'

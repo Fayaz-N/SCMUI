@@ -89,7 +89,7 @@
         <div class="radio col-lg-3 col-md-3 col-sm-3">
           <label class="form-label label">
             <input type="checkbox" [checked]="employemapping.LessBudget" [(ngModel)]="employemapping.LessBudget" name="Budget" [value]="LessBudget" >
-            LessBudget
+            LessBudgetb
           </label>
         </div>&nbsp;&nbsp;
         <div class="radio col-lg-3 col-md-3 col-sm-3">
@@ -179,7 +179,7 @@
         </td>
       </tr>
     </ng-template>
-  </p-table><br />
+  </p-table><br />~
 </div>
 <form [formGroup]="detailsform">
   <p-dialog header="Add" [(visible)]="AddDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
@@ -226,14 +226,14 @@
       </div>
     </div>
     <!--<div class="ui-g-12">
-      <div class="ui-g-2">
-        <label for="procSrc">Created By :</label>
-      </div>
-      <div class="ui-g-5">
-        <input  [(ngModel)]="paauthorization.CreatedBy" />
-        <p>{{employee.Name}}</p>
-      </div>
-    </div>-->
+    <div class="ui-g-2">
+      <label for="procSrc">Created By :</label>
+    </div>
+    <div class="ui-g-5">
+      <input  [(ngModel)]="paauthorization.CreatedBy" />
+      <p>{{employee.Name}}</p>
+    </div>
+  </div>-->
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="Submit(paauthorization)" label="Insert"></button>

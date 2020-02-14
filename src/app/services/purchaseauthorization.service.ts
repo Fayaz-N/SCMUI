@@ -101,7 +101,9 @@ export class purchaseauthorizationservice {
     RemovePurchaseApprover(mappingdata: any): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/RemovePurchaseApprover', mappingdata, this.httpOptions);
     }
-
+    RemoveMappedSlab(slabdata: any): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/RemoveMappedSlab', slabdata, this.httpOptions);
+    }
     LoadVendorbymprdeptids(MPRItemDetailsid: any): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/LoadVendorByMprDetailsId', MPRItemDetailsid, this.httpOptions);
     }
@@ -124,5 +126,14 @@ export class purchaseauthorizationservice {
     }
     InsertPAitems(paitem: ItemsViewModel): Observable<any> {
         return this.http.post<any>(this.url + 'RFQ/InsertPaitems', paitem, this.httpOptions);
+    }
+    GetMprpadetailsBySearch(pofilters: PADetailsModel): Observable<any> {
+        return this.http.post<any>(this.url + 'RFQ/getMprPaDetailsBySearch', pofilters, this.httpOptions)
+    }
+    LoadAllVendors(): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/GetAllvendorList', this.httpOptions);
+    }
+    LoadAllMappedSlabs(): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/GetAllMappedSlabs', this.httpOptions);
     }
 } 

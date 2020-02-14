@@ -49,8 +49,12 @@ import { purchasePaymentComponent } from './purchase-authorization/purchasePayme
 import { PurchaseAuthorizationComponent } from './purchase-authorization/purchase-authorization.component';
 import { CreditAuthorizationComponent } from './purchase-authorization/CreditAuthorization.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
+import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component'
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
-import { from } from 'rxjs';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MatFormFieldModule, MatInputModule } from '@angular/material';
+
  
 @NgModule({
   imports: [
@@ -78,8 +82,11 @@ import { from } from 'rxjs';
     MatButtonModule,
     ConfirmDialogModule,
     MatExpansionModule,
-    NbMenuModule
-
+    NbMenuModule,
+    MatAutocompleteModule,
+    AutoCompleteModule,
+    MatInputModule,
+    MatFormFieldModule
   ],
   declarations: [
     PagesComponent,
@@ -109,6 +116,7 @@ import { from } from 'rxjs';
       PurchaseAuthorizationComponent,
       CreditAuthorizationComponent,
       purchasePaymentListComponent,
+      AddSlabsComponent,
       MPRPAApproversListComponent
     
   ],

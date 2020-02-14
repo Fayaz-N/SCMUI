@@ -61,8 +61,12 @@ export class PADetailsModel {
     BuyerGroupId: number;
     RFQNo: string;
     DeptID: number;
+    DepartmentId: number;
     DepartmentName: string;
     EmployeeNo: string;
+    POItemNo: string;
+    POdate: Date | null;
+    PONO: string;
 }
 export class ItemsViewModel {
     RFQItemsId: number;
@@ -155,6 +159,7 @@ export class mprpadetailsmodel {
     PurchaseTypeId: number;
     PurchaseModeId: number;
     BuyerGroupId: number;
+    VendorId: number;
     DepartmentID: number;
     ProjectName: string;
     ProjectCode: string;

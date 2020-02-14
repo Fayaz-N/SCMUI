@@ -30,6 +30,7 @@ import { purchasePaymentComponent } from './purchase-authorization/purchasePayme
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
 import { rfqFilterParams } from '../Models/rfq';
+import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component';
 
 
 const routes: Routes = [{
@@ -71,6 +72,7 @@ const routes: Routes = [{
     { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
       { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
       { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
+      { path: "AddSlab", component: AddSlabsComponent, canActivate: [AuthGuard] },
       { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },
       { path: "mprpa", component: purchasePaymentComponent, canActivate: [AuthGuard] },
       { path: "MPRPAList", component: purchasePaymentListComponent, canActivate: [AuthGuard] },

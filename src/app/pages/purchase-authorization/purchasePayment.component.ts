@@ -125,7 +125,7 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.Item = [];
         this.purchasedetails.ApproversList = [];
         this.purchasedetails.TermId = [];
-
+        this.purchasedetails.VendorId = this.selectedItems[0]["VendorId"];
         //console.log(this.employeelist.Approvers, "approver");
         for (var i = 0; i < this.selectedItems.length; i++) {
             this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
@@ -251,13 +251,14 @@ export class purchasePaymentComponent implements OnInit {
     }
     AddPaitem(paitemid:any) {
         this.EditDialog = true;
-        this.paitem.paitemid = paitemid;
+        this.paitem = paitemid;
     }
     Cancel() {
         this.EditDialog = false;
     }
     SubmitItem(paitem: ItemsViewModel) {
         //this.paitem.EmployeeNo = this.employee.EmployeeNo;
+        //this.purchasedetails.Item = paitem[0];
         this.paitemvalue = true;
         this.paService.InsertPAitems(paitem).subscribe(data => {
             this.paid = data;

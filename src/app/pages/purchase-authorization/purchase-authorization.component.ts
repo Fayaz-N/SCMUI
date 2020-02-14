@@ -29,6 +29,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     public slbaslist = [];
     public authorizationtype = [];
     public mappedpurchase: Array<any> = [];
+    public mappedslab: Array<any> = [];
     public AddDialog: boolean;
     public paauthorization: PAAuthorizationLimitModel;
     public employemapping: PAAuthorizationEmployeeMappingModel;
@@ -106,11 +107,17 @@ export class PurchaseAuthorizationComponent implements OnInit {
                 this.authid = data;
                 this.detailsform.clearValidators();
                 this.reset();
+                this.loadmappedslab();
                 this.AddDialog = false;
             })
         }
         //this.detailsform.clearValidators();
         //this.detailsform.reset();
+    }
+    loadmappedslab() {
+        this.paService.LoadAllMappedSlabs().subscribe(data => {
+            this.mappedslab = data;
+        })
     }
     Cancel() {
         this.AddDialog = false;
@@ -141,6 +148,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
             this.mappedpurchase = data;
         })
     }
+
     LoadEmployeemappedPurchasesByDeptid(deptid: number) {
         this.paService.LoadEmployeemappedPurchasesBydeptid(deptid).subscribe(data => {
             this.mappedpurchase = data;
