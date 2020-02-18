@@ -38,7 +38,7 @@ export class MPRPageComponent implements OnInit {
   public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
   public formEdit = false;
-  public formName; statusAckTxt: string="AckNowledge";
+  public formName; statusAckTxt: string = "AckNowledge";
   public txtName: string;
   public mprRevisionModel: mprRevision;
   public mprRevisionList: Array<mprRevision> = [];
@@ -68,6 +68,9 @@ export class MPRPageComponent implements OnInit {
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
   public RfqGeneratedList: Array<any> = [];
+  public RepeatOrderList: Array<MPRItemInfoes> = [];
+  public RepeatOrder: boolean = false;
+
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -425,7 +428,11 @@ export class MPRPageComponent implements OnInit {
     }
     if (this.formName == "") {
       if (item.listName == "AssignEmployee") {
-       
+        if (this.mprStatusUpdate.MPRAssignments.filter(li => li.Employeeno == item.code).length > 0) {
+          alert("Empployee already exist");
+          return false;
+        }
+
         this.mprStatusUpdate.BuyerGroupName = "";
         this.mprStatusUpdate.BuyerGroupId = null;
         this.statusAckTxt = "Acknowledge";
@@ -1024,6 +1031,12 @@ export class MPRPageComponent implements OnInit {
         this.showAcknowledge = false;
     }
 
+    //PO released or not to enable repeat order
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "PO Released").length > 0)
+      this.RepeatOrder = true;
+    else
+      this.RepeatOrder = false;
+
     if (this.showStatusDetails || this.showAcknowledge)
       this.displayFooter = true;
     else
@@ -1153,9 +1166,31 @@ export class MPRPageComponent implements OnInit {
     this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
   }
   downLoadExcelFormat() {
-    
+ 
     var path = this.constants.Documnentpath + "MPRItemListFormat.xlsx";
     window.open(path);
+  }
+  selectMprLineItems(event: any, index: number, details: MPRItemInfoes) {
+    var ind = this.RepeatOrderList.findIndex(x => x.Itemdetailsid == details.Itemdetailsid);
+    if (ind > -1)
+      this.RepeatOrderList.splice(ind, 1);
+    details.RepeatOrderRefId = details.Itemdetailsid;
+    this.RepeatOrderList.push(details);
+   
+  }
+  onRevisionCopy() {
+    if (this.RepeatOrderList.length > 0) {
+      this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
+      this.mprRevisionModel.MPRItemInfoes = this.RepeatOrderList;
+      this.mprRevisionModel.PurchaseTypeId = 5;
+      this.MprService.copyMprRevision(this.mprRevisionModel, true).subscribe(data => {
+        if (data) {
+          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Order Added' });
+        }
+      })
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select atleast one line item. ' });}
   }
 }
 

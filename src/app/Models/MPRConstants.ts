@@ -9,7 +9,7 @@ export class constants {
   public url = 'http://localhost:49659/Api/';
   //public url = 'http://10.29.15.183:90/Api/';
 
-  public accessTokenUrl = "http://localhost:49659/token";
+  public accessTokenUrl = "http://10.29.15.183:90/token";
   public dateFormat = "MM/dd/yyyy";
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;

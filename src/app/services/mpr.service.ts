@@ -176,8 +176,8 @@ export class MprService {
   DownloadFile(fileName: string): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/DownloadFile/' + fileName, this.httpOptions);
   }
-  copyMprRevision(mpr: mprRevision): Observable<any> {
-    return this.http.post<any>(this.url + 'MPR/copyMprRevision/', mpr, this.httpOptions);
+  copyMprRevision(mpr: mprRevision, repeatOrder: boolean): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/copyMprRevision/' + repeatOrder, mpr, this.httpOptions);
   }
 
 }

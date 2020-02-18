@@ -6,7 +6,7 @@
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
     <div class="row " style="margin-top:10px">
-      <div *ngIf="!rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
         <div class="form-inline-list">
           <input type="text" class="form-control forms-input" formControlName="venderid" [value]="RFQForm.controls.venderid.value" [ngClass]="{ 'is-invalid': rfqSubmitted &&  rfqSubmitted && !RFQForm.controls.venderid.value}">
@@ -15,13 +15,8 @@
           </span>
           <span *ngIf="rfqSubmitted && !RFQForm.controls.venderid.value" class="invalid-feedback">Select Vendor.</span>
         </div>
-
-        <div *ngIf="rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-          <label class="lblEdit">Vendor</label>
-          <span class="valueEdit">{{RFQForm.value.VendorId}}</span>
-        </div>
       </div>
-      <div *ngIf="!rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Rfq Type</label>&nbsp;<span style="color:red">*</span>
         <div class="form-inline">
           <select class="form-control forms-input" [(ngModel)]="rfqRevisionModel.RFQType" (change)="rfqTypeChange()" formControlName="RFQType" [ngClass]="{ 'is-invalid': rfqSubmitted && RFQForm.controls.RFQType.errors }">
@@ -32,37 +27,27 @@
           <span *ngIf="rfqSubmitted && !RFQForm.controls.RFQType.value" class="invalid-feedback">Select RFQ Type.</span>
         </div>
       </div>
-      <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-        <label class="lblEdit">Rfq Type</label>
-        <span class="valueEdit">{{rfqRevisionModel.RFQType}}</span>
-      </div>
+      
       <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <p-checkbox [(ngModel)]="rfqRevisionModel.rfqmaster.VendorVisibility" formControlName="VendorVisibility" binary="true"></p-checkbox>
         &nbsp;&nbsp;Vendor Visibility
       </div>
     </div>
     <div class="row" *ngIf="rfqRevisionModel.RFQType=='Rate Contract'">
-      <div *ngIf="!rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Quote Valid From</label>&nbsp;<span style="color:red">*</span>
-        <input type="date" #myDate [value]="rfqRevisionModel.QuoteValidfrom | date:'yyyy-MM-dd'" (input)="rfqRevisionModel.QuoteValidfrom=parseDate($event.target.value)" formControlName="QuoteValidfrom" class="form-control" [ngClass]="{ 'is-invalid': rfqSubmitted &&  RFQForm.controls.QuoteValidfrom.errors }" />
+        <input type="date" #myDate [value]="rfqRevisionModel.QuoteValidFrom | date:'yyyy-MM-dd'" (input)="rfqRevisionModel.QuoteValidFrom=parseDate($event.target.value)" formControlName="QuoteValidFrom" class="form-control" [ngClass]="{ 'is-invalid': rfqSubmitted &&  RFQForm.controls.QuoteValidFrom.errors }" />
         <!--<input type="date" [(ngModel)="mprRevisionModel.DeliveryRequiredBy" data-date-format="constants.dateFormat" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }">-->
-        <span *ngIf="rfqSubmitted && RFQForm.controls.QuoteValidfrom.errors" class="invalid-feedback">Quote valid from required.</span>
+        <span *ngIf="rfqSubmitted && RFQForm.controls.QuoteValidFrom.errors" class="invalid-feedback">Quote valid from required.</span>
       </div>
-      <div *ngIf="rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-        <label class="lblEdit">Quote Valid From</label>
-        <span class="valueEdit">{{rfqRevisionModel.QuoteValidfrom | date :  constants.dateFormat}}</span>
-      </div>
-
-      <div *ngIf="!rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+     
+      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Quote Valid To</label>&nbsp;<span style="color:red">*</span>
         <input type="date" #myDate [value]="rfqRevisionModel.QuoteValidTo | date:'yyyy-MM-dd'" (input)="rfqRevisionModel.QuoteValidTo=parseDate($event.target.value)" formControlName="QuoteValidTo" class="form-control" [ngClass]="{ 'is-invalid': rfqSubmitted &&  RFQForm.controls.QuoteValidTo.errors }" />
         <!--<input type="date" [(ngModel)="mprRevisionModel.DeliveryRequiredBy" data-date-format="constants.dateFormat" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }">-->
         <span *ngIf="rfqSubmitted && RFQForm.controls.QuoteValidTo.errors" class="invalid-feedback">Quote valid to required.</span>
       </div>
-      <div *ngIf="rfqFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-        <label class="lblEdit">Quote Valid To</label>
-        <span class="valueEdit">{{rfqRevisionModel.QuoteValidTo | date :  constants.dateFormat}}</span>
-      </div>
+      
     </div>
   </div><br />
   <div *ngIf="!rfqFormEdit" style="text-align: center;">
@@ -111,7 +96,7 @@
   <p-table [value]="item.iteminfo">
     <ng-template pTemplate="header">
       <tr>
-        <th colspan="10" style="text-align: right">
+        <th colspan="11" style="text-align: right">
           <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Info" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId)"></button>
         </th>
       </tr>
@@ -352,7 +337,7 @@
         <label class="form-label">Delivery Days :</label>
       </div>
       <div *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="col-lg-2 col-md-2 col-sm-2">
-        <input type="number" formControlName="DeliveryDays" [(ngModel)]="rfqItemInfo.DeliveryDays" />
+        <input type="number" formControlName="DeliveryDays" class="form-control" [(ngModel)]="rfqItemInfo.DeliveryDays" />
       </div>
 
 
@@ -367,7 +352,17 @@
         <label class="form-label">Remarks :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <input type="text"  class="form-control" formControlName="Remarks" [(ngModel)]="rfqItemInfo.Remarks" />
+        <input type="text" class="form-control" formControlName="Remarks" [(ngModel)]="rfqItemInfo.Remarks" />
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <label class="form-label">Status :</label>&nbsp;<span style="color:red">*</span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <select class="form-control dropdown" formControlName="Status" [(ngModel)]="rfqItemInfo.Status">
+          <option value="Pending">Pending</option>
+          <option value="Approved">Approved</option>
+          <option value="Rejected">Rejected</option>
+        </select>
       </div>
     </div>
 
@@ -376,14 +371,14 @@
         <label class="form-label">Valid From :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-3 col-md-2 col-sm-3">
-        <input type="date" #myDate [value]="rfqItemInfo.ValidFrom | date:'yyyy-MM-dd'" (input)="rfqItemInfo.ValidFrom=parseDate($event.target.value)" formControlName="ValidFrom" class="form-control" [ngClass]="{ 'is-invalid': itemInfoSubmitted &&  addItemInfoForm.controls.ValidFrom.errors }" />
+        <input type="date" #myDate [(ngModel)]="rfqItemInfo.ValidFrom" [value]="rfqItemInfo.ValidFrom | date:'yyyy-MM-dd'" (input)="rfqItemInfo.ValidFrom=parseDate($event.target.value)" formControlName="ValidFrom" class="form-control" [ngClass]="{ 'is-invalid': itemInfoSubmitted &&  addItemInfoForm.controls.ValidFrom.errors }" />
         <span *ngIf="itemInfoSubmitted && addItemInfoForm.controls.ValidFrom.errors" class="invalid-feedback">Please enter Valid From date</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Valid To :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3">
-        <input type="date" #myDate [value]="rfqItemInfo.ValidTo | date:'yyyy-MM-dd'" (input)="rfqItemInfo.ValidTo=parseDate($event.target.value)" formControlName="ValidTo" class="form-control" [ngClass]="{ 'is-invalid': itemInfoSubmitted &&  addItemInfoForm.controls.ValidTo.errors }" />
+        <input type="date" #myDate [(ngModel)]="rfqItemInfo.ValidTo" [value]="rfqItemInfo.ValidTo | date:'yyyy-MM-dd'" (input)="rfqItemInfo.ValidTo=parseDate($event.target.value)" formControlName="ValidTo" class="form-control" [ngClass]="{ 'is-invalid': itemInfoSubmitted &&  addItemInfoForm.controls.ValidTo.errors }" />
         <span *ngIf="itemInfoSubmitted && addItemInfoForm.controls.ValidTo.errors" class="invalid-feedback">Please enter delivery date</span>
       </div>
     </div>

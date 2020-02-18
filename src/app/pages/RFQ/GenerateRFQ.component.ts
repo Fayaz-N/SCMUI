@@ -41,6 +41,7 @@ export class GenerateRFQComponent implements OnInit {
   public mprVendors: boolean = false;
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
+  public RateContract: boolean = false;
 
   //page load event
   ngOnInit() {
@@ -75,7 +76,7 @@ export class GenerateRFQComponent implements OnInit {
       this.totalRfqItems = data;
       this.dynamicData = new DynamicSearchResult();
       //this.dynamicData.tableName = "MPRVendorDetails";
-      this.dynamicData.query = "select mat.Materialdescription as ItemName,mi.Itemid as ItemId,mi.Itemdetailsid as MPRItemDetailsid, vm.Vendorid as VendorId,mi.RevisionId as MPRRevisionId, mi.Quantity as MprQuantity,* from MPRVendorDetails mv inner join MPRItemInfo mi on mi.RevisionId=mv.RevisionId inner join MaterialMasterYGS mat on mat.Material = mi.itemid inner join  VendorMaster vm on vm.Vendorid = mv.Vendorid where mi.RevisionId = " + this.MPRRevisionId + "";
+      this.dynamicData.query = "select mat.Materialdescription as ItemName,mi.Itemid as ItemId,mi.Itemdetailsid as MPRItemDetailsid, vm.Vendorid as VendorId,mi.RevisionId as MPRRevisionId, mi.Quantity as MprQuantity,rc.UnitPrice,(select count(*) as cnt from RateContract  where  ItemId=mi.Itemid and RateContract.VendorId=vm.VendorId and (mi.Quantity  between StartQty and EndQty)  and(GETDATE() between ValidFrom and ValidTo)) as RateContract,* from MPRVendorDetails mv inner join MPRItemInfo mi on mi.RevisionId=mv.RevisionId inner join MaterialMasterYGS mat on mat.Material = mi.itemid inner join  VendorMaster vm on vm.Vendorid = mv.Vendorid left join ratecontract rc on rc.ItemId=mi.Itemid and  rc.VendorId=vm.Vendorid and  mi.Quantity between StartQty and EndQty where mi.RevisionId = " + this.MPRRevisionId + "";
       this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
         this.vendorDetailsArray = data;
         if (this.totalRfqItems.length == 0) {
@@ -217,6 +218,7 @@ export class GenerateRFQComponent implements OnInit {
           rfqQuoteItems.MprQuantity = this.totalRfqItems[i].MprQuantity;
           rfqQuoteItems.QuotationQty = this.totalRfqItems[i].QuotationQty;//rfqitems
           rfqQuoteItems.vendorQuoteQty = this.totalRfqItems[i].vendorQuoteQty;//rfqitemsinfo
+          rfqQuoteItems.RateContract = this.totalRfqItems[i].RateContract;//rfqitemsinfo
           if (this.mprVendors) {
             rfqQuoteItems.manualvendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
           }

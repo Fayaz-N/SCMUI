@@ -73,7 +73,8 @@ export class MPRListComponent implements OnInit {
       JobCode: ['', [Validators.required]],
       ItemDescription: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
-      BuyerGroupId: ['', [Validators.required]]
+      BuyerGroupId: ['', [Validators.required]],
+      AssignEmployee: ['', [Validators.required]]
     });
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
@@ -178,7 +179,8 @@ export class MPRListComponent implements OnInit {
       this[this.formName].controls[this.txtName].setValue(item.name);
       this.mprFilterParams[this.txtName] = item.code;
     }
-    this[this.formName].controls[this.txtName].updateValueAndValidity()
+    this[this.formName].controls[this.txtName].updateValueAndValidity();
+
   }
 
 
@@ -205,7 +207,7 @@ export class MPRListComponent implements OnInit {
     this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
     this.mprRevisionModel.RevisionId = mprData.RevisionId;
     this.mprRevisionModel.RequisitionId = mprData.RequisitionId;
-    this.MprService.copyMprRevision(this.mprRevisionModel).subscribe(data => {
+    this.MprService.copyMprRevision(this.mprRevisionModel, false).subscribe(data => {
       this.router.navigate(["/SCM/MPRForm", data.RevisionId]);
     })
     

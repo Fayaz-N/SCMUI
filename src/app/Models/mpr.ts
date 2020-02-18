@@ -42,6 +42,7 @@ export class MPRItemInfoes {
   MfgModelNo: string;
   ReferenceDocNo: string;
   TargetSpend: string;
+  RepeatOrderRefId: number;
   DeleteFlag: boolean
 }
 
@@ -274,8 +275,9 @@ export class mprFilterParams {
   DepartmentId: string;
   GEPSApprovalId: string;
   BuyerGroupId: string;
-
+  AssignEmployee: string;
 }
+
 export class MPRScope {
   ScopeId: number;
   Scope: string;
