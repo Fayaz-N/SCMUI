@@ -81,6 +81,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
             searchTxt = "";
         this.dynamicData.tableName = this.constants[name].tableName;
         this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+        this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
         this.mprservice.GetListItems(this.dynamicData).subscribe(data => {
             if (data.length == 0)
                 this.showList = false;
@@ -170,12 +171,12 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     //    debugger;
     //    this.paService.itemvalues.push(this.selectedItems);
     //}
-    displayapproveitems() {
-        let dataa: any = this.selectedItems;
-        localStorage.setItem("PADetails", JSON.stringify(this.selectedItems));
-        this.routing.navigateByUrl("/SCM/mprpa");
-        // this.paService.getdata(this.selectedItems);
-    }
+      displayapproveitems() {
+          let dataa: any = this.selectedItems;
+          localStorage.setItem("PADetails", JSON.stringify(this.selectedItems));
+          this.routing.navigateByUrl("/SCM/mprpa");
+          // this.paService.getdata(this.selectedItems);
+      }
     previousitems() {
         let dataa: any = this.selectedItems;
         this.paService.getdata(this.paitemdetails, dataa);

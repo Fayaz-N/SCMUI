@@ -16,7 +16,7 @@
   <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-4">
       <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)"  [(ngModel)]="pofilters" placeholder="select Department" [formControl]="mycontrol" />
+        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)"  [(ngModel)]="pofilters.DepartmentId" placeholder="Select Department" [formControl]="mycontrol" />
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayfn">
           <mat-option *ngFor="let option of filtereddepartments | async" [value]="option">
             {{option.Department}}
@@ -26,9 +26,9 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
       <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters.BuyerGroupId" placeholder="select BuyerGroup"  />
-        <mat-autocomplete #auto1="matAutocomplete">
-          <mat-option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters.BuyerGroupId" placeholder="Select BuyerGroup" [formControl]="buyercontrol" />
+        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayfn2">
+          <mat-option *ngFor="let option of buyergroups" [value]="option">
             {{option.BuyerGroup}}
           </mat-option>
         </mat-autocomplete>
@@ -36,7 +36,7 @@
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
       <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters" placeholder="select Vendor"  />
+        <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters.VendorId" placeholder="Select Vendor" [formControl]="vendorcontrol" />
         <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayfn1">
           <mat-option *ngFor="let option of filteredvendors | async" [value]="option">
             {{option.VendorName}}

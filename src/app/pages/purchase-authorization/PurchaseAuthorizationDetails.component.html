@@ -50,9 +50,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }" (keyup)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)">
+          <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
           </span>
           <span *ngIf="Departmentsubmittted && !padetails.DepartmentName" class="invalid-feedback">Select Department.</span>
         </div>
@@ -60,9 +60,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">VendorName:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
+          <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
           </span>
           <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
         </div>
@@ -70,9 +70,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">BuyerGroup:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }" (keyup)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)">
+          <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)"></button>
           </span>
           <span *ngIf="MPRForm1Submitted && !buyergroups.BuyerGroup" class="invalid-feedback">Select BuyerGroup.</span>
         </div>
@@ -80,9 +80,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Project Manager:</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="bindSearchListData($event,'','ProjectManager',projectmanger.Name,undefined)">
+          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }">
           <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager','',undefined)"></button>
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager',projectmanger.Name,undefined)"></button>
           </span>
           <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
         </div>

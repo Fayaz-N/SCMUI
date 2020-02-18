@@ -29,6 +29,8 @@ export class purchasePaymentListComponent implements OnInit {
     public brand: string;
 
     mycontrol = new FormControl();
+    vendorcontrol = new FormControl();
+    buyercontrol = new FormControl();
     filteredoptions: Observable<any[]>;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
@@ -57,7 +59,7 @@ export class purchasePaymentListComponent implements OnInit {
     loadAllVendor() {
         this.paService.LoadAllVendors().subscribe(data => {
             this.Vendors = data;
-            this.filteredvendors = this.filteredvendors('');
+            this.filteredvendors = this.filterVendors('');
         })
     }
 
@@ -67,15 +69,7 @@ export class purchasePaymentListComponent implements OnInit {
     toggleModal(e) {
         this.brand = e.target.value;
     }
-    //filterDepartments(event) {
-    //    this.filtereddepartments = [];
-    //    for (let i = 0; i < this.departmentlist.length; i++) {
-    //        let brand = this.departmentlist[i];
-    //        if (brand.Department.toLowerCase().indexOf(event.query.toLowerCase()) == 0) {
-    //            this.filtereddepartments.push(brand);
-    //        }
-    //    }
-    //}
+
     filterStates(val: string): Observable<any> {
         let arr: any[];
         console.log(val)
@@ -84,8 +78,6 @@ export class purchasePaymentListComponent implements OnInit {
         } else {
             arr = this.departmentlist;
         }
-
-        // Simulates request
         return Observable.of(arr);
     }
     loadallmprdepartments() {
@@ -138,5 +130,10 @@ export class purchasePaymentListComponent implements OnInit {
 
         // Simulates request
         return Observable.of(arr);
+    }
+    displayfn2(option) {
+        // I want to get the full object and display the name
+        if (!option) return '';
+        return option.BuyerGroup;
     }
 }

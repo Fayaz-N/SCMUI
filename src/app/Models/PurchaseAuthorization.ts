@@ -30,6 +30,7 @@ export class PAAuthorizationEmployeeMappingModel {
     DeletedBy: string;
     DeletedDate: Date;
     checked: string;
+    DeptId: string;
 }
 export class PACreditDaysApproverModel {
     CRApprovalid: number;
