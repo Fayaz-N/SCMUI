@@ -50,8 +50,13 @@
   </div>
 </form>
 <div class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-  <p-table [value]="mappedslab" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
+  <p-table #dt [value]="mappedslab" [paginator]="true" [rows]="10" [globalFilterFields]="['DepartmentName','MinPAValue']" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
+      <tr>
+        <th colspan="6" class="text-right">
+          <input type="text" pInputText size="35" placeholder="Search by Department" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+        </th>
+      </tr>
       <tr>
         <th style="width: 5em">Sl No</th>
         <th>MinPAValue</th>

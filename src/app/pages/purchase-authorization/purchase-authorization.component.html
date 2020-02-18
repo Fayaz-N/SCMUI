@@ -15,7 +15,7 @@
         <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Department:</label>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-        <select (change)="selecteSlabs($event)" [(ngModel)]="employemapping.Authid" class="form-control">
+        <select (change)="selecteSlabs($event)" [(ngModel)]="employemapping.DeptId" class="form-control">
           <option [value]="0">Select</option>
           <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}} </option>
         </select>
@@ -89,7 +89,7 @@
         <div class="radio col-lg-3 col-md-3 col-sm-3">
           <label class="form-label label">
             <input type="checkbox" [checked]="employemapping.LessBudget" [(ngModel)]="employemapping.LessBudget" name="Budget" [value]="LessBudget" >
-            LessBudgetb
+            LessBudget
           </label>
         </div>&nbsp;&nbsp;
         <div class="radio col-lg-3 col-md-3 col-sm-3">
@@ -107,23 +107,28 @@
       </div>&nbsp;
 
       <div class="col-md-3 col-lg-3 col-sm-3" style="text-align: center; margin-top:10px">
-        <button type="button" class="btn btn-success" label="Save" (click)="LoadEmployeemappedPurchasesByDeptid(employemapping.Authid)">Search Employee</button>
+        <button type="button" class="btn btn-success" label="Save" (click)="LoadEmployeemappedPurchasesByDeptid(employemapping)">Search Employee</button>
       </div>
     </div>
   </div>
 
 </div>
 <div *ngIf="employeemapping" class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-  <p-table [value]="mappedpurchase" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
+  <p-table #dt [value]="mappedpurchase" [paginator]="true" [rows]="10" [globalFilterFields]="['DepartmentName','Name']" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
+      <tr>
+        <th colspan="8" class="text-right">
+          <input type="text" pInputText size="35" placeholder="Search......" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+        </th>
+      </tr>
       <tr>
         <th style="width: 5em">Sl No</th>
         <th>MinPAValue</th>
         <th>MaxPAValue</th>
         <th>Department</th>
-        <th>EmployeeName</th>
-        <th>AuthorizationType</th>
-        <th>FunctionalRole</th>
+        <th>Employee Name</th>
+        <th>Authorization Type</th>
+        <th>Functional Role</th>
         <th>LessBudget</th>
         <th>MoreBudget</th>
         <th style="width: 5em"></th>
@@ -168,7 +173,7 @@
         <td pEditableColumn class="text-center">{{ri+1}}</td>
         <td pEditableColumn>{{rowData.MinPAValue}}</td>
         <td pEditableColumn>{{rowData.MaxPAValue}}</td>
-        <td pEditableColumn>{{rowData.DepartmentName}}</td>
+        <td pEditableColumn>{{rowData.Department}}</td>
         <td pEditableColumn>{{rowData.Name}}</td>
         <td pEditableColumn>{{rowData.AuthorizationType}}</td>
         <td pEditableColumn>{{rowData.FunctionalRoleId}}</td>

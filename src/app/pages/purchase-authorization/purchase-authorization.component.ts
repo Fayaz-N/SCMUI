@@ -76,7 +76,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
         this.paService.LoadSlabsByDepartmentID(this.deptid).subscribe(data => {
             debugger;
             this.slbaslist = data;
-            this.selectedslabslist = 0;
+            //this.selectedslabslist = 0;
         })
 
     }
@@ -143,14 +143,14 @@ export class PurchaseAuthorizationComponent implements OnInit {
         else
             alert("Select Functional Role");
     }
-    LoadEmployeemappedPurchases() {
+    LoadEmployeemappedPurchases() { 
         this.paService.LoadEmployeemappedPurchases().subscribe(data => {
             this.mappedpurchase = data;
         })
     }
 
-    LoadEmployeemappedPurchasesByDeptid(deptid: number) {
-        this.paService.LoadEmployeemappedPurchasesBydeptid(deptid).subscribe(data => {
+    LoadEmployeemappedPurchasesByDeptid(mapping: any) { 
+        this.paService.LoadEmployeemappedPurchasesBydeptid(mapping).subscribe(data => {
             this.mappedpurchase = data;
             this.searchemployee = true;
             this.employeemapping = false;
