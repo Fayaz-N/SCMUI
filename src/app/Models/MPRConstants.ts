@@ -10,7 +10,7 @@ export class constants {
   //public url = 'http://10.29.15.183:90/Api/';
 
   public accessTokenUrl = "http://10.29.15.183:90/token";
-  public dateFormat = "MM/dd/yyyy";
+  public dateFormat = "dd/MM/yyyy";
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
@@ -24,7 +24,7 @@ export class constants {
   public ItemId: searchParams = { tableName: 'MaterialMasterYGS', fieldId: 'Material', fieldName: 'Materialdescription', condition: "", fieldAliasName: "", updateColumns: "" };
   public UnitId: searchParams = { tableName: 'UnitMaster', fieldId: 'UnitId', fieldName: 'UnitName', condition: "", fieldAliasName: "", updateColumns: "" };
   public venderid: searchParams = { tableName: 'VendorMaster', fieldId: 'Vendorid', fieldName: 'VendorName', condition: " Deleteflag=1 and ", fieldAliasName: "", updateColumns: "Emailid" };
-  public PurchaseTypeId: searchParams = { tableName: 'MPRPurchaseTypes', fieldId: 'PurchaseTypeId', fieldName: 'PurchaseType', condition: "", fieldAliasName: "PurchaseType", updateColumns: "" };
+  public PurchaseTypeId: searchParams = { tableName: 'MPRPurchaseTypes', fieldId: 'PurchaseTypeId', fieldName: 'PurchaseType', condition: " PurchaseTypeId !=5 and ", fieldAliasName: "PurchaseType", updateColumns: "" };
   public PreferredVendorTypeId: searchParams = { tableName: 'MPRPreferredVendorTypes', fieldId: 'PreferredVendorTypeId', fieldName: 'PreferredVendorType', condition: "", fieldAliasName: "PreferredVendorType", updateColumns: "" };
   public DispatchLocation: searchParams = { tableName: 'MPRDispatchLocations', fieldId: 'DispatchLocationId', fieldName: 'DispatchLocation', condition: "", fieldAliasName: "DispatchLocation", updateColumns: "" };
   public ScopeId: searchParams = { tableName: 'MPRScopes', fieldId: 'ScopeId', fieldName: 'Scope', condition: "", fieldAliasName: "Scope", updateColumns: "" };
@@ -42,5 +42,12 @@ export class constants {
   public JobCode: searchParams = { tableName: 'MPRRevisions', fieldId: 'JobCode', fieldName: 'JobCode', condition: "", fieldAliasName: "", updateColumns: "" };
   public ItemDescription: searchParams = { tableName: 'MPRItemInfo', fieldId: 'ItemDescription', fieldName: 'ItemDescription', condition: "", fieldAliasName: "", updateColumns: "" };
   public AssignEmployee: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " EmployeeNo in(select GroupMember from MPRBuyerGroupMembers) and DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
+  public OCheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade<'m2' and  employeeNo in (190271,220017,030011) and ", fieldAliasName: "CheckedName", updateColumns: "" };
+  public OApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
+  public OSecondApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
+  public OThirdApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
+  public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  ManualStatus=1 and ", fieldAliasName: "", updateColumns: "" };
+  public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  ManualStatus=1 and ", fieldAliasName: "", updateColumns: "" };
+
 }
 

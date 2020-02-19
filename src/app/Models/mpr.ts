@@ -241,6 +241,30 @@ export class mprRevision {
   RevisionNo: number;
   RevisionId: number;
   BoolValidRevision: boolean;
+  MPRForOrdering: boolean;
+  ORequestedon: Date;
+  ORequestedBy: string;
+  ORemarks: string;
+  OCheckedBy: string;
+  OCheckedName: string;
+  OCheckedOn: Date;
+  OCheckStatus: string;
+  OCheckerRemarks: string;
+  OApprovedBy: string;
+  OApproverName: string;
+  OApprovedOn: Date;
+  OApprovalStatus: string;
+  OApproverRemarks: string;
+  OSecondApprover: string;
+  OSecondApproverName: string;
+  OSecondApprovedOn: Date;
+  OSecondApproversStatus: string;
+  OSecondApproverRemarks: string;
+  OThirdApprover: string;
+  OThirdApproverName: string;
+  OThirdApproverStatus: string;
+  OThirdApproverStatusChangedOn: Date;
+  OThirdApproverRemarks: string;
 }
 
 
@@ -250,11 +274,12 @@ export class MPRStatusUpdate {
   RequisitionId: number;
   PreparedBy: string;
   status: string = "Select";
+  StatusId: number;
   Remarks: string;
   typeOfuser: string;
   BuyerGroupId: number;
-  BuyerGroupName: string="";
-  EmployeeName: string="";
+  BuyerGroupName: string = "";
+  EmployeeName: string = "";
   MPRAssignments: Array<MPRAssignment> = [];
 }
 
@@ -276,6 +301,7 @@ export class mprFilterParams {
   GEPSApprovalId: string;
   BuyerGroupId: string;
   AssignEmployee: string;
+  MPRStatusId: string;
 }
 
 export class MPRScope {

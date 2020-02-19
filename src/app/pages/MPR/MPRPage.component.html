@@ -231,8 +231,8 @@
             </tr>
           </ng-template>
         </p-table><br /><br />
-        <button *ngIf="!materialFormEdit && RepeatOrder" pButton type="button" icon="fa fa-copy" class="ui-button-info center" (click)="onRevisionCopy()"></button>
-
+        <div class="col-sm-4 col-lg-4 col-md-4"></div><div class="col-sm-4 col-lg-4 col-md-4" style="float:right"><button *ngIf="!materialFormEdit && RepeatOrder" class="btn btn-success" (click)="onRevisionCopy()">Repeat Order</button></div>
+        <br /><br />
         <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
           <div class="form-group row">
             <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -266,28 +266,28 @@
                 <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
               </div>
               <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
-                <ng-template pTemplate="caption">
-                  Supporting Documents For Target Spent :
-                </ng-template>
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>S.No</th>
-                    <th>Document</th>
-                    <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-                  <tr *ngIf="rowData.DocumentTypeid==2">
-                    <td>
-                      {{ri+1}}
-                    </td>
-                    <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
-                    <td style="text-align:center" *ngIf="hideDeleteBtn">
-                      <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>-->
+          <ng-template pTemplate="caption">
+            Supporting Documents For Target Spent :
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr>
+              <th>S.No</th>
+              <th>Document</th>
+              <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr *ngIf="rowData.DocumentTypeid==2">
+              <td>
+                {{ri+1}}
+              </td>
+              <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
+              <td style="text-align:center" *ngIf="hideDeleteBtn">
+                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>-->
             </div>
           </div>
         </div>
@@ -483,7 +483,6 @@
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Training Required</label>
-              -4
               <div class="form-inline ml-4">
                 <p-inputSwitch [(ngModel)]="mprRevisionModel.TrainingRequired" (click)="trainingRequiredChange()" formControlName="TrainingRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.TrainingRequired.errors }"></p-inputSwitch>
                 &nbsp;&nbsp;<span class="form-label">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
@@ -903,7 +902,7 @@
 
   <div *ngIf="showCommunicationForm" id="MPRStatusId" class="my-animation">
     <div class="head-text pl-0">
-      <div class="col-md-6 pt-2">Status</div>
+      <div class="col-md-6 pt-2">MPR Approvals</div>
       <div class="col-md-3 pt-2"></div>
     </div>
     <div class="form-control" style="height:100%;border-radius:0px;">
@@ -1020,6 +1019,125 @@
         </div>
       </div>
     </div>
+
+    <div class="head-text pl-0" *ngIf="mprRevisionDetails.OCheckedBy && mprRevisionDetails.OCheckedBy!='-'">
+      <div class="col-md-6 pt-2">Issuing PO Approvals</div>
+      <div class="col-md-3 pt-2"></div>
+    </div>
+    <div class="form-control" style="height:100%;border-radius:0px;" *ngIf="mprRevisionDetails.OCheckedBy && mprRevisionDetails.OCheckedBy!='-'">
+      <div class="row " style="margin-top:0px">
+        <div class="col-lg-6 col-md-6 col-sm-6" >
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Checker: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionDetails.OCheckedName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.OCheckStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.OCheckedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.OCheckerRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div *ngIf="mprRevisionDetails.OApprovedBy && mprRevisionDetails.OApprovedBy!='-'" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionDetails.OApproverName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.OApprovalStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.OApprovedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.OApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div><br />
+      <div class="row " style="margin-top:0px">
+        <div *ngIf="mprRevisionDetails.OSecondApprover && mprRevisionDetails.OSecondApprover!='-'" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Second Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionDetails.OSecondApproverName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.OSecondApproversStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.OSecondApprovedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.OSecondApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div *ngIf="mprRevisionDetails.OThirdApprover && mprRevisionDetails.OThirdApprover!='-'" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Third Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{mprRevisionDetails.OThirdApproverName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{mprRevisionModel.OThirdApproverStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{mprRevisionModel.OThirdApproverStatusChangedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{mprRevisionModel.OThirdApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
   <br />
   <div *ngIf="showCommunicationForm && mprRevisionDetails.MPRStatusTrackDetails">
@@ -1058,11 +1176,13 @@
     <a id="mprPage5" (click)="scrollToView('MPRStatusId','mprPage5')" pTooltip="MPR Status"><i class="fa fa-globe"></i></a>
     <a *ngIf="showRfqGen" id="mprPage5" [routerLink]="['/SCM/GenerateRFQ',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate RFQ"><i class="fa fa-plus-square"></i></a>
     <a *ngIf="showCompareRfq" id="mprPage6" [routerLink]="['/SCM/RFQComparision',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
+    <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
+    <a (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
   </div>
 
-  <div  *ngIf="displayFooter" class="footer">
+  <div *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <label class="form-label">Employee</label>
         <div class="form-inline-list  ml-2 ">
           <input type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.EmployeeName">
@@ -1072,7 +1192,7 @@
         </div>
 
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
         <div class="form-inline-list  ml-2 ">
           <input [disabled]="mprStatusUpdate.EmployeeName!=''" type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.BuyerGroupName">
@@ -1109,328 +1229,426 @@
     </div>
 
   </div>
-  <div>
-    <p-dialog [(visible)]="showFileViewer" [style]="{width: '800px', height: '600px'}" [contentStyle]="{'overflow':'visible'}">
-      <iframe style="width:780px;height:550px" [src]="doc"></iframe>
-      <!--<ngx-doc-viewer [url]="doc" viewer="google" style="width:100%;height:50vh;"></ngx-doc-viewer>-->
-      <!--<p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showFileViewer')" label="Cancel"></button>
-        </div>
-      </p-footer>-->
-    </p-dialog>
-    <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">
-      <div class="ui-g ui-fluid">
-        <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
-      </div>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
-        </div>
-      </p-footer>
-    </p-dialog>
-    <p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [contentStyle]="{'max-height':'500px'}" [style]="{width: '700px'}">
-      <div class="ui-g ui-fluid">
-        <form [formGroup]="MPRItemDetailsForm">
-          <div class="ui-g-12">
-            <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>
-            <div class="form-inline-list">
-              <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}">
-              <span class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)"></button>
-              </span>
-              <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.errors" class="invalid-feedback">select item.</span>
-            </div>
-          </div>
-          <div class="ui-g-12 form-group">
-            <label class="form-label">MPR Item Description</label>&nbsp;<span style="color:red">*</span>
-            <textarea formControlName="ItemDescription" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
-            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemDescription.errors" class="invalid-feedback">Item Description Required.</span>
-          </div>
 
-          <div class="ui-g-12">
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Quantity</label>&nbsp;<span style="color:red">*</span>
-              <input formControlName="Quantity" type="number" [(ngModel)]="itemDetails.Quantity" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.Quantity.value}" />
-              <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.Quantity.errors" class="invalid-feedback">Quanity Required.</span>
-            </div>
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Units</label>&nbsp;<span style="color:red">*</span>
-              <div class="form-inline-list">
-                <input type="text" formControlName="UnitId" [value]="MPRItemDetailsForm.controls.UnitId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
-                <span class="input-group-append">
-                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','UnitId',MPRItemDetailsForm.controls.UnitId.value,undefined)"></button>
-                </span>
-                <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
-              </div>
-              <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
-                <option value="select" selected>Select</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-              </select>-->
-
-            </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Sale Order Line Item No</label>
-              <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
-            </div>
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Reference If Any</label>
-              <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
-            </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Mfg. Part Number</label>
-              <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
-            </div>
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Mfg. Model Number </label>
-              <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
-            </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-6 form-group">
-              <label class="form-label">Target Spend</label>
-              <input type="number" formControlName="TargetSpend" [(ngModel)]="itemDetails.TargetSpend" class="form-control" />
-            </div>
-            <div class="ui-g-6 form-group">
-              <label class="form-label">File:</label>
-              <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-              <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
-            </div>
-          </div>
-          <div class="ui-g-12">
-            <div *ngFor="let document of mprRevisionModel.MPRDocuments">
-              <div *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==itemDetails.Itemdetailsid">
-                <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)"></i>&nbsp;
-                <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
-                <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
-              </div>
-            </div>
-          </div>
-        </form>
+  <p-dialog [(visible)]="showFileViewer" [style]="{width: '800px', height: '600px'}" [contentStyle]="{'overflow':'visible'}">
+    <iframe style="width:780px;height:550px" [src]="doc"></iframe>
+    <!--<ngx-doc-viewer [url]="doc" viewer="google" style="width:100%;height:50vh;"></ngx-doc-viewer>-->
+    <!--<p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showFileViewer')" label="Cancel"></button>
       </div>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onItemDeatilsSubmit()" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayItemDialog')" label="Cancel"></button>
-        </div>
-      </p-footer>
-    </p-dialog>
-
-    <p-dialog header="Supporting Documents For Target Spent :" [(visible)]="showDocumentUpload" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '400px'}">
-      <div class="ui-g-1">
-        <label class="form-label">File:</label>
+    </p-footer>-->
+  </p-dialog>
+  <p-dialog #dialog header="List View :" [(visible)]="showList" (onShow)="onSearhListDialogShow()" [contentStyle]="{'overflow':'visible'}">
+    <div class="ui-g ui-fluid">
+      <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
       </div>
-      <div class="ui-g-6">
-        <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-        <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
-      </div>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentUpload','documentDetails')" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload')" label="Cancel"></button>
-        </div>
-      </p-footer>
-    </p-dialog>
-
-    <p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px'}">
-      <div class="ui-g-12">
-        <div class="ui-g-8 form-group">
-          <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
-          <div class="form-inline-list">
-            <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
-            <span class="input-group-append">
-              <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
-            </span>
-            <span *ngIf="!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
-          </div>
-        </div>
-        <div class="ui-g-4 form-group">
-          <label class="form-label">Add New Vendor</label>
-          <div class="form-inline ml-4">
-            <p-inputSwitch [(ngModel)]="showNewVendor" (click)="showVendorClick()"></p-inputSwitch>
-            &nbsp;&nbsp;<span class="form-label">{{showNewVendor==true?'Yes':'No'}}</span>
-          </div>
-        </div>
-      </div>
-
-      <form [formGroup]="newVendor">
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [contentStyle]="{'max-height':'500px'}" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRItemDetailsForm">
         <div class="ui-g-12">
-          <div *ngIf="showNewVendor">
-            <label class="form-label">Vendor Name</label>
-            <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
-            <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
+          <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>
+          <div class="form-inline-list">
+            <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}">
+            <span class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)"></button>
+            </span>
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.errors" class="invalid-feedback">select item.</span>
           </div>
+        </div>
+        <div class="ui-g-12 form-group">
+          <label class="form-label">MPR Item Description</label>&nbsp;<span style="color:red">*</span>
+          <textarea formControlName="ItemDescription" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
+          <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemDescription.errors" class="invalid-feedback">Item Description Required.</span>
+        </div>
 
-          <label class="form-label">Email Id</label>&nbsp;<span style="color:red">*</span>
-          <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
-          <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
-          <div *ngIf="showNewVendor">
-            <label class="form-label">Contact No</label>&nbsp;<span style="color:red">*</span>
-            <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
-            <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Quantity</label>&nbsp;<span style="color:red">*</span>
+            <input formControlName="Quantity" type="number" [(ngModel)]="itemDetails.Quantity" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.Quantity.value}" />
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.Quantity.errors" class="invalid-feedback">Quanity Required.</span>
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Units</label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input type="text" formControlName="UnitId" [value]="MPRItemDetailsForm.controls.UnitId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
+              <span class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','UnitId',MPRItemDetailsForm.controls.UnitId.value,undefined)"></button>
+              </span>
+              <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.UnitId.errors" class="invalid-feedback">Select Units.</span>
+            </div>
+            <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
+              <option value="select" selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+            </select>-->
+
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Sale Order Line Item No</label>
+            <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Reference If Any</label>
+            <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Mfg. Part Number</label>
+            <input formControlName="SOLineItemNo" [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Mfg. Model Number </label>
+            <input formControlName="ReferenceDocNo" [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Target Spend</label>
+            <input type="number" formControlName="TargetSpend" [(ngModel)]="itemDetails.TargetSpend" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">File:</label>
+            <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
+            <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+            <div *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==itemDetails.Itemdetailsid">
+              <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)"></i>&nbsp;
+              <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+            </div>
           </div>
         </div>
       </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onItemDeatilsSubmit()" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayItemDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
 
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+  <p-dialog header="Supporting Documents For Target Spent :" [(visible)]="showDocumentUpload" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '400px'}">
+    <div class="ui-g-1">
+      <label class="form-label">File:</label>
+    </div>
+    <div class="ui-g-6">
+      <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
+      <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentUpload','documentDetails')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px'}">
+    <div class="ui-g-12">
+      <div class="ui-g-8 form-group">
+        <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
+        <div class="form-inline-list">
+          <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
+          <span class="input-group-append">
+            <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
+          </span>
+          <span *ngIf="!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
         </div>
-      </p-footer>
-    </p-dialog>
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Add New Vendor</label>
+        <div class="form-inline ml-4">
+          <p-inputSwitch [(ngModel)]="showNewVendor" (click)="showVendorClick()"></p-inputSwitch>
+          &nbsp;&nbsp;<span class="form-label">{{showNewVendor==true?'Yes':'No'}}</span>
+        </div>
+      </div>
+    </div>
 
-    <p-dialog header="Select Documentation :" [(visible)]="showDocumentationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
-      <div class="ui-g ui-fluid">
+    <form [formGroup]="newVendor">
+      <div class="ui-g-12">
+        <div *ngIf="showNewVendor">
+          <label class="form-label">Vendor Name</label>
+          <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
+          <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
+        </div>
+
+        <label class="form-label">Email Id</label>&nbsp;<span style="color:red">*</span>
+        <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
+        <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
+        <div *ngIf="showNewVendor">
+          <label class="form-label">Contact No</label>&nbsp;<span style="color:red">*</span>
+          <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
+          <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+        </div>
+      </div>
+    </form>
+
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Select Documentation :" [(visible)]="showDocumentationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <div class="ui-g-5 form-group">
+          <label class="form-label">Description</label>
+          <div class="form-inline-list">
+            <input type="text" [(ngModel)]="MPRDocumentations.DocumentationDescription" class="form-control">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DocumentationDescriptionId',MPRDocumentations.DocumentationDescription,undefined)"></button>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-4 form-group">
+          <label class="form-label">No Of Sets Approval</label>
+          <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsApproval">
+            <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+          </select>
+        </div>
+        <div class="ui-g-3 form-group">
+          <label class="form-label">No Of Sets Final</label>
+          <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsFinal">
+            <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+          </select>
+        </div>
+      </div>
+      <!--<div class="ui-g-12">
+        <div class="ui-g-5 form-group">
+          <label class="form-label">No. of sets of Quality Assurance Plan Required </label>
+          <div class="form-inline">
+            <select class="form-control forms-input" [(ngModel)]="mprRevisionModel.NoOfSetsOfQAP" style="width:100px">
+              <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
+            </select>
+
+          </div>
+        </div>
+      </div>-->
+    </div>
+
+
+    p-
+    <p-footer>
+      >
+
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentationDialog','documentations')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentationDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Incharge Names :" [(visible)]="displayInchargeDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRInchargeForm">
         <div class="ui-g-12">
-          <div class="ui-g-5 form-group">
-            <label class="form-label">Description</label>
+          <div class="ui-g-6 form-inline">
+            <label class="form-label">Incharge Name : </label>&nbsp;
+            <input type="text" formControlName="Incharge" [value]="MPRInchargeForm.controls.Incharge.value" class="form-control">
+            <div class="input-group-append">
+              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRInchargeForm','Incharge',MPRInchargeForm.controls.Incharge.value,undefined)"></button>
+            </div>
+          </div>
+          <div class="ui-g-5 form-inline">
+            <label class="form-label">Can clear Technically : </label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanClearTechnically" [(ngModel)]="mprIncharges.CanClearTechnically" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6">
+            <label for="CompType">Can Clear Commercially : </label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanClearCommercially" [(ngModel)]="mprIncharges.CanClearCommercially" binary="true"></p-checkbox>
+          </div>
+          <div class="ui-g-5">
+            <label for="CompType">Can ReceiveMail Notification:</label>&nbsp;&nbsp;
+            <p-checkbox formControlName="CanReceiveMailNotification" [disabled]="true" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true"></p-checkbox>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onInchargeDeatilsSubmit('displayInchargeDialog')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayInchargeDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRCommunicationForm" style="width:100%">
+        <div class="ui-g-12">
+          <div class="ui-g-8">
+            <label class="form-label">Remarks</label>&nbsp;<span style="color:red">*</span>&nbsp;
+            <textarea type="text" formControlName="Remarks" [(ngModel)]="MPRCommunications.Remarks" [value]="MPRCommunicationForm.controls.Remarks.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.Remarks.errors }" class="form-control"></textarea>
+            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.Remarks.errors" class="invalid-feedback">Remarks Required.</span><br />
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label class="form-label">Set Reminder</label>&nbsp;&nbsp;
+            <p-checkbox [(ngModel)]="MPRCommunications.SetReminder" formControlName="setReminder" binary="true"></p-checkbox>
+          </div>
+          <div class="ui-g-4 form-inline">
+            <label for="CompType">Send Email </label>&nbsp;&nbsp;
+            <p-checkbox [(ngModel)]="MPRCommunications.SendEmail" formControlName="sendemail" binary="true"></p-checkbox>
+          </div>
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder" class="ui-g-12 form-inline">
+          <label class="form-label">Reminder Date: </label>&nbsp;<span style="color:red">*</span>&nbsp;
+          <input type="date" #myDate [value]="MPRCommunications.ReminderDate | date:'yyyy-MM-dd'" (input)="MPRCommunications.ReminderDate=parseDate($event.target.value)" formControlName="ReminderDate" class="form-control" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.ReminderDate.errors }" />
+          <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ReminderDate.errors" class="invalid-feedback">Reminder Date Required.</span><br />
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
+          <label class="form-label">Add To Emails : </label>&nbsp;<span style="color:red">*</span>&nbsp;
+          <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.toEmail.errors }" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRCommunicationForm.controls.toEmail.value,undefined)"></button>
+          </div> &nbsp;
+          <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
+            <label *ngIf="comm.MailAddressType=='To'" class="form-control">
+              <span>{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
+            </label>&nbsp;
+          </div>
+          <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.toEmail.errors" class="invalid-feedback">To email  Required.</span><br />
+        </div>
+        <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
+          <label class="form-label">Add CC Emails : </label>&nbsp;
+          <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" class="form-control">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRCommunicationForm.controls.ccEmail.value,undefined)"></button>
+          </div>
+          <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
+            <label *ngIf="comm.MailAddressType=='CC'" class="form-control">
+              <span style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
+              <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
+            </label>&nbsp;
+          </div>
+          <!--<span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ccEmail.errors" class="invalid-feedback">CC email  Required.</span><br />-->
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onCommnicationSubmit('displayCommunicationDialog')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayCommunicationDialog')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+
+
+  <p-dialog header="Select PO :" [(visible)]="showPOordingDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]=" POraiseForm">
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Check By </label>&nbsp;<span style="color:red">*</span>
             <div class="form-inline-list">
-              <input type="text" [(ngModel)]="MPRDocumentations.DocumentationDescription" class="form-control">
+              <input type="text" class="form-control forms-input" formControlName="OCheckedBy" [value]="POraiseForm.controls.OCheckedBy.value">
               <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DocumentationDescriptionId',MPRDocumentations.DocumentationDescription,undefined)"></button>
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'POraiseForm','OCheckedBy',POraiseForm.controls.OCheckedBy.value,undefined)"></button>
               </div>
             </div>
           </div>
-          <div class="ui-g-4 form-group">
-            <label class="form-label">No Of Sets Approval</label>
-            <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsApproval">
-              <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
-            </select>
-          </div>
-          <div class="ui-g-3 form-group">
-            <label class="form-label">No Of Sets Final</label>
-            <select class="form-control" id="NoOfSetsApproval" [(ngModel)]="MPRDocumentations.NoOfSetsFinal">
-              <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
-            </select>
-          </div>
-        </div>
-        <!--<div class="ui-g-12">
-          <div class="ui-g-5 form-group">
-            <label class="form-label">No. of sets of Quality Assurance Plan Required </label>
-            <div class="form-inline">
-              <select class="form-control forms-input" [(ngModel)]="mprRevisionModel.NoOfSetsOfQAP" style="width:100px">
-                <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
-              </select>
-
-            </div>
-          </div>
-        </div>-->
-      </div>
-      <p-footer>
-        >
-
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentationDialog','documentations')" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentationDialog')" label="Cancel"></button>
-        </div>
-      </p-footer>
-    </p-dialog>
-
-    <p-dialog header="Incharge Names :" [(visible)]="displayInchargeDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
-      <div class="ui-g ui-fluid">
-        <form [formGroup]="MPRInchargeForm">
-          <div class="ui-g-12">
-            <div class="ui-g-6 form-inline">
-              <label class="form-label">Incharge Name : </label>&nbsp;
-              <input type="text" formControlName="Incharge" [value]="MPRInchargeForm.controls.Incharge.value" class="form-control">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Approval By </label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input type="text" class="form-control forms-input" formControlName="OApprovedBy" [value]="POraiseForm.controls.OApprovedBy.value">
               <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRInchargeForm','Incharge',MPRInchargeForm.controls.Incharge.value,undefined)"></button>
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'POraiseForm','OApprovedBy',POraiseForm.controls.OApprovedBy.value,undefined)"></button>
               </div>
             </div>
-            <div class="ui-g-5 form-inline">
-              <label class="form-label">Can clear Technically : </label>&nbsp;&nbsp;
-              <p-checkbox formControlName="CanClearTechnically" [(ngModel)]="mprIncharges.CanClearTechnically" binary="true"></p-checkbox>
-            </div>
           </div>
-          <div class="ui-g-12">
-            <div class="ui-g-6">
-              <label for="CompType">Can Clear Commercially : </label>&nbsp;&nbsp;
-              <p-checkbox formControlName="CanClearCommercially" [(ngModel)]="mprIncharges.CanClearCommercially" binary="true"></p-checkbox>
-            </div>
-            <div class="ui-g-5">
-              <label for="CompType">Can ReceiveMail Notification:</label>&nbsp;&nbsp;
-              <p-checkbox formControlName="CanReceiveMailNotification" [disabled]="true" [(ngModel)]="mprIncharges.CanReceiveMailNotification" binary="true"></p-checkbox>
-            </div>
-          </div>
-        </form>
-      </div>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onInchargeDeatilsSubmit('displayInchargeDialog')" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayInchargeDialog')" label="Cancel"></button>
-        </div>
-      </p-footer>
-    </p-dialog>
 
-    <p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
-      <div class="ui-g ui-fluid">
-        <form [formGroup]="MPRCommunicationForm" style="width:100%">
-          <div class="ui-g-12">
-            <div class="ui-g-8">
-              <label class="form-label">Remarks</label>&nbsp;<span style="color:red">*</span>&nbsp;
-              <textarea type="text" formControlName="Remarks" [(ngModel)]="MPRCommunications.Remarks" [value]="MPRCommunicationForm.controls.Remarks.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.Remarks.errors }" class="form-control"></textarea>
-              <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.Remarks.errors" class="invalid-feedback">Remarks Required.</span><br />
-            </div>
-            <div class="ui-g-4 form-inline">
-              <label class="form-label">Set Reminder</label>&nbsp;&nbsp;
-              <p-checkbox [(ngModel)]="MPRCommunications.SetReminder" formControlName="setReminder" binary="true"></p-checkbox>
-            </div>
-            <div class="ui-g-4 form-inline">
-              <label for="CompType">Send Email </label>&nbsp;&nbsp;
-              <p-checkbox [(ngModel)]="MPRCommunications.SendEmail" formControlName="sendemail" binary="true"></p-checkbox>
-            </div>
-          </div>
-          <div *ngIf="MPRCommunications.SetReminder" class="ui-g-12 form-inline">
-            <label class="form-label">Reminder Date: </label>&nbsp;<span style="color:red">*</span>&nbsp;
-            <input type="date" #myDate [value]="MPRCommunications.ReminderDate | date:'yyyy-MM-dd'" (input)="MPRCommunications.ReminderDate=parseDate($event.target.value)" formControlName="ReminderDate" class="form-control" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.ReminderDate.errors }" />
-            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ReminderDate.errors" class="invalid-feedback">Reminder Date Required.</span><br />
-          </div>
-          <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
-            <label class="form-label">Add To Emails : </label>&nbsp;<span style="color:red">*</span>&nbsp;
-            <input type="text" formControlName="toEmail" [value]="MPRCommunicationForm.controls.toEmail.value" [ngClass]="{ 'is-invalid': MPRCommunicationSubmitted &&  MPRCommunicationForm.controls.toEmail.errors }" class="form-control">
-            <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','toEmail',MPRCommunicationForm.controls.toEmail.value,undefined)"></button>
-            </div> &nbsp;
-            <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
-              <label *ngIf="comm.MailAddressType=='To'" class="form-control">
-                <span>{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
-                <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
-              </label>&nbsp;
-            </div>
-            <span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.toEmail.errors" class="invalid-feedback">To email  Required.</span><br />
-          </div>
-          <div *ngIf="MPRCommunications.SetReminder || MPRCommunications.SendEmail" class="ui-g-12 form-inline">
-            <label class="form-label">Add CC Emails : </label>&nbsp;
-            <input type="text" formControlName="ccEmail" [value]="MPRCommunicationForm.controls.ccEmail.value" class="form-control">
-            <div class="input-group-append">
-              <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRCommunicationForm','ccEmail',MPRCommunicationForm.controls.ccEmail.value,undefined)"></button>
-            </div>
-            <div *ngFor="let comm of MPRCommunications.MPRReminderTrackings">
-              <label *ngIf="comm.MailAddressType=='CC'" class="form-control">
-                <span style="color:#28a745">{{getComName(comm.MailTo)}}</span>&nbsp;&nbsp;
-                <i class="fa fa-remove" aria-hidden="true" (click)="removeCommunication(comm)"></i>
-              </label>&nbsp;
-            </div>
-            <!--<span *ngIf="MPRCommunicationSubmitted && MPRCommunicationForm.controls.ccEmail.errors" class="invalid-feedback">CC email  Required.</span><br />-->
-          </div>
-        </form>
-      </div>
-      <p-footer>
-        <div class="ui-dialog-buttonpane ui-helper-clearfix">
-          <button type="button" pButton icon="fa fa-check" (click)="onCommnicationSubmit('displayCommunicationDialog')" label="Submit"></button>
-          <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayCommunicationDialog')" label="Cancel"></button>
         </div>
-      </p-footer>
-    </p-dialog>
-  </div>
-</div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Second Approval By </label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input type="text" class="form-control forms-input" formControlName="OSecondApprover" [value]="POraiseForm.controls.OSecondApprover.value">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'POraiseForm','OSecondApprover',POraiseForm.controls.OSecondApprover.value,undefined)"></button>
+              </div>
+            </div>
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Third Approval By </label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input type="text" class="form-control forms-input" formControlName="OThirdApprover" [value]="POraiseForm.controls.OThirdApprover.value">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'POraiseForm','OThirdApprover',POraiseForm.controls.OThirdApprover.value,undefined)"></button>
+              </div>
+            </div>
+          </div>
 
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">Remarks </label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <textarea class="form-control forms-input" formControlName="ORemarks" [(ngModel)]="mprRevisionModel.ORemarks" [value]="POraiseForm.controls.ORemarks.value"></textarea>
+
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onPoRaiseSubmit('showPOordingDialog')" label="Submit"></button>
+
+      </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Manual Status:" [(visible)]="showManualStatusgDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+    <div class="ui-g ui-fluid">
+      <form [formGroup]="MPRStatus">
+        <div class="ui-g-12">
+          <div class="ui-g-12 form-group">
+            <label class="form-label">Status</label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <input type="text" class="form-control forms-input" formControlName="MPRStatus" [value]="MPRStatus.controls.MPRStatus.value">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRStatus','MPRStatus',MPRStatus.controls.MPRStatus.value,undefined)"></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-12 form-group">
+            <label class="form-label">Remarks </label>&nbsp;<span style="color:red">*</span>
+            <div class="form-inline-list">
+              <textarea class="form-control forms-input" formControlName="Remarks" [(ngModel)]="mprStatusUpdate.Remarks"></textarea>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onstatusUpdate('MPRManualStatus')" label="Submit"></button>
+
+      </div>
+    </p-footer>
+  </p-dialog>
 
 
 

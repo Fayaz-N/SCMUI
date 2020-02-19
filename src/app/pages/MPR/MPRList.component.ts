@@ -74,7 +74,8 @@ export class MPRListComponent implements OnInit {
       ItemDescription: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
       BuyerGroupId: ['', [Validators.required]],
-      AssignEmployee: ['', [Validators.required]]
+      AssignEmployee: ['', [Validators.required]],
+      MPRStatusId: ['', [Validators.required]]
     });
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
