@@ -6,6 +6,7 @@ export class rfqQuoteModel {
   Itemdetailsid: number;
   ItemId: number;
   ItemName: string;
+  MaterialDescription: string;
   ItemDescription: string;
   TargetSpend: string;
   MprQuantity: string;
@@ -15,6 +16,7 @@ export class rfqQuoteModel {
   leastPrice: string;
   RfqDocStatus: string;
   ActiveRevision: string;
+  RateContract: number;
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
 
@@ -23,7 +25,7 @@ export class RFQRevisionData {
   CreatedBy: number;
   CreatedDate: Date;
   RFQType: string;
-  QuoteValidfrom: Date;
+  QuoteValidFrom: Date;
   QuoteValidTo: Date;
   RfqValidDate: number;
   PackingForwading: string;
@@ -83,9 +85,11 @@ export class RfqItemInfoModel {
   DeliveryDate: Date;
   ValidFrom: Date;
   ValidTo: Date;
+  Status: string;
   DeleteFlag: boolean;
   SyncDate: Date;
   SyncStatus: boolean;
+  DeliveryDays: number;
   //item: RfqItemModel;
 }
 export class RFQMasters {
@@ -144,6 +148,9 @@ export class RfqItemModel {
   SyncStatus: boolean;
   iteminfo: Array<RfqItemInfoModel> = [];
   RFQDocuments: Array<RFQDocuments> = [];
+  MfgPartNo: string;
+  MfgModelNo: string;
+
 }
 
 export class rfqFilterParams {

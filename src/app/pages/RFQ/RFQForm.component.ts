@@ -59,7 +59,7 @@ export class RFQFormComponent implements OnInit {
     this.RFQForm = this.formBuilder.group({
       venderid: ['', [Validators.required]],
       RFQType: ['', [Validators.required]],
-      QuoteValidfrom: ['', [Validators.required]],
+      QuoteValidFrom: ['', [Validators.required]],
       QuoteValidTo: ['', [Validators.required]],
       VendorVisibility: ['', [Validators.required]]
     });
@@ -93,7 +93,8 @@ export class RFQFormComponent implements OnInit {
       DeliveryDate: ['', [Validators.required]],
       ValidFrom: ['', [Validators.required]],
       ValidTo: ['', [Validators.required]],
-      Remarks: ['', [Validators.required]]
+      Remarks: ['', [Validators.required]],
+      Status: ['', [Validators.required]]
 
     })
     this.AddItemForm.controls['RequestRemarks'].clearValidators();
@@ -301,16 +302,16 @@ export class RFQFormComponent implements OnInit {
   }
   rfqTypeChange() {
     if (this.rfqRevisionModel.RFQType == "Rate Contract") {
-      this.RFQForm.controls['QuoteValidfrom'].setValidators([Validators.required]);
+      this.RFQForm.controls['QuoteValidFrom'].setValidators([Validators.required]);
       this.RFQForm.controls['QuoteValidTo'].setValidators([Validators.required]);
     }
     else {
-      this.RFQForm.controls['QuoteValidfrom'].setValue("");
+      this.RFQForm.controls['QuoteValidFrom'].setValue("");
       this.RFQForm.controls['QuoteValidTo'].setValue("");
-      this.RFQForm.controls['QuoteValidfrom'].clearValidators();
+      this.RFQForm.controls['QuoteValidFrom'].clearValidators();
       this.RFQForm.controls['QuoteValidTo'].clearValidators();
     }
-    this.RFQForm.controls['QuoteValidfrom'].updateValueAndValidity();
+    this.RFQForm.controls['QuoteValidFrom'].updateValueAndValidity();
     this.RFQForm.controls['QuoteValidTo'].updateValueAndValidity();
   }
 
@@ -319,6 +320,7 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo = new RfqItemInfoModel();
     this.rfqItemInfo.RFQItemsId = rfqItemId;
     this.rfqItemInfo.CurrencyId = 0;
+    this.rfqItemInfo.Status = "Approved";
   }
 
   onItemEdit(e: any,details: RfqItemModel) {
@@ -355,8 +357,10 @@ export class RFQFormComponent implements OnInit {
     this.currncyArray = this.currncyArray;
    // this.rfqItemInfo.CurrencyId = details.CurrencyId;
     this.AddItemInfodialog = true;
-    this.addItemInfoForm.controls["ValidFrom"].setValue(details.ValidFrom);
-    this.addItemInfoForm.controls["ValidTo"].setValue(details.ValidTo);
+    this.rfqItemInfo.ValidFrom = new Date(this.rfqItemInfo.ValidFrom);
+    this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);
+    this.addItemInfoForm.controls["ValidFrom"].setValue(this.rfqItemInfo.ValidFrom);
+    this.addItemInfoForm.controls["ValidTo"].setValue(this.rfqItemInfo.ValidTo);
     
    
   }
@@ -379,6 +383,9 @@ export class RFQFormComponent implements OnInit {
   loadRFQData(revisionId: number) {
     this.RfqService.GetRfqDetailsById(revisionId).subscribe(data => {
       this.rfqRevisionModel = data;
+      this.RFQForm.controls["QuoteValidFrom"].setValue(this.rfqRevisionModel.QuoteValidFrom);
+      this.RFQForm.controls["QuoteValidTo"].setValue(this.rfqRevisionModel.QuoteValidTo);
+
       this.showRfqItem = true;
       this.spinner.hide();
       this.RFQForm.controls["venderid"].setValue(this.rfqRevisionModel.rfqmaster.Vendor.VendorName);

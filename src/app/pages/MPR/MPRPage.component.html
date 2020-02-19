@@ -199,6 +199,7 @@
               <th>Target Spend</th>
               <th>Documents</th>
               <th>Edit</th>
+              <th *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
               <th *ngIf="hideDeleteBtn">Remove</th>
             </tr>
           </ng-template>
@@ -221,12 +222,16 @@
               <td style="text-align:center" *ngIf="!editing">
                 <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
               </td>
+              <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
+                <input type="checkbox" style="height:15px;width:15px" (click)="selectMprLineItems($event,ri,rowData)">
+              </td>
               <td style="text-align:center" *ngIf="hideDeleteBtn">
                 <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
               </td>
             </tr>
           </ng-template>
         </p-table><br /><br />
+        <button *ngIf="!materialFormEdit && RepeatOrder" pButton type="button" icon="fa fa-copy" class="ui-button-info center" (click)="onRevisionCopy()"></button>
 
         <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
           <div class="form-group row">
@@ -1078,7 +1083,7 @@
       </div>
 
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
-        <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge',statusAckTxt)" label="Save">{{statusAckTxt}}</button>
+        <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
