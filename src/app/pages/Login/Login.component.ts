@@ -74,6 +74,12 @@ export class LoginComponent implements OnInit {
                   MENU_ITEMS[4].hidden = true;
                   MENU_ITEMS[5].hidden = true;
                 }
+                else {
+                  MENU_ITEMS[2].hidden = false;
+                  MENU_ITEMS[3].hidden = false;
+                  MENU_ITEMS[4].hidden = false;
+                  MENU_ITEMS[5].hidden = false;
+                }
               })
 
               this.LoginForm.reset();
