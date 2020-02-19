@@ -98,9 +98,15 @@ export class purchasePaymentListComponent implements OnInit {
         
     //}
     displayfn(option) {
-        // I want to get the full object and display the name
+         //I want to get the full object and display the name
         if (!option) return '';
-        return option.Department;
+        return option.DepartmentName;
+
+        //let index = this.departmentlist.find(state => state.DepartmentId === DepartmentId);
+        //return this.departmentlist[index].name;
+    }
+    returnFn(option): number | undefined {
+        return option ? option.DepartmentId : undefined;
     }
     loadbuyergroups() {
         this.paService.LoadAllmprBuyerGroups().subscribe(data => {

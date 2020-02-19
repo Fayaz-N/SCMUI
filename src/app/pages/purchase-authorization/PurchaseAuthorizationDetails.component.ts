@@ -60,7 +60,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         //this.checked = false;
     }
     displayitems(padetails: PADetailsModel) {
-        this.paService.LoadItems(this.padetails).subscribe(data => {
+        this.paService.LoadItems(padetails).subscribe(data => {
             //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
             this.paitemdetails = data;
             if (this.paitemdetails.length > 0) {

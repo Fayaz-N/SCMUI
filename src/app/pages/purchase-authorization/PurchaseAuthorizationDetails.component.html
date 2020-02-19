@@ -1,11 +1,9 @@
 <!--<div class="alert alert-danger" role="alert" *ngIf="alert" style="position:relative">
   Please Select Single Vendor
 </div>-->
-
 <!--<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top" *ngIf="alert">
   Choose Single Vendor
 </button>-->
-
 <!--<div aria-live="polite" aria-atomic="true" style="position: relative; min-height: 200px;" *ngIf="alert">
   <div class="toast" style="position: absolute; top: 0; right: 0;">
     <div class="toast-header">
@@ -24,170 +22,180 @@
 
 
 <div *ngIf="hivalue" style="margin-bottom: 10%;">
-  <div class="" style="text-align:center">
-    <h3>Purchase Authorization Details</h3>
-  </div>
-  <div class="form-control" style="height:100%;border-radius:0px;padding:30px">
-    <div class="row form-group">
-      <div class="col-lg-3 col-md-3 col-sm-3">
-        <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
-        <input class="form-control" type="text" [(ngModel)]="padetails.DocumentNumber">
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3">
-        <label for="SaleOrderNo" class="form-label">MPR RevisionID:</label> &nbsp;
-        <input class="form-control" [(ngModel)]="padetails.RevisionID">
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3">
-        <label class="form-label">RfqNo:</label> &nbsp;
-        <input class="form-control" [(ngModel)]="padetails.RFQNo">
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3">
-        <label class="form-label">SaleOrderNumber:</label>&nbsp;
-        <input class="form-control" [(ngModel)]="padetails.SaleOrderNo">
-      </div>
+    <div class="" style="text-align:center">
+        <h3>Purchase Authorization Details</h3>
+    </div>
+    <div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+        <div class="row form-group">
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
+                <input class="form-control" type="text" [(ngModel)]="padetails.DocumentNumber">
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label for="SaleOrderNo" class="form-label">MPR RevisionID:</label> &nbsp;
+                <input class="form-control" [(ngModel)]="padetails.RevisionID">
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label class="form-label">RfqNo:</label> &nbsp;
+                <input class="form-control" [(ngModel)]="padetails.RFQNo">
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3">
+                <label class="form-label">SaleOrderNumber:</label>&nbsp;
+                <input class="form-control" [(ngModel)]="padetails.SaleOrderNo">
+            </div>
+        </div><br />
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+              <label class="form-label">Department:</label>&nbsp;
+              <div class="form-inline-list">
+                <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }">
+                <span class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
+                </span>
+                <span *ngIf="Departmentsubmittted && !padetails.DepartmentName" class="invalid-feedback">Select Department.</span>
+              </div>
+            </div>
+            <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label">Department:</label>&nbsp;
+                <div class="form-inline-list">
+                    <input type="text" [(ngModel)]="padetails.DeptID" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DeptID }">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
+                    </span>
+                    <span *ngIf="Departmentsubmittted && !padetails.DeptID" class="invalid-feedback">Select Department.</span>
+                </div>
+            </div>-->
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label">VendorName:</label>&nbsp;
+                <div class="form-inline-list">
+                    <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
+                    </span>
+                    <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label">BuyerGroup:</label>&nbsp;
+                <div class="form-inline-list">
+                    <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)"></button>
+                    </span>
+                    <span *ngIf="MPRForm1Submitted && !buyergroups.BuyerGroup" class="invalid-feedback">Select BuyerGroup.</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                <label class="form-label">Project Manager:</label>&nbsp;
+                <div class="form-inline-list">
+                    <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }">
+                    <span class="input-group-append">
+                        <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager',projectmanger.Name,undefined)"></button>
+                    </span>
+                    <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
+                </div>
+            </div>
+        </div>
     </div><br />
-    <div class="row">
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label class="form-label">Department:</label>&nbsp;
-        <div class="form-inline-list">
-          <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }">
-          <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
-          </span>
-          <span *ngIf="Departmentsubmittted && !padetails.DepartmentName" class="invalid-feedback">Select Department.</span>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label class="form-label">VendorName:</label>&nbsp;
-        <div class="form-inline-list">
-          <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
-          <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
-          </span>
-          <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label class="form-label">BuyerGroup:</label>&nbsp;
-        <div class="form-inline-list">
-          <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }">
-          <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)"></button>
-          </span>
-          <span *ngIf="MPRForm1Submitted && !buyergroups.BuyerGroup" class="invalid-feedback">Select BuyerGroup.</span>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-        <label class="form-label">Project Manager:</label>&nbsp;
-        <div class="form-inline-list">
-          <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }">
-          <span class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager',projectmanger.Name,undefined)"></button>
-          </span>
-          <span *ngIf="projectmangersubmitted && !projectmanger.EmployeeNo" class="invalid-feedback">Select projectManager.</span>
-        </div>
-      </div>
-    </div>
-  </div><br />
 
-  <div class="row" style="margin-bottom:10px">
-    <div class="col-md-12" style="text-align:center">
-      <button type="button" class="btn btn-primary" (click)="displayitems(padetails)">Submit</button>
+    <div class="row" style="margin-bottom:10px">
+        <div class="col-md-12" style="text-align:center">
+            <button type="button" class="btn btn-primary" (click)="displayitems(padetails)">Submit</button>
+        </div>
     </div>
-  </div>
 
-  <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
-    <p-table [value]="paitemdetails" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
-      <ng-template pTemplate="header">
-        <tr class="text-left" style="text-align:left">
-          <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
-          <!--<input type="checkbox" *ngIf="vendorDetails.VendorName!=null" [(ngModel)]="paitemdetails.selectAll" (change)="selectAll($event)">-->
-          <th style="width: 4em"></th>
-          <th style="width: 5em">Sl No</th>
-          <th>Department</th>
-          <th>Vendor Name</th>
-          <th class="ptable-cell">Item Description</th>
-          <th style="width:6em">Quantity</th>
-          <th style="width:6em">Price</th>
-          <th style="width:6em">Total Price</th>
-          <th>Target Spend</th>
-          <th>SaleOrder</th>
-          <th>Payment Term</th>
-          <th>MPR NO</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
-        <tr>
-          <td>
-            <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
-            <input type="checkbox" (change)="onChange1(rowData,$event.target.checked,$event)">
-            <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
-          </td>
-          <td>{{ri+1}}</td>
-          <td class="ptable-cell">{{rowData.Department}}</td>
-          <td class="ptable-cell">{{rowData.VendorName}}</td>
-          <td class="ptable-cell">{{rowData.ItemDescription}}</td>
-          <td>{{rowData.QuotationQty}}</td>
-          <td>{{rowData.UnitPrice}}</td>
-          <td>{{rowData.itemsum}}</td>
-          <td>{{rowData.TargetSpend}}</td>
-          <td>{{rowData.SaleOrderNo}}</td>
-          <td>{{rowData.PaymentTermCode}}</td>
-          <td class="ptable-cell">{{rowData.DocumentNo}}</td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-  <div class="footer row" style="position:sticky;margin-left:1px;margin-top:10px">
-    <div class="col-md-10" style="text-align:center">
-      <button type="button" [disabled]="disableSubmit" class="btn btn-success"  (click)="displayapproveitems()">Submit</button>
+    <div class="row form-control" style="height:100%;border-radius:0px;padding:30px;margin-left:2px">
+        <p-table [value]="paitemdetails" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
+            <ng-template pTemplate="header">
+                <tr class="text-left" style="text-align:left">
+                    <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
+                    <!--<input type="checkbox" *ngIf="vendorDetails.VendorName!=null" [(ngModel)]="paitemdetails.selectAll" (change)="selectAll($event)">-->
+                    <th style="width: 4em"></th>
+                    <th style="width: 5em">Sl No</th>
+                    <th class="ptable-cell">Department</th>
+                    <th>Vendor Name</th>
+                    <th class="ptable-cell">Item Description</th>
+                    <th style="width:6em">Quantity</th>
+                    <th style="width:6em">Price</th>
+                    <th style="width:6em">Total Price</th>
+                    <th>Target Spend</th>
+                    <th>SaleOrder</th>
+                    <th>Payment Term</th>
+                    <th>MPR NO</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
+                <tr>
+                    <td>
+                        <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
+                        <input type="checkbox" (change)="onChange1(rowData,$event.target.checked,$event)">
+                        <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
+                    </td>
+                    <td>{{ri+1}}</td>
+                    <td class="ptable-cell">{{rowData.Department}}</td>
+                    <td class="ptable-cell">{{rowData.VendorName}}</td>
+                    <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+                    <td>{{rowData.QuotationQty}}</td>
+                    <td>{{rowData.UnitPrice}}</td>
+                    <td>{{rowData.itemsum}}</td>
+                    <td>{{rowData.TargetSpend}}</td>
+                    <td>{{rowData.SaleOrderNo}}</td>
+                    <td>{{rowData.PaymentTermCode}}</td>
+                    <td class="ptable-cell">{{rowData.DocumentNo}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
-  </div>
-  <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
-    <div class="ui-g ui-fluid">
-      <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    <div class="footer row" style="position:sticky;margin-left:1px;margin-top:10px">
+        <div class="col-md-10" style="text-align:center">
+            <button type="button" [disabled]="disableSubmit" class="btn btn-success" (click)="displayapproveitems()">Submit</button>
+        </div>
     </div>
-    <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
-      </div>
-    </p-footer>
-  </p-dialog>
+    <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+        <div class="ui-g ui-fluid">
+            <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+        </div>
+        <p-footer>
+            <div class="ui-dialog-buttonpane ui-helper-clearfix">
+                <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+            </div>
+        </p-footer>
+    </p-dialog>
 </div>
 
 <div *ngIf="approvevalue" style="margin-bottom: 10%;">
-  <p-table [value]="selectedItems" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
-    <ng-template pTemplate="header">
-      <tr class="text-left">
-        <th style="width: 5em">Sl No</th>
-        <th>Item Description</th>
-        <th style="width: 7em">Quantity</th>
-        <th>Vendor Name</th>
-        <th>MPR NO</th>
-        <th>TargetSpend</th>
-        <th style="width:6em">Price</th>
-        <th>SaleOrder</th>
-        <th>PaymentTerm</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
-      <tr>
-        <td class="text-center">{{ri+1}}</td>
-        <td>{{rowData.ItemDescription}}</td>
-        <td>{{rowData.QuotationQty}}</td>
-        <td>{{rowData.VendorName}}</td>
-        <td>{{rowData.DocumentNo}}</td>
-        <td>{{rowData.TargetSpend}}</td>
-        <td>{{rowData.UnitPrice}}</td>
-        <td>{{rowData.SaleOrderNo}}</td>
-        <td>{{rowData.PaymentTermCode}}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <div class="form-group" style="margin-top:10px;margin-left:17px">
-    <div class="row form-inline">
-      <label class="form-label" *ngFor="let List of employee">Assigned Employee:&nbsp;{{List.Name}}</label>
+    <p-table [value]="selectedItems" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="multiple" [(selection)]="selectedItems">
+        <ng-template pTemplate="header">
+            <tr class="text-left">
+                <th style="width: 5em">Sl No</th>
+                <th>Item Description</th>
+                <th style="width: 7em">Quantity</th>
+                <th>Vendor Name</th>
+                <th>MPR NO</th>
+                <th>TargetSpend</th>
+                <th style="width:6em">Price</th>
+                <th>SaleOrder</th>
+                <th>PaymentTerm</th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-ri="rowIndex" let-rindex=0>
+            <tr>
+                <td class="text-center">{{ri+1}}</td>
+                <td>{{rowData.ItemDescription}}</td>
+                <td>{{rowData.QuotationQty}}</td>
+                <td>{{rowData.VendorName}}</td>
+                <td>{{rowData.DocumentNo}}</td>
+                <td>{{rowData.TargetSpend}}</td>
+                <td>{{rowData.UnitPrice}}</td>
+                <td>{{rowData.SaleOrderNo}}</td>
+                <td>{{rowData.PaymentTermCode}}</td>
+            </tr>
+        </ng-template>
+    </p-table>
+    <div class="form-group" style="margin-top:10px;margin-left:17px">
+        <div class="row form-inline">
+            <label class="form-label" *ngFor="let List of employee">Assigned Employee:&nbsp;{{List.Name}}</label>
+        </div>
+        <!--<label class="form-label col-md-3">Assigned Employee:{{paitem.Name}}</label> &nbsp;-->
     </div>
-    <!--<label class="form-label col-md-3">Assigned Employee:{{paitem.Name}}</label> &nbsp;-->
-  </div>
 </div>
