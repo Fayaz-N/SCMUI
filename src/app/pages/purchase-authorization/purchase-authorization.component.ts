@@ -136,8 +136,10 @@ export class PurchaseAuthorizationComponent implements OnInit {
             employemapping.CreatedBY = this.employee.EmployeeNo;
             this.paService.InsertEmployeeMapping(employemapping).subscribe(data => {
                 this.authid = data;
+                this.employemapping = new PAAuthorizationEmployeeMappingModel();
                 this.LoadEmployeemappedPurchases();
                 this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
+                
             })
         }
         else

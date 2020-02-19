@@ -93,7 +93,7 @@ export class purchaseauthorizationservice {
         return this.http.get<any>(this.url + 'PA/GetAllMPRPAList', this.httpOptions);
     }
     LoadAllmprBuyerGroups(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/GetAllMPRBuyerGroups', this.httpOptions);
+        return this.http.get<any>(this.url + 'RFQ/GetAllMPRBuyerGroups', this.httpOptions);
     }
     RemovePACreditDaysApprover(mappingdata: any): Observable<any> {
         return this.http.post<any>(this.url + 'PA/RemovePACreditDaysApprover', mappingdata, this.httpOptions);
@@ -131,7 +131,7 @@ export class purchaseauthorizationservice {
         return this.http.post<any>(this.url + 'PA/getMprPaDetailsBySearch', pofilters, this.httpOptions)
     }
     LoadAllVendors(): Observable<any> {
-        return this.http.get<any>(this.url + 'PA/GetAllvendorList', this.httpOptions);
+        return this.http.get<any>(this.url + 'RFQ/GetAllvendorList', this.httpOptions);
     }
     LoadAllMappedSlabs(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/GetAllMappedSlabs', this.httpOptions);
