@@ -22,11 +22,11 @@ export class MPRPageComponent implements OnInit {
   //variable Declarations start
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
-  public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm; newVendor: FormGroup;
+  public MPRPageForm1; MPRItemDetailsForm; MPRPageForm2; MPRInchargeForm; MPRPageForm3; MPRCommunicationForm; newVendor; POraiseForm; MPRStatus: FormGroup;
   public showMaterialForm; showVendorForm; showOtherDetailsForm; communicationFormEdit; showCommunicationForm: boolean = false;
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
   public MPRForm1Submitted; MPRItemDetailsSubmitted; vendorSubmitted; MPRForm2Submitted; MPRForm3Submitted; MPRCommunicationSubmitted = false;
-  public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog; showFileViewer: boolean = false;
+  public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog; showPOordingDialog; showManualStatusgDialog; showFileViewer: boolean = false;
   public showRfqGen; showCompareRfq; hideDeleteBtn: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
@@ -70,6 +70,7 @@ export class MPRPageComponent implements OnInit {
   public RfqGeneratedList: Array<any> = [];
   public RepeatOrderList: Array<MPRItemInfoes> = [];
   public RepeatOrder: boolean = false;
+  public showraisePo: boolean = false;
 
   //page load event
   ngOnInit() {
@@ -181,16 +182,31 @@ export class MPRPageComponent implements OnInit {
       ccEmail: ['', [Validators.required]]
 
     })
+
     this.newVendor = this.formBuilder.group({
       VendorName: ['', [Validators.required]],
       Emailid: ['', [Validators.required]],
       ContactNo: ['', [Validators.required, Validators.maxLength(10)]]
     })
+    this.POraiseForm = this.formBuilder.group({
+      ORemarks: ['', [Validators.required]],
+      OCheckedBy: ['', [Validators.required]],
+      OApprovedBy: ['', [Validators.required]],
+      OSecondApprover: ['', [Validators.required]],
+      OThirdApprover: ['', [Validators.required]]
+    })
+    this.MPRStatus = this.formBuilder.group({
+      Remarks: ['', [Validators.required]],
+      MPRStatus: ['', [Validators.required]]
+    })
+
     //remove validation for unwanted fields.
     this.MPRPageForm1.controls['docNo'].clearValidators();
     this.MPRPageForm1.controls['JobCode'].clearValidators();
     this.MPRPageForm1.controls['JobName'].clearValidators();
     this.MPRPageForm1.controls['GEPSApprovalId'].clearValidators();
+    this.MPRPageForm1.controls['docNo'].clearValidators();
+    this.MPRPageForm1.controls['JobCode'].clearValidators();
     this.MPRItemDetailsForm.controls['SOLineItemNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgPartNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgModelNo'].clearValidators();
@@ -209,6 +225,9 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm3.controls['InspectionRemarks'].clearValidators();
     this.MPRPageForm3.controls['Remarks'].clearValidators();
     this.MPRCommunicationForm.controls['ccEmail'].clearValidators();
+    this.POraiseForm.controls['ORemarks'].clearValidators();
+    this.POraiseForm.controls['OSecondApprover'].clearValidators();
+    this.POraiseForm.controls['OThirdApprover'].clearValidators();
 
     if (localStorage.getItem("EmployeeList"))
       this.EmployeeList = JSON.parse(localStorage.getItem("EmployeeList"));
@@ -425,6 +444,10 @@ export class MPRPageComponent implements OnInit {
       if (index > -1)
         this.selectedlist.splice(index, 1);
       this.selectedlist.push(item);
+    }
+    if (item.listName == "MPRStatus") {
+      this.mprStatusUpdate.status = item.name;
+      this.mprStatusUpdate.StatusId = item.code;
     }
     if (this.formName == "") {
       if (item.listName == "AssignEmployee") {
@@ -875,9 +898,9 @@ export class MPRPageComponent implements OnInit {
       this.RfqGeneratedList = data;
     })
   }
-  onstatusUpdate(Acknowledge: string) {
-    if (Acknowledge != "") {
-      this.mprStatusUpdate.typeOfuser = Acknowledge;
+  onstatusUpdate(statusType: string) {
+    if (statusType != "") {
+      this.mprStatusUpdate.typeOfuser = statusType;
       if (this.mprStatusUpdate.BuyerGroupId)
         this.mprStatusUpdate.MPRAssignments = [];
     }
@@ -890,13 +913,25 @@ export class MPRPageComponent implements OnInit {
         this.mprStatusUpdate.typeOfuser = "SecondApprover";
       else if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.ThirdApproverStatus != 'Approved')
         this.mprStatusUpdate.typeOfuser = "ThirdApproverThirdApprover";
+
+      else if (this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.OCheckStatus != 'Approved')
+        this.mprStatusUpdate.typeOfuser = "OChecker";
+      else if (this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.OApprovalStatus != 'Approved')
+        this.mprStatusUpdate.typeOfuser = "OApprover";
+      else if (this.mprRevisionModel.OSecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.OSecondApproversStatus != 'Approved')
+        this.mprStatusUpdate.typeOfuser = "OSecondApprover";
+      else if (this.mprRevisionModel.OThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.OThirdApproverStatus != 'Approved')
+        this.mprStatusUpdate.typeOfuser = "OThirdApproverThirdApprover";
+
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
     this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
     this.mprStatusUpdate.PreparedBy = this.employee.EmployeeNo;
     this.MprService.statusUpdate(this.mprStatusUpdate).subscribe(data => {
       this.mprRevisionModel = data;
-      if (Acknowledge == "")
+      if (statusType == "MPRManualStatus")
+        this.showManualStatusgDialog = false;
+      if (statusType == "")
         this.disableStatusSubmit = true;
       else {
         this.showAcknowledge = false;
@@ -1031,6 +1066,39 @@ export class MPRPageComponent implements OnInit {
         this.showAcknowledge = false;
     }
 
+    //show PO raise icon based status and active rvision
+    if (this.mprRevisionModel.IssuePurposeId == 1 && this.mprRevisionModel.CheckStatus == "Approved" && this.mprRevisionModel.ApprovalStatus == "Approved" && !this.mprRevisionModel.SecondApprover && !this.mprRevisionModel.ThirdApprover) {
+      this.showraisePo = true;
+      if (this.mprRevisionModel.SecondApprover && this.mprRevisionModel.SecondApproversStatus != "Approved" && this.mprRevisionModel.ThirdApprover && this.mprRevisionModel.ThirdApproverStatus != "Approved")
+        this.showraisePo = false;
+
+    }
+    //for PO raising details
+    if ((this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.OCheckStatus == "Pending" || this.mprRevisionModel.OCheckStatus == "Submitted" || this.mprRevisionModel.OCheckStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.OCheckStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OCheckStatus;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.OCheckStatus == "Approved") && this.mprRevisionModel.OApprovalStatus == "Pending" || this.mprRevisionModel.OApprovalStatus == "Submitted" || this.mprRevisionModel.OApprovalStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.OApprovalStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.OSecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.OApprovalStatus == "Approved") && this.mprRevisionModel.OSecondApproversStatus == "Pending" || this.mprRevisionModel.OSecondApproversStatus == "Submitted" || this.mprRevisionModel.OSecondApproversStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.OSecondApproversStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OSecondApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else if ((this.mprRevisionModel.OThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.OSecondApproversStatus == "Approved") && this.mprRevisionModel.OThirdApproverStatus == "Pending" || this.mprRevisionModel.OThirdApproverStatus == "Submitted" || this.mprRevisionModel.OThirdApproverStatus == "Sent for Modification") {
+      this.mprStatusUpdate.status = this.mprRevisionModel.OThirdApproverStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OThirdApproverRemarks;
+      this.showStatusDetails = true;
+    }
+    else {
+      if (this.mprRevisionModel.OThirdApprover)
+      this.showStatusDetails = false;
+    }
+
     //PO released or not to enable repeat order
     if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "PO Released").length > 0)
       this.RepeatOrder = true;
@@ -1041,16 +1109,17 @@ export class MPRPageComponent implements OnInit {
       this.displayFooter = true;
     else
       this.displayFooter = false;
-    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
-      this.showRfqGen = this.showCompareRfq = true;
-    else
-      this.showRfqGen = this.showCompareRfq = false;
     if (this.AccessList.length > 0) {
       if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
         this.showRfqGen = true;
       if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
         this.showCompareRfq = true;
     }
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
+      this.showRfqGen = this.showCompareRfq = true;
+    else
+      this.showRfqGen = this.showCompareRfq = false;
+   
   }
 
   bindMPRPageForm(formName: string, data: any) {
@@ -1166,7 +1235,7 @@ export class MPRPageComponent implements OnInit {
     this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
   }
   downLoadExcelFormat() {
- 
+
     var path = this.constants.Documnentpath + "MPRItemListFormat.xlsx";
     window.open(path);
   }
@@ -1175,8 +1244,9 @@ export class MPRPageComponent implements OnInit {
     if (ind > -1)
       this.RepeatOrderList.splice(ind, 1);
     details.RepeatOrderRefId = details.Itemdetailsid;
-    this.RepeatOrderList.push(details);
-   
+    if (event.target.checked)
+      this.RepeatOrderList.push(details);
+
   }
   onRevisionCopy() {
     if (this.RepeatOrderList.length > 0) {
@@ -1190,7 +1260,56 @@ export class MPRPageComponent implements OnInit {
       })
     }
     else {
-      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select atleast one line item. ' });}
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select atleast one line item. ' });
+    }
+  }
+  showPORaiseDialog() {
+    this.showPOordingDialog = true;
+    if (!this.mprRevisionModel.OCheckedBy)
+      this.mprRevisionModel.OCheckedBy = this.mprRevisionModel.CheckedBy;
+    if (!this.mprRevisionModel.OApprovedBy)
+      this.mprRevisionModel.OApprovedBy = this.mprRevisionModel.ApprovedBy;
+    this.bindSearchListData('', '', 'OCheckedBy', "", (): any => {
+      this.showList = false;
+      this.POraiseForm.controls['OCheckedBy'].setValue(this.searchItems.filter(li => li.listName == "OCheckedBy" && li.code == this.mprRevisionModel.OCheckedBy)[0].name);
+      this.POraiseForm.value.OCheckedBy = this.mprRevisionModel.OCheckedBy;
+      this.POraiseForm.controls['OCheckedBy'].updateValueAndValidity()
+    });
+    this.bindSearchListData('', '', 'OApprovedBy', "", (): any => {
+      this.showList = false;
+      this.POraiseForm.controls["OApprovedBy"].setValue(this.searchItems.filter(li => li.listName == "OApprovedBy" && li.code == this.mprRevisionModel.OApprovedBy)[0].name);
+      this.POraiseForm.value.OApprovedBy = this.mprRevisionModel.OApprovedBy;
+      this.POraiseForm.controls['OApprovedBy'].updateValueAndValidity()
+    });
+    if (this.mprRevisionModel.OSecondApprover) {
+      this.bindSearchListData('', '', 'OSecondApprover', "", (): any => {
+        this.showList = false;
+        this.POraiseForm.controls['OSecondApprover'].setValue(this.searchItems.filter(li => li.listName == "OSecondApprover" && li.code == this.mprRevisionModel.OSecondApprover)[0].name);
+        this.POraiseForm.value.OSecondApprover = this.mprRevisionModel.OSecondApprover;
+        this.POraiseForm.controls['OSecondApprover'].updateValueAndValidity()
+      });
+    }
+
+    if (this.mprRevisionModel.OThirdApprover) {
+      this.bindSearchListData('', '', 'OThirdApprover', "", (): any => {
+        this.showList = false;
+        this.POraiseForm.controls["OThirdApprover"].setValue(this.searchItems.filter(li => li.listName == "OThirdApprover" && li.code == this.mprRevisionModel.OThirdApprover)[0].name);
+        this.POraiseForm.value.OApprovedBy = this.mprRevisionModel.OThirdApprover;
+        this.POraiseForm.controls['OThirdApprover'].updateValueAndValidity()
+      });
+    }
+  }
+  onPoRaiseSubmit(dialog: any) {
+    this.mprRevisionModel.ORequestedBy = this.employee.EmployeeNo;
+    this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+      this.mprRevisionModel = data;
+      this[dialog] = false;
+      this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Request for issuing po addedd' });
+    });
+  }
+
+  showManualStatusDialog() {
+    this.showManualStatusgDialog = true;
   }
 }
 

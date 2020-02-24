@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
       this.dynamicData.tableName = "Employee";
       this.dynamicData.columnValues = loginDetails.DomainId + "," + loginDetails.Password;
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
-      this.MprService.getAuth_token(loginDetails).subscribe(data => {
-        localStorage.setItem('AccessToken', JSON.stringify(data));
+      //this.MprService.getAuth_token(loginDetails).subscribe(data => {
+      //  localStorage.setItem('AccessToken', JSON.stringify(data));
 
         this.MprService.ValidateLoginCredentials(this.dynamicData)
           .pipe(first())
@@ -74,6 +74,12 @@ export class LoginComponent implements OnInit {
                   MENU_ITEMS[4].hidden = true;
                   MENU_ITEMS[5].hidden = true;
                 }
+                else {
+                  MENU_ITEMS[2].hidden = false;
+                  MENU_ITEMS[3].hidden = false;
+                  MENU_ITEMS[4].hidden = false;
+                  MENU_ITEMS[5].hidden = false;
+                }
               })
 
               this.LoginForm.reset();
@@ -89,7 +95,7 @@ export class LoginComponent implements OnInit {
               return;
             }
           });
-      })
+      //})
     }
 
   }

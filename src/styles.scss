@@ -128,10 +128,10 @@ body .ui-widget {
   /*padding-right: 10px;*/
 }
 
-.ptable-cell {
+/*.ptable-cell {
   white-space: pre-wrap;
   word-wrap: break-word
-}
+}*/
 
 .valueEdit {
   display: inline-block;
@@ -649,4 +649,90 @@ img {
 
 .bvendor{
   width : 87%;
+}
+
+
+::ng-deep .ui-datatable tbody > tr.ng-star-inserted.ui-widget-updated-row {
+  background-color:blue;
+}
+
+::ng-deep .ui-datatable tbody > tr > td.ui-widget-deleted-row-checkbox .ui-chkbox {
+  display: none;
+}
+//Deleted row
+::ng-deep .ui-datatable tbody > tr.ng-star-inserted.ui-widget-deleted-row {
+  background-color: blue;
+}
+
+::ng-deep .ui-datatable table {
+  table-layout: auto !important;
+  overflow-y: scroll !important;
+}
+
+::ng-deep .ui-datatable-tablewrapper {
+  overflow-y: scroll !important;
+  width: auto !important;
+}
+
+::ng-deep .ui-datatable-resizable {
+  padding-bottom: 1px;
+  /* overflow: auto; */
+  width: auto !important;
+}
+
+::ng-deep .ui-datatable-scrollable-view .ui-datatable-scrollable-body {
+  // min-height: 300px;
+  border: 1px solid #D5D5D5;
+}
+
+::ng-deep .ui-datatable tbody > tr.ui-widget-content.ui-state-highlight {
+  background-color: darkkhaki !important;
+}
+
+::ng-deep a.ui-state-highlight, .ui-state-highlight {
+  background-color: rgb(64, 153, 83);
+  color: black;
+}
+
+.hoverAction:hover {
+  background-color: seagreen;
+  color: black;
+}
+
+::ng-deep .ui-confirmdialog-message {
+  white-space: pre-line;
+}
+
+::ng-deep .ui-datatable tr.ui-datatable-even:hover {
+  background: #78BCFF;
+}
+
+::ng-deep .ui-datatable tbody > tr.ui-widget-content.ui-datatable-odd:hover {
+  background: #78BCFF;
+}
+
+.ui-datatable .ui-datatable-thead > tr > th, .ui-datatable .ui-datatable-tfoot > tr > td, .ui-datatable .ui-datatable-data > tr > td {
+  border-color: inherit;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: .25em .5em;
+  border-width: 1px;
+  flex: 2;
+  //width:auto !important;
+  min-height: 8px;
+  min-width: auto !important;
+  max-width: 300px !important;
+  font-size: 12px;
+  padding: 0px !important;
+  padding-left: 4px !important;
+  color: black;
+  text-transform: capitalize;
+  white-space: nowrap;
+  overflow: hidden;
+  display: table-cell;
+  text-overflow: ellipsis !important;
+  word-wrap: break-word !important;
+  /* font-size: 11px; */
+  border-width: 1px;
+  border-style: solid;
 }

@@ -26,7 +26,7 @@ export class MPRListComponent implements OnInit {
   public selectedItem: searchList;
   public searchresult: Array<object> = [];
   public mprList: Array<any> = [];
-  public depDisable: boolean = true;
+  public depDisable: boolean = false;
   public mprRevisionModel: mprRevision;
   public mprFilterParams: mprFilterParams;
   public typeOfList: string;
@@ -74,7 +74,9 @@ export class MPRListComponent implements OnInit {
       ItemDescription: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
       BuyerGroupId: ['', [Validators.required]],
-      AssignEmployee: ['', [Validators.required]]
+      AssignEmployee: ['', [Validators.required]],
+      MPRStatusId: ['', [Validators.required]],
+      PurchaseTypeId: ['', [Validators.required]]
     });
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
@@ -104,17 +106,16 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.CheckedBy = "";
 
     }
-    if (this.employee.OrgDepartmentId == 14)//cmm
-      this.depDisable = false;
-    else
-      this.depDisable = true;
-    if (this.employee.OrgDepartmentId != null) {
-      this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
-      this.mprFilterParams.DepartmentId = this.employee.OrgDepartmentId.toString();
-    }
+    //if (this.employee.OrgDepartmentId == 14)//cmm
+    //  this.depDisable = false;
+    //else
+    //  this.depDisable = true;
+    //if (this.employee.OrgDepartmentId != null) {
+    //  this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
+    //  this.mprFilterParams.DepartmentId = this.employee.OrgDepartmentId.toString();
+    //}
 
     this.getStatusList();
-
 
   }
   //show and hide filter parmas

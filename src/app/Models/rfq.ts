@@ -154,9 +154,10 @@ export class RfqItemModel {
 }
 
 export class rfqFilterParams {
-  typeOfFilter: boolean = true;
-  FromDate: Date;
-  ToDate: Date;
+  RFQType: string;
+  typeOfFilter: string;
+  FromDate: string;
+  ToDate: string;
   RFQNo: string;
   venderid: string;
   DocumentNo: string;
