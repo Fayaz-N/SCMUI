@@ -75,7 +75,7 @@ export class purchaseauthorizationservice {
         return this.http.get<any>(this.url + 'PA/GetPurchaseSlabsandMappedemployees', this.httpOptions);
     }
     LoadEmployeemappedPurchasesBydeptid(mapping: any): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/GetPurchaseSlabsandMappedemployeesByDeptId/' , mapping, this.httpOptions);
+        return this.http.post<any>(this.url + 'PA/GetPurchaseSlabsandMappedemployeesByDeptId', mapping, this.httpOptions);
     }
     LoadAllmprpapurchasemodes(): Observable<mprpapurchasemodesmodel[]> {
         return this.http.get<mprpapurchasemodesmodel[]>(this.url + 'PA/GetAllMprPAPurchaseModes', this.httpOptions);

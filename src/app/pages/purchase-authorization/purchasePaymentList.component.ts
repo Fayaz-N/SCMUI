@@ -100,7 +100,7 @@ export class purchasePaymentListComponent implements OnInit {
     displayfn(option) {
          //I want to get the full object and display the name
         if (!option) return '';
-        return option.DepartmentName;
+        return option.Department;
 
         //let index = this.departmentlist.find(state => state.DepartmentId === DepartmentId);
         //return this.departmentlist[index].name;

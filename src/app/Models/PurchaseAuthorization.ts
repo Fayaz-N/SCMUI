@@ -182,13 +182,22 @@ export class mprpadetailsmodel {
     FactorsForImports: string;
     SpecialRemarks: string;
     SupplierReference: string;
+    QuotationQty: number;
     TermId: Array<number>[];
+    BuyerGroupManager: string;
+    BuyerGroupNo: string;
+    BGRole: string;
+    PMRole: string;
+    LoginEmployee: string;
+    ProjectManager: string;
+    ProjectMangerNo: string;
     purchasemodes: mprpapurchasemodesmodel;
     purchasetypes: mprpapurchasetypesmodel;
     department: DepartmentModel;
     Item: Array<ItemsViewModel>[];
     buyergroup: BuyerGroupModel;
-    ApproversList: Array<MPRPAApproversModel>[];
+   // ApproversList: Array<MPRPAApproversModel>[];
+    ApproversList: Array<PurchaseCreditApproversModel>[];
 }
 export class MPRPAApproversModel {
     ApproverId: number;

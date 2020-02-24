@@ -47,6 +47,8 @@ export class purchasePaymentComponent implements OnInit {
     public Buyergroup: string;
     public Department: string;
     public BuyerGroupId: number;
+    public Qty: number;
+    public savingorexcessamount: number;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -95,6 +97,12 @@ export class purchasePaymentComponent implements OnInit {
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
             }
+            if (this.target > this.sum) {
+                this.savingorexcessamount = this.target - this.sum;
+            }
+            else {
+                this.savingorexcessamount = this.target - this.sum;
+            }
             this.Buyergroup = this.selectedItems[0].BuyerGroup;
             this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
             this.purchasedetails.DepartmentID = this.selectedItems[0].DepartmentId;
@@ -126,6 +134,7 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.ApproversList = [];
         this.purchasedetails.TermId = [];
         this.purchasedetails.VendorId = this.selectedItems[0]["VendorId"];
+        this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
         //console.log(this.employeelist.Approvers, "approver");
         for (var i = 0; i < this.selectedItems.length; i++) {
             this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
@@ -137,6 +146,13 @@ export class purchasePaymentComponent implements OnInit {
         for (var i = 0; i < this.employeelist.Approvers.length; i++) {
             this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
         }
+
+        this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
+        this.purchasedetails.BGRole = this.employeelist.BGRole;
+        this.purchasedetails.ProjectManager = this.employeelist.ProjectManager;
+        this.purchasedetails.PMRole = this.employeelist.PMRole;
+        this.purchasedetails.BuyerGroupNo = this.employeelist.BuyerGroupNo;
+        this.purchasedetails.ProjectMangerNo = this.employeelist.ProjectMangerNo;
         for (var i = 0; i < this.rfqterms.length; i++) {
             this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
         }
@@ -169,6 +185,17 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
             this.pasubmitted = true;
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
+            }
+            this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
+            this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
+            if (this.target > this.sum) {
+                this.savingorexcessamount = this.target - this.sum;
+            }
+            else {
+                this.savingorexcessamount = this.target - this.sum;
+            }
             this.selectedvendor = this.purchasedetails.Item[0]["VendorName"];
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
