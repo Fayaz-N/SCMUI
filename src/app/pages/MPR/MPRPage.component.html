@@ -191,9 +191,8 @@
           <ng-template pTemplate="header">
             <tr>
               <th>S.No</th>
-              <th>Item Description</th>
-              <th>Quantity</th>
-              <th>Unit</th>
+              <th>Item Code & MPR Item Description</th>
+              <th>Quantity & Unit</th>          
               <th>Sale Order Line Item No</th>
               <th>Reference Document No</th>
               <th>Target Spend</th>
@@ -205,16 +204,15 @@
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
             <tr>
-              <td>
+              <td class="ptable-cell">
                 {{ri+1}}
               </td>
-              <td>{{rowData.ItemDescription}}</td>
-              <td>{{rowData.Quantity}}</td>
-              <td>{{BindUnits(rowData.UnitId)}}</td>
-              <td>{{rowData.SOLineItemNo}}</td>
-              <td>{{rowData.ReferenceDocNo}}</td>
-              <td>{{rowData.TargetSpend}}</td>
-              <td>
+              <td class="ptable-cell">{{rowData.Itemid}} - {{rowData.ItemDescription}}</td>
+              <td class="ptable-cell">{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
+              <td class="ptable-cell">{{rowData.SOLineItemNo}}</td>
+              <td class="ptable-cell">{{rowData.ReferenceDocNo}}</td>
+              <td class="ptable-cell">{{rowData.TargetSpend}}</td>
+              <td class="ptable-cell">
                 <div *ngFor="let document of mprRevisionModel.MPRDocuments">
                   <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
                 </div>
@@ -245,7 +243,7 @@
             </div>
 
             <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Target Spend Remarks</label>&nbsp;<span style="color:red">*</span>
+              <label class="form-label">Target Spend Remarks</label>
               <textarea class="form-control" type="text" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
               <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
             </div>
@@ -926,7 +924,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.CheckedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.CheckedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -953,7 +951,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.ApprovedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.ApprovedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -982,7 +980,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.SecondApprovedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.SecondApprovedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -1009,7 +1007,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.ThirdApproverStatusChangedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.ThirdApproverStatusChangedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -1045,7 +1043,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.OCheckedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.OCheckedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -1072,7 +1070,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.OApprovedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.OApprovedOn }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -1101,7 +1099,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.OSecondApprovedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.OSecondApprovedOn}}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -1128,7 +1126,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{mprRevisionModel.OThirdApproverStatusChangedOn | date :  constants.dateFormat}}</td>
+              <td>{{mprRevisionModel.OThirdApproverStatusChangedOn}}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>

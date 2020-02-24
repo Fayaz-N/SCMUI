@@ -6,13 +6,14 @@ import { constants } from 'src/app/Models/MPRConstants'
 import { ActivatedRoute, Router } from '@angular/router';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-RFQList',
   templateUrl: './RFQList.component.html'
 })
 export class RFQListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public RfqService: RfqService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, private datePipe: DatePipe, public MprService: MprService, public RfqService: RfqService, public constants: constants, private route: ActivatedRoute, private router: Router) { }
   public employee: Employee;
   public RFQfilterForm: FormGroup;
   public formName: string;
@@ -29,7 +30,8 @@ export class RFQListComponent implements OnInit {
   public typeOfList: string;
   public statusList: Array<any> = [];
   loading: boolean;
-
+  public fromDate: Date;
+  public toDate: Date
 
   //page load event
   ngOnInit() {
@@ -40,12 +42,13 @@ export class RFQListComponent implements OnInit {
     
     this.typeOfList = this.route.routeConfig.path;
     this.rfqFilterParams = new rfqFilterParams();
-    this.rfqFilterParams.ToDate = new Date();
-    this.rfqFilterParams.ToDate = new Date();
-    this.rfqFilterParams.FromDate = new Date(new Date().setDate(new Date().getDate() - 30));
-
+    this.toDate = new Date();
+    this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
+    this.rfqFilterParams.RFQType = "0";
+    this.rfqFilterParams.typeOfFilter = "1";
 
     this.RFQfilterForm = this.formBuilder.group({
+      RFQType: ['', [Validators.required]],
       typeOfFilter: ['', [Validators.required]],
       FromDate: ['', [Validators.required]],
       ToDate: ['', [Validators.required]],
@@ -64,8 +67,9 @@ export class RFQListComponent implements OnInit {
 
   //bind rfq list
   bindList() {
-    this.rfqFilterParams.FromDate = new Date(this.rfqFilterParams.FromDate);
-    this.rfqFilterParams.ToDate = new Date(this.rfqFilterParams.ToDate);
+    this.rfqFilterParams.FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
+    this.rfqFilterParams.ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
+
     this.RfqService.getRFQList(this.rfqFilterParams).subscribe(data => {
       this.rfqList = data;
       this.loading = false;

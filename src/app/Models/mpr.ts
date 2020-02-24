@@ -302,6 +302,7 @@ export class mprFilterParams {
   BuyerGroupId: string;
   AssignEmployee: string;
   MPRStatusId: string;
+  PurchaseTypeId: string;
 }
 
 export class MPRScope {

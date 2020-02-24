@@ -113,12 +113,21 @@
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="BuyerGroupId" class="form-label">Assigned To</label>
-        <div class="form-inline-list  ml-2 ">
+        <div class="form-inline-list  ml-2">
           <input type="text" class="form-control forms-input" formControlName="AssignEmployee" [value]="MPRfilterForm.controls.AssignEmployee.value">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','AssignEmployee',MPRfilterForm.controls.AssignEmployee.value,undefined)"></button>
           </div>
 
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Type Of Purchase </label>
+        <div class="form-inline-list  ml-2">
+          <input type="text" class="form-control forms-input" formControlName="PurchaseTypeId" [value]="MPRfilterForm.controls.PurchaseTypeId.value">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','PurchaseTypeId',MPRfilterForm.controls.PurchaseTypeId.value,undefined)"></button>
+          </div>
         </div>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
@@ -141,53 +150,40 @@
   </div>
 </form>
 <div class="form-control h-100 p-0" style="border-radius:0px;">
-  <p-table #dt [value]="mprList" [paginator]="true" [rows]="10" [resizableColumns]="true" [scrollable]="true" [lazy]="true" [loading]="loading">
-    <ng-template pTemplate="caption p-0">
-      <!--<div style="text-align: right">
-        <i class="fa fa-search" style="margin:4px 4px 0 0"></i>
-        <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-      </div>-->
-    </ng-template>
-    <ng-template pTemplate="header">
+  <p-table #dt  [value]="mprList" [style]="{'width':'100%','overflow':'auto!important'}"
+           [responsive]="true" [rows]="50"
+           [resizableColumns]="true"
+           columnResizeMode="expand"
+           [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+           appendTo="body">
+    <ng-template pTemplate="header" >
       <tr class="mprltbldata">
-        <th style="width:50px">S.No</th>
-        <th>MPR Document Number</th>
-        <th>Description</th>
-        <th *ngIf="showCMMFilter">Job Code</th>
-        <th *ngIf="showCMMFilter">Job Name</th>
-        <th *ngIf="showCMMFilter">Purpose of issuing MPR</th>
-        <th *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
-        <th *ngIf="showCMMFilter">Ge Ps Approval Id</th>
-        <th *ngIf="showCMMFilter">Buyer Group Name</th>
-        <th>Preapared By</th>
-        <th>Preapared On</th>
-        <th>Check By</th>
-        <th>Check Status</th>
-        <th>Approved By</th>
-        <th>Approval Status</th>
-        <th>AssignTo</th>
-        <th>MPRStatus</th>
-        <th>Edit</th>
-        <th>Copy</th>
-        <th>Revise</th>
+        <th style="width:100px">S.No</th>
+        <th style="width:100px">MPR Document Number</th>
+        <th style="width:100px">Description</th>
+        <th style="width:100px" *ngIf="showCMMFilter">Job Code</th>
+        <th style="width:100px" *ngIf="showCMMFilter">Job Name</th>
+        <th style="width:100px" *ngIf="showCMMFilter">Purpose of issuing MPR</th>
+        <th style="width:100px" *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
+        <th style="width:100px" *ngIf="showCMMFilter">Ge Ps Approval Id</th>
+        <th style="width:100px" *ngIf="showCMMFilter">Buyer Group Name</th>
+        <th style="width:100px">Preapared By</th>
+        <th style="width:100px">Preapared On</th>
+        <th style="width:100px">Check By</th>
+        <th style="width:100px">Check Status</th>
+        <th style="width:100px">Approved By</th>
+        <th style="width:100px">Approval Status</th>
+        <th style="width:100px">AssignTo</th>
+        <th style="width:100px">MPRStatus</th>
+        <th style="width:100px">Purchase Type</th>
+        <th style="width:100px">Edit</th>
+        <th style="width:100px">Copy</th>
+        <th style="width:100px">Revise</th>
       </tr>
-      <!--<tr>
-        <th></th>
-        <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'DocumentNo', 'contains')"></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th><input pInputText type="text" (input)="dt.filter($event.target.value, 'CheckedName', 'contains')"></th>
-        <th></th>
-        <th></th>
-        <th></th>
-      </tr>-->
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
       <tr class="mprltbldata">
-        <td style="width:50px">
-          {{ri+1}}
-        </td>
+        <td> {{ri+1}}</td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobCode}}</td>
@@ -204,6 +200,7 @@
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
         <td class="ptable-cell">{{rowData.AssignEmployeeName}}</td>
         <td class="ptable-cell">{{rowData.MPRStatus}}</td>
+        <td class="ptable-cell">{{rowData.PurchaseType}}</td>
         <td><button *ngIf="(typeOfList=='MPRList' || typeOfList=='MPRPendingList') && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
         <td><button pButton type="button" icon="fa fa-copy" class="ui-button-info p-1" (click)="onRevisionCopy(rowData)"></button></td>
         <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>

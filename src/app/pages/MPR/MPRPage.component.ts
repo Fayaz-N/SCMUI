@@ -1094,8 +1094,10 @@ export class MPRPageComponent implements OnInit {
       this.mprStatusUpdate.Remarks = this.mprRevisionModel.OThirdApproverRemarks;
       this.showStatusDetails = true;
     }
-    else
+    else {
+      if (this.mprRevisionModel.OThirdApprover)
       this.showStatusDetails = false;
+    }
 
     //PO released or not to enable repeat order
     if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "PO Released").length > 0)
@@ -1107,16 +1109,17 @@ export class MPRPageComponent implements OnInit {
       this.displayFooter = true;
     else
       this.displayFooter = false;
-    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
-      this.showRfqGen = this.showCompareRfq = true;
-    else
-      this.showRfqGen = this.showCompareRfq = false;
     if (this.AccessList.length > 0) {
       if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
         this.showRfqGen = true;
       if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
         this.showCompareRfq = true;
     }
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
+      this.showRfqGen = this.showCompareRfq = true;
+    else
+      this.showRfqGen = this.showCompareRfq = false;
+   
   }
 
   bindMPRPageForm(formName: string, data: any) {

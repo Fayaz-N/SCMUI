@@ -49,8 +49,8 @@ export class LoginComponent implements OnInit {
       this.dynamicData.tableName = "Employee";
       this.dynamicData.columnValues = loginDetails.DomainId + "," + loginDetails.Password;
       this.dynamicData.searchCondition = "DomainId='" + loginDetails.DomainId + "'";
-      this.MprService.getAuth_token(loginDetails).subscribe(data => {
-        localStorage.setItem('AccessToken', JSON.stringify(data));
+      //this.MprService.getAuth_token(loginDetails).subscribe(data => {
+      //  localStorage.setItem('AccessToken', JSON.stringify(data));
 
         this.MprService.ValidateLoginCredentials(this.dynamicData)
           .pipe(first())
@@ -95,7 +95,7 @@ export class LoginComponent implements OnInit {
               return;
             }
           });
-      })
+      //})
     }
 
   }

@@ -97,6 +97,8 @@ export class RFQFormComponent implements OnInit {
       Status: ['', [Validators.required]]
 
     })
+    this.RFQForm.controls['RFQType'].clearValidators();
+    this.RFQForm.controls['VendorVisibility'].clearValidators();
     this.AddItemForm.controls['RequestRemarks'].clearValidators();
     this.AddItemForm.controls['VendorModelNo'].clearValidators();
     this.addItemInfoForm.controls['DeliveryDays'].clearValidators();
