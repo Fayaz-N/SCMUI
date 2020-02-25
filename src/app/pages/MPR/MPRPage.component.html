@@ -1183,9 +1183,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <label class="form-label">Employee</label>
         <div class="form-inline-list  ml-2 ">
-          <input type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.EmployeeName">
+          <input [disabled]="mprStatusUpdate.BuyerGroupName!=''" type="text" class="form-control forms-input" [(ngModel)]="mprStatusUpdate.EmployeeName">
           <div class="input-group-append">
-            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','AssignEmployee',mprStatusUpdate.EmployeeName,undefined)"></button>
+            <button [disabled]="mprStatusUpdate.BuyerGroupName!=''" type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','AssignEmployee',mprStatusUpdate.EmployeeName,undefined)"></button>
           </div>
         </div>
 
