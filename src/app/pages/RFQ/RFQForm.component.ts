@@ -125,6 +125,7 @@ export class RFQFormComponent implements OnInit {
     searchTxt = searchTxt.replace('*', '%');
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
+    this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -193,7 +194,7 @@ export class RFQFormComponent implements OnInit {
 
   onRFQsubmit() {
     this.rfqSubmitted = true;
-    
+
     if (this.RFQForm.invalid) {
       return;
     }
@@ -323,9 +324,22 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo.RFQItemsId = rfqItemId;
     this.rfqItemInfo.CurrencyId = 0;
     this.rfqItemInfo.Status = "Approved";
+    if (this.rfqRevisionModel.RFQType == "Rate Contract") {
+      this.addItemInfoForm.controls['Status'].setValidators([Validators.required]);
+      this.addItemInfoForm.controls['ValidFrom'].setValidators([Validators.required]);
+      this.addItemInfoForm.controls['ValidTo'].setValidators([Validators.required]);
+    }
+    else {
+      this.addItemInfoForm.controls['Status'].clearValidators();
+      this.addItemInfoForm.controls['ValidFrom'].clearValidators();
+      this.addItemInfoForm.controls['ValidTo'].clearValidators();
+    }
+    this.addItemInfoForm.controls['Status'].updateValueAndValidity();
+    this.addItemInfoForm.controls['ValidFrom'].updateValueAndValidity();
+    this.addItemInfoForm.controls['ValidTo'].updateValueAndValidity();
   }
 
-  onItemEdit(e: any,details: RfqItemModel) {
+  onItemEdit(e: any, details: RfqItemModel) {
     this.rfqItem = details;
     this.AddItemDialog = true;
     this.bindSearchListData(e, 'AddItemForm', 'ItemId', "", (): any => {
@@ -348,34 +362,48 @@ export class RFQFormComponent implements OnInit {
     if (details.IGSTPercentage)
       this.IGSTPercentageChange();
     if (details.CGSTPercentage)
-      this.IGSTEnablefromCGSTChange();    
+      this.IGSTEnablefromCGSTChange();
     if (details.SGSTPercentage)
       this.IGSTEnablefromSGSTChange();
-   
+
   }
 
   onItemInfoEdit(details: RfqItemInfoModel) {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
-   // this.rfqItemInfo.CurrencyId = details.CurrencyId;
+    // this.rfqItemInfo.CurrencyId = details.CurrencyId;
     this.AddItemInfodialog = true;
     this.rfqItemInfo.ValidFrom = new Date(this.rfqItemInfo.ValidFrom);
     this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);
-    this.addItemInfoForm.controls["ValidFrom"].setValue(this.rfqItemInfo.ValidFrom);
-    this.addItemInfoForm.controls["ValidTo"].setValue(this.rfqItemInfo.ValidTo);
-    
    
+    if (this.rfqRevisionModel.RFQType = "Rate Contract") {
+      this.addItemInfoForm.controls['Status'].setValidators([Validators.required]);
+      this.addItemInfoForm.controls['ValidFrom'].setValidators([Validators.required]);
+      this.addItemInfoForm.controls['ValidTo'].setValidators([Validators.required]);
+      this.addItemInfoForm.controls["ValidFrom"].setValue(this.rfqItemInfo.ValidFrom);
+      this.addItemInfoForm.controls["ValidTo"].setValue(this.rfqItemInfo.ValidTo);
+    }
+    else {
+      this.addItemInfoForm.controls['Status'].clearValidators();
+      this.addItemInfoForm.controls['ValidFrom'].clearValidators();
+      this.addItemInfoForm.controls['ValidTo'].clearValidators();
+    }
+    this.addItemInfoForm.controls['Status'].updateValueAndValidity();
+    this.addItemInfoForm.controls['ValidFrom'].updateValueAndValidity();
+    this.addItemInfoForm.controls['ValidTo'].updateValueAndValidity();
+
+
   }
   ondeleteRFQItem(rfqItem: RfqItemModel, itemindex: number) {
     this.RfqService.DeleteRfqItemByid(rfqItem.RFQItemsId).subscribe(data => {
       var index1 = this.rfqRevisionModel.rfqitem.findIndex(x => x.RFQItemsId == rfqItem.RFQItemsId);
-       this.rfqRevisionModel.rfqitem.splice(index1, 1);
+      this.rfqRevisionModel.rfqitem.splice(index1, 1);
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Deleted' });
 
     })
   }
 
-  ondeleteRFQItemInfo(rfqItemInfo: RfqItemInfoModel,itemindex:number, index: number) {
+  ondeleteRFQItemInfo(rfqItemInfo: RfqItemInfoModel, itemindex: number, index: number) {
     this.RfqService.DeleteRfqIteminfoByid(rfqItemInfo.RFQSplitItemId).subscribe(data => {
       var index1 = this.rfqRevisionModel.rfqitem[itemindex].iteminfo.findIndex(x => x.RFQSplitItemId == rfqItemInfo.RFQSplitItemId);
       this.rfqRevisionModel.rfqitem[itemindex].iteminfo.splice(index1, 1);

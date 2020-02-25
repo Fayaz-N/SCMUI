@@ -232,9 +232,9 @@
     </div>
   </div>-->
   <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0">
-    <label class="form-label">Terms And Conditions:</label><br />
+    <label class="form-label"><b style="text-decoration:underline">Terms And Conditions:</b></label><br />
     <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
-      <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<b class="fixed-text">{{term.Terms}}</b>
+      <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<p>{{term.Terms}}</p>
     </div>
   </div>
   <p-footer>

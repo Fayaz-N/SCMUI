@@ -9,13 +9,14 @@ import { Employee, DynamicSearchResult, searchList, MPRItemInfoes, MPRDocument, 
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { element } from 'protractor';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-MPRPage',
   templateUrl: './MPRPage.component.html'
 })
 export class MPRPageComponent implements OnInit {
-  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
+  constructor(private router: Router, private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, private datePipe: DatePipe, public constants: constants, private route: ActivatedRoute, private messageService: MessageService, private spinner: NgxSpinnerService, public sanitizer: DomSanitizer) { }
   @ViewChild('dialog', { read: ElementRef, static: true })
   protected dialogElement: ElementRef;
 
@@ -283,10 +284,11 @@ export class MPRPageComponent implements OnInit {
     if (searchTxt == undefined)
       searchTxt = "";
     searchTxt = searchTxt.replace('*', '%');
+    this.dynamicData = new DynamicSearchResult();
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "ItemId")
-      this.dynamicData.searchCondition += " OR Material" + " like '" + searchTxt + "%'";
+      this.dynamicData.searchCondition += " OR Material" + " like '" + searchTxt + "%'" + "group by Material";
 
     if (this.dynamicData.searchCondition && name == "ClientName") {
       //this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'";
@@ -296,6 +298,8 @@ export class MPRPageComponent implements OnInit {
 
 
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
+    if (name == "ItemId")
+      this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition +" ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -324,8 +328,15 @@ export class MPRPageComponent implements OnInit {
         else if (name == "venderid") {
           fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
         }
-        else if (name == "ItemId")
+        else if (name == "ItemId") {
           fName = item[this.constants[name].fieldName] + " - " + item[this.constants[name].fieldId];
+          if (item["RFQType"] == "Rate Contract")
+            fName += " - " + "RC";
+          if (item["QuoteValidTo"]) {
+            var date = this.datePipe.transform(item["QuoteValidTo"], this.constants.dateFormat);
+            fName += " - " + date;
+          }
+        }
         else
           fName = item[this.constants[name].fieldName];
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };

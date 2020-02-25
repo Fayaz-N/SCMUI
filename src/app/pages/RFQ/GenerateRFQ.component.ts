@@ -111,6 +111,7 @@ export class GenerateRFQComponent implements OnInit {
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
+    this.dynamicData = new DynamicSearchResult();
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {

@@ -354,10 +354,10 @@
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" formControlName="Remarks" [(ngModel)]="rfqItemInfo.Remarks" />
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2">
+      <div *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Status :</label>&nbsp;<span style="color:red">*</span>
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2">
+      <div *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="col-lg-2 col-md-2 col-sm-2">
         <select class="form-control dropdown" formControlName="Status" [(ngModel)]="rfqItemInfo.Status">
           <option value="Pending">Pending</option>
           <option value="Approved">Approved</option>
@@ -366,7 +366,7 @@
       </div>
     </div>
 
-    <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+    <div *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Valid From :</label>&nbsp;<span style="color:red">*</span>
       </div>
