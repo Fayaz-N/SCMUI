@@ -4,7 +4,7 @@ import { purchaseauthorizationservice } from 'src/app/services/purchaseauthoriza
 import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
 import { MprService } from 'src/app/services/mpr.service';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
 import { FormGroup } from '@angular/forms';
 @Component({
     selector: 'app-purchasePayment',
@@ -49,6 +49,7 @@ export class purchasePaymentComponent implements OnInit {
     public BuyerGroupId: number;
     public Qty: number;
     public savingorexcessamount: number;
+    public status: StatusCheckModel;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -177,7 +178,6 @@ export class purchasePaymentComponent implements OnInit {
         });
     }
     getmprpabyid(paid: any) {
-        debugger;
         //this.paitemdetails = new Array<ItemsViewModel>[];
         this.MPRItemDetailsid = [];
         this.paService.LoadMprPADeatilsbyid(paid).subscribe(data => {
@@ -272,8 +272,11 @@ export class purchasePaymentComponent implements OnInit {
     }
     Approvepa(approvers: MPRPAApproversModel) {
         approvers.PAId = this.paid;
+        approvers.EmployeeNo = this.employee.EmployeeNo;
         this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
-            this.getmprpabyid = data;
+            this.status = data;
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated Successfully' });
+            this.getmprpabyid(approvers.PAId);
         })
     }
     AddPaitem(paitemid:any) {

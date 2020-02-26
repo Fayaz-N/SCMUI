@@ -248,3 +248,7 @@ export class PAApproverDetailsInputModel {
     Status: string;
     CreatedBy: string;
 }
+export class StatusCheckModel {
+    sid: number;
+    status: string;
+}
