@@ -36,6 +36,7 @@
     "intl": "1.2.5",
     "ionicons": "2.0.1",
     "jquery": "^3.4.1",
+    "mdn-polyfills": "^5.20.0",
     "nebular-icons": "1.1.0",
     "ng2-search-filter": "^0.5.1",
     "ngx-spinner": "^8.0.3",
