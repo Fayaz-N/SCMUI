@@ -142,4 +142,5 @@ export class purchasePaymentListComponent implements OnInit {
         if (!option) return '';
         return option.BuyerGroup;
     }
+
 }

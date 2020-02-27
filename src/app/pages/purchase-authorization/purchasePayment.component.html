@@ -63,7 +63,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
-        <input type="text" [(ngModel)]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
+        <input type="text" disabled="true"  [value]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
       <div *ngIf="pasubmitted">
         <label for="ProjectName" class="form-label label col-md-4" style="margin-left: 0px;">Project Name</label>&nbsp;&nbsp;
@@ -73,7 +73,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Code:</label>
-        <input type="text" [(ngModel)]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:60%" />
+        <input type="text" disabled="true" [value]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
       <div  *ngIf="pasubmitted">
         <label for="ProjectCode" class="form-label label col-md-4" style="margin-left: 0px;">Project Code</label>&nbsp;&nbsp;
@@ -343,7 +343,7 @@
       <span class="Vendor form-control">{{selectedvendor}} </span>
     </div>
   </div>
-</div>
+</div><br />
 
 <!--<div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Reference Name:</div>
@@ -362,6 +362,48 @@
     </div>
   </div>
 </div>-->
+<div class="form-control" style="height:100%;width:100%">
+  <div *ngIf="!pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+    <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><span style="float:left">Terms </span></th>
+            <th><span style="float:left">RfqRevisionId </span> </th>
+            <th><span colspan="5" style="float:left">RFQNo </span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let terms of rfqterms">
+            <td>{{terms.Terms}}</td>
+            <td>{{terms.RFQrevisionId}}</td>
+            <td>{{terms.RFQNo}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div *ngIf="pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+    <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th><span style="float:left">Terms </span></th>
+            <th><span style="float:left">RfqRevisionId </span> </th>
+            <th rowspan="2"><span colspan="5" style="float:left">RFQNo </span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let terms of rfqterms">
+            <td>{{terms.Terms}}</td>
+            <td>{{terms.RFQrevisionId}}</td>
+            <td>{{terms.RFQNo}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Terms and Conditions:</div>
 </div>
@@ -534,48 +576,7 @@
     </tr>
   </table>
 </div><br />
-<!--<div class="form-control" style="height:100%;width:100%">
-  <div *ngIf="!pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th><span style="float:left">Terms </span></th>
-            <th><span style="float:left">RfqRevisionId </span> </th>
-            <th><span colspan="5" style="float:left">RFQNo </span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let terms of rfqterms">
-            <td>{{terms.Terms}}</td>
-            <td>{{terms.RFQrevisionId}}</td>
-            <td>{{terms.RFQNo}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div *ngIf="pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th><span style="float:left">Terms </span></th>
-            <th><span style="float:left">RfqRevisionId </span> </th>
-            <th><span colspan="5" style="float:left">RFQNo </span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let terms of rfqterms">
-            <td>{{terms.Terms}}</td>
-            <td>{{terms.RFQrevisionId}}</td>
-            <td>{{terms.RFQNo}}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>-->
+
 <div *ngIf="!pasubmitted" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Submit</button>
 </div>

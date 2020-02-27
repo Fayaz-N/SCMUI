@@ -24,6 +24,20 @@
         </mat-autocomplete>
       </mat-form-field>
     </div>
+    <!--<div class="col-lg-4 col-md-4 col-sm-4">
+      <mat-select-autocomplete class="grid-7-11"
+                               [placeholder]="'Options Selection'"
+                               [errorMsg]="errorMessage" 
+                               [showErrorMsg]="showError"
+                               [options]="departmentlist"
+                               [display]="'Department'"
+                               [value]="'DepartmentId'"
+                               [multiple]='false'
+                               [labelCount]="2"
+                               [selectedOptions]=""
+                               (selectionChange)="getSelectedOptions($event)">
+      </mat-select-autocomplete>
+    </div>-->
     <div class="col-lg-4 col-md-4 col-sm-4">
       <mat-form-field class="example-full-width" style="width:100%">
         <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters" placeholder="Select BuyerGroup" [formControl]="buyercontrol" />

@@ -119,6 +119,7 @@ export class PurchaseCreditApproversModel {
     ApprovedOn: Date;
     Approver: string;
     ApproverId: number;
+    roleorder: number;
     PAId: number;
 }
 

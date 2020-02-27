@@ -104,6 +104,8 @@ export class purchasePaymentComponent implements OnInit {
             else {
                 this.savingorexcessamount = this.target - this.sum;
             }
+            this.purchasedetails.ProjectCode = this.selectedItems[0]["JobCode"];
+            this.purchasedetails.ProjectName = this.selectedItems[0]["JobName"];
             this.Buyergroup = this.selectedItems[0].BuyerGroup;
             this.purchasedetails.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
             this.purchasedetails.DepartmentID = this.selectedItems[0].DepartmentId;
