@@ -284,6 +284,7 @@ export class purchasePaymentComponent implements OnInit {
     AddPaitem(paitemid:any) {
         this.EditDialog = true;
         this.paitem = paitemid;
+        //this.SubmitItem(paitemid);
     }
     Cancel() {
         this.EditDialog = false;
@@ -295,6 +296,7 @@ export class purchasePaymentComponent implements OnInit {
         this.paService.InsertPAitems(paitem).subscribe(data => {
             this.paid = data;
             this.EditDialog = false;
+            paitem = new ItemsViewModel();
         })
     }
 }

@@ -94,6 +94,7 @@ export class ItemsViewModel {
     Remarks: string;
     paitemid: number;
     paid: number;
+    MRPItemsDetailsID: number;
 }
 export class EmployeeModel {
     EmployeeNo: number;

@@ -63,7 +63,7 @@
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted">
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Name:</label>&nbsp;&nbsp;&nbsp;
-        <input type="text" disabled="true"  [value]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
+        <input type="text" disabled="true" [value]="purchasedetails.ProjectName" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
       <div *ngIf="pasubmitted">
         <label for="ProjectName" class="form-label label col-md-4" style="margin-left: 0px;">Project Name</label>&nbsp;&nbsp;
@@ -75,7 +75,7 @@
         <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Project Code:</label>
         <input type="text" disabled="true" [value]="purchasedetails.ProjectCode" class="form-control" style="margin-left: 12px;width:60%" />
       </div>
-      <div  *ngIf="pasubmitted">
+      <div *ngIf="pasubmitted">
         <label for="ProjectCode" class="form-label label col-md-4" style="margin-left: 0px;">Project Code</label>&nbsp;&nbsp;
         <span class="Supplier">: {{purchasedetails.ProjectCode}}</span>
       </div>
@@ -343,7 +343,8 @@
       <span class="Vendor form-control">{{selectedvendor}} </span>
     </div>
   </div>
-</div><br />
+</div>
+<br />
 
 <!--<div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Reference Name:</div>
@@ -370,8 +371,22 @@
           <tr>
             <th><span style="float:left">Terms </span></th>
             <th><span style="float:left">RfqRevisionId </span> </th>
-            <th><span colspan="5" style="float:left">RFQNo </span></th>
+            <!--<th rowspan="2"><span style="float:left">RFQNo </span> </th>-->
+            <!--<th rowspan="2">
+              <tr>RfqNo</tr>
+              <tr>
+                <td>rfqnos</td>
+              </tr>
+            </th>-->
+            <th rowspan="2">
+              <h6 style="text-align:center">RFQNO</h6>
+          <tr>
+            <td>fmhjghg</td>
+            <td>advgasdv</td>
           </tr>
+          </th>
+          </tr>
+
         </thead>
         <tbody>
           <tr *ngFor="let terms of rfqterms">
@@ -575,7 +590,8 @@
       <td>: {{purchasedetails.SpecialRemarks}}</td>
     </tr>
   </table>
-</div><br />
+</div>
+<br />
 
 <div *ngIf="!pasubmitted" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Submit</button>
@@ -602,7 +618,8 @@
       </tr>
     </ng-template>
   </p-table>
-</div><br />
+</div>
+<br />
 <div *ngIf="pasubmitted && approvedemployee" class="form-control" style="height:100%;border-radius:0px; margin-left:0px;margin-top:5px">
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
@@ -640,7 +657,7 @@
       <label for="procSrc">PONo: </label>
     </div>
     <div class="ui-g-5">
-      <input type="text" [(ngModel)]="paitem.PONO" class="form-control" />
+      <input type="text" [(ngModel)]="paitem.PONO" maxlength="10" class="form-control" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -648,9 +665,12 @@
       <label for="procSrc">POItemNo: </label>
     </div>
     <div class="ui-g-5">
-      <input type="text" [(ngModel)]="paitem.POItemNo" class="form-control" />
+      <input type="text" [(ngModel)]="paitem.POItemNo" maxlength="10" class="form-control" />
       <!--<span *ngIf="paitemvalue && itemsform.controls.POItemNo.errors" class="invalid-feedback">MaxPAValue Required.</span>-->
     </div>
+    <!--<div *ngIf="paitem.POItemNo.errors?.maxlength">
+         MaxLength Of POItemNo Is 10 characters.
+    </div>-->
   </div>
   <div class="ui-g-12">
     <div class="ui-g-2">
