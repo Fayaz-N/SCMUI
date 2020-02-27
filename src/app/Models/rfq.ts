@@ -15,6 +15,7 @@ export class rfqQuoteModel {
   UnitPrice: string;
   leastPrice: string;
   RfqDocStatus: string;
+  Remarks: string;
   ActiveRevision: string;
   RateContract: number;
   suggestedVendorDetails: Array<any> = [];
@@ -67,6 +68,9 @@ export class VendorDetails {
   PaymentTermRemarks: string;
   BankGuarantee: string;
   Freight: string;
+  FreightAmount: string;
+  PFAmount: string;
+  TotalPrice: string;
   Insurance: string;
 }
 export class RfqItemInfoModel {
@@ -173,6 +177,7 @@ export class QuoteDetails {
 }
 export class RFQMaster {
   RfqNo: string;
+  RFQNo: string;
   Vendor: VendorDetails;
   MPRRevisionId: string;
 }

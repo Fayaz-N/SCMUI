@@ -35,7 +35,7 @@ export class constants {
   public DocumentationDescriptionId: searchParams = { tableName: 'MPRDocumentationDescriptions', fieldId: 'DocumentationDescriptionId', fieldName: 'DocumentationDescription', condition: " where ", fieldAliasName: "", updateColumns: "" };
   public CheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "CheckedName", updateColumns: "" };
   //public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade>'m2' and ", fieldAliasName: "ApproverName", updateColumns: "" };
-  public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "ApproverName", updateColumns: "" };
+  public ApprovedBy: searchParams = { tableName: 'MPRApproversView', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ApproverName", updateColumns: "" };
   public Incharge: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where Grade='m1' and DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public toEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public ccEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };

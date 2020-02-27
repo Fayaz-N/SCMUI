@@ -72,6 +72,8 @@ export class MPRPageComponent implements OnInit {
   public RepeatOrderList: Array<MPRItemInfoes> = [];
   public RepeatOrder: boolean = false;
   public showraisePo: boolean = false;
+  public vendorEmailList: Array<any> = [];
+
 
   //page load event
   ngOnInit() {
@@ -299,7 +301,7 @@ export class MPRPageComponent implements OnInit {
 
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     if (name == "ItemId")
-      this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition +" ";
+      this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition + " ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -364,8 +366,12 @@ export class MPRPageComponent implements OnInit {
         alert("vendor already exist");
         return false;
       }
-      if (item.updateColumns && item.updateColumns != "NULL")
-        this.newVendorDetails.Emailid = item.updateColumns;
+      if (item.updateColumns && item.updateColumns != "NULL") {
+        this.vendorEmailList = item.updateColumns.split(",");
+        this.newVendorDetails.Emailid = this.vendorEmailList[0];
+       // this.newVendorDetails.Emailid = item.updateColumns;
+
+      }
       this.newVendorDetails.Vendorid = item.code;
       this.newVendor.controls['ContactNo'].clearValidators();
       this.newVendor.controls['VendorName'].clearValidators();
@@ -478,10 +484,11 @@ export class MPRPageComponent implements OnInit {
         this.mprStatusUpdate.MPRAssignments.push(this.MPRAssignment);
       }
       else {
-        //this.mprStatusUpdate.MPRAssignments = [];
-        if (this.mprRevisionModel.BuyerGroupId == item.code) {
-          alert("Buyer Group already exist");
-          return false;
+        if (item.listName == "BuyerGroupId") {
+          if (this.mprRevisionModel.BuyerGroupId == item.code) {
+            alert("Buyer Group already exist");
+            return false;
+          }
         }
         this.mprStatusUpdate.BuyerGroupName = item.name;
         this.mprStatusUpdate.BuyerGroupId = item.code;
@@ -601,8 +608,10 @@ export class MPRPageComponent implements OnInit {
     this.vendorDetails.VendorDetailsId = vendorDetails.VendorDetailsId;
     this.vendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorDetails.VendorName = vendorDetails.VendorMaster.VendorName;
-    this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
-    this.newVendorDetails.Emailid = vendorDetails.VendorMaster.Emailid;
+    this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;   
+    this.newVendorDetails.Vendorid = vendorDetails.Vendorid;
+    this.vendorEmailList = vendorDetails.VendorMaster.Emailid.split(",");
+    this.newVendorDetails.Emailid = this.vendorEmailList[0];
     this[dialogName] = true;
   }
 
@@ -793,6 +802,7 @@ export class MPRPageComponent implements OnInit {
         return;
       }
       else {
+        this.newVendorDetails.Emailid = this.vendorEmailList.toString();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.vendorSubmitted = false;
           this.vendorDetails.Vendorid = data;
@@ -904,7 +914,7 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions.rfqRevisionId, RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions on  RFQRevisions.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
+    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
     })
@@ -1107,7 +1117,7 @@ export class MPRPageComponent implements OnInit {
     }
     else {
       if (this.mprRevisionModel.OThirdApprover)
-      this.showStatusDetails = false;
+        this.showStatusDetails = false;
     }
 
     //PO released or not to enable repeat order
@@ -1130,7 +1140,7 @@ export class MPRPageComponent implements OnInit {
       this.showRfqGen = this.showCompareRfq = true;
     else
       this.showRfqGen = this.showCompareRfq = false;
-   
+
   }
 
   bindMPRPageForm(formName: string, data: any) {
@@ -1321,6 +1331,27 @@ export class MPRPageComponent implements OnInit {
 
   showManualStatusDialog() {
     this.showManualStatusgDialog = true;
+  }
+
+  addEmail() {
+    if (this.newVendorDetails.Emailid) {
+      var index = this.vendorEmailList.indexOf(this.newVendorDetails.Emailid);
+      if (index > -1) {       
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor Email already addedd' });
+      }
+      else
+        this.vendorEmailList.push(this.newVendorDetails.Emailid);
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
+    }
+    //this.newVendorDetails.Emailid = "";
+  }
+
+  removeVendorEmail(email: string) {
+    var index = this.vendorEmailList.indexOf(email);
+    if (index > -1)
+      this.vendorEmailList.splice(index, 1);
   }
 }
 

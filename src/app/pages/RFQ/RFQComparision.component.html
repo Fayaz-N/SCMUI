@@ -84,7 +84,12 @@
   <br />
   <div class="ui-g">
     <div class="ui-g-12 ui-lg-12 ui-md-12">
-      <p-table [columns]="cols" [value]="rfqQuoteModel" [scrollable]="true" [style]="{width:'95%'}">
+      <p-table [columns]="cols" [value]="rfqQuoteModel" [style]="{'width':'100%','overflow':'auto!important'}"
+               [responsive]="true" [rows]="50"
+               [resizableColumns]="true"
+               columnResizeMode="expand"
+               [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+               appendTo="body">
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th style="width:100px !important;">Item Name</th>
@@ -106,6 +111,14 @@
             <td *ngFor="let vendor of rowData.suggestedVendorDetails;let colIndex=index" style="width:100px !important;">
               <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
                 <input *ngIf="vendor.Status!='Approved' && vendor.RFQSplitItemId!=null" type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
+                <div class="row col-lg-12 col-md-12 col-sm-12">
+                  <span class="form-inline">
+                    <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
+                  </span>
+                </div>
+                <div class="row col-lg-12 col-md-12 col-sm-12">
+                  <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)"  type="text" class="form-control" value={{vendor.Remarks}} /></span>
+                </div>
                 <div class="row">
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">Q</label>
@@ -123,24 +136,29 @@
 
                 </div>
                 <div class="row">
-                  <span>{{discountCalculation(vendor)}}</span>
+
+                  <!--<span>{{discountCalculation(vendor)}}</span>-->
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">FRA</label>
-                    <span class="valueEdit">{{calculateFRAmount(vendor)}}</span>
+                    <span class="valueEdit">{{vendor.FreightAmount}}</span>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">PFA</label>
-                    <span class="valueEdit">{{calculatePFamount(vendor)}}</span>
+                    <span class="valueEdit">{{vendor.PFAmount}}</span>
                   </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">TP</label>
-                    <span class="valueEdit">{{calculateItemToatlPrice(vendor)}}</span>
+                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
                   </div>
                   <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">PT</label>
                     <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
                   </div>-->
+
+
                 </div>
+
+
                 <div class="row">
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
@@ -188,7 +206,6 @@
             </td>-->
           </tr>
         </ng-template>
-
       </p-table>
     </div>
   </div>

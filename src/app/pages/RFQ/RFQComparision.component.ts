@@ -76,6 +76,7 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
           rfqQuoteItems.UnitPrice = this.RfqCompareItems[i].UnitPrice;//rfqitemsinfo
           rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
+          rfqQuoteItems.Remarks = this.RfqCompareItems[i].Remarks; //rfqiteminfo
           this.cols.forEach(vendor => {
             this.vendorDetails = new VendorDetails();
             if (this.RfqCompareItems.filter(li => li.VendorId == vendor.VendorId && li.Itemdetailsid == this.RfqCompareItems[i].Itemdetailsid)[0])
@@ -83,6 +84,10 @@ export class RFQComparisionComponent implements OnInit {
             else {
               this.createEmptyVendor();
             }
+            this.discountCalculation(this.vendorDetails);
+            this.vendorDetails.FreightAmount = this.calculateFRAmount(this.vendorDetails);
+            this.vendorDetails.PFAmount = this.calculatePFamount(this.vendorDetails);
+            this.vendorDetails.TotalPrice = this.calculateItemToatlPrice(this.vendorDetails);
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
@@ -160,6 +165,10 @@ export class RFQComparisionComponent implements OnInit {
       }
     });
   }
+  addRemarks(vendor: any, rowindex: any, vendorIndex: any) {
+    var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
+    this.selectedVendorList[index].Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
+  }
 
   selectVendorList(event: any, vendor: any, rowindex: any, vendorIndex: any, checkAll: boolean) {
     this.statusList = []
@@ -167,6 +176,7 @@ export class RFQComparisionComponent implements OnInit {
     if (!checkAll) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
       if (index < 0 && event.target.checked == true) {
+        vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
         this.selectedVendorList.push(vendor);
         const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
         if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
@@ -189,6 +199,7 @@ export class RFQComparisionComponent implements OnInit {
       this.rfqQuoteModel.forEach((item, rowIndex: number) => {
         var itmVendor = item.suggestedVendorDetails[vendorIndex];
         var checked = (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked;
+        vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowIndex + "" + vendorIndex)).value;
         index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
         if (itmVendor && itmVendor.VendorId == vendor.VendorId && index < 0 && event.target.checked == true && checked == false) {
           (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
@@ -221,7 +232,7 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
-        totalPrice += item.suggestedVendorDetails[colIndex].UnitPrice;
+        totalPrice += item.suggestedVendorDetails[colIndex].TotalPrice;
     });
     return totalPrice;
   }

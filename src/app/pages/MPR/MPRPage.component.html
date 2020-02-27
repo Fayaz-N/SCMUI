@@ -192,7 +192,7 @@
             <tr>
               <th>S.No</th>
               <th>Item Code & MPR Item Description</th>
-              <th>Quantity & Unit</th>          
+              <th>Quantity & Unit</th>
               <th>Sale Order Line Item No</th>
               <th>Reference Document No</th>
               <th>Target Spend</th>
@@ -264,28 +264,28 @@
                 <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
               </div>
               <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
-          <ng-template pTemplate="caption">
-            Supporting Documents For Target Spent :
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th>S.No</th>
-              <th>Document</th>
-              <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-            <tr *ngIf="rowData.DocumentTypeid==2">
-              <td>
-                {{ri+1}}
-              </td>
-              <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
-              <td style="text-align:center" *ngIf="hideDeleteBtn">
-                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>-->
+                <ng-template pTemplate="caption">
+                  Supporting Documents For Target Spent :
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Document</th>
+                    <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+                  <tr *ngIf="rowData.DocumentTypeid==2">
+                    <td>
+                      {{ri+1}}
+                    </td>
+                    <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
+                    <td style="text-align:center" *ngIf="hideDeleteBtn">
+                      <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>-->
             </div>
           </div>
         </div>
@@ -327,7 +327,7 @@
               <td>
                 <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}<span *ngIf="rowData.VendorMaster.VendorCode">-</span>{{rowData.VendorMaster.VendorCode}}</div>
               </td>
-              <td *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId')]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink')}}</a></td>
+              <td *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId')]"  routerLinkActive="active" >{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink')}}</a></td>
               <td style="text-align:center" *ngIf="!editing">
                 <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
               </td>
@@ -1024,7 +1024,7 @@
     </div>
     <div class="form-control" style="height:100%;border-radius:0px;" *ngIf="mprRevisionDetails.OCheckedBy && mprRevisionDetails.OCheckedBy!='-'">
       <div class="row " style="margin-top:0px">
-        <div class="col-lg-6 col-md-6 col-sm-6" >
+        <div class="col-lg-6 col-md-6 col-sm-6">
           <table class="table table-bordered">
             <thead style="background-color:#007bff36">
               <tr>
@@ -1383,10 +1383,18 @@
           <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
           <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="newVendorDetails-feedback">vendor Name Required.</span><br />
         </div>
-
         <label class="form-label">Email Id</label>&nbsp;<span style="color:red">*</span>
-        <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
-        <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
+        <div class="form-inline-list">
+          <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
+          <span class="input-group-append">
+            <button type="button" class="btn btn-primary" (click)="addEmail()" label="Add">Add</button>
+          </span>
+          <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span>
+        </div><br />
+        <div *ngFor="let email of vendorEmailList">       
+            <span style="color:#28a745">{{email}}</span>&nbsp;&nbsp;
+            <i class="fa fa-remove" aria-hidden="true" (click)="removeVendorEmail(email)"></i>
+        </div>
         <div *ngIf="showNewVendor">
           <label class="form-label">Contact No</label>&nbsp;<span style="color:red">*</span>
           <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
