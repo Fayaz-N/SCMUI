@@ -361,5 +361,9 @@ export class AccessList {
   AccessNameStatus: boolean;
 }
 
-
+export class PoFilterParams {
+  PONO: string;
+  RFQNo: string;
+  Materialdescription: string;
+}
 

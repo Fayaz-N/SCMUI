@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
 
     //this.employee = new Employees();
-    localStorage.removeItem('Employee');
+    //localStorage.removeItem('Employee');
     //localStorage.removeItem('currentUser');
     //localStorage.removeItem('EmployeeList');
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'];

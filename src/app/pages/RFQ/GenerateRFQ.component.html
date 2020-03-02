@@ -22,15 +22,15 @@
         <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
         <label class="form-label font-weight-bold">RC:</label><i [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
         <span class="form-inline">
-          <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,i)" label="Save">Assign RO</button><br />
-          &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k,i)" label="Save">De Assign RO</button><br />
+          <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,Item)" label="Save">Assign RO</button><br />
+          &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k)" label="Save">De Assign RO</button><br />
         </span>
       </div>
     </div><br />
     <div class="row">
       <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
         <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
-          <span class="form-inline"><input type="checkbox"  id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
+          <span class="form-inline"><input type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
           <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
           <div class="row">
@@ -54,7 +54,7 @@
       </div>
       <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
         <div class="form-control manual-List">
-          <span class="form-inline"><input type="checkbox"  class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
+          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
           <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
           <div class="row">
@@ -179,7 +179,7 @@
     </div>
   </p-footer>
 </p-dialog>
-<p-dialog header="Conform Data:" [(visible)]="showConformationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+<p-dialog header="Conform Data:" [(visible)]="showConformationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '800px'}">
   <p-table [columns]="cols" [value]="rfqQuoteModel">
     <ng-template pTemplate="header" let-columns>
       <tr>
@@ -193,7 +193,7 @@
       <tr>
         <td>{{rowData.ItemName}}</td>
         <td *ngFor="let col of columns">
-          <i [ngClass]="bindCheckeMark(col,rowData.MPRItemDetailsid)?'pi pi-check check-color':'pi pi-times times-color'"></i>
+          <i [ngClass]="bindCheckeMark(col,rowData.MPRItemDetailsid)?'pi pi-check check-color':'pi pi-times times-color'"></i> &nbsp;<span *ngIf="col.RFQType">- &nbsp;{{col.RFQType}}</span>
         </td>
       </tr>
     </ng-template>
@@ -263,7 +263,7 @@
       <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMaxWeeks" />
     </div>
   </div>-->
-  <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0">
+  <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0 && showTerms">
     <label class="form-label"><b style="text-decoration:underline">Terms And Conditions:</b></label><br />
     <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
       <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<p>{{term.Terms}}</p>
@@ -277,18 +277,41 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Conform Data:" [(visible)]="assignRoDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '900px'}">
-  <p-table [value]="repeatOrdervendorDetailsList" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="RFQSplitItemId">
+<p-dialog header="Assign PO:" [(visible)]="assignRoDialog" [style]="{'width':'95%','overflow':'auto!important'}">
+  <div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label">PO Number : </label>&nbsp;
+      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.PONO">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label">RFQ Number :</label>&nbsp;
+      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.RFQNo">
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      <label class="form-label">Item Description or Code :</label>&nbsp;
+      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.Materialdescription">
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+      <button type="button" class="btn btn-success" (click)="bindRepeatOrderList()">Search</button>
+    </div>
+  </div>
+  <br />
+  <p-table [value]="repeatOrdervendorDetailsList" [style]="{'width':'97%','overflow':'auto!important'}"
+           [responsive]="true" [rows]="50"
+           [resizableColumns]="true"
+           columnResizeMode="expand"
+           [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+           appendTo="body" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="PAItemID">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 3em">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
-        <th>RFQ SpliItemid</th>
+        <th>RFQ Split Itemid</th>
         <th>RFQ NO</th>
         <th>PO NO</th>
         <th>Vendor Name</th>
-        <th>Item Description</th>
+        <th>Material Description</th>
         <th>HSN Code</th>
         <th>Unit Price</th>
       </tr>
@@ -302,7 +325,7 @@
         <td class="ptable-cell">{{rowData.RFQNo}}</td>
         <td class="ptable-cell">{{rowData.PONO}}</td>
         <td class="ptable-cell">{{rowData.VendorName}}</td>
-        <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td class="ptable-cell">{{rowData.Materialdescription}}</td>
         <td class="ptable-cell">{{rowData.HsNCode}}</td>
         <td class="ptable-cell">{{rowData.UnitPrice}}</td>
       </tr>
