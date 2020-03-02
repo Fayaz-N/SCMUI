@@ -43,6 +43,10 @@ export class MPRItemInfoes {
   ReferenceDocNo: string;
   TargetSpend: string;
   RepeatOrderRefId: number;
+  PONumber: number;
+  PODate: Date;
+  POPrice: string;
+  PORemarks: string;
   DeleteFlag: boolean
 }
 

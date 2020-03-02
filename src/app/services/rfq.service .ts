@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice } from '../Models/rfq';
 
 @Injectable({
 	providedIn: 'root'
@@ -81,5 +81,8 @@ export class RfqService {
 
   DeleteRfqIteminfoByid(spliId: number): Observable<any> {
     return this.http.get<any>(this.url + 'RFQ/DeleteRfqIteminfoByid/' + spliId);
+  }
+  PreviouPriceUpdate(previousprice: MPRItemInfoes): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/PreviouPriceUpdate/', previousprice, this.httpOptions);
   }
 }

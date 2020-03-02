@@ -46,7 +46,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label for="SaleOrderNo" class="form-label">Vendor Name</label>
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="venderid" [value]="RFQfilterForm.controls.venderid.value">
+          <input type="text" class="form-control forms-input" formControlName="venderid" [value]="RFQfilterForm.controls.venderid.value" (keyup)="onsrchTxtChange('venderid',RFQfilterForm.controls.venderid.value,'rfqFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'RFQfilterForm','venderid',RFQfilterForm.controls.venderid.value,undefined)"></button>
           </div>

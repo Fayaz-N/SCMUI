@@ -7,20 +7,18 @@
   </div>
  
 </div>
+
 <div class="header-container">
-    <span>scmsupport@in.yokogawa.com</span>
+  <img src="assets/tech-support-icon-png.png" height="20" width="20" />&nbsp;<span>scmsupport@in.yokogawa.com</span><br />
+  <!-- <h6>SCM-SYSTEM</h6> -->
+  <nb-actions size="small">
+
+    <nb-action class="user-action" *ngIf="currentUser">
+      <nb-user [nbContextMenu]="userMenu"
+               [onlyPicture]="userPictureOnly"
+               [name]="currentUser.Name"
+               [picture]="picture1">
+      </nb-user>
+    </nb-action>
+  </nb-actions>
 </div>
-
-  <div class="header-container">
-    <!-- <h6>SCM-SYSTEM</h6> -->
-    <nb-actions size="small">
-
-      <nb-action class="user-action" *ngIf="currentUser">
-        <nb-user [nbContextMenu]="userMenu"
-                 [onlyPicture]="userPictureOnly"
-                 [name]="currentUser.Name"
-                 [picture]="picture1">
-        </nb-user>
-      </nb-action>
-    </nb-actions>
-  </div>

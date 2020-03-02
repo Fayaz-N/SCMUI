@@ -95,6 +95,7 @@
             <th style="width:100px !important;">Item Name</th>
             <th style="width:100px !important;">Item Description</th>
             <th style="width:100px !important;">Quantity</th>
+            <th style="width:100px !important;">Previous Prices</th>
             <th *ngFor="let col of columns;let colInd=index" style="width:100px !important;">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
               {{col.VendorName}}<br /><label>Revision No : </label>&nbsp;<span *ngFor="let item of RfqCompareItems"><a *ngIf="item.RfqMasterId==col.RfqMasterId" [ngClass]="{'active': col.rfqRevisionId == item.rfqRevisionId,'disabled':col.rfqRevisionId != item.rfqRevisionId}" [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]">{{item.RevisionNo}}</a></span><br />
@@ -108,17 +109,43 @@
             <td style="width:100px !important">{{rowData.ItemName}}</td>
             <td style="width:100px !important">{{rowData.ItemDescription}}</td>
             <td style="width:100px !important">{{rowData.QuotationQty}}</td>
+            <td style="width:100px !important">
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+                  <label class="form-label lblEdit">PO NO:</label>
+                  <span class="valueEdit">{{rowData.PONumber}}</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+                  <label class="form-label lblEdit">PO Date: </label>
+                  <span class="valueEdit">{{rowData.PODate | date :  constants.dateFormat}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+                  <label class="form-label lblEdit">PO Price: </label>
+                  <span class="valueEdit">{{rowData.POPrice}}</span>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+                  <label class="form-label lblEdit">Remarks: </label>
+                  <span class="valueEdit">{{rowData.PORemarks}}</span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 form-group"></div>
+                <button type="button" class="btn btn-success center" (click)="showDialog(rowData)" label="Save">ADD</button>
+              </div>
+            </td>
             <td *ngFor="let vendor of rowData.suggestedVendorDetails;let colIndex=index" style="width:100px !important;">
               <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
                 <input *ngIf="vendor.Status!='Approved' && vendor.RFQSplitItemId!=null" type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
-                <div class="row col-lg-12 col-md-12 col-sm-12">
+                <!--<div class="row col-lg-12 col-md-12 col-sm-12">
                   <span class="form-inline">
                     <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
                   </span>
                 </div>
                 <div class="row col-lg-12 col-md-12 col-sm-12">
-                  <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)"  type="text" class="form-control" value={{vendor.Remarks}} /></span>
-                </div>
+                  <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
+                </div>-->
                 <div class="row">
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit">Q</label>
@@ -155,9 +182,7 @@
                     <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
                   </div>-->
 
-
                 </div>
-
 
                 <div class="row">
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
@@ -185,12 +210,12 @@
         </ng-template>
         <ng-template pTemplate="footer">
           <tr>
-            <td [attr.colspan]="3" style="color: #17a2b8;">Totals</td>
+            <td [attr.colspan]="4" style="color: #17a2b8;">Totals</td>
             <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">Price :&nbsp;{{calculateTotalPrice(colInd)}}</td>
           </tr>
-          <tr><td [attr.colspan]="3">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
+          <tr><td [attr.colspan]="4">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
           <tr *ngFor="let term of termCols">
-            <td [attr.colspan]="3" style="font-weight: 500;">{{term.Terms}}</td>
+            <td [attr.colspan]="4" style="font-weight: 500;">{{term.Terms}}</td>
             <td *ngFor="let col1 of cols;let colInd=index">
               <span *ngIf="getTerm(col1.rfqRevisionId,term)==''">-</span>
               <span *ngIf="getTerm(col1.rfqRevisionId,term)=='Agree'" class="pi pi-check check-color"></span>
@@ -209,6 +234,7 @@
       </p-table>
     </div>
   </div>
+
   <!--<div class="form-control" style="height:100%;border-radius:0px;">
     <label style="text-decoration: underline">Terms & Conditions:</label><br />
     <div class="row">
@@ -250,4 +276,45 @@
   </div>
 </div>
 
+
+<p-dialog header="Add" [(visible)]="showPODialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">PONo: </label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="PreviousPrices.PONumber" class="form-control" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">PO Date: </label>
+    </div>
+    <div class="ui-g-5">
+      <input type="date" [value]="PreviousPrices.PODate | date:'yyyy-MM-dd'" (input)="PreviousPrices.PODate=parseDate($event.target.value)"  [(ngModel)]="PreviousPrices.PODate" class="form-control" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">PO Price: </label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="PreviousPrices.POPrice" class="form-control" />
+    </div>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2">
+      <label for="procSrc">Remarks:</label>
+    </div>
+    <div class="ui-g-5">
+      <input type="text" [(ngModel)]="PreviousPrices.PORemarks" class="form-control" />
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="addPreviousprice()" label="Insert"></button>
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="dialogCancel()" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
 

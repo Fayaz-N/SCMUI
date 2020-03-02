@@ -363,7 +363,7 @@ export class MPRPageComponent implements OnInit {
       this.itemDetails[this.txtName] = item.code;
     if (item.listName == "venderid") {
       if (this.mprRevisionModel.MPRVendorDetails.filter(li => li.Vendorid == item.code).length > 0) {
-        alert("vendor already exist");
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'vendor already exist' });
         return false;
       }
       if (item.updateColumns && item.updateColumns != "NULL") {
@@ -1352,6 +1352,14 @@ export class MPRPageComponent implements OnInit {
     var index = this.vendorEmailList.indexOf(email);
     if (index > -1)
       this.vendorEmailList.splice(index, 1);
+  }
+  getPOnumbers(details: any) {
+
+    if (details && details.PAItems) {
+      var result = details.PAItems.map(a => a.PONO); 
+      return result.toString();
+    }
+
   }
 }
 

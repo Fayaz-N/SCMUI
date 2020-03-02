@@ -18,8 +18,17 @@ export class rfqQuoteModel {
   Remarks: string;
   ActiveRevision: string;
   RateContract: number;
+  PONumber: number;
+  PODate: Date;
+  POPrice: string;
+  PORemarks: string;
+  PONo: string;
+  RFQNo: string;
+  HSNCode: string;
+  RFQType: string;
   suggestedVendorDetails: Array<any> = [];
   manualvendorDetails: Array<any> = [];
+  repeatOrdervendorDetails: Array<any> = [];
 
 }
 export class RFQRevisionData {
@@ -214,4 +223,10 @@ export class RFQDocuments {
   Statusdate: Date
   StatusBy: string;
   DeleteFlag: boolean;
+}
+export class PreviousPrice {
+  PONumber: number;
+  PODate: Date;
+  POPrice: string;
+  PORemarks: string;
 }

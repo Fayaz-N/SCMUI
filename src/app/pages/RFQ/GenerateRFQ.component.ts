@@ -25,7 +25,7 @@ export class GenerateRFQComponent implements OnInit {
   public selectedlist: Array<searchList> = [];
   public selectedItem: searchList;
   public searchresult: Array<object> = [];
-  public showList; showVendorDialog; showConformationDialog; showRevisionsDialog: boolean = false;
+  public showList; showVendorDialog; showConformationDialog; showRevisionsDialog; assignRoDialog: boolean = false;
   public vendorDetails: MPRVendorDetail;
   public vendorDetailsArray: Array<MPRVendorDetail> = [];
   public vendorSubmitted: boolean = false;
@@ -41,7 +41,11 @@ export class GenerateRFQComponent implements OnInit {
   public mprVendors: boolean = false;
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
-  public RateContract: boolean = false;
+  public RateContract; disableSelection: boolean = false;
+  public vendorEmailList: Array<any> = [];
+  public repeatOrdervendorDetailsList: Array<any> = [];
+  public selectedRrepeatOrdervendorDetails: Array<any> = [];
+  public rfqIndex: number;
 
   //page load event
   ngOnInit() {
@@ -124,7 +128,7 @@ export class GenerateRFQComponent implements OnInit {
       var fName = "";
       this.searchresult.forEach(item => {
         fName = item[this.constants[name].fieldName];
-        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns]  };
+        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
         this.searchItems.push(value);
       });
 
@@ -134,31 +138,41 @@ export class GenerateRFQComponent implements OnInit {
   }
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
+    this.showList = false;
+    var addvendor = true;
     if (this.rfqQuoteModel.length > 0) {
       for (var i = 0; i < this.rfqQuoteModel.length; i++) {
         if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
-          alert("vendor already exist");
-          break;
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'vendor already exist' });
+          this.vendorEmailList = [];
+          this.newVendorDetails.Emailid ="";
+          addvendor = false;
           return false;
         }
-        else {
-          this.showList = false;
-          if (item.updateColumns && item.updateColumns != "NULL")
-            this.newVendorDetails.Emailid = item.updateColumns;
-          this.newVendorDetails.Vendorid = item.code;
-          this.newVendor.controls['ContactNo'].clearValidators();
-          this.newVendor.controls['VendorName'].clearValidators();
-          this.newVendor.controls['ContactNo'].updateValueAndValidity();
-          this.newVendor.controls['VendorName'].updateValueAndValidity();
-          this.vendorDetails.Vendorid = item.code;
-          this.vendorDetails.VendorName = item.name;
-        }
       }
+
+      if (addvendor) {
+        this.showList = false;
+        if (item.updateColumns && item.updateColumns != "NULL") {
+          this.vendorEmailList = item.updateColumns.split(",");
+          this.newVendorDetails.Emailid = this.vendorEmailList[0];
+        }
+        this.newVendorDetails.Vendorid = item.code;
+        this.newVendor.controls['ContactNo'].clearValidators();
+        this.newVendor.controls['VendorName'].clearValidators();
+        this.newVendor.controls['ContactNo'].updateValueAndValidity();
+        this.newVendor.controls['VendorName'].updateValueAndValidity();
+        this.vendorDetails.Vendorid = item.code;
+        this.vendorDetails.VendorName = item.name;
+      }
+
     }
     else {
       this.showList = false;
-      if (item.updateColumns && item.updateColumns != "NULL")
-        this.newVendorDetails.Emailid = item.updateColumns;
+      if (item.updateColumns && item.updateColumns != "NULL") {
+        this.vendorEmailList = item.updateColumns.split(",");
+        this.newVendorDetails.Emailid = this.vendorEmailList[0];
+      }
       this.newVendorDetails.Vendorid = item.code;
       this.newVendor.controls['ContactNo'].clearValidators();
       this.newVendor.controls['VendorName'].clearValidators();
@@ -169,6 +183,27 @@ export class GenerateRFQComponent implements OnInit {
     }
   }
 
+  addEmail() {
+    if (this.newVendorDetails.Emailid) {
+      var index = this.vendorEmailList.indexOf(this.newVendorDetails.Emailid);
+      if (index > -1) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor Email already addedd' });
+      }
+      else
+        this.vendorEmailList.push(this.newVendorDetails.Emailid);
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
+    }
+    //this.newVendorDetails.Emailid = "";
+  }
+
+  removeVendorEmail(email: string) {
+    var index = this.vendorEmailList.indexOf(email);
+    if (index > -1)
+      this.vendorEmailList.splice(index, 1);
+  }
+
   //vendor submit
   onVendorSubmit(dialogName: string, type: string) {
     if (type == "vendorDetails") {
@@ -177,19 +212,19 @@ export class GenerateRFQComponent implements OnInit {
         return;
       }
       else {
+        this.newVendorDetails.Emailid = this.vendorEmailList.toString();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.vendorSubmitted = false;
           this.vendorDetailsArray = [];
           this.vendorDetails.Vendorid = data;
           if (this.newVendorDetails.VendorName)
-          this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
+            this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
           this.vendorDetailsArray.push(this.vendorDetails);
           this.vendorDetailsArray.forEach((el) => { el.UpdatedBy = this.employee.EmployeeNo; })
           this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
             if (data) {
               this.dynamicData = new DynamicSearchResult();
-              this.dynamicData.tableName = "MPRVendorDetails";
-              this.dynamicData.searchCondition = "Where RevisionId=" + this.MPRRevisionId+""
+              this.dynamicData.query = " select * from MPRVendorDetails Where RevisionId=" + this.MPRRevisionId + "";             
               this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
                 this.vendorDetailsArray = data;
               });
@@ -258,7 +293,12 @@ export class GenerateRFQComponent implements OnInit {
 
   selectVendorList(event: any, itemsIndex: number, vendorIndex: number, id: string, vendor: any, checked: boolean) {
     var qty = (<HTMLInputElement>document.getElementById(id + itemsIndex + "" + vendorIndex)).value;
-    id == "SQty" ? this.rfqQuoteModel[itemsIndex].suggestedVendorDetails[vendorIndex].QuotationQty = qty : this.rfqQuoteModel[itemsIndex].manualvendorDetails[vendorIndex].QuotationQty = qty;
+    if (id == "SQty")
+      this.rfqQuoteModel[itemsIndex].suggestedVendorDetails[vendorIndex].QuotationQty = qty;
+    if (id == "MQty")
+      this.rfqQuoteModel[itemsIndex].manualvendorDetails[vendorIndex].QuotationQty = qty;
+    if (id == "RQty")
+      this.rfqQuoteModel[itemsIndex].repeatOrdervendorDetails[vendorIndex].QuotationQty = qty;
     if (checked) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
       if (event.currentTarget.checked)
@@ -280,6 +320,13 @@ export class GenerateRFQComponent implements OnInit {
         }
       });
       this.rfqQuoteModel[i].manualvendorDetails.forEach(vendor => {
+        if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
+
+          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, };
+          this.cols.push(object);
+        }
+      })
+      this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach(vendor => {
         if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
 
           var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, };
@@ -349,6 +396,41 @@ export class GenerateRFQComponent implements OnInit {
     this.newVendorDetails.Vendorid = 0;
     this.newVendor.controls['VendorName'].setValidators([Validators.required]);
     this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
+  }
+
+  showAssignRoDialog(rindex: number, cindex: number) {
+    this.assignRoDialog = true;
+    this.selectedRrepeatOrdervendorDetails = [];
+    this.rfqIndex = rindex;
+    this.disableSelection = true;
+    if (this.repeatOrdervendorDetailsList.length == 0) {
+      this.dynamicData = new DynamicSearchResult();
+      this.dynamicData.query = "select * from RepeatOrdersView";
+      this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+        this.repeatOrdervendorDetailsList = data;
+      })   
+    }
+  }
+
+  assignRepeatorders() {
+    this.rfqQuoteModel[this.rfqIndex].repeatOrdervendorDetails = this.selectedRrepeatOrdervendorDetails;
+    this.assignRoDialog = false;
+    this.rfqQuoteModel[this.rfqIndex].suggestedVendorDetails.forEach((item, rowIndex: number) => {
+      (<HTMLInputElement>document.getElementById("vendor" + this.rfqIndex + rowIndex)).disabled = true;
+    });
+    this.rfqQuoteModel[this.rfqIndex].manualvendorDetails.forEach((item, rowIndex: number) => {
+      (<HTMLInputElement>document.getElementById("vendor" + this.rfqIndex + rowIndex)).disabled = true;
+    })
+    
+  }
+  deAssignPo(index: number) {
+    this.rfqQuoteModel[index].repeatOrdervendorDetails = [];
+    this.rfqQuoteModel[index].suggestedVendorDetails.forEach((item, rowIndex: number) => {
+      (<HTMLInputElement>document.getElementById("vendor" + index + rowIndex)).disabled = false;
+    });
+    this.rfqQuoteModel[index].manualvendorDetails.forEach((item, rowIndex: number) => {
+      (<HTMLInputElement>document.getElementById("vendor" + index + rowIndex)).disabled = false;
+    })
   }
 }
 

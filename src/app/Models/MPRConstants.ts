@@ -14,7 +14,7 @@ export class constants {
   public RequisitionId: string = "";
   public rfqValidDays: number = 7;
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
-  public vendorDocumentPath = "http://10.29.15.183:92/vscmdocs/";
+  public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
 
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " where BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
   public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and  ((Grade IN(SELECT Grades.Grade FROM Grades WHERE (Grades.Hierarchy>=(SELECT Grades.Hierarchy FROM Grades WHERE Grades.Grade='M2')))))  and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
@@ -22,7 +22,7 @@ export class constants {
   public ClientName: searchParams = { tableName: 'CustomerMasterYGS', fieldId: 'CustomerId', fieldName: 'CustomerName1', condition: " where CustomerMasterTypeId=1 and ", fieldAliasName: "ClientName", updateColumns: "" };
   public BuyerGroupId: searchParams = { tableName: 'MPRBuyerGroups', fieldId: 'BuyerGroupId', fieldName: 'BuyerGroup', condition: " where ", fieldAliasName: "BuyerGroupName", updateColumns: "" };
   public ItemId: searchParams = { tableName: 'MaterialMasterYGS', fieldId: 'Material', fieldName: 'Materialdescription', condition: " where ", fieldAliasName: "", updateColumns: "" };
-  public UnitId: searchParams = { tableName: 'UnitMaster', fieldId: 'UnitId', fieldName: 'UnitName', condition: "", fieldAliasName: " where ", updateColumns: "" };
+  public UnitId: searchParams = { tableName: 'UnitMaster', fieldId: 'UnitId', fieldName: 'UnitName', condition: " where ", fieldAliasName: " where ", updateColumns: "" };
   public venderid: searchParams = { tableName: 'VendorMaster', fieldId: 'Vendorid', fieldName: 'VendorName', condition: " where  Deleteflag=1 and ", fieldAliasName: "", updateColumns: "Emailid" };
   public PurchaseTypeId: searchParams = { tableName: 'MPRPurchaseTypes', fieldId: 'PurchaseTypeId', fieldName: 'PurchaseType', condition: " where ", fieldAliasName: "PurchaseType", updateColumns: "" };
   public PreferredVendorTypeId: searchParams = { tableName: 'MPRPreferredVendorTypes', fieldId: 'PreferredVendorTypeId', fieldName: 'PreferredVendorType', condition: " where ", fieldAliasName: "PreferredVendorType", updateColumns: "" };

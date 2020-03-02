@@ -7,7 +7,7 @@ import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
-import { Employee } from 'src/app/Models/mpr';
+import { Employee, MPRItemInfoes } from 'src/app/Models/mpr';
 
 @Component({
   selector: 'app-RFQComparision',
@@ -30,6 +30,9 @@ export class RFQComparisionComponent implements OnInit {
   public statusList: Array<any> = [];
   public termCols: Array<rfqTerms> = []
   public tp: number = 0;
+  public PreviousPrices: MPRItemInfoes;
+  public showPODialog: boolean = false;
+
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -37,6 +40,7 @@ export class RFQComparisionComponent implements OnInit {
     else
       this.router.navigateByUrl("Login");
 
+    this.PreviousPrices = new MPRItemInfoes();
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
@@ -69,6 +73,10 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.ItemId = this.RfqCompareItems[i].ItemId;
           rfqQuoteItems.ItemName = this.RfqCompareItems[i].ItemName;
           rfqQuoteItems.Itemdetailsid = this.RfqCompareItems[i].Itemdetailsid;//uniq id
+          rfqQuoteItems.PONumber = this.RfqCompareItems[i].PONumber;
+          rfqQuoteItems.PODate = this.RfqCompareItems[i].PODate;
+          rfqQuoteItems.POPrice = this.RfqCompareItems[i].POPrice;
+          rfqQuoteItems.PORemarks = this.RfqCompareItems[i].PORemarks;
           rfqQuoteItems.ActiveRevision = this.RfqCompareItems[i].ActiveRevision;//from rfq revision_n 
           rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
           rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
@@ -165,10 +173,10 @@ export class RFQComparisionComponent implements OnInit {
       }
     });
   }
-  addRemarks(vendor: any, rowindex: any, vendorIndex: any) {
-    var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
-    this.selectedVendorList[index].Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
-  }
+  //addRemarks(vendor: any, rowindex: any, vendorIndex: any) {
+  //  var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
+  //  this.selectedVendorList[index].Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
+  //}
 
   selectVendorList(event: any, vendor: any, rowindex: any, vendorIndex: any, checkAll: boolean) {
     this.statusList = []
@@ -176,7 +184,7 @@ export class RFQComparisionComponent implements OnInit {
     if (!checkAll) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
       if (index < 0 && event.target.checked == true) {
-        vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
+        //vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowindex + "" + vendorIndex)).value;
         this.selectedVendorList.push(vendor);
         const totalQty = this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).reduce((sum, item) => sum + item.vendorQuoteQty, 0);
         if (totalQty > vendor.QuotationQty && (this.selectedVendorList.filter(li => li.Itemdetailsid == vendor.Itemdetailsid).length > 1)) {
@@ -199,7 +207,7 @@ export class RFQComparisionComponent implements OnInit {
       this.rfqQuoteModel.forEach((item, rowIndex: number) => {
         var itmVendor = item.suggestedVendorDetails[vendorIndex];
         var checked = (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked;
-        vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowIndex + "" + vendorIndex)).value;
+        //vendor.Remarks = (<HTMLInputElement>document.getElementById("rmks" + rowIndex + "" + vendorIndex)).value;
         index = this.selectedVendorList.findIndex(x => x.RFQItemsId == itmVendor.RFQItemsId);
         if (itmVendor && itmVendor.VendorId == vendor.VendorId && index < 0 && event.target.checked == true && checked == false) {
           (<HTMLInputElement>document.getElementById("ven" + rowIndex + "" + vendorIndex)).checked = true;
@@ -267,6 +275,25 @@ export class RFQComparisionComponent implements OnInit {
       return vendor.PFAmount;
   }
 
+  showDialog(itemdata: any) {
+    this.showPODialog = true;
+    this.PreviousPrices.PONumber = itemdata.PONumber;
+    this.PreviousPrices.PODate = new Date(itemdata.PODate);
+    this.PreviousPrices.POPrice = itemdata.POPrice;
+    this.PreviousPrices.PORemarks = itemdata.PORemarks;
+    this.PreviousPrices.Itemdetailsid = itemdata.Itemdetailsid;
+  }
+
+  dialogCancel() {
+    this.showPODialog = false;
+  }
+  addPreviousprice() {
+    this.RfqService.PreviouPriceUpdate(this.PreviousPrices).subscribe(data => {
+      if (data)
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Prices Added sucessfully' });
+      this.showPODialog = false;
+    })
+  }
   statusSubmit() {
     if (this.selectedVendorList.length > 0) {
       this.selectedVendorList.forEach((el) => { el.CreatedBy = this.employee.EmployeeNo; })
@@ -278,6 +305,13 @@ export class RFQComparisionComponent implements OnInit {
     else
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select at leat one item' });
   }
+  parseDate(dateString: string): Date {
+    if (dateString) {
+      return new Date(dateString);
+    }
+    return null;
+  }
+
 }
 
 

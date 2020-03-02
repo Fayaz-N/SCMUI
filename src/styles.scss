@@ -324,6 +324,12 @@ a.disabled {
   background-color: hsla(89, 43%, 51%, 0.3);
   border: 1px;
 }
+.repeat-icon {
+  height: 20px;
+  width: 20px;
+  background-color: hsla(180, 50%, 50%,1);
+  border: 1px;
+}
 
 .manual-List {
   height: 100% !important;
@@ -338,6 +344,13 @@ a.disabled {
   cursor: pointer !important;
   background-color: hsla(0, 43%, 51%, 0.3) !important;
 }
+.repeat-List {
+  height: 100% !important;
+  /*margin-top: 10px !important;*/
+  cursor: pointer !important;
+  background-color: hsla(180, 50%, 50%,1) !important;
+}
+
 
 .fixed-text {
   width: 200px;

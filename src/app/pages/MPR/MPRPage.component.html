@@ -197,6 +197,7 @@
               <th>Reference Document No</th>
               <th>Target Spend</th>
               <th>Documents</th>
+              <th>PO No</th>
               <th>Edit</th>
               <th *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
               <th *ngIf="hideDeleteBtn">Remove</th>
@@ -217,6 +218,7 @@
                   <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
                 </div>
               </td>
+              <td>{{getPOnumbers(rowData)}}</td>
               <td style="text-align:center" *ngIf="!editing">
                 <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
               </td>

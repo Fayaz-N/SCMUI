@@ -12,7 +12,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
+  constructor(private formBuilder: FormBuilder,  public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
   public mprTitle: string;
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
@@ -183,6 +183,13 @@ export class MPRListComponent implements OnInit {
     }
     this[this.formName].controls[this.txtName].updateValueAndValidity();
 
+  }
+
+  //clear model when search text is empty
+  onsrchTxtChange(modelparm: string, value: string, model: string) {
+    if (value == "") {
+      this[model][modelparm] = "";
+    }
   }
 
 

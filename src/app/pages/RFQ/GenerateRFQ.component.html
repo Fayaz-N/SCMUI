@@ -4,6 +4,7 @@
 <br />
 <span><input type="text" class="sug-icon" disabled />&nbsp;&nbsp;<b>Suggested Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
 <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Manual Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+<span><input type="text" class="repeat-icon" disabled />&nbsp;&nbsp;<b>Repeated Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
 <span><b>PQP - </b>Previous Quoted Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
 <span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
 <span><b>Dis - </b>Discount</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -19,15 +20,17 @@
         <label class="form-label font-weight-bold">Material Description :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
         <label class="form-label font-weight-bold">MPR Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
         <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        
-        <label class="form-label font-weight-bold">RC:</label><i  [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
+        <label class="form-label font-weight-bold">RC:</label><i [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
+        <span class="form-inline">
+          <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,i)" label="Save">Assign RO</button><br />
+          &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k,i)" label="Save">De Assign RO</button><br />
+        </span>
       </div>
-    </div>
-
+    </div><br />
     <div class="row">
       <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
         <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
-          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
+          <span class="form-inline"><input type="checkbox"  id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
           <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
           <div class="row">
@@ -70,9 +73,29 @@
               <b>PT : </b>&nbsp;{{mvendor.PaymentTermCode}}
             </div>
           </div>
+        </div>
+      </div>
 
-
-
+      <div class="col-md-3 mb-3" *ngFor="let rvendor of Item.repeatOrdervendorDetails; let i=index">
+        <div class="form-control repeat-List">
+          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'RQty',rvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{rvendor.VendorName}}>{{rvendor.VendorName}}</b></span>
+          <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='RQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'RQty',rvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
+          <div class="row">
+            <div class="col-sm-6">
+              <b>PQP : </b>&nbsp;{{rvendor.UnitPrice}}
+            </div>
+            <div class="col-sm-6">
+              <b>Q : </b>&nbsp;{{rvendor.vendorQuoteQty}}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <b>Dis : </b>&nbsp;{{rvendor.Discount}}
+            </div>
+            <div class="col-sm-6">
+              <b>PT : </b>&nbsp;{{rvendor.PaymentTermCode}}
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -94,7 +117,7 @@
 </div>
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid">
-    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
@@ -107,9 +130,9 @@
     <div class="ui-g-8 form-group">
       <label class="form-label">Vendor</label>
       <div class="form-inline-list">
-        <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)">
+        <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
         <span class="input-group-append">
-          <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid','',undefined)"></button>
+          <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
         </span>
         <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
       </div>
@@ -131,8 +154,17 @@
       </div>
 
       <label class="form-label">Email Id</label>
-      <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
-      <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span><br />
+      <div class="form-inline-list">
+        <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
+        <span class="input-group-append">
+          <button type="button" class="btn btn-primary" (click)="addEmail()" label="Add">Add</button>
+        </span>
+        <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span>
+      </div><br />
+      <div *ngFor="let email of vendorEmailList">
+        <span style="color:#28a745">{{email}}</span>&nbsp;&nbsp;
+        <i class="fa fa-remove" aria-hidden="true" (click)="removeVendorEmail(email)"></i>
+      </div>
       <div *ngIf="showNewVendor">
         <label class="form-label">Contact No</label>
         <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
@@ -244,4 +276,44 @@
     </div>
   </p-footer>
 </p-dialog>
+
+<p-dialog header="Conform Data:" [(visible)]="assignRoDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '900px'}">
+  <p-table [value]="repeatOrdervendorDetailsList" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="RFQSplitItemId">
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 3em">
+          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+        </th>
+        <th>RFQ SpliItemid</th>
+        <th>RFQ NO</th>
+        <th>PO NO</th>
+        <th>Vendor Name</th>
+        <th>Item Description</th>
+        <th>HSN Code</th>
+        <th>Unit Price</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td>
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </td>
+        <td class="ptable-cell">{{rowData.RfqSplitItemId}}</td>
+        <td class="ptable-cell">{{rowData.RFQNo}}</td>
+        <td class="ptable-cell">{{rowData.PONO}}</td>
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
+        <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td class="ptable-cell">{{rowData.HsNCode}}</td>
+        <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="assignRepeatorders()" label="Proceed"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('assignRoDialog','')" label="Back"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
 
