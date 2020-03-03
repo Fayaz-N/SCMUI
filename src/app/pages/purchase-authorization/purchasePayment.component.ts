@@ -5,14 +5,14 @@ import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
 import { MprService } from 'src/app/services/mpr.service';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
-import { FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
 })
 export class purchasePaymentComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private route: ActivatedRoute) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
     public itemsform: FormGroup;
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
@@ -50,6 +50,8 @@ export class purchasePaymentComponent implements OnInit {
     public Qty: number;
     public savingorexcessamount: number;
     public status: StatusCheckModel;
+    public PAsubmitForm: FormGroup;
+    public mprrevisionid: number;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -115,6 +117,10 @@ export class purchasePaymentComponent implements OnInit {
             localStorage.removeItem("PADetails");
             this.showemployee = true
         }
+        this.PAsubmitForm = this.formBuilder.group({
+            PONO: ['', [Validators.required, Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
+            POItemNo: ['', [Validators.required, Validators.maxLength(10)]]
+        })
         
         //this.paService.itemdat$.subscribe(data => {
         //    this.selectedItems = data;
@@ -162,8 +168,9 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
         //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
         this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
-            this.paid = data;
+            this.paid = data.Sid;
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
+            this.getmprpabyid(this.paid);
         })
     }
     LoadAllBuyerGroups() {
@@ -190,6 +197,7 @@ export class purchasePaymentComponent implements OnInit {
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
             }
+            this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
             this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
             this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
             if (this.target > this.sum) {
@@ -273,13 +281,16 @@ export class purchasePaymentComponent implements OnInit {
         })
     }
     Approvepa(approvers: MPRPAApproversModel) {
-        approvers.PAId = this.paid;
-        approvers.EmployeeNo = this.employee.EmployeeNo;
-        this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
-            this.status = data;
-            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated Successfully' });
-            this.getmprpabyid(approvers.PAId);
-        })
+        approvers.MPRRevisionId = this.mprrevisionid;
+            approvers.PAId = this.paid;
+            approvers.EmployeeNo = this.employee.EmployeeNo;
+            this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
+                this.status = data;
+                this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated Successfully' });
+                this.getmprpabyid(approvers.PAId);
+            })
+        
+
     }
     AddPaitem(paitemid:any) {
         this.EditDialog = true;
@@ -290,13 +301,27 @@ export class purchasePaymentComponent implements OnInit {
         this.EditDialog = false;
     }
     SubmitItem(paitem: ItemsViewModel) {
+        if (this.PAsubmitForm.invalid) {
+            return;
+        }
+        else {
+            this.paitemvalue = true;
+            this.paService.InsertPAitems(paitem).subscribe(data => {
+                this.paid = data;
+                this.EditDialog = false;
+                paitem = new ItemsViewModel();
+            })
+        }
         //this.paitem.EmployeeNo = this.employee.EmployeeNo;
         //this.purchasedetails.Item = paitem[0];
-        this.paitemvalue = true;
-        this.paService.InsertPAitems(paitem).subscribe(data => {
-            this.paid = data;
-            this.EditDialog = false;
-            paitem = new ItemsViewModel();
-        })
+
+    }
+    numberOnly(event): boolean {
+        const charCode = (event.which) ? event.which : event.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+
     }
 }

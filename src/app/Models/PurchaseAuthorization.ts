@@ -95,6 +95,7 @@ export class ItemsViewModel {
     paitemid: number;
     paid: number;
     MRPItemsDetailsID: number;
+    MPRRevisionId: number;
 }
 export class EmployeeModel {
     EmployeeNo: number;
@@ -212,6 +213,7 @@ export class MPRPAApproversModel {
     RoleId: string;
     EmployeeNo: string;
     PAId: number;
+    MPRRevisionId: number;
 }
 export class BuyerGroupModel {
     BuyerGroupId: number;

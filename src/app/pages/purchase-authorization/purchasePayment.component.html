@@ -190,52 +190,56 @@
     </div>-->
   </div><br />
   <div *ngIf="pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <p-table #dt [value]="purchasedetails.Item" [globalFilterFields]="['PONO']" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
-      <ng-template pTemplate="header">
+    <p-table #dt [value]="purchasedetails.Item" [globalFilterFields]="['PONO']" [paginator]="true" [rows]="10" [resizableColumns]="true" editMode="row" p columnResizeMode="expand">
+      <ng-template pTemplate="header" let-rowData let-editing="editing">
         <tr>
           <th colspan="12" class="text-right">
             <input type="text" pInputText size="35" placeholder="Search by PONO" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
           </th>
         </tr>
         <tr>
-          <th style="width: 5em">Sl No</th>
+          <th>Sl No</th>
           <!--<th class="ptable-cell">Department</th>-->
           <th class="ptable-cell">Item Description</th>
-          <th style="width: 6em">Quantity</th>
+          <th class="ptable-cell">Quantity</th>
           <!--<th>Vendor Name</th>-->
           <th>MPR NO</th>
           <th>Target Spend</th>
-          <th style="width:6em">Price</th>
-          <th class="ptable-cell">Total Price</th>
+          <th>Price</th>
+          <th>Total Price</th>
           <th>Sale Order</th>
           <th class="ptable-cell">Payment Term</th>
           <th>PO NO</th>
           <th>PO ItemNo</th>
           <th>PODate</th>
-          <th>Remarks</th>
-          <th>Edit</th>
+          <th class="ptable-cell">Remarks</th>
+          <!--<th>Edit</th>-->
+          <th [pEditableRow]="rowData"><button pButton type="button"  pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <!--<tr class="pull-right" [pEditableRow]="rowData">
+          <th><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
+        </tr>-->
         <tr [pEditableRow]="rowData">
           <td class="text-center">{{ri+1}}</td>
           <!--<td class="ptable-cell">{{rowData.Department}}</td>-->
           <td class="ptable-cell">{{rowData.ItemDescription}}</td>
-          <td>{{rowData.QuotationQty}}</td>
+          <td class="ptable-cell">{{rowData.QuotationQty}}</td>
           <!--<td class="ptable-cell">{{rowData.VendorName}}</td>-->
           <td class="ptable-cell">{{rowData.DocumentNo}}</td>
-          <td>{{rowData.TargetSpend}}</td>
-          <td>{{rowData.UnitPrice}}</td>
-          <td>{{rowData.itemsum}}</td>
+          <td class="ptable-cell">{{rowData.TargetSpend}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+          <td class="ptable-cell">{{rowData.itemsum}}</td>
           <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
-          <td>{{rowData.PaymentTermCode}}</td>
+          <td class="ptable-cell">{{rowData.PaymentTermCode}}</td>
           <td class="ptable-cell">{{rowData.PONO}}</td>
           <td class="ptable-cell">{{rowData.POItemNo}}</td>
-          <td>{{rowData.PODate}}</td>
+          <td class="ptable-cell">{{rowData.PODate}}</td>
           <td class="ptable-cell">{{rowData.Remarks}}</td>
-          <td class="text-center">
+          <!--<td class="text-center">
             <button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(rowData)"></button>
-          </td>
+          </td>-->
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -258,6 +262,7 @@
       </ng-template>
     </p-table>
   </div><br />
+
   <div *ngIf="showemployee && !pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <div *ngIf="employeelist && employeelist.Approvers.length>0" class="col-lg-8 col-md-8 col-sm-8">
       <table class="table table-bordered">
@@ -371,20 +376,19 @@
           <tr>
             <th><span style="float:left">Terms </span></th>
             <th><span style="float:left">RfqRevisionId </span> </th>
-            <!--<th rowspan="2"><span style="float:left">RFQNo </span> </th>-->
+            <th rowspan="2"><span style="float:left">RFQNo </span> </th>
             <!--<th rowspan="2">
               <tr>RfqNo</tr>
               <tr>
                 <td>rfqnos</td>
               </tr>
             </th>-->
-            <th rowspan="2">
+            <!--<th rowspan="2">
               <h6 style="text-align:center">RFQNO</h6>
-          <tr>
-            <td>fmhjghg</td>
-            <td>advgasdv</td>
+          <tr *ngFor="let terms of rfqterms">
+            <td>{{terms.RFQNo}}</td>
           </tr>
-          </th>
+          </th>-->
           </tr>
 
         </thead>
@@ -647,57 +651,37 @@
   </div>
 </div>
 
-<p-dialog header="Add" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
-  <div style="display:none">
-    <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Paitemid:</label>&nbsp;&nbsp;
-    <span class="purchasetype">{{paitem.paitemid}}</span>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-2">
-      <label for="procSrc">PONo: </label>
-    </div>
-    <div class="ui-g-5">
-      <input type="text" [(ngModel)]="paitem.PONO" maxlength="10" class="form-control" />
-    </div>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-2">
-      <label for="procSrc">POItemNo: </label>
-    </div>
-    <div class="ui-g-5">
-      <input type="text" [(ngModel)]="paitem.POItemNo" maxlength="10" class="form-control" />
-      <!--<span *ngIf="paitemvalue && itemsform.controls.POItemNo.errors" class="invalid-feedback">MaxPAValue Required.</span>-->
-    </div>
-    <!--<div *ngIf="paitem.POItemNo.errors?.maxlength">
-         MaxLength Of POItemNo Is 10 characters.
-    </div>-->
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-2">
-      <label for="procSrc">PO Date: </label>
-    </div>
-    <div class="ui-g-5">
-      <!--<input type="text" [(ngModel)]="paitem.PODate" class="form-control" />-->
-      <!--<p-calendar class="mprldatepick" [(ngModel)]="paitem.PODate" [monthNavigator]="true"></p-calendar>-->
-      <input type="date" [(ngModel)]="paitem.PODate" class="form-control" />
-      <!--<span *ngIf="paitemvalue && itemsform.controls.PODate.errors" class="invalid-feedback">Authorization Type Required.</span>-->
-    </div>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-2">
-      <label for="procSrc">Remarks:</label>
-    </div>
-    <div class="ui-g-5">
-      <input type="text" [(ngModel)]="paitem.Remarks" class="form-control" />
-      <!--<span *ngIf="paitemvalue && itemsform.controls.Remarks.errors" class="invalid-feedback">Authorization Type Required.</span>-->
-    </div>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>
-      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
-    </div>
-  </p-footer>
+<p-dialog header="Add" *ngFor="let items of paitem" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+  <form [formGroup]="PAsubmitForm">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>ITEM</th>
+          <th>MPRNO</th>
+          <th>PONO</th>
+          <th>POITEMNO</th>
+          <th>PODATE</th>
+          <th>POREMARKS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let items of paitem">
+          <td>{{items.ItemDescription}}</td>
+          <td>{{items.DocumentNo}}</td>
+          <td><input (keypress)="numberOnly($event)" type="text" [(ngModel)]="items.PONO" maxlength="10" placeholder="Only Numbers Will allow" numberOnly class="form-control" /></td>
+          <td><input type="text" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
+          <td><input type="date" [(ngModel)]="items.PODate" class="form-control" /></td>
+          <td><input type="text" [(ngModel)]="items.Remarks" class="form-control" /></td>
+        </tr>
+      </tbody>
+    </table>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </form>
 </p-dialog>
 
 
