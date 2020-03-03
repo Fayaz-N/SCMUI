@@ -56,7 +56,7 @@
   </div>
 </form>
 <br />
-<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add Item" class="ui-button-info" (click)="showItemDialog()" style="float:right"></button><br /><br />
+<!--<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add Item" class="ui-button-info" (click)="showItemDialog()" style="float:right"></button><br /><br />-->
 <div class="form-control" style="height:100%;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
   <div class="row" style="margin-left: 0px; margin-right: 0px">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
@@ -101,7 +101,7 @@
           <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Info" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId)"></button>
         </th>
       </tr>
-      <tr class="text-center">
+      <tr class="text-center mprltbldata">
         <th>Sl No.</th>
         <th>Split Item Id</th>
         <th *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'">Start Qty</th>
@@ -150,7 +150,7 @@
   </p-footer>
 </p-dialog>
 
-<form [formGroup]="AddItemForm" style="height: 5px; overflow-y: scroll">
+<form [formGroup]="AddItemForm" style="height: 100%; overflow-y: scroll">
   <p-dialog header="Add Item" [(visible)]="AddItemDialog" showEffect="fade" [modal]="true" [responsive]="true" [style]="{width: '1024px'}">
     <!--[closable]="false"-->
 
@@ -276,7 +276,7 @@
     </p-footer>
   </p-dialog>
 </form>
-<form [formGroup]="addItemInfoForm" style="height: 5px; overflow-y: scroll">
+<form [formGroup]="addItemInfoForm" style="height: 100%; overflow-y: scroll">
   <p-dialog header="Add Item Info" [(visible)]="AddItemInfodialog" showEffect="fade" [modal]="true" [responsive]="true" [style]="{width: '1024px'}">
 
     <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">

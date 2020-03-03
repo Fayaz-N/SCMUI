@@ -182,7 +182,7 @@
 <p-dialog header="Conform Data:" [(visible)]="showConformationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '800px'}">
   <p-table [columns]="cols" [value]="rfqQuoteModel">
     <ng-template pTemplate="header" let-columns>
-      <tr>
+      <tr class="mprltbldata">
         <th>Item Name</th>
         <th *ngFor="let col of columns">
           {{col.VendorName}}
@@ -303,7 +303,7 @@
            [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
            appendTo="body" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="PAItemID">
     <ng-template pTemplate="header" let-columns>
-      <tr>
+      <tr class="mprltbldata">
         <th style="width: 3em">
           <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
         </th>
@@ -311,6 +311,7 @@
         <th>RFQ NO</th>
         <th>PO NO</th>
         <th>Vendor Name</th>
+        <th>Material Code</th>
         <th>Material Description</th>
         <th>HSN Code</th>
         <th>Unit Price</th>
@@ -325,6 +326,7 @@
         <td class="ptable-cell">{{rowData.RFQNo}}</td>
         <td class="ptable-cell">{{rowData.PONO}}</td>
         <td class="ptable-cell">{{rowData.VendorName}}</td>
+        <td class="ptable-cell">{{rowData.ItemId}}</td>
         <td class="ptable-cell">{{rowData.Materialdescription}}</td>
         <td class="ptable-cell">{{rowData.HsNCode}}</td>
         <td class="ptable-cell">{{rowData.UnitPrice}}</td>

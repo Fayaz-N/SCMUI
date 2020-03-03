@@ -406,6 +406,7 @@ export class GenerateRFQComponent implements OnInit {
   showAssignRoDialog(rindex: number, item: any) {
     this.assignRoDialog = true;
     this.MPRItemDetailsid = item.MPRItemDetailsid;
+    this.PoFilterParams.Materialdescription = item.ItemId;
     this.selectedRrepeatOrdervendorDetails = [];
     this.rfqIndex = rindex;
     if (this.repeatOrdervendorDetailsList.length == 0) {

@@ -159,7 +159,7 @@
     <ng-template pTemplate="header" >
       <tr class="mprltbldata">
         <th style="width:100px">S.No</th>
-        <th style="width:100px">MPR Document Number</th>
+        <th style="width:110px">MPR Document Number</th>
         <th style="width:100px">Description</th>
         <th style="width:100px" *ngIf="showCMMFilter">Job Code</th>
         <th style="width:100px" *ngIf="showCMMFilter">Job Name</th>
@@ -184,7 +184,7 @@
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
       <tr class="mprltbldata">
         <td> {{ri+1}}</td>
-        <td class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+        <td class="ptable-cell" style="font-size:11px !important;width:110px"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobCode}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobName}}</td>

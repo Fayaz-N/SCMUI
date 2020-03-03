@@ -189,7 +189,7 @@
             </div>
           </ng-template>
           <ng-template pTemplate="header">
-            <tr>
+            <tr class="mprltbldata">
               <th>S.No</th>
               <th>Item Code & MPR Item Description</th>
               <th>Quantity & Unit</th>
@@ -313,7 +313,7 @@
             Vendor Details :
           </ng-template>
           <ng-template pTemplate="header">
-            <tr>
+            <tr class="mprltbldata">
               <th>S.No</th>
               <th>Name Of Vendor</th>
               <th *ngIf="RfqGeneratedList.length>0">RFQ No</th>
@@ -546,7 +546,7 @@
             Documentation :
           </ng-template>
           <ng-template pTemplate="header">
-            <tr>
+            <tr class="mprltbldata">
               <th>Description</th>
               <th>For Approval</th>
               <th>For Final</th>
@@ -773,7 +773,7 @@
             <div class="col-lg-5 col-md-5 col-sm-5">
               <p-table *ngIf="mprRevisionModel.MPRIncharges.length>0" [value]="mprRevisionModel.MPRIncharges">
                 <ng-template pTemplate="header">
-                  <tr>
+                  <tr class="mprltbldata">
                     <th class="ptable-cell">Emp Name</th>
                     <th class="ptable-cell">Can Clear Technically</th>
                     <th class="ptable-cell">Can Clear Commercially</th>
@@ -871,7 +871,7 @@
 
             <p-table *ngIf="mprRevisionModel.MPRCommunications.length>0" [value]="mprRevisionModel.MPRCommunications">
               <ng-template pTemplate="header">
-                <tr>
+                <tr class="mprltbldata">
                   <th>Communication By</th>
                   <th>Date</th>
                   <th>Remarks</th>
@@ -1148,7 +1148,7 @@
     <div class="form-control" style="height:100%;border-radius:0px;">
       <p-table [value]="mprRevisionDetails.MPRStatusTrackDetails">
         <ng-template pTemplate="header">
-          <tr>
+          <tr class="mprltbldata">
             <th>Employee Name</th>
             <th>Status</th>
             <th>Status Updated On</th>

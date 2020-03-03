@@ -2,7 +2,7 @@
 <div *ngIf="RfqCompareItems.length>0">
   <div class="row " style="margin-top:10px">
     <div class="col-md-6 pt-2">
-      Material Purchase Requisition : <span style="color:#dc3545;">{{RfqCompareItems[0].DocumentNo}}</span>
+      Material Purchase Requisition : <span style="color:#dc3545;"><a [routerLink]="['/SCM/MPRForm',MPRRevisionId]" >{{RfqCompareItems[0].DocumentNo}}</a></span>
     </div>
     <div class="col-md-3 pt-2">
       <span class="form-inline ml-2">
@@ -91,7 +91,7 @@
                [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
                appendTo="body">
         <ng-template pTemplate="header" let-columns>
-          <tr>
+          <tr class="mprltbldata">
             <th style="width:100px !important;">Item Name</th>
             <th style="width:100px !important;">Item Description</th>
             <th style="width:100px !important;">Quantity</th>

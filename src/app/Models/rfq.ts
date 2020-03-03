@@ -161,6 +161,7 @@ export class RfqItemModel {
   SyncStatus: boolean;
   iteminfo: Array<RfqItemInfoModel> = [];
   RFQDocuments: Array<RFQDocuments> = [];
+  RfqVendorBOM: Array<any> = [];
   MfgPartNo: string;
   MfgModelNo: string;
 
