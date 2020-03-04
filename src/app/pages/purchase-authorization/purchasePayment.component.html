@@ -651,7 +651,7 @@
   </div>
 </div>
 
-<p-dialog header="Add" *ngFor="let items of paitem" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+<p-dialog header="Add"  [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}" [closable]="false">
   <form [formGroup]="PAsubmitForm">
     <table class="table table-bordered">
       <thead>
@@ -668,16 +668,16 @@
         <tr *ngFor="let items of paitem">
           <td>{{items.ItemDescription}}</td>
           <td>{{items.DocumentNo}}</td>
-          <td><input (keypress)="numberOnly($event)" type="text" [(ngModel)]="items.PONO" maxlength="10" placeholder="Only Numbers Will allow" numberOnly class="form-control" /></td>
-          <td><input type="text" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
-          <td><input type="date" [(ngModel)]="items.PODate" class="form-control" /></td>
-          <td><input type="text" [(ngModel)]="items.Remarks" class="form-control" /></td>
+          <td><input (keypress)="numberOnly($event)" formControlName="PONO" type="text" [(ngModel)]="items.PONO" maxlength="10" numberOnly class="form-control" /></td>
+          <td><input type="text" formControlName="POItemNo" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
+          <td><input formControlName="PODate" type="date" [(ngModel)]="items.PODate" class="form-control" /></td>
+          <td><input formControlName="Remarks" type="text" [(ngModel)]="items.Remarks" class="form-control" /></td>
         </tr>
       </tbody>
     </table>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
         <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
       </div>
     </p-footer>

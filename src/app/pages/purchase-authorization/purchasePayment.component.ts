@@ -119,7 +119,9 @@ export class purchasePaymentComponent implements OnInit {
         }
         this.PAsubmitForm = this.formBuilder.group({
             PONO: ['', [Validators.required, Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
-            POItemNo: ['', [Validators.required, Validators.maxLength(10)]]
+            POItemNo: ['', [Validators.required, Validators.maxLength(10)]],
+            PODate: ['', [Validators.required]],
+            Remarks: ['', [Validators.required]]
         })
         
         //this.paService.itemdat$.subscribe(data => {
@@ -305,7 +307,8 @@ export class purchasePaymentComponent implements OnInit {
             return;
         }
         else {
-            this.paitemvalue = true;
+            //this.paitemvalue = true;
+            var id = this.mprrevisionid;
             this.paService.InsertPAitems(paitem).subscribe(data => {
                 this.paid = data;
                 this.EditDialog = false;
