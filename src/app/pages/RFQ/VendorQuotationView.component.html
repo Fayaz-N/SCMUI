@@ -14,6 +14,14 @@
     <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
       <label>Supplier :</label>&nbsp;<span *ngIf="quoteDetails.rfqmaster && quoteDetails.rfqmaster.Vendor">{{quoteDetails.rfqmaster.Vendor.VendorName}}</span>
     </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
+      <label>
+        Revision No:
+      </label><span *ngFor="let revision of rfqrevisions">
+        &nbsp;&nbsp;
+        <a href='#/' [ngClass]="{'active': revision.rfqRevisionId == RfqRevisionId}" [routerLink]="['/SCM/VendorQuoteView',revision.rfqRevisionId]">{{revision.RevisionNo}}</a>
+      </span>
+    </div>
   </div>
   <div class="row  pl-0">
     <div class="col-lg-4 col-md-4 col-sm-4 pt-2">
@@ -123,7 +131,7 @@
         </p-table>
       </div>
     </div><br />
-    
+
     <div class="row" style="margin-left: 0px; margin-right: 0px">
       <h4 style="text-decoration: underline;">Terms & Conditions :</h4>
       <p-table [value]="quoteDetails.RFQTerms">
@@ -149,9 +157,9 @@
     </div>
   </div>
 </div>
-<div class="icon-bar"> 
+<div class="icon-bar">
   <a routerLinkActive="active" (click)="createNewRevision()" pTooltip="Revise"><i class="fa fa-plus-square"></i></a>
-   <a routerLinkActive="active" [routerLink]="['/SCM/RFQComparision',MPRRevisionId]"  pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a> 
+  <a routerLinkActive="active" [routerLink]="['/SCM/RFQComparision',MPRRevisionId]" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
 </div>
 <p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
   <div class="ui-g ui-fluid">

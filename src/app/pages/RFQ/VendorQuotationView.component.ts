@@ -1,10 +1,10 @@
 import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { RfqService } from 'src/app/services/rfq.service ';
+import { MprService } from 'src/app/services/mpr.service';
 import { QuoteDetails, RFQDocuments, RFQMaster, RFQCommunication } from 'src/app/Models/rfq';
 import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Employee, AccessList } from 'src/app/Models/mpr';
+import { Employee, AccessList, DynamicSearchResult } from 'src/app/Models/mpr';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -14,7 +14,7 @@ import { MessageService } from 'primeng/api';
 
 export class VendorQuotationViewComponent implements OnInit {
 
-  constructor(public RfqService: RfqService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
+  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   public RfqRevisionId: number = 0;
@@ -26,6 +26,8 @@ export class VendorQuotationViewComponent implements OnInit {
   public displayCommunicationDialog: boolean = false;
   public MPRRevisionId: string;
   public newRevision: boolean;
+  public rfqrevisions: Array<any> = [];
+  public dynamicData = new DynamicSearchResult();
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -71,6 +73,12 @@ export class VendorQuotationViewComponent implements OnInit {
           }
         });
       }
+      
+      this.dynamicData = new DynamicSearchResult();
+      this.dynamicData.query = "select * from RFQRevisions_N where rfqMasterId=" + this.quoteDetails.rfqmaster.RfqMasterId + "";
+      this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+        this.rfqrevisions = data;
+      })
     });
   }
   showRfqCommunicationDialogToAdd() {

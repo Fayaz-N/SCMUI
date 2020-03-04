@@ -98,7 +98,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
         link: '/SCM/ProjectManager',
         icon: 'list-outline'
       }
-      
+      ,
+      {
+        title: 'Upload Vendors',
+        link: '/SCM/UploadVendor',
+        icon: 'upload-outline'
+      },
+      {
+        title: 'Send email to vendors',
+        link: '/SCM/VendorEmailTemplate',
+        icon: 'email-outline'
+      }    
     ],
     
     

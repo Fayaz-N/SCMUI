@@ -1,0 +1,14 @@
+<div class="row">
+    <label>Message:</label>
+    <div class="col-xs-8 col-sm-8 col-md-8">
+      <textarea style="width:100%;height:150px" [(ngModel)]="sendMailObj.Message"  wrap="hard"></textarea>
+    </div>
+  </div><br />
+  <div class="row">
+    <div class="col-xs-8 col-sm-8 col-md-8">
+      <p-checkbox [(ngModel)]="sendMailObj.IncludeUrl" binary="true"></p-checkbox>&nbsp;&nbsp; Include URL &nbsp;
+      <p-checkbox [(ngModel)]="sendMailObj.IncludeCredentials" binary="true"></p-checkbox>&nbsp;&nbsp; Include Credentials &nbsp;
+      <button type="button" class="btn btn-success" (click)="onEmailSend()" label="Save">Send</button>
+    </div>
+  </div>
+

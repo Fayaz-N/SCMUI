@@ -20,6 +20,8 @@ import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
+import { UploadVendorComponent } from './MPR/Admin/UploadVendors.component';
+import { VendorEmailComponent } from './MPR/Admin/VendorEmail.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component';
@@ -105,6 +107,8 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
     ProcurementSourcesComponent,
     ScopesComponent,
     ProjectManagersComponent,
+    UploadVendorComponent,
+    VendorEmailComponent,
     MPRPageComponent,
     GenerateRFQComponent,
     RFQComparisionComponent,

@@ -12,6 +12,8 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
+import { UploadVendorComponent } from './MPR/Admin/UploadVendors.component';
+import { VendorEmailComponent } from './MPR/Admin/VendorEmail.component';
 import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
 import { AccessGroupComponent } from './Authorization/AccessGroup.component';
 import { RoleAccessComponent } from './Authorization/RoleAccess.component';
@@ -29,9 +31,7 @@ import { CreditAuthorizationComponent } from './purchase-authorization/CreditAut
 import { purchasePaymentComponent } from './purchase-authorization/purchasePayment.component';
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
-import { rfqFilterParams } from '../Models/rfq';
 import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component';
-
 
 const routes: Routes = [{
   path: '',
@@ -65,6 +65,8 @@ const routes: Routes = [{
     { path: 'Departments', component: DepartmentComponent, canActivate: [AuthGuard] },
     { path: 'Scopes', component: ScopesComponent, canActivate: [AuthGuard] },
     { path: 'ProcurementSource', component: ProcurementSourcesComponent, canActivate: [AuthGuard] },
+    { path: 'UploadVendor', component: UploadVendorComponent, canActivate: [AuthGuard] },
+    { path: 'VendorEmailTemplate', component: VendorEmailComponent, canActivate: [AuthGuard] },
     { path: 'ProjectManager', component: ProjectManagersComponent, canActivate: [AuthGuard] },
     { path: 'Groupaccessibility', component: AccessGroupComponent, canActivate: [AuthGuard] },
     { path: 'Roleaccessibility', component: RoleAccessComponent, canActivate: [AuthGuard] },

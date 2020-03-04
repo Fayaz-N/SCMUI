@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -173,11 +173,21 @@ export class MprService {
         return data;
       }))
   }
+  uploadVendorData(formdata: FormData): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/uploadVendorData/', formdata)
+      .pipe(map(data => {
+        return data;
+      }))
+  }
   DownloadFile(fileName: string): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/DownloadFile/' + fileName, this.httpOptions);
   }
   copyMprRevision(mpr: mprRevision, repeatOrder: boolean): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/copyMprRevision/' + repeatOrder, mpr, this.httpOptions);
+  }
+
+  sendMailtoVendor(mailObj: sendMailObj): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/sendMailtoVendor/', mailObj, this.httpOptions);
   }
 
 }

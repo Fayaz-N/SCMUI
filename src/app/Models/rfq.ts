@@ -186,6 +186,7 @@ export class QuoteDetails {
   rfqCommunications: Array<any>;
 }
 export class RFQMaster {
+  RfqMasterId: string;
   RfqNo: string;
   RFQNo: string;
   Vendor: VendorDetails;

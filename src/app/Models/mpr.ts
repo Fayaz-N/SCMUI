@@ -367,3 +367,8 @@ export class PoFilterParams {
   Materialdescription: string;
 }
 
+export class sendMailObj {
+  Message: string;
+  IncludeUrl: boolean;
+  IncludeCredentials: boolean;
+}
