@@ -369,26 +369,21 @@
   </div>
 </div>-->
 <div class="form-control" style="height:100%;width:100%">
-  <div *ngIf="!pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+  <div *ngIf="!pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px;overflow-x:scroll">
     <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
       <table class="table table-bordered">
         <thead>
           <tr>
             <th><span style="float:left">Terms </span></th>
-            <th><span style="float:left">RfqRevisionId </span> </th>
-            <th rowspan="2"><span style="float:left">RFQNo </span> </th>
-            <!--<th rowspan="2">
-              <tr>RfqNo</tr>
+            <th><span style="float:left">RfqRevisionId</span></th>
+            <!--<th><span style="float:left">Remarks</span></th>-->
+            <!--<th rowspan="2"><span style="float:left">RFQNo </span> </th>-->
+            <th rowspan="2">
+              <tr><h6 style="text-align:center">RfqNo</h6></tr>
               <tr>
-                <td>rfqnos</td>
+                <td  *ngFor="let terms of rfqno"><span>{{terms.RFQNo}}</span></td>
               </tr>
-            </th>-->
-            <!--<th rowspan="2">
-              <h6 style="text-align:center">RFQNO</h6>
-          <tr *ngFor="let terms of rfqterms">
-            <td>{{terms.RFQNo}}</td>
-          </tr>
-          </th>-->
+            </th>
           </tr>
 
         </thead>
@@ -396,7 +391,14 @@
           <tr *ngFor="let terms of rfqterms">
             <td>{{terms.Terms}}</td>
             <td>{{terms.RFQrevisionId}}</td>
-            <td>{{terms.RFQNo}}</td>
+            <!--<td>{{terms.Remarks}}</td>-->
+            <td>
+              {{terms.VendorResponse}}<br /><br />
+
+              <form>
+                {{terms.Remarks}}
+              </form>
+            </td>
           </tr>
         </tbody>
       </table>

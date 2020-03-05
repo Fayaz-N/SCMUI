@@ -52,6 +52,7 @@ export class purchasePaymentComponent implements OnInit {
     public status: StatusCheckModel;
     public PAsubmitForm: FormGroup;
     public mprrevisionid: number;
+    public rfqno: Array<any> = [];
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -270,16 +271,25 @@ export class purchasePaymentComponent implements OnInit {
         })
     }
 
-    //showItemDialogToAdd() {
+    //showItemDialogToAdd() { 
     //    this.displayItemDialog = true;
     //}
 
     public ispagerefresh() {
         window.history.back();
     }
-    displayRfqTerms(rfqrevisionid:any) {
+    displayRfqTerms(rfqrevisionid: any) {
         this.paService.getrfqtermsbyrevisionid(rfqrevisionid).subscribe(data => {
             this.rfqterms = data;
+
+            let lookup = {};
+            for (let i = 0; i < this.rfqterms.length; i++) {
+                if (!lookup[this.rfqterms[i]]) {
+                    lookup[this.rfqterms[i]] = true;
+                    this.rfqno.push(this.rfqterms[i]);
+                }
+            }
+
         })
     }
     Approvepa(approvers: MPRPAApproversModel) {
