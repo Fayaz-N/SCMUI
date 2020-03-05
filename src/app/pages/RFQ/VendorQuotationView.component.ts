@@ -114,6 +114,7 @@ export class VendorQuotationViewComponent implements OnInit {
   }
 
   updateCommunication() {
+    this.RFQCommunications.RemarksTo = this.quoteDetails.rfqmaster.Vendor.Vendorid;
     this.RfqService.UpdateVendorCommunication(this.RFQCommunications).subscribe(data => {
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });

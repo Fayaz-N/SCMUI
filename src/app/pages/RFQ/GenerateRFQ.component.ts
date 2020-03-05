@@ -19,6 +19,7 @@ export class GenerateRFQComponent implements OnInit {
 
   public newVendor: FormGroup;
   public employee: Employee;
+  public formName: string;
   public txtName: string;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
@@ -113,6 +114,7 @@ export class GenerateRFQComponent implements OnInit {
   }
 
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
+    this.formName = formName;
     this.txtName = name;
     if (searchTxt == undefined)
       searchTxt = "";
@@ -140,19 +142,40 @@ export class GenerateRFQComponent implements OnInit {
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
     this.showList = false;
-    var addvendor = true;
-    if (this.rfqQuoteModel.length > 0) {
-      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
-        if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
-          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'vendor already exist' });
-          this.vendorEmailList = [];
-          this.newVendorDetails.Emailid = "";
-          addvendor = false;
-          return false;
+    if (this.formName == "PoFilterParams") {
+      this.PoFilterParams.VendorId = item.code;
+      this.PoFilterParams.VendorName = item.name;
+    }
+    else {
+      var addvendor = true;
+      if (this.rfqQuoteModel.length > 0) {
+        for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+          if ((this.vendorDetailsArray.filter(li => li.Vendorid == item.code).length > 0) || (this.rfqQuoteModel[i].suggestedVendorDetails.filter(li => li.VendorId == item.code).length > 0) || ((this.rfqQuoteModel[i].manualvendorDetails.filter(li => li.VendorId == item.code)).length > 0)) {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'vendor already exist' });
+            this.vendorEmailList = [];
+            this.newVendorDetails.Emailid = "";
+            addvendor = false;
+            return false;
+          }
         }
-      }
 
-      if (addvendor) {
+        if (addvendor) {
+          this.showList = false;
+          if (item.updateColumns && item.updateColumns != "NULL") {
+            this.vendorEmailList = item.updateColumns.split(",");
+            this.newVendorDetails.Emailid = this.vendorEmailList[0];
+          }
+          this.newVendorDetails.Vendorid = item.code;
+          this.newVendor.controls['ContactNo'].clearValidators();
+          this.newVendor.controls['VendorName'].clearValidators();
+          this.newVendor.controls['ContactNo'].updateValueAndValidity();
+          this.newVendor.controls['VendorName'].updateValueAndValidity();
+          this.vendorDetails.Vendorid = item.code;
+          this.vendorDetails.VendorName = item.name;
+        }
+
+      }
+      else {
         this.showList = false;
         if (item.updateColumns && item.updateColumns != "NULL") {
           this.vendorEmailList = item.updateColumns.split(",");
@@ -166,21 +189,13 @@ export class GenerateRFQComponent implements OnInit {
         this.vendorDetails.Vendorid = item.code;
         this.vendorDetails.VendorName = item.name;
       }
-
     }
-    else {
-      this.showList = false;
-      if (item.updateColumns && item.updateColumns != "NULL") {
-        this.vendorEmailList = item.updateColumns.split(",");
-        this.newVendorDetails.Emailid = this.vendorEmailList[0];
-      }
-      this.newVendorDetails.Vendorid = item.code;
-      this.newVendor.controls['ContactNo'].clearValidators();
-      this.newVendor.controls['VendorName'].clearValidators();
-      this.newVendor.controls['ContactNo'].updateValueAndValidity();
-      this.newVendor.controls['VendorName'].updateValueAndValidity();
-      this.vendorDetails.Vendorid = item.code;
-      this.vendorDetails.VendorName = item.name;
+  }
+
+  //clear model when search text is empty
+  onsrchTxtChange(modelparm: string, value: string, model: string) {
+    if (value == "") {
+      this[model][modelparm] = "";
     }
   }
 
@@ -423,6 +438,8 @@ export class GenerateRFQComponent implements OnInit {
       this.dynamicData.query += " and RFQNo ='" + this.PoFilterParams.RFQNo + "'";
     if (this.PoFilterParams.Materialdescription)
       this.dynamicData.query += " and Materialdescription = '" + this.PoFilterParams.Materialdescription + "' OR ItemId='" + this.PoFilterParams.Materialdescription + "'";
+    if (this.PoFilterParams.VendorName)
+      this.dynamicData.query += " and VendorName ='" + this.PoFilterParams.VendorName + "'";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.repeatOrdervendorDetailsList = data;
     })

@@ -56,6 +56,7 @@ export class RFQRevisionData {
 }
 
 export class VendorDetails {
+  Vendorid: string;
   VendorCode: string;
   VendorName: string;
   OldvendorCode: string;

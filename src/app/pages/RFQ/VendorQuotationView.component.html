@@ -159,7 +159,7 @@
 </div>
 <div class="icon-bar">
   <a routerLinkActive="active" (click)="createNewRevision()" pTooltip="Revise"><i class="fa fa-plus-square"></i></a>
-  <a routerLinkActive="active" [routerLink]="['/SCM/RFQComparision',MPRRevisionId]" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
+  <a *ngIf="MPRRevisionId" routerLinkActive="active" [routerLink]="['/SCM/RFQComparision',MPRRevisionId]" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
 </div>
 <p-dialog header="Communication :" [(visible)]="displayCommunicationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
   <div class="ui-g ui-fluid">

@@ -365,6 +365,8 @@ export class PoFilterParams {
   PONO: string;
   RFQNo: string;
   Materialdescription: string;
+  VendorId: string;
+  VendorName: string;
 }
 
 export class sendMailObj {
