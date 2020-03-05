@@ -65,9 +65,11 @@ export class PADetailsModel {
     DepartmentId: number;
     DepartmentName: string;
     EmployeeNo: string;
+    vendorProjectManager: string;
     POItemNo: string;
     POdate: Date | null;
     PONO: string;
+    venderid: number;
 }
 export class ItemsViewModel {
     RFQItemsId: number;

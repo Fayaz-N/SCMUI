@@ -187,18 +187,18 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         if (item.listName == "venderid") {
             this.vendorDetails.Vendorid = item.code;
             this.vendorDetails.VendorName = item.name;
-            this.padetails.VendorId = item.code;
+            this.padetails.venderid = item.code;
         }
         else if (item.listName == "DepartmentId") {
             //this.department.DepartmentId = item.code;
             //this.department.Department = item.name;
-            this.padetails.DeptID = item.code;
+            this.padetails.DepartmentId = item.code;
             this.padetails.DepartmentName = item.name;
         }
-        else if (item.listName == "ProjectManager") {
+        else if (item.listName == "vendorProjectManager") {
             this.projectmanger.EmployeeNo = item.code;
             this.projectmanger.Name = item.name;
-            this.padetails.EmployeeNo = item.code;
+            this.padetails.vendorProjectManager = item.code;
         }
         else {
             this.buyergroups.BuyerGroupId = item.code;
@@ -296,6 +296,13 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         }
     }
 
+    //Making Model Empty
+
+    onsrchTxtChange(modelparm: string, value: string, model: string) {
+        if (value == "") {
+            this[model][modelparm] = "";
+        }
+    }
     //onChange1(itemdetails: ItemsViewModel, isChecked: boolean) {
     //    debugger;
     //    this.VendorName = this.selectedItems[0].VendorName;

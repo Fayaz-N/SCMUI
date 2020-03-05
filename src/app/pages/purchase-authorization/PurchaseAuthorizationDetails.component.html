@@ -48,7 +48,7 @@
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
               <label class="form-label">Department:</label>&nbsp;
               <div class="form-inline-list">
-                <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }">
+                <input type="text" [(ngModel)]="padetails.DepartmentName" class="form-control" [ngClass]="{ 'is-invalid':Departmentsubmittted && !padetails.DepartmentName }" (keyup)="onsrchTxtChange('DepartmentId',padetails.DepartmentName,'padetails')">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','DepartmentId',padetails.DepartmentName,undefined)"></button>
                 </span>
@@ -68,7 +68,7 @@
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                 <label class="form-label">VendorName:</label>&nbsp;
                 <div class="form-inline-list">
-                    <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
+                    <input type="text" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }" (keyup)="onsrchTxtChange('venderid',vendorDetails.VendorName,'padetails')">
                     <span class="input-group-append">
                         <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
                     </span>
@@ -78,7 +78,7 @@
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                 <label class="form-label">BuyerGroup:</label>&nbsp;
                 <div class="form-inline-list">
-                    <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }">
+                    <input type="text" [(ngModel)]="buyergroups.BuyerGroup" class="form-control" [ngClass]="{ 'is-invalid':MPRForm1Submitted && !buyergroups.BuyerGroup }" (keyup)="onsrchTxtChange('BuyerGroupId',buyergroups.BuyerGroup,'padetails')">
                     <span class="input-group-append">
                         <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','BuyerGroupId',buyergroups.BuyerGroup,undefined)"></button>
                     </span>
@@ -88,7 +88,7 @@
             <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                 <label class="form-label">Project Manager:</label>&nbsp;
                 <div class="form-inline-list">
-                    <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }">
+                    <input type="text" [(ngModel)]="projectmanger.Name" class="form-control" [ngClass]="{ 'is-invalid':projectmangersubmitted && !projectmanger.Name }" (keyup)="onsrchTxtChange('vendorProjectManager',projectmanger.Name,'padetails')">
                     <span class="input-group-append">
                         <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','vendorProjectManager',projectmanger.Name,undefined)"></button>
                     </span>
@@ -110,18 +110,18 @@
                 <tr class="text-left" style="text-align:left">
                     <!--<th> <p-checkbox [value]="rowData" [(ngModel)]="paitemdetails.selectAll" (click)="selectAll($event)"></p-checkbox> CheckAll</th>-->
                     <!--<input type="checkbox" *ngIf="vendorDetails.VendorName!=null" [(ngModel)]="paitemdetails.selectAll" (change)="selectAll($event)">-->
-                    <th style="width: 4em"></th>
-                    <th style="width: 5em">Sl No</th>
+                    <th style="width:3em"></th>
+                    <th>Sl No</th>
                     <th class="ptable-cell">Department</th>
-                    <th>Vendor Name</th>
+                    <th class="ptable-cell">Vendor Name</th>
                     <th class="ptable-cell">Item Description</th>
-                    <th style="width:6em">Quantity</th>
-                    <th style="width:6em">Price</th>
-                    <th style="width:6em">Total Price</th>
-                    <th>Target Spend</th>
-                    <th>SaleOrder</th>
-                    <th>Payment Term</th>
-                    <th>MPR NO</th>
+                    <th class="ptable-cell">Quantity</th>
+                    <th class="ptable-cell">Price</th>
+                    <th class="ptable-cell">Total Price</th>
+                    <th class="ptable-cell">Target Spend</th>
+                    <th class="ptable-cell">SaleOrder</th>
+                    <th class="ptable-cell">Payment Term</th>
+                    <th class="ptable-cell">MPR NO</th>
                 </tr>
             </ng-template>
             <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
@@ -139,7 +139,7 @@
                     <td>{{rowData.UnitPrice}}</td>
                     <td>{{rowData.itemsum}}</td>
                     <td>{{rowData.TargetSpend}}</td>
-                    <td>{{rowData.SaleOrderNo}}</td>
+                    <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
                     <td>{{rowData.PaymentTermCode}}</td>
                     <td class="ptable-cell">{{rowData.DocumentNo}}</td>
                 </tr>
