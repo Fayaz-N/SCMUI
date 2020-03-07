@@ -296,7 +296,7 @@
     <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
       <label class="form-label">Vendor Name:</label>&nbsp;&nbsp;
       <div class="form-inline-list">
-        <input type="text" class="form-control forms-input" [(ngModel)]="PoFilterParams.VendorName" [value]="PoFilterParams.VendorName" (keyup)="onsrchTxtChange('venderid',PoFilterParams.venderid,'PoFilterParams')">
+        <input type="text" class="form-control forms-input" [(ngModel)]="PoFilterParams.VendorName" [value]="PoFilterParams.VendorName" (keyup)="onsrchTxtChange('venderid',PoFilterParams.VendorName,'PoFilterParams')">
         <div class="input-group-append">
           <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'PoFilterParams','venderid',PoFilterParams.VendorName,undefined)"></button>
         </div>

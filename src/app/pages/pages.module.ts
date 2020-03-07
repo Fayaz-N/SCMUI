@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { NbMenuModule } from '@nebular/theme';
+import { NbCardModule } from '@nebular/theme';
 import { ThemeModule } from '../@theme/theme.module';
 import { PagesComponent } from './pages.component';
-import { DashboardModule } from './Dashboard/Dashboard.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { AccessGroupComponent } from './Authorization/AccessGroup.component';
 import { ConfirmationDialogComponent } from '../common/confirmationdialog/confirmation-dialog.component';
@@ -56,15 +56,18 @@ import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAAppro
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MatFormFieldModule, MatInputModule } from '@angular/material';
+import { DashboardComponent } from './Dashboard/Dashboard.component';
+import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 
- 
+
+
 @NgModule({
   imports: [
     PagesRoutingModule,
     ThemeModule,
     NbMenuModule,
-    DashboardModule,
-    FormsModule ,
+    NbCardModule,
+    FormsModule,
     ReactiveFormsModule,
     TableModule,
     ButtonModule,
@@ -115,17 +118,19 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
     VendorQuotationViewComponent,
     ConfirmationDialogComponent,
     SelectfilterPipe,
-      PurchaseAuthorizationDetailsComponent,
-      purchasePaymentComponent,
-      PurchaseAuthorizationComponent,
-      CreditAuthorizationComponent,
-      purchasePaymentListComponent,
-      AddSlabsComponent,
-      MPRPAApproversListComponent
-    
+    PurchaseAuthorizationDetailsComponent,
+    purchasePaymentComponent,
+    PurchaseAuthorizationComponent,
+    CreditAuthorizationComponent,
+    purchasePaymentListComponent,
+    AddSlabsComponent,
+    MPRPAApproversListComponent,
+    DashboardComponent,
+    MPRStatusChartComponent
+
   ],
-  providers:[MessageService, ConfirmationService],
-  entryComponents:[ConfirmationDialogComponent]
+  providers: [MessageService, ConfirmationService],
+  entryComponents: [ConfirmationDialogComponent]
 })
 export class PagesModule {
 }

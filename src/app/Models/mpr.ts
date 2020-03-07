@@ -374,3 +374,6 @@ export class sendMailObj {
   IncludeUrl: boolean;
   IncludeCredentials: boolean;
 }
+export class selectObj {
+  constructor(public id: number, public name: string) { }
+}

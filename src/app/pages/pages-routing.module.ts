@@ -32,6 +32,7 @@ import { purchasePaymentComponent } from './purchase-authorization/purchasePayme
 import { purchasePaymentListComponent } from './purchase-authorization/purchasePaymentList.component';
 import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAApproversList.component';
 import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component';
+import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 
 const routes: Routes = [{
   path: '',
@@ -73,14 +74,15 @@ const routes: Routes = [{
     { path: 'Authorizationitem', component: AuthorizationItemComponent, canActivate: [AuthGuard] },
     { path: 'Viewaccess', component: ViewAccessComponent, canActivate: [AuthGuard] },
     { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
-      { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
-      { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
-      { path: "AddSlab", component: AddSlabsComponent, canActivate: [AuthGuard] },
-      { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },
-      { path: "mprpa", component: purchasePaymentComponent, canActivate: [AuthGuard] },
-      { path: "MPRPAList", component: purchasePaymentListComponent, canActivate: [AuthGuard] },
-      { path: "mprpa/:PAId", component: purchasePaymentComponent, canActivate: [AuthGuard] },
-      { path: "MPRPAApproverList", component: MPRPAApproversListComponent, canActivate: [AuthGuard] }
+    { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
+    { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
+    { path: "AddSlab", component: AddSlabsComponent, canActivate: [AuthGuard] },
+    { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },
+    { path: "mprpa", component: purchasePaymentComponent, canActivate: [AuthGuard] },
+    { path: "MPRPAList", component: purchasePaymentListComponent, canActivate: [AuthGuard] },
+    { path: "mprpa/:PAId", component: purchasePaymentComponent, canActivate: [AuthGuard] },
+    { path: "MPRPAApproverList", component: MPRPAApproversListComponent, canActivate: [AuthGuard] },
+    { path: "MPRStatusChart", component: MPRStatusChartComponent, canActivate: [AuthGuard] }
 
     // {
     //      path: '',

@@ -46,8 +46,8 @@ export class constants {
   public OApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public OSecondApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public OThirdApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
-  public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: " where  ManualStatus=1 and ", fieldAliasName: "", updateColumns: "" };
-  public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  where ManualStatus=1 and ", fieldAliasName: "", updateColumns: "" };
+  public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: " where  ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
+  public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  where ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
 
 }
 

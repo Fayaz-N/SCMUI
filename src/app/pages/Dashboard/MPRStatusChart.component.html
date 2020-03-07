@@ -1,0 +1,23 @@
+<div class="row">
+  <div class="col-xs-3 col-md-3 col-sm-3">
+    <label class="form-label">Select Chart Type</label><br />
+    <select class="form-control forms-input" [(ngModel)]="typeofChart" (change)="typeChange()">
+      <option value="funnel">Funnel</option>
+      <option value="bar">Bar</option>
+      <option value="line">Line</option>
+      <option value="pie">Pie</option>
+    </select>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <label class="form-label">From Date</label><br />
+    <p-calendar class="mprldatepick" [(ngModel)]="fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+  </div>
+  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <label class="form-label">To Date</label>&nbsp;<br />
+    <p-calendar class="mprldatepick" [(ngModel)]="toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+  </div>
+  <div class="ui-g-3 ui-md-3 text-center pr-3">
+    <button type="button" class="btn btn-success" (click)="getMPRStatusData()" label="Save">Submit</button>
+  </div>
+</div><br />
+<div #container></div>

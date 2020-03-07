@@ -249,18 +249,20 @@ export class MPRPageComponent implements OnInit {
         this.getRfqGeneratedList(revisionId);
       }
       else {
-        //check count of MPR Pending List
-        var preapredBy = this.employee.EmployeeNo.toString();
-        this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
-          if (data > 0) {
-            this.router.navigateByUrl('/SCM/MPRPendingList');
-          }
-          else {
-            this.showPage = true;
-            this.mprRevisionModel.RevisionId = 0;
-            this.mprRevisionModel.RequisitionId = parseInt(this.constants.RequisitionId);
-          }
-        });
+        if (params["MPRRevisionId"] && this.constants.RequisitionId) {
+          this.showPage = true;
+          this.mprRevisionModel.RevisionId = 0;
+          this.mprRevisionModel.RequisitionId = parseInt(this.constants.RequisitionId);
+        }
+        else {
+          //check count of MPR Pending List
+          var preapredBy = this.employee.EmployeeNo.toString();
+          this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
+            if (data > 0) {
+              this.router.navigateByUrl('/SCM/MPRPendingList');
+            }
+          });
+        }
       }
       this.getStatusList();
     });
@@ -298,7 +300,9 @@ export class MPRPageComponent implements OnInit {
       //this.dynamicData.searchCondition += " OR Address1" + " like '" + searchTxt + "%'";
     }
 
-
+    if (name == "MPRStatus")
+      this.dynamicData.searchCondition += " Order By OrderIndex";
+    else
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     if (name == "ItemId")
       this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition + " ";
@@ -612,6 +616,9 @@ export class MPRPageComponent implements OnInit {
     this.newVendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorEmailList = vendorDetails.VendorMaster.Emailid.split(",");
     this.newVendorDetails.Emailid = this.vendorEmailList[0];
+    this.newVendor.controls['ContactNo'].clearValidators();
+    this.newVendor.controls['ContactNo'].updateValueAndValidity();
+    this.newVendor.controls['VendorName'].setValue(this.vendorDetails.VendorName);
     this[dialogName] = true;
   }
 
@@ -1254,6 +1261,8 @@ export class MPRPageComponent implements OnInit {
     this.newVendorDetails.Vendorid = 0;
     this.newVendor.controls['VendorName'].setValidators([Validators.required]);
     this.newVendor.controls['ContactNo'].setValidators([Validators.required]);
+    this.newVendor.controls['VendorName'].updateValueAndValidity();
+    this.newVendor.controls['ContactNo'].updateValueAndValidity();
   }
   downLoadExcelFormat() {
 

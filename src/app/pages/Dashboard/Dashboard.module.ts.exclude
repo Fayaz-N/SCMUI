@@ -1,17 +1,21 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NbCardModule } from '@nebular/theme';
-
 import { ThemeModule } from '../../@theme/theme.module';
 import { DashboardComponent } from './Dashboard.component';
-//import { DashboardComponent } from './dashboard.component';
+import { MPRStatusChartComponent } from './MPRStatusChart.component';
 
 @NgModule({
   imports: [
     NbCardModule,
     ThemeModule,
+    FormsModule,
+    ReactiveFormsModule
+
   ],
   declarations: [
     DashboardComponent,
+    MPRStatusChartComponent
   ],
 })
 export class DashboardModule { }

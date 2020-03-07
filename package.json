@@ -33,6 +33,7 @@
     "core-js": "2.5.1",
     "eva-icons": "^1.1.0",
     "font-awesome": "^4.7.0",
+    "highcharts": "6.0.7",
     "intl": "1.2.5",
     "ionicons": "2.0.1",
     "jquery": "^3.4.1",

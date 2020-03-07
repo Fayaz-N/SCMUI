@@ -1169,9 +1169,9 @@
   </div>
   <div *ngIf="form1Edit" class="icon-bar">
     <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Form1"><i class="fa fa-home"></i></a>
-    <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-search"></i></a>
-    <a id="mprPage2" (click)="scrollToView('MPRVendorId','mprPage2')" pTooltip="MPR VendorForm"><i class="fa fa-search"></i></a>
-    <a id="mprPage3" (click)="scrollToView('MPRPageForm3','mprPage3')" pTooltip="MPR Form3"><i class="fa fa-envelope"></i></a>
+    <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-info"></i></a>
+    <a id="mprPage2" (click)="scrollToView('MPRVendorId','mprPage2')" pTooltip="MPR Vendors"><i class="fa fa-users"></i></a>
+    <a id="mprPage3" (click)="scrollToView('MPRPageForm3','mprPage3')" pTooltip="MPR Form3"><i class="fa fa-info-circle"></i></a>
     <a id="mprPage4" (click)="scrollToView('MPRCommunicationId','mprPage4')" pTooltip="MPR Communication"><i class="fa fa-envelope"></i></a>
     <a id="mprPage5" (click)="scrollToView('MPRStatusId','mprPage5')" pTooltip="MPR Status"><i class="fa fa-globe"></i></a>
     <a *ngIf="showRfqGen" id="mprPage5" [routerLink]="['/SCM/GenerateRFQ',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate RFQ"><i class="fa fa-plus-square"></i></a>
@@ -1621,7 +1621,6 @@
 
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button type="button" pButton icon="fa fa-check" (click)="onPoRaiseSubmit('showPOordingDialog')" label="Submit"></button>
-
       </div>
     </p-footer>
   </p-dialog>
