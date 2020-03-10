@@ -1,7 +1,7 @@
 <div class="col-md-4" style="text-decoration: underline;"><h4>Procurement Source List</h4></div>
 <p-table #dt *ngIf="procSrc.length>0" [value]="procSrc" [globalFilterFields]="['ProcurementSource']" editMode="row" [resizableColumns]="true" columnResizeMode="expand" selectionMode="single">
   <ng-template pTemplate="header">
-    <tr>
+    <tr class="mprltbldata">
       <th colspan="4" class="text-right">
         <input type="text" pInputText size="35" placeholder="Search by Procurement Source" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
         <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="ShowAddDialog()"></button>

@@ -19,5 +19,8 @@
   <div class="ui-g-3 ui-md-3 text-center pr-3">
     <button type="button" class="btn btn-success" (click)="getMPRStatusData()" label="Save">Submit</button>
   </div>
+</div>
+<div class="row">
+  <div class="col-lg-2 col-md-2 col-sm-2 form-inline" *ngFor="let data of chartLables ;let Ind=index"><input checked type="checkbox" id="data[0]" (click)="bindLabelData($event,Ind,data[0],data[1])" class="form-control" style="width:20px;height:20px" />&nbsp;{{data[0]}}&nbsp;</div>
 </div><br />
 <div #container></div>

@@ -1,7 +1,7 @@
 <div class="col-md-4" style="text-decoration: underline;"><h4>Department List</h4></div>
 <p-table #dt [value]="Departments" [globalFilterFields]="['Department']" editMode="row" [resizableColumns]="true" columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
   <ng-template pTemplate="header">
-    <tr>
+    <tr class="mprltbldata">
       <th colspan="6" class="text-right">
         <span style="padding-right:300px">Departments</span>
         <input type="text" pInputText size="35" placeholder="Search by Department" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;

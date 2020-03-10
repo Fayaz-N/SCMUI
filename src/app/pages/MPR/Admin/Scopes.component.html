@@ -1,7 +1,7 @@
 <div class="col-md-4" style="text-decoration: underline;"><h4>Scope List</h4></div>
 <p-table #dt *ngIf="mprScopes.length>0" [value]="mprScopes" data-key="ScopeId" editMode="row" [paginator]="true" [rows]="10" [resizableColumns]="false" columnResizeMode="expand" [globalFilterFields]="['Scope','BoolInUse']">
   <ng-template pTemplate="header">
-    <tr>
+    <tr class="mprltbldata">
       <th colspan="4" class="text-right">
         <input type="text" pInputText size="40" placeholder="Search by MPR Scope" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
         <button type="button" pButton icon="fa fa-plus" (click)="showDialogToAddMPRScope()" label="Add New"></button>

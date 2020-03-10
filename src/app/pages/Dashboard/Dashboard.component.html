@@ -1,4 +1,3 @@
-
 <div class="container-fluid">
   <nb-card>
     <nb-card-body>
@@ -18,7 +17,6 @@
               <div class="avatar rounded-circle">
                 <p>{{totalMPRCnt}}</p>
               </div>
-
             </div>
           </div>
         </div>
@@ -68,8 +66,6 @@
         </div>-->
         <!-- Card -->
         <!-- Card -->
-
-
         <!--<div class="col-lg-4 col-xs-4 col-sm-4 col-md-4">
           <div class="card b">
             <div class="card-body panel-heading" style="background-color: #ffa500d9 !important">
@@ -92,23 +88,22 @@
       <div class="row">
 
         <!--<div class="col-md-5" style="height:100%;border-radius: 25px;border: 1px solid #ccc;margin-left: 15px !important;margin-top: 14px;">
-    <h5>MPR Waiting For Acknowledgement</h5>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">MPR 1</li>
-      <li class="list-group-item list-group-item-danger">MPR 2</li>
-      <li class="list-group-item list-group-item-success">MPR 3</li>
-    </ul>
-  </div>
+          <h5>MPR Waiting For Acknowledgement</h5>
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-info">MPR 1</li>
+            <li class="list-group-item list-group-item-danger">MPR 2</li>
+            <li class="list-group-item list-group-item-success">MPR 3</li>
+          </ul>
+        </div>
 
-  <div class="col-md-5" style="height:100%;border-radius: 25px;border: 1px solid #ccc;margin-left: 15px !important; margin-top: 14px;">
-    <h5>Waiting For Approvals</h5>
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">PO 1</li>
-      <li class="list-group-item list-group-item-danger">PO 2</li>
-      <li class="list-group-item list-group-item-success">PO 3</li>
-    </ul>
-  </div>-->
-
+        <div class="col-md-5" style="height:100%;border-radius: 25px;border: 1px solid #ccc;margin-left: 15px !important; margin-top: 14px;">
+          <h5>Waiting For Approvals</h5>
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-info">PO 1</li>
+            <li class="list-group-item list-group-item-danger">PO 2</li>
+            <li class="list-group-item list-group-item-success">PO 3</li>
+          </ul>
+        </div>-->
         <!--<div class="col-md-6" >
           <h6>MPR Waiting For Acknowledgement</h6>
           <ul class="list-group">
@@ -133,3 +128,57 @@
     </nb-card-body>
   </nb-card>
 </div>
+
+<br />
+<div *ngIf="employee.OrgDepartmentId==14">
+  <h5 style="text-decoration:underline">MPR Status Chart:</h5>
+  <div class="row">
+    <div class="col-xs-3 col-md-3 col-sm-3">
+      <label class="form-label">Select Chart Type</label><br />
+      <select class="form-control forms-input" [(ngModel)]="typeofChart" (change)="typeChange()">
+        <option value="funnel">Funnel</option>
+        <option value="bar">Bar</option>
+        <option value="line">Line</option>
+        <option value="pie">Pie</option>
+      </select>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">From Date</label><br />
+      <p-calendar class="mprldatepick" [(ngModel)]="fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">To Date</label>&nbsp;<br />
+      <p-calendar class="mprldatepick" [(ngModel)]="toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">Buyer of Group</label>
+      <div class="form-inline-list  ml-2 ">
+        <input type="text" class="form-control forms-input" [(ngModel)]="BuyerGroupName" [value]="BuyerGroupName" (keyup)="onsrchTxtChange()">
+        <div class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData('BuyerGroupId',BuyerGroupName)"></button>
+        </div>
+
+      </div>
+    </div>
+    <div class="ui-g-3 ui-md-3 text-center pr-3">
+      <button type="button" class="btn btn-success" (click)="getMPRStatusData()" label="Save">Submit</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 col-md-2 col-sm-2 form-inline" *ngFor="let data of chartLables ;let Ind=index"><input checked type="checkbox" id="data[0]" (click)="bindLabelData($event,Ind,data[0],data[1])" class="form-control" style="width:20px;height:20px" />&nbsp;{{data[0]}}&nbsp;</div>
+  </div><br /><br />
+</div>
+<div style="height: 100vh">
+  <div #container></div>
+</div>
+
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

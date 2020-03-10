@@ -2,7 +2,7 @@
   <div class="col-md-4" style="text-decoration: underline;"><h4>Approver List</h4></div>
   <p-table #dt *ngIf="approvers.length>0" [value]="approvers" [globalFilterFields]="['Name']" editMode="row" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">
-      <tr>
+      <tr class="mprltbldata">
         <th colspan="3" class="text-right">
           <input type="text" pInputText size="35" placeholder="Search by Approver Name" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
           <button type="button" pButton icon="fa fa-plus" pTooltip="Add" class="ui-button-info" (click)="ShowAddDialog()"></button>

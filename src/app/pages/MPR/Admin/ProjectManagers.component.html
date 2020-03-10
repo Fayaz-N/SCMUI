@@ -2,7 +2,7 @@
 <div class="container" style="padding-top:30px;padding-bottom:30px">
   <p-table #dt [value]="ProjectManagers" [globalFilterFields]="['Name']" editMode="row" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">
-      <tr>
+      <tr class="mprltbldata">
         <th colspan="3" class="text-right">
           <input type="text" pInputText size="40" placeholder="Search by Project Managers" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
           <button type="button" pButton icon="fa fa-plus" (click)="ShowAddDialog()" label="Add New"></button>
