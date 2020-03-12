@@ -8,6 +8,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
 import { Employee, MPRItemInfoes } from 'src/app/Models/mpr';
+import { parse } from 'cfb/types';
 
 @Component({
   selector: 'app-RFQComparision',
@@ -93,9 +94,9 @@ export class RFQComparisionComponent implements OnInit {
               this.createEmptyVendor();
             }
             this.discountCalculation(this.vendorDetails);
-            this.vendorDetails.FreightAmount = this.calculateFRAmount(this.vendorDetails);
-            this.vendorDetails.PFAmount = this.calculatePFamount(this.vendorDetails);
-            this.vendorDetails.TotalPrice = this.calculateItemToatlPrice(this.vendorDetails);
+            this.vendorDetails.FreightAmount = (this.calculateFRAmount(this.vendorDetails)).toString();
+            this.vendorDetails.PFAmount = (this.calculatePFamount(this.vendorDetails)).toString();
+            this.vendorDetails.TotalPrice = (this.calculateItemToatlPrice(this.vendorDetails)).toString();
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
@@ -240,11 +241,13 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
-        totalPrice += item.suggestedVendorDetails[colIndex].TotalPrice;
+        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].TotalPrice);
     });
     return totalPrice;
   }
   discountCalculation(vendor: any) {
+    this.tp = 0;
+    if (vendor.UnitPrice && vendor.vendorQuoteQty)
     this.tp = vendor.UnitPrice * vendor.vendorQuoteQty;
     var PriceDis = 0;
     if (vendor.DiscountPercentage)
@@ -258,21 +261,29 @@ export class RFQComparisionComponent implements OnInit {
   calculateItemToatlPrice(vendor) {
     var frfAmt = this.calculateFRAmount(vendor);
     var pfAmnt = this.calculatePFamount(vendor);
-    return this.tp + frfAmt + pfAmnt;
+    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString());
   }
   calculateFRAmount(vendor: any) {
+    let value: number = 0;
     if (vendor.FreightPercentage) {
-      return (this.tp) * (vendor.FreightPercentage / 100)
+      value = (this.tp) * (vendor.FreightPercentage / 100)
     }
-    else
-      return vendor.FreightAmount;
+    else {
+      if (vendor.FreightAmount)
+        value = vendor.FreightAmount;
+    }
+    return value;
   }
   calculatePFamount(vendor: any) {
+    let value: number = 0;
     if (vendor.PFPercentage) {
-      return (this.tp) * (vendor.PFPercentage / 100);
+      value = (this.tp) * (vendor.PFPercentage / 100);
     }
-    else
-      return vendor.PFAmount;
+    else {
+      if (vendor.PFAmount)
+        value = vendor.PFAmount;
+    }
+    return value;
   }
 
   showDialog(itemdata: any) {

@@ -5,6 +5,7 @@ import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
 import { MPRListComponent } from './MPR/MPRList.component';
+import { SavingsReportComponent } from './MPR/SavingsReport.component';
 import { GenerateRFQComponent } from './RFQ/GenerateRFQ.component';
 import { RFQComparisionComponent } from './RFQ/RFQComparision.component'
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
@@ -55,6 +56,7 @@ const routes: Routes = [{
     { path: "MPRApproverList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRPendingList", component: MPRListComponent, canActivate: [AuthGuard] },
     { path: "MPRSingleVendorList", component: MPRListComponent, canActivate: [AuthGuard] },
+    { path: "SavingsReport", component: SavingsReportComponent, canActivate: [AuthGuard] },
     { path: "RFQForm", component: RFQFormComponent, canActivate: [AuthGuard] },
     { path: "RFQForm/:RFQRevisionId", component: RFQFormComponent, canActivate: [AuthGuard] },
     { path: "RFQList", component: RFQListComponent },

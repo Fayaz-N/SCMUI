@@ -1,0 +1,223 @@
+<div class="row">
+  <div class="col-md-4"><h4>{{mprTitle}}</h4></div>
+  <div class="col-md-6"></div>
+  <div class="col-md-2 text-right">
+    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand"></i>
+  </div>
+</div><br />
+<form [formGroup]="MPRfilterForm">
+  <div *ngIf="showFilterBlock" class="form-control" style="height:100%;border-radius:0px;">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">From Date</label><br />
+        <p-calendar class="mprldatepick" formControlName="FromDate" [(ngModel)]="fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">To Date</label>&nbsp;<br />
+        <p-calendar class="mprldatepick" formControlName="ToDate" [(ngModel)]="toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="docNo" class="form-label">Document Number</label>
+        <input class="form-control border-secondary" type="text" formControlName="DocumentNo" [(ngModel)]="mprFilterParams.DocumentNo">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="SaleOrderNo" class="form-label">Document Description</label>
+        <input class="form-control border-secondary" formControlName="DocumentDescription" [(ngModel)]="mprFilterParams.DocumentDescription">
+      </div>
+    </div>
+
+    <div *ngIf="typeOfList=='MPRCheckerList'" class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Checked By</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value">
+          <!--<div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy','',undefined)"></button>
+          </div>-->
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+        &nbsp;&nbsp;<label class="form-label">Checked Status</label>&nbsp;
+        <select class="form-control dropdown" formControlName="CheckerStatus" [(ngModel)]="mprFilterParams.Status" ng-init="mprFilterParams.status='Pending'">
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+        </select>&nbsp;
+      </div>
+    </div>
+    <div *ngIf="typeOfList=='MPRApproverList'" class="row form-group">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Approved By : </label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value">
+          <!--<div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy','',undefined)"></button>
+          </div>-->
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+        &nbsp;&nbsp;<label class="form-label">Approved Status:</label>&nbsp;
+        <select class="form-control dropdown" formControlName="ApprovalStatus" [(ngModel)]="mprFilterParams.Status" ng-init="mprFilterParams.status='Pending'">
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+        </select>&nbsp;
+      </div>
+    </div>
+    <div *ngIf="showCMMFilter" class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Department</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" [attr.disabled]="depDisable == true ? true : null" formControlName="DepartmentId" [value]="MPRfilterForm.controls.DepartmentId.value" (keyup)="onsrchTxtChange('DepartmentId',MPRfilterForm.controls.DepartmentId.value,'mprFilterParams')">
+          <span class="input-group-append">
+            <button type="button" [disabled]="depDisable" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','DepartmentId',MPRfilterForm.controls.DepartmentId.value,undefined)"></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Job Code</label>&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" formControlName="JobCode" [value]="MPRfilterForm.controls.JobCode.value" (keyup)="onsrchTxtChange('JobCode',MPRfilterForm.controls.JobCode.value,'mprFilterParams')">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','JobCode',MPRfilterForm.controls.JobCode.value,undefined)"></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="purposeIssuingMpr" class="form-label">Purpose Issuing MPR</label>
+        <div class="form-control" style="height:70%">
+          <p-radioButton class="form-inline" name="group1" value="1" label="For Enquiry" [(ngModel)]="mprFilterParams.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt1"></p-radioButton>
+          <p-radioButton class="form-inline" name="group1" value="2" label="For Issuing PO" [(ngModel)]="mprFilterParams.IssuePurposeId" formControlName="IssuePurposeId" inputId="opt2"></p-radioButton>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroupId" class="form-label">Item Description</label>
+        <div class="form-inline-list  ml-2 ">
+          <input type="text" class="form-control forms-input" formControlName="ItemDescription" [value]="MPRfilterForm.controls.ItemDescription.value" (keyup)="onsrchTxtChange('ItemDescription',MPRfilterForm.controls.ItemDescription.value,'mprFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ItemDescription',MPRfilterForm.controls.ItemDescription.value,undefined)"></button>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroupId" class="form-label">Buyer of Group</label>
+        <div class="form-inline-list  ml-2 ">
+          <input type="text" class="form-control forms-input" formControlName="BuyerGroupId" [value]="MPRfilterForm.controls.BuyerGroupId.value" (keyup)="onsrchTxtChange('BuyerGroupId',MPRfilterForm.controls.BuyerGroupId.value,'mprFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','BuyerGroupId',MPRfilterForm.controls.BuyerGroupId.value,undefined)"></button>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label for="BuyerGroupId" class="form-label">Assigned To</label>
+        <div class="form-inline-list  ml-2">
+          <input type="text" class="form-control forms-input" formControlName="AssignEmployee" [value]="MPRfilterForm.controls.AssignEmployee.value" (keyup)="onsrchTxtChange('AssignEmployee',MPRfilterForm.controls.AssignEmployee.value,'mprFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','AssignEmployee',MPRfilterForm.controls.AssignEmployee.value,undefined)"></button>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">Type Of Purchase </label>
+        <div class="form-inline-list  ml-2">
+          <input type="text" class="form-control forms-input" formControlName="PurchaseTypeId" [value]="MPRfilterForm.controls.PurchaseTypeId.value" (keyup)="onsrchTxtChange('PurchaseTypeId',MPRfilterForm.controls.PurchaseTypeId.value,'mprFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','PurchaseTypeId',MPRfilterForm.controls.PurchaseTypeId.value,undefined)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">MPR Status</label>
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" formControlName="MPRStatusId" [value]="MPRfilterForm.controls.MPRStatusId.value" (keyup)="onsrchTxtChange('MPRStatusId',MPRfilterForm.controls.MPRStatusId.value,'mprFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','MPRStatusId',MPRfilterForm.controls.MPRStatusId.value,undefined)"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="ui-g-4 ui-md-4">
+      </div>
+      <div class="ui-g-4 ui-md-4 text-center pr-3">
+        <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
+      </div>
+    </div>
+  </div>
+</form>
+<div class="form-control h-100 p-0" style="border-radius:0px;">
+  <p-table #dt [columns]="cols" [value]="mprList" [style]="{'width':'100%','overflow':'auto!important'}"
+           [responsive]="true" [rows]="50"
+           [resizableColumns]="true"
+           columnResizeMode="expand"
+           [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+           appendTo="body">
+    <ng-template pTemplate="caption">
+      <div class="ui-helper-clearfix" style="text-align: left">
+        <!--<button type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()" style="margin-right: 0.5em;"></button>-->
+        <button type="button" pButton icon="pi pi-file-excel" iconPos="left" label="Download Excel" (click)="exportExcel()" style="margin-right: 0.5em;" class="ui-button-success"></button>
+        <!--<button type="button" pButton icon="pi pi-file-pdf" iconPos="left" label="PDF" (click)="exportPdf()" class="ui-button-warning"></button>-->
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr class="mprltbldata">
+        <th style="width:90px">S.No</th>
+        <th style="width:110px" *ngFor="let col of columns">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <!--<ng-template pTemplate="header">
+    <tr class="mprltbldata">
+      <th style="width:100px">S.No</th>
+      <th style="width:110px">MPR Document Number</th>
+      <th style="width:100px">Description</th>
+      <th style="width:100px">Job Code</th>
+      <th style="width:100px">Job Name</th>
+      <th style="width:100px">Dep Name</th>
+      <th style="width:100px">Purpose of issuing MPR</th>
+      <th style="width:100px" *ngIf="MPRfilterForm.controls.ItemDescription.value">Item Description</th>
+      <th style="width:100px">Buyer Group Name</th>
+      <th style="width:100px">AssignTo</th>
+      <th style="width:100px">MPRStatus</th>
+      <th style="width:100px">Purchase Type</th>
+      <th style="width:100px">Previous PO Price</th>
+      <th style="width:100px">Current PO Price</th>
+      <th style="width:100px">Savings</th>
+      <th style="width:100px">Difference</th>
+      <th style="width:100px">Current PO Number</th>
+
+    </tr>
+  </ng-template>-->
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr class="mprltbldata">
+        <td> {{ri+1}}</td>
+        <td class="ptable-cell" style="font-size:11px !important;width:110px"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
+        <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
+        <td class="ptable-cell">{{rowData.JobCode}}</td>
+        <td class="ptable-cell">{{rowData.JobName}}</td>
+        <td class="ptable-cell">{{rowData.DepartmentName}}</td>
+        <td class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
+        <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td class="ptable-cell">{{rowData.BuyerGroupName}}</td>
+        <td class="ptable-cell">{{rowData.AssignEmployeeName}}</td>
+        <td class="ptable-cell">{{rowData.MPRStatus}}</td>
+        <td class="ptable-cell">{{rowData.PurchaseType}}</td>
+        <td class="ptable-cell">{{rowData.PreviousPOPrice}}</td>
+        <td class="ptable-cell">{{rowData.CurrentPoPrice}}</td>
+        <td class="ptable-cell"><span *ngIf="rowData.Savings>=0">{{rowData.Savings}}</span></td>
+        <td class="ptable-cell"><span *ngIf="rowData.Difference<0">{{rowData.Difference}}</span></td>
+        <td class="ptable-cell">{{rowData.PONO}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

@@ -37,6 +37,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         title: 'Single Vendor Approver List',
         link: '/SCM/MPRSingleVendorList',
         icon: 'list-outline'
+      },
+      {
+        title: 'Savings Report',
+        link: '/SCM/SavingsReport',
+        icon: 'list-outline'
       }
       
     ],

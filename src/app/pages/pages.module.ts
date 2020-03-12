@@ -12,6 +12,7 @@ import { RoleAccessComponent } from './Authorization/RoleAccess.component';
 //import { LoginComponent } from './Login/Login.component';
 import { ViewAccessComponent } from './Authorization/ViewAccess.component';
 import { MPRListComponent } from './MPR/MPRList.component';
+import { SavingsReportComponent } from './MPR/SavingsReport.component';
 import { RFQFormComponent } from './RFQ/RFQForm.component'
 import { RFQListComponent } from './RFQ/RFQList.component';
 import { ApproversComponent } from './MPR/Admin/Approvers.component';
@@ -102,6 +103,7 @@ import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
     LoginComponent,
     ViewAccessComponent,
     MPRListComponent,
+    SavingsReportComponent,
     RFQFormComponent,
     RFQListComponent,
     ApproversComponent,

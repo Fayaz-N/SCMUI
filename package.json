@@ -54,7 +54,11 @@
     "tslib": "^1.10.0",
     "typeface-exo": "0.0.22",
     "web-animations-js": "github:angular/web-animations-js#release_pr208",
-    "zone.js": "~0.9.1"
+    "zone.js": "~0.9.1",
+    "jspdf": "^1.5.3",
+    "jspdf-autotable": "^3.2.5",
+    "xlsx": "^0.15.1",
+    "file-saver": "^2.0.2"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.803.4",

@@ -57,6 +57,11 @@ export class MprService {
   getMPRList(mprFilterParams: mprFilterParams): Observable<mprRevision[]> {
     return this.http.post<mprRevision[]>(this.url + 'MPR/getMPRList/', mprFilterParams, this.httpOptions);
   }
+
+  getSavingsReport(mprFilterParams: mprFilterParams): Observable<mprRevision[]> {
+    return this.http.post<mprRevision[]>(this.url + 'MPR/getSavingsReport/', mprFilterParams, this.httpOptions);
+  }
+
   ChechMPRlendingList(preparedBy: string): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/getMPRPendingListCnt/' + preparedBy, this.httpOptions);
   }

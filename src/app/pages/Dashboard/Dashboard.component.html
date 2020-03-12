@@ -133,20 +133,21 @@
 <div *ngIf="employee.OrgDepartmentId==14">
   <h5 style="text-decoration:underline">MPR Status Chart:</h5>
   <div class="row">
-    <div class="col-xs-3 col-md-3 col-sm-3">
+    <div class="col-xs-2 col-md-2 col-sm-2">
       <label class="form-label">Select Chart Type</label><br />
       <select class="form-control forms-input" [(ngModel)]="typeofChart" (change)="typeChange()">
         <option value="funnel">Funnel</option>
         <option value="bar">Bar</option>
         <option value="line">Line</option>
         <option value="pie">Pie</option>
+        <option value="spline">sp line</option>
       </select>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group">
       <label class="form-label">From Date</label><br />
       <p-calendar class="mprldatepick" [(ngModel)]="fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group">
       <label class="form-label">To Date</label>&nbsp;<br />
       <p-calendar class="mprldatepick" [(ngModel)]="toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
     </div>
@@ -160,12 +161,13 @@
 
       </div>
     </div>
-    <div class="ui-g-3 ui-md-3 text-center pr-3">
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group">
+      <br />
       <button type="button" class="btn btn-success" (click)="getMPRStatusData()" label="Save">Submit</button>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-2 col-md-2 col-sm-2 form-inline" *ngFor="let data of chartLables ;let Ind=index"><input checked type="checkbox" id="data[0]" (click)="bindLabelData($event,Ind,data[0],data[1])" class="form-control" style="width:20px;height:20px" />&nbsp;{{data[0]}}&nbsp;</div>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-inline" *ngFor="let data of chartLables ;let Ind=index"><input checked type="checkbox" id="data[0]" (click)="bindLabelData($event,Ind,data[0],data[1])" class="form-control" style="width:15px;height:15px" />&nbsp;<span style="font-size:12px">{{data[0]}}</span>&nbsp;</div>
   </div><br /><br />
 </div>
 <div style="height: 100vh">
