@@ -2,28 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
 import { Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 
 
 export class purchaseauthorizationservice {
-    public itemvalues=[];
+    public itemvalues = [];
 
     private _datasource = new Subject<ItemsViewModel[]>();
     itemdat$ = this._datasource.asObservable();
-  constructor(private http: HttpClient, private constants: constants) { }
-  public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
-  public url = this.constants.url;
-  
-  getRFQItems(RevisionId: number): Observable<any> {
-    return this.http.get<any>(this.url + 'RFQ/getRFQItems/' + RevisionId);
+    constructor(private http: HttpClient, private constants: constants) { }
+    public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) };
+    public url = this.constants.url;
+
+    getRFQItems(RevisionId: number): Observable<any> {
+        return this.http.get<any>(this.url + 'RFQ/getRFQItems/' + RevisionId);
     }
     LoadItems(details: PADetailsModel): Observable<ItemsViewModel[]> {
         return this.http.post<ItemsViewModel[]>(this.url + 'PA/GetItemsByMasterIDs', details, this.httpOptions);
@@ -42,7 +42,7 @@ export class purchaseauthorizationservice {
 
     LoadSlabsByDepartmentID(deptID: number): Observable<any> {
         debugger;
-        return this.http.get<any>(this.url + 'PA/GetSlabsByDepartmentID/'+ deptID);
+        return this.http.get<any>(this.url + 'PA/GetSlabsByDepartmentID/' + deptID);
     }
     LoadAllemployees(): Observable<any> {
         return this.http.get<any>(this.url + 'RFQ/GetAllEmployee', this.httpOptions);
@@ -68,7 +68,7 @@ export class purchaseauthorizationservice {
     LoadAllCreditDays(): Observable<PACreditDaysMasterModel[]> {
         return this.http.get<PACreditDaysMasterModel[]>(this.url + 'PA/GetAllCreditDays', this.httpOptions);
     }
-    LoadAllMappedCredits(): Observable<any>{
+    LoadAllMappedCredits(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/GetCreditSlabsandemployees', this.httpOptions);
     }
     LoadEmployeemappedPurchases(): Observable<any> {
@@ -87,7 +87,7 @@ export class purchaseauthorizationservice {
         return this.http.post<any>(this.url + 'PA/InsertPurchaseAuthorization', purchasedetails, this.httpOptions);
     }
     LoadMprPADeatilsbyid(PID: number): Observable<mprpadetailsmodel> {
-        return this.http.get<mprpadetailsmodel>(this.url + 'PA/GetMPRPADeatilsByPAID/'+ PID, this.httpOptions);
+        return this.http.get<mprpadetailsmodel>(this.url + 'PA/GetMPRPADeatilsByPAID/' + PID, this.httpOptions);
     }
     LoadMprPAList(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/GetAllMPRPAList', this.httpOptions);
@@ -135,5 +135,8 @@ export class purchaseauthorizationservice {
     }
     LoadAllMappedSlabs(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/GetAllMappedSlabs', this.httpOptions);
+    }
+    loadpareport(report: PAReportInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/GetPaStatusReports', report, this.httpOptions)
     }
 } 

@@ -60,6 +60,7 @@ import { MatFormFieldModule, MatInputModule } from '@angular/material';
 import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 
+import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
 
 
 @NgModule({
@@ -128,8 +129,8 @@ import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
     AddSlabsComponent,
     MPRPAApproversListComponent,
     DashboardComponent,
-    MPRStatusChartComponent
-
+    MPRStatusChartComponent,
+      PAReportListComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

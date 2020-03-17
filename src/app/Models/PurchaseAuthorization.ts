@@ -201,7 +201,7 @@ export class mprpadetailsmodel {
     department: DepartmentModel;
     Item: Array<ItemsViewModel>[];
     buyergroup: BuyerGroupModel;
-   // ApproversList: Array<MPRPAApproversModel>[];
+    // ApproversList: Array<MPRPAApproversModel>[];
     ApproversList: Array<PurchaseCreditApproversModel>[];
 }
 export class MPRPAApproversModel {
@@ -257,4 +257,9 @@ export class PAApproverDetailsInputModel {
 export class StatusCheckModel {
     sid: number;
     status: string;
+}
+export class PAReportInputModel {
+    FromDate: Date;
+    ToDate: Date;
+    MPRRevisionId: number;
 }
