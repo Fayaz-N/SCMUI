@@ -48,8 +48,45 @@
             </div>
           </div>
         </div>
+        <div class="col-md-4" style="cursor:pointer" (click)="navigateTopage('MPRCheckerList');">
+          <div class="card border-0">
+            <div class="rounded mprtst" style="background-color: #0f7352bf !important">
+              <h4 class="card-title">MPR's Pending For Checking</h4>
+            </div>
+            <div class="card-body text-center">
+              <div class="avatar rounded-circle">
+                <p>{{checkerListCnt}}</p>
+              </div>
 
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="cursor:pointer" (click)="navigateTopage('MPRApproverList');">
+          <div class="card border-0">
+            <div class="rounded mprtst" style="background-color: #ff3d71a1!important">
+              <h4 class="card-title">MPR's Pending For Approvals</h4>
+            </div>
+            <div class="card-body text-center">
+              <div class="avatar rounded-circle">
+                <p>{{ApproversListCnt}}</p>
+              </div>
 
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4" style="cursor:pointer" (click)="navigateTopage('MPRPAList');">
+          <div class="card border-0">
+            <div class="rounded mprtst" style="background-color: #3a4865 !important">
+              <h4 class="card-title">PA Pending For Approvals</h4>
+            </div>
+            <div class="card-body text-center">
+              <div class="avatar rounded-circle">
+                <p>{{PAListCnt}}</p>
+              </div>
+
+            </div>
+          </div>
+        </div>
 
       </div>
       <!-- Card -->

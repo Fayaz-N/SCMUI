@@ -1177,7 +1177,7 @@
     <a *ngIf="showRfqGen" id="mprPage5" [routerLink]="['/SCM/GenerateRFQ',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate RFQ"><i class="fa fa-plus-square"></i></a>
     <a *ngIf="showCompareRfq" id="mprPage6" [routerLink]="['/SCM/RFQComparision',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
     <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
-    <a (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
+    <a  *ngIf="showManualStatus" (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
   </div>
 
   <div *ngIf="displayFooter" class="footer">
@@ -1656,6 +1656,7 @@
       </div>
     </p-footer>
   </p-dialog>
+  </div>
 
 
 

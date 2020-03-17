@@ -62,16 +62,13 @@ export class MPRPageComponent implements OnInit {
   public statusList: Array<any> = [];
   public displayFooter: boolean;
   public disableStatusSubmit: boolean = false;
-  public showAcknowledge: boolean = false;
-  public showStatusDetails: boolean = false;
-  public showPage: boolean = false;
+  public showAcknowledge; showStatusDetails; showPage: boolean = false;
   public doc: SafeResourceUrl;
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
   public RfqGeneratedList: Array<any> = [];
   public RepeatOrderList: Array<MPRItemInfoes> = [];
-  public RepeatOrder: boolean = false;
-  public showraisePo: boolean = false;
+  public RepeatOrder; showraisePo; showManualStatus: boolean = false;
   public vendorEmailList: Array<any> = [];
 
 
@@ -261,6 +258,8 @@ export class MPRPageComponent implements OnInit {
             if (data > 0) {
               this.router.navigateByUrl('/SCM/MPRPendingList');
             }
+            else
+              this.showPage = true;
           });
         }
       }
@@ -303,7 +302,7 @@ export class MPRPageComponent implements OnInit {
     if (name == "MPRStatus")
       this.dynamicData.searchCondition += " Order By OrderIndex";
     else
-    this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
+      this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
     if (name == "ItemId")
       this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition + " ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
@@ -373,7 +372,7 @@ export class MPRPageComponent implements OnInit {
       if (item.updateColumns && item.updateColumns != "NULL") {
         this.vendorEmailList = item.updateColumns.split(",");
         this.newVendorDetails.Emailid = this.vendorEmailList[0];
-       // this.newVendorDetails.Emailid = item.updateColumns;
+        // this.newVendorDetails.Emailid = item.updateColumns;
 
       }
       this.newVendorDetails.Vendorid = item.code;
@@ -612,7 +611,7 @@ export class MPRPageComponent implements OnInit {
     this.vendorDetails.VendorDetailsId = vendorDetails.VendorDetailsId;
     this.vendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorDetails.VendorName = vendorDetails.VendorMaster.VendorName;
-    this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;   
+    this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
     this.newVendorDetails.Vendorid = vendorDetails.Vendorid;
     this.vendorEmailList = vendorDetails.VendorMaster.Emailid.split(",");
     this.newVendorDetails.Emailid = this.vendorEmailList[0];
@@ -1142,6 +1141,9 @@ export class MPRPageComponent implements OnInit {
         this.showRfqGen = true;
       if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
         this.showCompareRfq = true;
+      if (this.AccessList.filter(li => li.AccessName == "AddManualStatus").length > 0)
+        this.showManualStatus = true;
+
     }
     if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
       this.showRfqGen = this.showCompareRfq = true;
@@ -1345,7 +1347,7 @@ export class MPRPageComponent implements OnInit {
   addEmail() {
     if (this.newVendorDetails.Emailid) {
       var index = this.vendorEmailList.indexOf(this.newVendorDetails.Emailid);
-      if (index > -1) {       
+      if (index > -1) {
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor Email already addedd' });
       }
       else
@@ -1365,7 +1367,7 @@ export class MPRPageComponent implements OnInit {
   getPOnumbers(details: any) {
 
     if (details && details.PAItems) {
-      var result = details.PAItems.map(a => a.PONO); 
+      var result = details.PAItems.map(a => a.PONO);
       return result.toString();
     }
 

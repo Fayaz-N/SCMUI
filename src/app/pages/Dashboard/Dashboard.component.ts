@@ -14,10 +14,13 @@ import { DatePipe } from '@angular/common';
 })
 export class DashboardComponent {
   @ViewChild("container", { read: ElementRef, static: true }) container: ElementRef;
-  constructor(public MprService: MprService, public constants: constants,  private router: Router, private datePipe: DatePipe) { }
+  constructor(public MprService: MprService, public constants: constants, private router: Router, private datePipe: DatePipe) { }
 
   public totalMPRCnt: number = 0;
   public completedMPRCnt: number = 0;
+  public checkerListCnt: number = 0;
+  public ApproversListCnt: number = 0;
+  public PAListCnt: number = 0;
   public dynamicData = new DynamicSearchResult();
   public employee: Employee;
   public mprStatusList: Array<any> = [];
@@ -27,11 +30,12 @@ export class DashboardComponent {
   public chartLables: Array<any> = [];
   public chartData: Array<any> = [];
   public BuyerGroupId: number;
-  public BuyerGroupName: string="";
+  public BuyerGroupName: string = "";
   public showList; boolean = false;
   public searchItems: Array<searchList> = [];
   public selectedItem: searchList;
   public searchresult: Array<object> = [];
+  public MPRList: Array<any> = [];
 
   //page load event
   ngOnInit() {
@@ -39,8 +43,11 @@ export class DashboardComponent {
       this.employee = JSON.parse(localStorage.getItem("Employee"));
     else
       this.router.navigateByUrl("Login");
+    this.MPRList = [];
     this.getTotalMPRCnt();
     this.getCompletedMPRCnt();
+    this.getMPRtotalcnt();
+    this.getPAListCnt();
     if (this.employee.OrgDepartmentId == 14) {
       this.chartLables = [['Approved', 3], ['Acknowledged', 4], ['RFQ Generated', 7], ['RFQ Responded', 8], ['Technical Spec Approved', 9], ['RFQ Finalized', 17], ['PA Generated', 11], ['PA Approved', 18], ['Raising PO Checked', 13], ['Raising PO Approved', 14], ['PO Released', 12], ['MPR On Hold', 16], ['MPR Rejected', 15], ['MPR Closed', 19]];
       this.typeofChart = "funnel";
@@ -71,6 +78,26 @@ export class DashboardComponent {
     })
   }
 
+  getMPRtotalcnt() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus not in ('Approved', 'MPR Rejected')) or (ApprovedBy ="+this.employee.EmployeeNo+" and ApprovalStatus not in ('Approved', 'MPR Rejected'))";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.MPRList = data;
+      this.checkerListCnt = this.MPRList.filter(li => li.CheckedBy == this.employee.EmployeeNo).length;
+      this.ApproversListCnt = this.MPRList.filter(li => li.ApprovedBy === this.employee.EmployeeNo).length;
+    })
+  }
+  getPAListCnt() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select count(*) as count from MPRPAApprovers where ApprovalStatus in ('pending', 'submitted') and Approver =" + this.employee.EmployeeNo+"";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {   
+      this.PAListCnt = data[0].count;
+    })
+  }
+
+  navigateTopage(page: string) {
+    this.router.navigateByUrl('/SCM/'+page+'');
+  }
   //Load MPRStatus Chart
   getMPRStatusData() {
     var FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
@@ -178,7 +205,7 @@ export class DashboardComponent {
         fName = item[this.constants[name].fieldName];
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
         this.searchItems.push(value);
-      });     
+      });
     });
   }
   //search list option changes event

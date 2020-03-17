@@ -28,6 +28,7 @@ export class PagesComponent {
         MENU_ITEMS[3].hidden = true;
         MENU_ITEMS[4].hidden = true;
         MENU_ITEMS[5].hidden = true;
+        MENU_ITEMS[6].hidden = true;
       }
     }
 
