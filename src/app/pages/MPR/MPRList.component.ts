@@ -52,7 +52,7 @@ export class MPRListComponent implements OnInit {
     this.typeOfList = this.route.routeConfig.path;
     this.mprRevisionModel = new mprRevision();
     this.mprFilterParams = new mprFilterParams();
-    if (this.showCMMFilter)
+    if (this.showCMMFilter && this.typeOfList != "MPRPendingList")
       this.mprFilterParams.PreparedBy = "";
     else
       this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
@@ -143,6 +143,12 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.DepartmentId = "";
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
+      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId == 14 ) {//for cmm
+        this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved");
+        //this.mprList = this.mprList.filter(li => li.SecondApprover == '-' && li.SecondApproversStatus != 'Approved');
+        //this.mprList = this.mprList.filter(li => li.ThirdApprover == '-' && li.ThirdApproverStatus != 'Approved');
+      
+      }
       this.loading = false;
       this.spinner.hide();
     })

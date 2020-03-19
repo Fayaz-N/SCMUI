@@ -70,7 +70,7 @@ export class MPRPageComponent implements OnInit {
   public RepeatOrderList: Array<MPRItemInfoes> = [];
   public RepeatOrder; showraisePo; showManualStatus: boolean = false;
   public vendorEmailList: Array<any> = [];
-
+  public DispatchLocation: string = "";
 
   //page load event
   ngOnInit() {
@@ -107,20 +107,20 @@ export class MPRPageComponent implements OnInit {
       docNo: ['', [Validators.required]],
       DocumentDescription: ['', [Validators.required]],
       IssuePurposeId: ['', [Validators.required]],
-      DepartmentId: ['', [Validators.required]],
-      ProjectManager: ['', [Validators.required]],
+      DepartmentId: ['', [Validators.required, this.noWhitespaceValidator]],
+      ProjectManager: ['', [Validators.required, this.noWhitespaceValidator]],
       JobCode: ['', [Validators.required]],
       JobName: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
       SaleOrderNo: ['', [Validators.required]],
-      ClientName: ['', [Validators.required]],
+      ClientName: ['', [Validators.required, this.noWhitespaceValidator]],
       PlantLocation: ['', [Validators.required]],
-      BuyerGroupId: ['', [Validators.required]],
+      BuyerGroupId: ['', [Validators.required, this.noWhitespaceValidator]],
     });
 
     //MPRItemDetailsForm validation declararion.
     this.MPRItemDetailsForm = this.formBuilder.group({
-      ItemId: ['', [Validators.required]],
+      ItemId: ['', [Validators.required, this.noWhitespaceValidator]],
       ItemDescription: ['', [Validators.required]],
       Quantity: ['', [Validators.required]],
       UnitId: ['', [Validators.required]],
@@ -200,6 +200,8 @@ export class MPRPageComponent implements OnInit {
       MPRStatus: ['', [Validators.required]]
     })
 
+
+
     //remove validation for unwanted fields.
     this.MPRPageForm1.controls['docNo'].clearValidators();
     this.MPRPageForm1.controls['JobCode'].clearValidators();
@@ -268,7 +270,11 @@ export class MPRPageComponent implements OnInit {
 
   }
 
-
+  public noWhitespaceValidator(control: FormControl) {
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { 'whitespace': true };
+  }
   //on search list dialog show event
   onSearhListDialogShow() {
     setTimeout(() => {
@@ -434,11 +440,12 @@ export class MPRPageComponent implements OnInit {
 
     if (this.formName == "MPRPageForm3" && item.listName == "DispatchLocation") {
       this.MPRPageForm3.controls['specifyDispatchLocation'].setValue("");
-      if (item.code == 3 || item.code == 1) {
+      if (item.code == 3 || item.code == 1) {//1:site,3:others
         this.specifyDispatchDisply = false;
         this.MPRPageForm3.controls['specifyDispatchLocation'].setValidators([Validators.required]);
       }
       else {
+        this.mprRevisionModel.DispatchLocation = item.name;
         this.specifyDispatchDisply = true;
         //this.MPRPageForm3.controls['specifyDispatchLocation'].setValue("");
         this.MPRPageForm3.controls['specifyDispatchLocation'].clearValidators();
@@ -776,6 +783,8 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.InspectionComments = this.mprRevisionModel.InspectionComments[0];
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this, this.mprRevisionModel.PreparedOn = new Date();
+      if (this.specifyDispatchDisply == false)
+        this.mprRevisionModel.DispatchLocation = this.DispatchLocation;
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
@@ -978,6 +987,7 @@ export class MPRPageComponent implements OnInit {
       var revisionId = this.mprRevisionModel.RevisionId.toString();
       formData.append(revisionId, file, file.name);
       this.MprService.uploadFile(formData).subscribe(data => {
+        (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
         this.mprDocuments = new MPRDocument();
         this.mprDocuments.Path = data;
         this.mprDocuments.DocumentName = file.name;
@@ -1087,7 +1097,7 @@ export class MPRPageComponent implements OnInit {
       this.showAcknowledge = true;
     }
     else {
-      if ((this.mprRevisionModel.SecondApproversStatus == "Approved") && (this.mprRevisionModel.ThirdApprover != null && this.mprRevisionModel.ThirdApproverStatus == "Approved"))
+      if (this.employee.OrgDepartmentId == 14 && (this.mprRevisionModel.SecondApproversStatus == "Approved") && (this.mprRevisionModel.ThirdApprover != null && this.mprRevisionModel.ThirdApproverStatus == "Approved"))
         this.showAcknowledge = true;
       else
         this.showAcknowledge = false;
@@ -1137,15 +1147,15 @@ export class MPRPageComponent implements OnInit {
     else
       this.displayFooter = false;
     if (this.AccessList.length > 0) {
-      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0)
+      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0 && this.employee.OrgDepartmentId == 14)//for CMM
         this.showRfqGen = true;
-      if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0)
+      if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0 && this.employee.OrgDepartmentId == 14)
         this.showCompareRfq = true;
-      if (this.AccessList.filter(li => li.AccessName == "AddManualStatus").length > 0)
+      if (this.AccessList.filter(li => li.AccessName == "AddManualStatus").length > 0 && this.employee.OrgDepartmentId == 14)
         this.showManualStatus = true;
 
     }
-    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0)
+    if (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length > 0 && this.employee.OrgDepartmentId == 14)
       this.showRfqGen = this.showCompareRfq = true;
     else
       this.showRfqGen = this.showCompareRfq = false;
@@ -1170,11 +1180,20 @@ export class MPRPageComponent implements OnInit {
           else
             this.justificationDisply = true;
         }
-        if (item == "DispatchLocation") {
+
+      }
+      if (item == "DispatchLocation") {
+        this.specifyDispatchDisply = true;
+        if (data[item] == "EC / Factory" || data[item] == "EC - Products" || data[item] == "Phase-II")
+          this.DispatchLocation = "";
+        else {
           this.specifyDispatchDisply = false;
-          this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+          this.DispatchLocation = data[item];
           this[formName].controls[item].setValue("Others");
         }
+
+        this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+
       }
 
       //if (this.constants[item]) {

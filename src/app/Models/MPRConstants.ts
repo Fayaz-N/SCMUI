@@ -5,8 +5,8 @@ import { searchParams, AccessList } from '../Models/mpr';
   providedIn: 'root'
 })
 export class constants {
-  //public url = 'http://localhost:49659/Api/';
-  public url = 'http://10.29.15.183:90/Api/';
+  public url = 'http://localhost:49659/Api/';
+  //public url = 'http://10.29.15.183:90/Api/';
 
   public accessTokenUrl = "http://10.29.15.183:90/token";
   //public accessTokenUrl = "http://localhost:49659/token";
@@ -17,7 +17,7 @@ export class constants {
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
 
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " where BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
-  public ProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and  ((Grade IN(SELECT Grades.Grade FROM Grades WHERE (Grades.Hierarchy>=(SELECT Grades.Hierarchy FROM Grades WHERE Grades.Grade='M2')))))  and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
+  public ProjectManager: searchParams = { tableName: 'ProjectManagers', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
   public vendorProjectManager: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where Employee.EmployeeNo  in(select ProjectManager from MPRRevisions  where BoolValidRevision=1) and ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
   public ClientName: searchParams = { tableName: 'CustomerMasterYGS', fieldId: 'CustomerId', fieldName: 'CustomerName1', condition: " where CustomerMasterTypeId=1 and ", fieldAliasName: "ClientName", updateColumns: "" };
   public BuyerGroupId: searchParams = { tableName: 'MPRBuyerGroups', fieldId: 'BuyerGroupId', fieldName: 'BuyerGroup', condition: " where ", fieldAliasName: "BuyerGroupName", updateColumns: "" };

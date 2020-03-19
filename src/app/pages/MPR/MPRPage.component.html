@@ -124,11 +124,11 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">Name of the Client</label>&nbsp;<span style="color:red">*</span>
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="ClientName" [value]="MPRPageForm1.controls.ClientName.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && !MPRPageForm1.controls.ClientName.value}">
+              <input type="text" class="form-control forms-input"   formControlName="ClientName" [value]="MPRPageForm1.controls.ClientName.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && MPRPageForm1.controls.ClientName.value.trim()==''}">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','ClientName',MPRPageForm1.controls.ClientName.value,undefined)"></button>
               </div>
-              <span *ngIf="MPRForm1Submitted && !MPRPageForm1.controls.ClientName.value" class="invalid-feedback">Select Client Name.</span>
+              <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.ClientName.value.trim()==''" class="invalid-feedback">Select Client Name.</span>
             </div>
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -200,7 +200,7 @@
               <th>PO No</th>
               <th>Edit</th>
               <th *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
-              <th *ngIf="hideDeleteBtn">Remove</th>
+              <th >Remove</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -225,7 +225,7 @@
               <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
                 <input type="checkbox" style="height:15px;width:15px" (click)="selectMprLineItems($event,ri,rowData)">
               </td>
-              <td style="text-align:center" *ngIf="hideDeleteBtn">
+              <td style="text-align:center">
                 <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
               </td>
             </tr>
@@ -437,13 +437,13 @@
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Specify Dispatch Location</label>&nbsp;<span style="color:red">*</span>
-              <input type="text" [(ngModel)]="mprRevisionModel.DispatchLocation" [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
+              <input type="text" [(ngModel)]="DispatchLocation" [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
               <span *ngIf="MPRForm3Submitted && specifyDispatchDisply==false && !MPRPageForm3.controls.specifyDispatchLocation.value" class="invalid-feedback">Specify dispatch location required.</span>
             </div>
 
             <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Specify Dispatch Location </label>
-              <span class="valueEdit">{{mprRevisionModel.DispatchLocation}}</span>
+              <span class="valueEdit">{{DispatchLocation}}</span>
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Scope Shall Include</label>&nbsp;<span style="color:red">*</span>
@@ -1253,13 +1253,13 @@
     <div class="ui-g ui-fluid">
       <form [formGroup]="MPRItemDetailsForm">
         <div class="ui-g-12">
-          <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>
+          <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;<span style="font-size:10px;color:#d60028">Pls type material name starting 3 or 4 letters for better search , incase search results delays more than 20 sec , then required item is not in the search list. Incase item is new pls type new in search area and click the search button then select the “Item not in the list” and proceed with MPR item description.</span>
           <div class="form-inline-list">
-            <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemId.value}">
+            <input type="text" formControlName="ItemId" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.value.trim()==''}">
             <span class="input-group-append">
               <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)"></button>
             </span>
-            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.errors" class="invalid-feedback">select item.</span>
+            <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemId.value.trim()==''" class="invalid-feedback">select item.</span>
           </div>
         </div>
         <div class="ui-g-12 form-group">
@@ -1319,7 +1319,7 @@
           <div class="ui-g-6 form-group">
             <label class="form-label">File:</label>
             <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-            <input type="file" class="form-control" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
+            <input type="file" class="form-control" id="uploadInputFile" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
           </div>
         </div>
         <div class="ui-g-12">
@@ -1347,7 +1347,7 @@
     </div>
     <div class="ui-g-6">
       <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
-      <input type="file" class="form-control file" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".pdf,.doc,.docx,.xlsx,.xls" multiple>
+      <input type="file" class="form-control file" id="uploadInputFile" (change)="fileChange($event,'supportingDocument')" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
