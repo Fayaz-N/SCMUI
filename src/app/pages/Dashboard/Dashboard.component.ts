@@ -60,9 +60,10 @@ export class DashboardComponent {
 
   getTotalMPRCnt() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select count(*) as count from MPRDetails";
-    if (this.employee.OrgDepartmentId != 14)
-      this.dynamicData.query += " where SubmittedBy='" + this.employee.EmployeeNo + "'";
+    if (this.employee.OrgDepartmentId == 14)
+      this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
+    else
+      this.dynamicData.query = " Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and PreparedBy=" + this.employee.EmployeeNo+" and CheckedBy != '-' and ApprovedBy != '-'";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.totalMPRCnt = data[0].count;
     })
@@ -80,7 +81,7 @@ export class DashboardComponent {
 
   getMPRtotalcnt() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus not in ('Approved', 'MPR Rejected')) or (ApprovedBy ="+this.employee.EmployeeNo+" and ApprovalStatus not in ('Approved', 'MPR Rejected'))";
+    this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus not in ('Approved', 'MPR Rejected','Sent for Modification')) or (ApprovedBy =" + this.employee.EmployeeNo +" and ApprovalStatus not in ('Approved', 'MPR Rejected','Sent for Modification'))";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.MPRList = data;
       this.checkerListCnt = this.MPRList.filter(li => li.CheckedBy == this.employee.EmployeeNo).length;

@@ -1,3 +1,5 @@
+<button *ngIf="typeOfList=='MPRPendingList'"   type="button"  class="btn btn-success p-1"style="height:35px" (click)="newMPRForm()">New MPR Form</button>
+<br /><br />
 <div class="row">
   <div class="col-md-4"><h4>{{mprTitle}}</h4></div>
   <div class="col-md-6"></div>
@@ -150,13 +152,13 @@
   </div>
 </form>
 <div class="form-control h-100 p-0" style="border-radius:0px;">
-  <p-table #dt  [value]="mprList" [style]="{'width':'100%','overflow':'auto!important'}"
+  <p-table #dt [value]="mprList" [style]="{'width':'100%','overflow':'auto!important'}"
            [responsive]="true" [rows]="50"
            [resizableColumns]="true"
            columnResizeMode="expand"
            [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
            appendTo="body">
-    <ng-template pTemplate="header" >
+    <ng-template pTemplate="header">
       <tr class="mprltbldata">
         <th style="width:100px">S.No</th>
         <th style="width:110px">MPR Document Number</th>
@@ -209,6 +211,7 @@
   </p-table>
 </div>
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div *ngIf="searchItems.length == 0" style="color:red">No Items</div>
   <div class="ui-g ui-fluid">
     <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
   </div>

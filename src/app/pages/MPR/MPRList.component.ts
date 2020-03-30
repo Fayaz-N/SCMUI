@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { mprRevision,Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
+import { mprRevision, Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -12,7 +12,7 @@ import { NgxSpinnerService } from "ngx-spinner";
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder,  public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
+  constructor(private formBuilder: FormBuilder, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
   public mprTitle: string;
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
@@ -143,12 +143,13 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.DepartmentId = "";
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
-      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId == 14 ) {//for cmm
-        this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved");
-        //this.mprList = this.mprList.filter(li => li.SecondApprover == '-' && li.SecondApproversStatus != 'Approved');
-        //this.mprList = this.mprList.filter(li => li.ThirdApprover == '-' && li.ThirdApproverStatus != 'Approved');
-      
+      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId == 14) {//for cmm
+        this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
       }
+      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId != 14) {
+        this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo && li.CheckedBy != '-' && li.ApprovedBy != "-")
+      }
+
       this.loading = false;
       this.spinner.hide();
     })
@@ -163,10 +164,10 @@ export class MPRListComponent implements OnInit {
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
-      if (data.length == 0)
-        this.showList = false;
-      else
-        this.showList = true;
+      //if (data.length == 0)
+      //  this.showList = false;
+      //else
+      this.showList = true;
       this.searchresult = data;
       this.searchItems = [];
       var fName = "";
@@ -227,7 +228,12 @@ export class MPRListComponent implements OnInit {
     this.MprService.copyMprRevision(this.mprRevisionModel, false).subscribe(data => {
       this.router.navigate(["/SCM/MPRForm", data.RevisionId]);
     })
-    
+
+  }
+
+  newMPRForm() {
+    this.constants.newMpr = true;
+    this.router.navigate(["/SCM/MPRForm"]);
   }
 }
 

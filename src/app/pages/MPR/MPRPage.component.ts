@@ -241,28 +241,35 @@ export class MPRPageComponent implements OnInit {
       });
     }
     this.route.params.subscribe(params => {
-      if (params["MPRRevisionId"] && !this.constants.RequisitionId) {
+      if (params["MPRRevisionId"] && !this.constants.RequisitionId) { //load mpr revision data 
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
       }
       else {
-        if (params["MPRRevisionId"] && this.constants.RequisitionId) {
+        if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
           this.showPage = true;
           this.mprRevisionModel.RevisionId = 0;
           this.mprRevisionModel.RequisitionId = parseInt(this.constants.RequisitionId);
         }
         else {
-          //check count of MPR Pending List
-          var preapredBy = this.employee.EmployeeNo.toString();
-          this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
-            if (data > 0) {
-              this.router.navigateByUrl('/SCM/MPRPendingList');
-            }
-            else
-              this.showPage = true;
-          });
+          //show mpr new form from new mpr page
+          if (this.constants.newMpr) {
+            this.showPage = true;
+            this.constants.newMpr = false;
+          }
+          else {
+            //check count of MPR Pending List
+            var preapredBy = this.employee.EmployeeNo.toString();
+            this.MprService.ChechMPRlendingList(preapredBy).subscribe(data => {
+              if (data > 0) {
+                this.router.navigateByUrl('/SCM/MPRPendingList');
+              }
+              else
+                this.showPage = true;
+            });
+          }
         }
       }
       this.getStatusList();
@@ -312,9 +319,9 @@ export class MPRPageComponent implements OnInit {
     if (name == "ItemId")
       this.dynamicData.query = "select  MAX(RFQRevisions_N.RFQType) as RFQType,MAX(RFQRevisions_N.QuoteValidTo) as QuoteValidTo, Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition + " ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
-      if (data.length == 0)
-        this.showList = false;
-      else
+      //if (data.length == 0)
+      //  this.showList = false;
+      //else
         this.showList = true;
       this.searchresult = data;
       this.searchItems = [];
@@ -508,11 +515,18 @@ export class MPRPageComponent implements OnInit {
 
   }
 
+  //clear model when search text is empty
+  onsrchTxtChange(modelparm: string, model: string) {
+    //if (value == "") {
+    this[model][modelparm] = "";
+    //}
+  }
+
   //form1 code started
 
   onMPRForm1Submit(formId, showform, formEdit: string) {
     this.MPRForm1Submitted = true;
-    if (this.MPRPageForm1.invalid) {
+    if (this.MPRPageForm1.invalid || (!this.mprRevisionModel.DepartmentId || !this.mprRevisionModel.ProjectManager || !this.mprRevisionModel.ClientName || !this.mprRevisionModel.BuyerGroupId)) {
       return;
     }
     else {
@@ -770,21 +784,22 @@ export class MPRPageComponent implements OnInit {
 
   onMPRForm3Submit(formId: string, formEdit: string) {
     this.MPRForm3Submitted = true;
-    if (this.MPRPageForm3.invalid) {
+    if (this.specifyDispatchDisply == false)
+      this.mprRevisionModel.DispatchLocation = this.DispatchLocation;
+    if (this.MPRPageForm3.invalid || (!this.mprRevisionModel.DispatchLocation || !this.mprRevisionModel.ScopeId || !this.mprRevisionModel.ProcurementSourceId || !this.mprRevisionModel.CustomsDutyId || !this.mprRevisionModel.CheckedBy || !this.mprRevisionModel.ApprovedBy)) {
       document.getElementById("MPRPageForm3").scrollIntoView(true);
       return;
     }
     else {
-      //if (this.mprRevisionModel.GuaranteePeriod)
-      //  this.mprRevisionModel.GuaranteePeriod = this.mprRevisionModel.GuaranteePeriod[0];
+      if (this.mprRevisionModel.GuaranteePeriod && this.mprRevisionModel.GuaranteePeriod[0])
+        this.mprRevisionModel.GuaranteePeriod = this.mprRevisionModel.GuaranteePeriod[0];
       if (this.MPRPageForm3.value.supplyMonths && this.MPRPageForm3.value.commissionMonths)
         this.mprRevisionModel.GuaranteePeriod = this.MPRPageForm3.value.supplyMonths + " " + "months after supply or " + this.MPRPageForm3.value.commissionMonths + " " + "months after commissioning whichever is earlier";
       if (this.mprRevisionModel.InspectionComments)
         this.mprRevisionModel.InspectionComments = this.mprRevisionModel.InspectionComments[0];
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this, this.mprRevisionModel.PreparedOn = new Date();
-      if (this.specifyDispatchDisply == false)
-        this.mprRevisionModel.DispatchLocation = this.DispatchLocation;
+      
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
@@ -986,7 +1001,9 @@ export class MPRPageComponent implements OnInit {
       let formData: FormData = new FormData();
       var revisionId = this.mprRevisionModel.RevisionId.toString();
       formData.append(revisionId, file, file.name);
+      this.spinner.show();
       this.MprService.uploadFile(formData).subscribe(data => {
+        this.spinner.hide();
         (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
         this.mprDocuments = new MPRDocument();
         this.mprDocuments.Path = data;
@@ -1011,7 +1028,9 @@ export class MPRPageComponent implements OnInit {
       let formData: FormData = new FormData();
       var revisionId = this.mprRevisionModel.RevisionId.toString();
       formData.append(revisionId, file, file.name);
+      this.spinner.show();
       this.MprService.uploadExcel(formData).subscribe(data => {
+        this.spinner.hide();
         if (data) {
           this.mprDocuments = new MPRDocument();
           this.mprDocuments.Path = data;
@@ -1191,7 +1210,8 @@ export class MPRPageComponent implements OnInit {
           this.DispatchLocation = data[item];
           this[formName].controls[item].setValue("Others");
         }
-
+        if (this.specifyDispatchDisply == false)
+          this.mprRevisionModel.DispatchLocation = this.DispatchLocation;
         this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
 
       }
