@@ -1363,7 +1363,7 @@
       <div class="ui-g-8 form-group">
         <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
         <div class="form-inline-list">
-          <input type="text" [disabled]="showNewVendor" (keypress)="onsrchTxtChange('VendorName','vendorDetails')" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
+          <input type="text" [disabled]="showNewVendor"  [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
           <span class="input-group-append">
             <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
           </span>
