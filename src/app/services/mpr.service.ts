@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -13,7 +13,7 @@ export class MprService {
 
   public url = this.constants.url;
   public accessTokenUrl = this.constants.accessTokenUrl;
-  public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization':'Bearer PPCRbsP3beI49XTuG6yKwr9RGL_Vv5-B5MEzBD6k3j6hc9VsCqfGvy14-aBIyXms0odjNS9eahOFhiv7jytiJyibh80MujGAbG44fbQTZb2SIZv2FETb-zrdL3Mw-pPRK3HjuWBZTh09soP68_EDqw91mH7-4uYgswWpTHGkJpHQcZ6NWp3J0nbdEaGDC17w6D-qWUiWIQHbWg1UXeAmwg' }) };
+  public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer PPCRbsP3beI49XTuG6yKwr9RGL_Vv5-B5MEzBD6k3j6hc9VsCqfGvy14-aBIyXms0odjNS9eahOFhiv7jytiJyibh80MujGAbG44fbQTZb2SIZv2FETb-zrdL3Mw-pPRK3HjuWBZTh09soP68_EDqw91mH7-4uYgswWpTHGkJpHQcZ6NWp3J0nbdEaGDC17w6D-qWUiWIQHbWg1UXeAmwg' }) };
   private currentUserSubject: BehaviorSubject<Employee>;
   public currentUser: Observable<Employee>;
   constructor(private http: HttpClient, private constants: constants) {
@@ -132,7 +132,7 @@ export class MprService {
   }
   getAuth_token(data1: any) {
     var data = "username=" + data1.DomainId + "&password=" + data1.Password + "&grant_type=password";
-  
+
     const httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' }) };
     return this.http.post<any>(this.accessTokenUrl, data, httpOptions);
   }
@@ -189,6 +189,10 @@ export class MprService {
   }
   copyMprRevision(mpr: mprRevision, repeatOrder: boolean): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/copyMprRevision/' + repeatOrder, mpr, this.httpOptions);
+  }
+
+  DeleteMpr(deleteinfo: DeleteMpr): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/deleteMPR/', deleteinfo, this.httpOptions);
   }
 
   sendMailtoVendor(mailObj: sendMailObj): Observable<any> {

@@ -3,16 +3,17 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 import { ActivatedRoute, Router } from '@angular/router';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { mprRevision, Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList } from 'src/app/Models/mpr';
+import { mprRevision, Employee, DynamicSearchResult, searchList, mprFilterParams, AccessList, DeleteMpr } from 'src/app/Models/mpr';
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-MPRList',
   templateUrl: './MPRList.component.html'
 })
 export class MPRListComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService) { }
+  constructor(private formBuilder: FormBuilder, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private datePipe: DatePipe, private spinner: NgxSpinnerService, private messageService: MessageService) { }
   public mprTitle: string;
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
@@ -20,7 +21,7 @@ export class MPRListComponent implements OnInit {
   public formName: string;
   public txtName: string;
   public dynamicData = new DynamicSearchResult();
-  public showList; showFilterBlock; showCMMFilter: boolean = false;
+  public showList; showFilterBlock; showCMMFilter; showDeletedialog: boolean = false;
   public searchItems: Array<searchList> = [];
   public selectedlist: Array<searchList> = [];
   public selectedItem: searchList;
@@ -34,6 +35,7 @@ export class MPRListComponent implements OnInit {
   loading: boolean;
   public fromDate: Date;
   public toDate: Date
+  public deleteMprInfo: DeleteMpr;
 
   //page load event
   ngOnInit() {
@@ -43,6 +45,7 @@ export class MPRListComponent implements OnInit {
     else {
       this.router.navigateByUrl("Login");
     }
+    this.deleteMprInfo = new DeleteMpr();
     if (localStorage.getItem("AccessList")) {
       this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
     }
@@ -108,14 +111,35 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.CheckedBy = "";
 
     }
-    //if (this.employee.OrgDepartmentId == 14)//cmm
-    //  this.depDisable = false;
-    //else
-    //  this.depDisable = true;
     //if (this.employee.OrgDepartmentId != null) {
     //  this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
     //  this.mprFilterParams.DepartmentId = this.employee.OrgDepartmentId.toString();
     //}
+    if (this.typeOfList == "MPRList") {
+      if (this.employee.OrgDepartmentId == 14)//cmm
+      {
+        this.depDisable = false;
+        this.mprFilterParams.DepartmentId = "";
+        this.mprFilterParams.ORgDepartmentid = "";
+      }
+      else if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
+        this.showCMMFilter = true;
+        this.depDisable = true;
+        this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
+        this.mprFilterParams.ORgDepartmentid = this.employee.OrgDepartmentId.toString();
+        this.mprFilterParams.DepartmentId = "";
+        this.mprFilterParams.PreparedBy = "";
+      }
+      else {
+        this.showCMMFilter = true;
+        this.depDisable = true;
+        this.MPRfilterForm.controls["DepartmentId"].setValue(this.employee.OrgDepartmentName);
+        this.mprFilterParams.DepartmentId = "";
+        this.mprFilterParams.ORgDepartmentid = "";
+        this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
+      }
+    }
+
 
     this.getStatusList();
 
@@ -145,11 +169,16 @@ export class MPRListComponent implements OnInit {
       this.mprList = data;
       if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId == 14) {//for cmm
         this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
+      } else {
+        if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId != 14) {
+          this.mprList = this.mprList.filter(li => li.CheckedBy != '-' && li.ApprovedBy != "-");
+        }
+        if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
+        }
+        else {
+          this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+        }
       }
-      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId != 14) {
-        this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo && li.CheckedBy != '-' && li.ApprovedBy != "-")
-      }
-
       this.loading = false;
       this.spinner.hide();
     })
@@ -234,6 +263,27 @@ export class MPRListComponent implements OnInit {
   newMPRForm() {
     this.constants.newMpr = true;
     this.router.navigate(["/SCM/MPRForm"]);
+  }
+  onRowDelete(mprdeleteinfo: any) {
+    this.showDeletedialog = true;
+    this.deleteMprInfo = new DeleteMpr();
+    this.deleteMprInfo.RevisionId = mprdeleteinfo.RevisionId;
+  }
+
+  deleteMpr() {
+    if (this.deleteMprInfo.DeletedRemarks) {
+      this.deleteMprInfo.Deletedby = this.employee.EmployeeNo;
+      this.MprService.DeleteMpr(this.deleteMprInfo).subscribe(data => {
+        this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'MPR Deleted' });
+        this.showDeletedialog = false;
+        var ind = this.mprList.findIndex(x => x.RevisionId == this.deleteMprInfo.RevisionId);
+        if (ind > -1)
+          this.mprList.splice(ind, 1);
+      })
+    }
+    else {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter Remarks.' });
+    }
   }
 }
 

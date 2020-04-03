@@ -12,6 +12,7 @@ export class constants {
   //public accessTokenUrl = "http://localhost:49659/token";
   public dateFormat = "dd/MM/yyyy";
   public RequisitionId: string = "";
+  public newMpr: boolean = false;
   public rfqValidDays: number = 7;
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";

@@ -269,6 +269,7 @@ export class mprRevision {
   OThirdApproverStatus: string;
   OThirdApproverStatusChangedOn: Date;
   OThirdApproverRemarks: string;
+  DeleteFlag: boolean;
 }
 
 
@@ -302,6 +303,7 @@ export class mprFilterParams {
   JobCode: string;
   ItemDescription: string;
   DepartmentId: string;
+  ORgDepartmentid: string;
   GEPSApprovalId: string;
   BuyerGroupId: string;
   AssignEmployee: string;
@@ -376,4 +378,10 @@ export class sendMailObj {
 }
 export class selectObj {
   constructor(public id: number, public name: string) { }
+}
+
+export class DeleteMpr {
+  DeletedRemarks: string;
+  Deletedby: string;
+  RevisionId: number;
 }

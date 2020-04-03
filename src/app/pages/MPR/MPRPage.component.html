@@ -194,6 +194,8 @@
               <th>Quantity & Unit</th>
               <th>Sale Order Line Item No</th>
               <th>Reference Document No</th>
+              <th>Mfg part No</th>
+              <th>Mfg model No</th>
               <th>Target Spend</th>
               <th>Documents</th>
               <th>PO No</th>
@@ -211,6 +213,8 @@
               <td class="ptable-cell">{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
               <td class="ptable-cell">{{rowData.SOLineItemNo}}</td>
               <td class="ptable-cell">{{rowData.ReferenceDocNo}}</td>
+              <td class="ptable-cell">{{rowData.MfgPartNo}}</td>
+              <td class="ptable-cell">{{rowData.MfgModelNo}}</td>
               <td class="ptable-cell">{{rowData.TargetSpend}}</td>
               <td class="ptable-cell">
                 <div *ngFor="let document of mprRevisionModel.MPRDocuments">
@@ -218,7 +222,7 @@
                 </div>
               </td>
               <td>{{getPOnumbers(rowData)}}</td>
-              <td style="text-align:center" *ngIf="!editing">
+              <td style="text-align:center">
                 <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
               </td>
               <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
@@ -1295,21 +1299,21 @@
         <div class="ui-g-12">
           <div class="ui-g-6 form-group">
             <label class="form-label">Sale Order Line Item No</label>
-            <input formControlName="SOLineItemNo"  maxlength="12"  [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
+            <input type="text" formControlName="SOLineItemNo"  maxlength="12"  [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
           </div>
           <div class="ui-g-6 form-group">
             <label class="form-label">Reference If Any</label>
-            <input formControlName="ReferenceDocNo"  maxlength="100"  [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
+            <input type="text" formControlName="ReferenceDocNo"  maxlength="100"  [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">
           <div class="ui-g-6 form-group">
             <label class="form-label">Mfg. Part Number</label>
-            <input formControlName="SOLineItemNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
+            <input type="text" formControlName="MfgPartNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
           </div>
           <div class="ui-g-6 form-group">
             <label class="form-label">Mfg. Model Number </label>
-            <input formControlName="ReferenceDocNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
+            <input type="text" formControlName="MfgModelNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">

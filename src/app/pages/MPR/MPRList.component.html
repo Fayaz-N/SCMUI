@@ -1,4 +1,4 @@
-<button *ngIf="typeOfList=='MPRPendingList'"   type="button"  class="btn btn-success p-1"style="height:35px" (click)="newMPRForm()">New MPR Form</button>
+<button *ngIf="typeOfList=='MPRPendingList'" type="button" class="btn btn-success p-1" style="height:35px" (click)="newMPRForm()">New MPR Form</button>
 <br /><br />
 <div class="row">
   <div class="col-md-4"><h4>{{mprTitle}}</h4></div>
@@ -165,6 +165,7 @@
         <th style="width:100px">Description</th>
         <th style="width:100px" *ngIf="showCMMFilter">Job Code</th>
         <th style="width:100px" *ngIf="showCMMFilter">Job Name</th>
+        <th style="width:100px">Department Name</th>
         <th style="width:100px" *ngIf="showCMMFilter">Purpose of issuing MPR</th>
         <th style="width:100px" *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
         <th style="width:100px" *ngIf="showCMMFilter">Ge Ps Approval Id</th>
@@ -181,6 +182,7 @@
         <th style="width:100px">Edit</th>
         <th style="width:100px">Copy</th>
         <th style="width:100px">Revise</th>
+        <th style="width:100px">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -190,6 +192,7 @@
         <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobCode}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobName}}</td>
+        <td class="ptable-cell"><span *ngIf="mprFilterParams.ORgDepartmentid">{{employee.OrgDepartmentName}}</span><span *ngIf="mprFilterParams.ORgDepartmentid==''">{{rowData.DepartmentName}}</span></td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
         <td *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
@@ -206,7 +209,9 @@
         <td><button *ngIf="(typeOfList=='MPRList' || typeOfList=='MPRPendingList') && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
         <td><button pButton type="button" icon="fa fa-copy" class="ui-button-info p-1" (click)="onRevisionCopy(rowData)"></button></td>
         <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
+        <td *ngIf="typeOfList=='MPRPendingList'"><button pButton type="button" icon="fa fa-trash" class="ui-button-info p-1" (click)="onRowDelete(rowData)"></button></td>
       </tr>
+      <!--*ngIf="(typeOfList=='MPRPendingList') && rowData.CheckedNam=='-' && rowData.ApproverName=='-'"-->
     </ng-template>
   </p-table>
 </div>
@@ -218,6 +223,25 @@
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
       <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Delete MPR:" [(visible)]="showDeletedialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
+  <div class="ui-g ui-fluid">
+      <div class="ui-g-12">
+        <div class="ui-g-12 form-group">
+          <label class="form-label">Remarks </label>&nbsp;<span style="color:red">*</span>
+          <div class="form-inline-list">
+            <textarea class="form-control forms-input" maxlength="500" [(ngModel)]="deleteMprInfo.DeletedRemarks"></textarea>
+          </div>
+        </div>
+      </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="deleteMpr()" label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDeletedialog')" label="Cancel"></button>
     </div>
   </p-footer>
 </p-dialog>

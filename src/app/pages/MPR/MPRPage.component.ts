@@ -586,23 +586,28 @@ export class MPRPageComponent implements OnInit {
   }
 
   onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
-    this.itemDetails = details;
     this.displayItemDialog = true;
+    this.itemDetails = new MPRItemInfoes();
+    this.itemDetails = details; 
     this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
       this.showList = false;
       if (details.Itemid == "0000")
         this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
-      else
+      else {
+        if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
         this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
+      }
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
       this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity()
     });
-    this.bindSearchListData(e, formName, 'UnitId', "", (): any => {
-      this.showList = false;
-      this.MPRItemDetailsForm.controls.UnitId.value = this.searchItems.filter(li => li.listName == "UnitId" && li.code == details.UnitId)[0].name;
-      this.MPRItemDetailsForm.value.UnitId = details.UnitId;
-      this.MPRItemDetailsForm.controls['UnitId'].updateValueAndValidity()
-    });
+    if (details.UnitId) {
+      this.bindSearchListData(e, formName, 'UnitId', "", (): any => {
+        this.showList = false;
+        this.MPRItemDetailsForm.controls.UnitId.value = this.searchItems.filter(li => li.listName == "UnitId" && li.code == details.UnitId)[0].name;
+        this.MPRItemDetailsForm.value.UnitId = details.UnitId;
+        this.MPRItemDetailsForm.controls['UnitId'].updateValueAndValidity()
+      });
+    }
   }
 
   onMPRInfoDelete(details: MPRItemInfoes, index: number) {
@@ -1051,38 +1056,44 @@ export class MPRPageComponent implements OnInit {
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
       this.mprRevisionModel = data;
-      if (this.mprRevisionModel.DeliveryRequiredBy)
-        this.mprRevisionModel.DeliveryRequiredBy = new Date(this.mprRevisionModel.DeliveryRequiredBy);
-      else
-        this.mprRevisionModel.DeliveryRequiredBy = new Date();
-      this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
-      this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
-        this.mprRevisionList = data;
-        this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
-        this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
-        this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
-        this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
-        this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
-        this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
-        this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
-        this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
-        if (this.mprRevisionDetails.CheckedBy.trim() == "-") {
-          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
-        }
-        else {
-          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
-        }
+      if (this.mprRevisionModel && this.mprRevisionModel.DeleteFlag == false) {
+        if (this.mprRevisionModel.DeliveryRequiredBy)
+          this.mprRevisionModel.DeliveryRequiredBy = new Date(this.mprRevisionModel.DeliveryRequiredBy);
+        else
+          this.mprRevisionModel.DeliveryRequiredBy = new Date();
+        this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
+        this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
+          this.mprRevisionList = data;
+          this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
+          this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
+          this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
+          this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
+          this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
+          this.bindMPRPageForm("MPRPageForm3", this.mprRevisionDetails);
+          this.form1Edit = this.materialFormEdit = this.vendorFormEdit = this.form3Edit = true;
+          this.showMaterialForm = this.showVendorForm = this.showOtherDetailsForm = true;
+          if (this.mprRevisionDetails.CheckedBy.trim() == "-") {
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
+          }
+          else {
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
+          }
 
-        //Access based functionalities
-        if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
-          this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
-        if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
-          this.hideDeleteBtn = true;
+          //Access based functionalities
+          if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
+          if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
+            this.hideDeleteBtn = true;
 
-        this.bindStatusDetails();
-        this.showPage = true;
+          this.bindStatusDetails();
+          this.showPage = true;
+          this.spinner.hide();
+        });
+      }
+      else {
         this.spinner.hide();
-      });
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'No data for this revision' });
+      }
 
     });
   }
