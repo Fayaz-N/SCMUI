@@ -6,7 +6,7 @@
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
     <div class="row " style="margin-top:10px">
-      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
         <div class="form-inline-list">
           <input type="text" class="form-control forms-input" formControlName="venderid" [value]="RFQForm.controls.venderid.value" [ngClass]="{ 'is-invalid': rfqSubmitted &&  rfqSubmitted && !RFQForm.controls.venderid.value}">
@@ -28,27 +28,27 @@
           <span *ngIf="rfqSubmitted && !RFQForm.controls.RFQType.value" class="invalid-feedback">Select RFQ Type.</span>
         </div>
       </div>
-      
+
       <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <p-checkbox [(ngModel)]="rfqRevisionModel.rfqmaster.VendorVisibility" formControlName="VendorVisibility" binary="true"></p-checkbox>
         &nbsp;&nbsp;Vendor Visibility
       </div>
     </div>
     <div class="row" *ngIf="rfqRevisionModel.RFQType=='Rate Contract'">
-      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Quote Valid From</label>&nbsp;<span style="color:red">*</span>
         <input type="date" #myDate [value]="rfqRevisionModel.QuoteValidFrom | date:'yyyy-MM-dd'" (input)="rfqRevisionModel.QuoteValidFrom=parseDate($event.target.value)" formControlName="QuoteValidFrom" class="form-control" [ngClass]="{ 'is-invalid': rfqSubmitted &&  RFQForm.controls.QuoteValidFrom.errors }" />
         <!--<input type="date" [(ngModel)="mprRevisionModel.DeliveryRequiredBy" data-date-format="constants.dateFormat" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }">-->
         <span *ngIf="rfqSubmitted && RFQForm.controls.QuoteValidFrom.errors" class="invalid-feedback">Quote valid from required.</span>
       </div>
-     
-      <div  class="col-lg-4 col-md-4 col-sm-4 form-group">
+
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
         <label class="form-label">Quote Valid To</label>&nbsp;<span style="color:red">*</span>
         <input type="date" #myDate [value]="rfqRevisionModel.QuoteValidTo | date:'yyyy-MM-dd'" (input)="rfqRevisionModel.QuoteValidTo=parseDate($event.target.value)" formControlName="QuoteValidTo" class="form-control" [ngClass]="{ 'is-invalid': rfqSubmitted &&  RFQForm.controls.QuoteValidTo.errors }" />
         <!--<input type="date" [(ngModel)="mprRevisionModel.DeliveryRequiredBy" data-date-format="constants.dateFormat" formControlName="DeliveryRequiredBy" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.DeliveryRequiredBy.errors }">-->
         <span *ngIf="rfqSubmitted && RFQForm.controls.QuoteValidTo.errors" class="invalid-feedback">Quote valid to required.</span>
       </div>
-      
+
     </div>
   </div><br />
   <div *ngIf="!rfqFormEdit" style="text-align: center;">
@@ -56,7 +56,7 @@
   </div>
 </form>
 <br />
-<!--<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add Item" class="ui-button-info" (click)="showItemDialog()" style="float:right"></button><br /><br />-->
+<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add Item" class="ui-button-info" (click)="showItemDialog()" style="float:right"></button><br /><br />
 <div class="form-control" style="height:100%;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
   <div class="row" style="margin-left: 0px; margin-right: 0px">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
@@ -122,14 +122,14 @@
         <td class="text-center">{{rowData.RFQSplitItemId}}</td>
         <td *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="text-right">{{rowData.StartQty}}</td>
         <td *ngIf="rfqRevisionModel.RFQType == 'Rate Contract'" class="text-right">{{rowData.EndQty}}</td>
-        <td *ngIf="rfqRevisionModel.RFQType == 'Quote'" class="text-right">{{rowData.Qty}}</td>
+        <td *ngIf="rfqRevisionModel.RFQType == 'Quote'" class="text-right">{{rowData.Qty}} {{BindUnits(rowData.UOM)}}</td>
         <td class="text-right">{{rowData.UnitPrice}}</td>
         <td class="text-right">{{rowData.CurrencyValue}}</td>
         <td class="text-right">{{rowData.Remarks}}</td>
         <td class="text-right">{{rowData.ValidFrom | date :  constants.dateFormat}}</td>
         <td class="text-right">{{rowData.ValidTo | date :  constants.dateFormat}}</td>
         <td style="text-align:center">
-          <button pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onItemInfoEdit(rowData)"></button>
+          <button pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onItemInfoEdit($event,rowData)"></button>
         </td>
         <td style="text-align:center">
           <button pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="ondeleteRFQItemInfo(rowData,itemindex,ri)"></button>
@@ -206,19 +206,19 @@
     </div>
 
     <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
-
-      <div class="col-lg-2 col-md-2 col-sm-2 text-nowrap">
-        <label class="form-label">Freight Percentage :</label>
-      </div>
-      <div class="col-lg-2 col-md-2 col-sm-2">
-        <input type="text" class="form-control" [attr.disabled]="rfqItem.FreightAmount=='' || rfqItem.FreightAmount==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="5" formControlName="FreightPercentage" [(ngModel)]="rfqItem.FreightPercentage" (change)="FreightPercentageChange()" />
-      </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Freight Amount :</label>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" [attr.disabled]="rfqItem.FreightPercentage=='' || rfqItem.FreightPercentage==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" formControlName="FreightAmount" [(ngModel)]="rfqItem.FreightAmount" (change)="FreightAmountChange()" />
       </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 text-nowrap">
+        <label class="form-label">Freight Percentage :</label>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <input type="text" class="form-control" [attr.disabled]="rfqItem.FreightAmount=='' || rfqItem.FreightAmount==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="5" formControlName="FreightPercentage" [(ngModel)]="rfqItem.FreightPercentage" (change)="FreightPercentageChange()" />
+      </div>
+
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">CGST Percentage :</label>&nbsp;<span style="color:red">*</span>
       </div>
@@ -247,7 +247,7 @@
         <label class="form-label">Remarks :</label>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <input type="text"  class="form-control" formControlName="RequestRemarks" [(ngModel)]="rfqItem.RequestRemarks" />
+        <input type="text" class="form-control" formControlName="RequestRemarks" [(ngModel)]="rfqItem.RequestRemarks" />
       </div>
     </div>
 
@@ -313,7 +313,22 @@
     </div>
 
     <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+      <div class="ui-g-4 form-inline">
+        <label class="form-label">UOM</label>:&nbsp;
+        <div class="form-inline-list">
+          <input type="text" formControlName="UnitId" [value]="addItemInfoForm.controls.UnitId.value" class="form-control forms-input">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'addItemInfoForm','UnitId',addItemInfoForm.controls.UnitId.value,undefined)"></button>
+          </span>
 
+        </div>
+        <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
+          <option value="select" selected>Select</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+        </select>-->
+
+      </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Currency :</label>&nbsp;<span style="color:red">*</span>
       </div>

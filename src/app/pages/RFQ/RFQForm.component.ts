@@ -1,7 +1,7 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, ElementRef, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -86,6 +86,7 @@ export class RFQFormComponent implements OnInit {
       EndQty: ['', [Validators.required]],
       Qty: ['', [Validators.required]],
       UnitPrice: ['', [Validators.required]],
+      UnitId: ['', [Validators.required]],
       CurrencyId: ['', [Validators.required]],
       CurrencyValue: ['', [Validators.required]],
 
@@ -95,17 +96,20 @@ export class RFQFormComponent implements OnInit {
       ValidTo: ['', [Validators.required]],
       Remarks: ['', [Validators.required]],
       Status: ['', [Validators.required]]
-
     })
+
     this.RFQForm.controls['RFQType'].clearValidators();
     this.RFQForm.controls['VendorVisibility'].clearValidators();
-    this.AddItemForm.controls['RequestRemarks'].clearValidators();
     this.AddItemForm.controls['VendorModelNo'].clearValidators();
+    this.AddItemForm.controls['MfgPartNo'].clearValidators();
+    this.AddItemForm.controls['MfgModelNo'].clearValidators();
+    this.AddItemForm.controls['RequestRemarks'].clearValidators();
     this.addItemInfoForm.controls['DeliveryDays'].clearValidators();
     this.addItemInfoForm.controls['DeliveryDate'].clearValidators();
     this.addItemInfoForm.controls['StartQty'].clearValidators();
     this.addItemInfoForm.controls['EndQty'].clearValidators();
     this.addItemInfoForm.controls['Qty'].clearValidators();
+    this.addItemInfoForm.controls['UnitId'].clearValidators();
 
     this.loadCurrency();
     this.route.params.subscribe(params => {
@@ -156,26 +160,28 @@ export class RFQFormComponent implements OnInit {
         this.rfqRevisionModel.rfqmaster.VendorId = item.code;
       if (item.listName == "ItemId")
         this.rfqItem.ItemId = item.code;
+      if (item.listName == "UnitId")
+        this.rfqItemInfo.UOM = item.code;
+
     }
     this[this.formName].controls[this.txtName].updateValueAndValidity()
   }
 
   loadCurrency() {
-    this.RfqService.GetAllMasterCurrency().
-      subscribe(
-        res => {
-          //this._list = res; //save posts in array
-          this.currncyArray = res;
-          let _list: any[] = [];
-          for (let i = 0; i < (res.length); i++) {
-            _list.push({
-              CurrencyName: res[i].CurrencyName,
-              CurrenyId: res[i].CurrenyId
-            });
-          }
-          this.currncyArray = _list;
-          this.rfqItemInfo.CurrencyId = 0;
+    this.RfqService.GetAllMasterCurrency().subscribe(res => {
+      //this._list = res; //save posts in array
+      res = res.Result;
+      this.currncyArray = res;
+      let _list: any[] = [];
+      for (let i = 0; i < (res.length); i++) {
+        _list.push({
+          CurrencyName: res[i].CurrencyName,
+          CurrenyId: res[i].CurrenyId
         });
+      }
+      this.currncyArray = _list;
+      this.rfqItemInfo.CurrencyId = 0;
+    });
   }
 
   showItemDialog() {
@@ -235,6 +241,8 @@ export class RFQFormComponent implements OnInit {
       return;
     }
     else {
+      if (this.rfqRevisionModel.RFQType != "Quote")
+        this.rfqItemInfo.DeliveryDate = null;
       this.RfqService.InsertRfqItemInfo(this.rfqItemInfo).subscribe(data => {
         this.rfqRevisionModel = data;
         this.AddItemInfodialog = false;
@@ -288,6 +296,8 @@ export class RFQFormComponent implements OnInit {
       this.AddItemForm.controls['CGSTPercentage'].setValue("");
       this.AddItemForm.controls['SGSTPercentage'].clearValidators();
       this.AddItemForm.controls['CGSTPercentage'].clearValidators();
+      this.AddItemForm.controls['SGSTPercentage'].updateValueAndValidity();
+      this.AddItemForm.controls['CGSTPercentage'].updateValueAndValidity();
     }
   }
 
@@ -295,12 +305,14 @@ export class RFQFormComponent implements OnInit {
     if (this.AddItemForm.controls['CGSTPercentage'].value != "") {
       this.AddItemForm.controls['IGSTPercentage'].setValue("");
       this.AddItemForm.controls['IGSTPercentage'].clearValidators();
+      this.AddItemForm.controls['IGSTPercentage'].updateValueAndValidity();
     }
   }
   IGSTEnablefromSGSTChange() {
     if (this.AddItemForm.controls['SGSTPercentage'].value != "") {
       this.AddItemForm.controls['IGSTPercentage'].setValue("");
       this.AddItemForm.controls['IGSTPercentage'].clearValidators();
+      this.AddItemForm.controls['IGSTPercentage'].updateValueAndValidity();
     }
   }
   rfqTypeChange() {
@@ -368,15 +380,24 @@ export class RFQFormComponent implements OnInit {
 
   }
 
-  onItemInfoEdit(details: RfqItemInfoModel) {
+  onItemInfoEdit(e: any,details: RfqItemInfoModel) {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
     // this.rfqItemInfo.CurrencyId = details.CurrencyId;
     this.AddItemInfodialog = true;
     this.rfqItemInfo.ValidFrom = new Date(this.rfqItemInfo.ValidFrom);
     this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);
-   
-    if (this.rfqRevisionModel.RFQType = "Rate Contract") {
+
+    if (details.UOM) {
+      this.bindSearchListData(e, 'addItemInfoForm', 'UnitId', "", (): any => {      
+        this.showList = false;
+        this.addItemInfoForm.controls['UnitId'].setValue(this.searchItems.filter(li => li.listName == "UnitId" && li.code == details.UOM)[0].name);
+        this.addItemInfoForm.value.UnitId = details.UOM;
+        this.addItemInfoForm.controls['UnitId'].updateValueAndValidity()
+      });
+    }
+
+    if (this.rfqRevisionModel.RFQType == "Rate Contract") {
       this.addItemInfoForm.controls['Status'].setValidators([Validators.required]);
       this.addItemInfoForm.controls['ValidFrom'].setValidators([Validators.required]);
       this.addItemInfoForm.controls['ValidTo'].setValidators([Validators.required]);
@@ -421,6 +442,19 @@ export class RFQFormComponent implements OnInit {
       this.RFQForm.controls["venderid"].setValue(this.rfqRevisionModel.rfqmaster.Vendor.VendorName);
       this.rfqTypeChange();
     })
+  }
+
+  //Binding selected units
+  public BindUnits(unitId: number) {
+    if (unitId == 1)
+      return "Nos"
+    if (unitId == 2)
+      return "Set"
+    if (unitId == 3)
+      return "Kgs"
+    else
+      return "";
+
   }
 }
 

@@ -167,16 +167,18 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.DepartmentId = "";
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
-      if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId == 14) {//for cmm
-        this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
-      } else {
-        if (this.typeOfList == "MPRList" && this.employee.OrgDepartmentId != 14) {
-          this.mprList = this.mprList.filter(li => li.CheckedBy != '-' && li.ApprovedBy != "-");
-        }
-        if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
-        }
-        else {
-          this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+      if (this.typeOfList == "MPRList") {
+        if (this.employee.OrgDepartmentId == 14) {//for cmm
+          this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
+        } else {
+          if (this.employee.OrgDepartmentId != 14) {
+            this.mprList = this.mprList.filter(li => li.CheckedBy != '-' && li.ApprovedBy != "-");
+          }
+          if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
+          }
+          else {
+            this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+          }
         }
       }
       this.loading = false;

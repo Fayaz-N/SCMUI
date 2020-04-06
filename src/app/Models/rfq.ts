@@ -89,7 +89,7 @@ export class RfqItemInfoModel {
   StartQty: string;
   EndQty: string;
   Qty: string;
-  UOM: number;
+  UOM: string;
   UnitPrice: string;
   DiscountPercentage: string;
   Discount: string;

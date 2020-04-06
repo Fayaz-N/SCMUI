@@ -43,7 +43,7 @@ export class RFQListComponent implements OnInit {
     
     this.typeOfList = this.route.routeConfig.path;
     this.rfqFilterParams = new rfqFilterParams();
-    this.toDate = new Date();
+    this.toDate = new Date(new Date().setDate(new Date().getDate() + 90));
     this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
     this.rfqFilterParams.RFQType = "0";
     this.rfqFilterParams.typeOfFilter = "1";
