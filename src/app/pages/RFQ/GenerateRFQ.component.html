@@ -277,7 +277,7 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog header="Assign PO For Repeat Orders:" [(visible)]="assignRoDialog" [style]="{'width':'95%','overflow':'auto!important'}">
+<p-dialog header="Assign PO For Repeat Orders:" [(visible)]="assignRoDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'95%','height':'70%','overflow':'auto!important'}">
   <div class="row">
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
       <label class="form-label">PO Number : </label>&nbsp;
@@ -307,7 +307,7 @@
     </div>
   </div>
   <br />
-  <p-table [value]="repeatOrdervendorDetailsList" [style]="{'width':'97%','overflow':'auto!important'}"
+  <p-table [value]="repeatOrdervendorDetailsList" [style]="{'width':'97%','height':'80%','overflow':'auto!important'}"
            [responsive]="true" [rows]="50"
            [resizableColumns]="true"
            columnResizeMode="expand"
