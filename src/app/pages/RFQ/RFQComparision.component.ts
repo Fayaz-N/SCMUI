@@ -33,6 +33,7 @@ export class RFQComparisionComponent implements OnInit {
   public tp: number = 0;
   public PreviousPrices: MPRItemInfoes;
   public showPODialog: boolean = false;
+  public poRowIndex: number;
 
   //page load event
   ngOnInit() {
@@ -248,7 +249,7 @@ export class RFQComparisionComponent implements OnInit {
   discountCalculation(vendor: any) {
     this.tp = 0;
     if (vendor.UnitPrice && vendor.vendorQuoteQty)
-    this.tp = vendor.UnitPrice * vendor.vendorQuoteQty;
+      this.tp = vendor.UnitPrice * vendor.vendorQuoteQty;
     var PriceDis = 0;
     if (vendor.DiscountPercentage)
       PriceDis = this.tp - (this.tp * (vendor.DiscountPercentage / 100));
@@ -286,10 +287,14 @@ export class RFQComparisionComponent implements OnInit {
     return value;
   }
 
-  showDialog(itemdata: any) {
+  showDialog(itemdata: any, index: number) {
     this.showPODialog = true;
+    this.poRowIndex = index;
     this.PreviousPrices.PONumber = itemdata.PONumber;
-    this.PreviousPrices.PODate = new Date(itemdata.PODate);
+    if (itemdata.PODate != null)
+      this.PreviousPrices.PODate = new Date(itemdata.PODate);
+    else
+      this.PreviousPrices.PODate = new Date();
     this.PreviousPrices.POPrice = itemdata.POPrice;
     this.PreviousPrices.PORemarks = itemdata.PORemarks;
     this.PreviousPrices.Itemdetailsid = itemdata.Itemdetailsid;
@@ -300,9 +305,14 @@ export class RFQComparisionComponent implements OnInit {
   }
   addPreviousprice() {
     this.RfqService.PreviouPriceUpdate(this.PreviousPrices).subscribe(data => {
-      if (data)
+      if (data) {
+        this.rfqQuoteModel[this.poRowIndex].PONumber = this.PreviousPrices.PONumber;
+        this.rfqQuoteModel[this.poRowIndex].PODate = this.PreviousPrices.PODate;
+        this.rfqQuoteModel[this.poRowIndex].POPrice = this.PreviousPrices.POPrice;
+        this.rfqQuoteModel[this.poRowIndex].PORemarks = this.PreviousPrices.PORemarks;
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Prices Added sucessfully' });
-      this.showPODialog = false;
+        this.showPODialog = false;
+      }
     })
   }
   statusSubmit() {

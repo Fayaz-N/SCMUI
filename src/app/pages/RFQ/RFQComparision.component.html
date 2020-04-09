@@ -132,7 +132,7 @@
               </div>
               <div class="row">
                 <div class="col-lg-4 col-md-4 col-sm-4 form-group"></div>
-                <button type="button" class="btn btn-success center" (click)="showDialog(rowData)" label="Save">ADD</button>
+                <button type="button" class="btn btn-success center" (click)="showDialog(rowData,rowIndex)" label="Save">ADD</button>
               </div>
             </td>
             <td *ngFor="let vendor of rowData.suggestedVendorDetails;let colIndex=index" style="width:100px !important;">
@@ -277,13 +277,13 @@
 </div>
 
 
-<p-dialog header="Add" [(visible)]="showPODialog" showEffect="fade" [modal]="true" [style]="{width: '800px'}" [closable]="false">
+<p-dialog header="Add" [(visible)]="showPODialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'50%','overflow':'auto!important'}">
   <div class="ui-g-12">
     <div class="ui-g-2">
       <label for="procSrc">PONo: </label>
     </div>
     <div class="ui-g-5">
-      <input type="text" [(ngModel)]="PreviousPrices.PONumber" class="form-control" />
+      <input type="text" maxlength="100" [(ngModel)]="PreviousPrices.PONumber" class="form-control" />
     </div>
   </div>
   <div class="ui-g-12">
@@ -291,7 +291,8 @@
       <label for="procSrc">PO Date: </label>
     </div>
     <div class="ui-g-5">
-      <input type="date" [value]="PreviousPrices.PODate | date:'yyyy-MM-dd'" (input)="PreviousPrices.PODate=parseDate($event.target.value)"  [(ngModel)]="PreviousPrices.PODate" class="form-control" />
+      <!--<p-calendar class="mprldatepick"  [(ngModel)]="PreviousPrices.PODate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+      <input type="date" #myDate [ngModel]="PreviousPrices.PODate | date:'yyyy-MM-dd'" (ngModelChange)="PreviousPrices.PODate = $event"  class="form-control" />
     </div>
   </div>
   <div class="ui-g-12">
