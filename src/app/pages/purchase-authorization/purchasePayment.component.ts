@@ -215,13 +215,13 @@ export class purchasePaymentComponent implements OnInit {
                 //item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            
+            //var employeeapprove;
+            
             for (var i = 0; i < this.purchasedetails.ApproversList.length; i++) {
-                var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo
-                if (employeeapprove == false) {
-                    this.approvedemployee = false
-                }
-                else {
-                    this.approvedemployee = true;
+                var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo;
+                if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
+                    this.approvedemployee = true
                 }
             }
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
@@ -262,7 +262,6 @@ export class purchasePaymentComponent implements OnInit {
         }
     }
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
-        debugger;
         var distinct = [];
         this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
             this.vendor = data;

@@ -36,7 +36,10 @@
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted">
-        <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type</label>
+        <!--<div class="ui-g-2">
+          <label for="procSrc">Department: <span class="required-asterisk" style="color:red">*</span></label>
+        </div>-->
+        <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:<span class="required-asterisk" style="color:red">*</span></label>
         <select [(ngModel)]="purchasedetails.PurchaseTypeId" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let pty of purchasetypes" [value]="pty.PurchaseTypeId"> {{pty.PurchaseType}} </option>
         </select>
@@ -48,7 +51,7 @@
     </div>
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted">
-        <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Purchase Mode:</label>&nbsp;&nbsp;
+        <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Purchase Mode:<span class="required-asterisk" style="color:red">*</span></label>&nbsp;&nbsp;
         <select [(ngModel)]="purchasedetails.PurchaseModeId" class="form-control" style="margin-left: 12px;width:60%">
           <option *ngFor="let pur of purchasemodes" [value]="pur.PurchaseModeId"> {{pur.PurchaseMode}} </option>
         </select>
@@ -122,7 +125,7 @@
 
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
       <!--<span class="Supplier">: {{target-sum | currency:'INR'}}</span>-->
-      <span class="Supplier" *ngIf="target>sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
+      <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
       <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
     </div>
   </div>
@@ -629,7 +632,7 @@
 <div *ngIf="pasubmitted && approvedemployee" class="form-control" style="height:100%;border-radius:0px; margin-left:0px;margin-top:5px">
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
-    <span class="Supplier" *ngIf="target>sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
+    <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
     <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
   </div>
   <div class="row form-inline pt-2">
