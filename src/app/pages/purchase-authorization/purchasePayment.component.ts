@@ -17,6 +17,7 @@ export class purchasePaymentComponent implements OnInit {
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
+    public disableapprove: boolean = true;
     public paitemvalue: boolean = false;
     public PAApprovers: MPRPAApproversModel;
     public vendor: Array<VendorMasterModel> = [];
@@ -32,6 +33,7 @@ export class purchasePaymentComponent implements OnInit {
     public EditDialog: boolean;
     public showemployee: boolean;
     public paid: number;
+    public rolename: string;
     public vendorname: string;
     public selectedvendor: string;
     public rfqrevisionid: Array<any> = [];
@@ -222,6 +224,7 @@ export class purchasePaymentComponent implements OnInit {
                 var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo;
                 if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
                     this.approvedemployee = true
+                    this.rolename = this.purchasedetails.ApproversList[i]["RoleName"];
                 }
             }
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
@@ -292,14 +295,28 @@ export class purchasePaymentComponent implements OnInit {
         })
     }
     Approvepa(approvers: MPRPAApproversModel) {
-        approvers.MPRRevisionId = this.mprrevisionid;
+        if (approvers.ApprovalStatus != '' && approvers.ApprovalStatus != null) {
+            this.disableapprove = false;
+            approvers.MPRRevisionId = this.mprrevisionid;
             approvers.PAId = this.paid;
+            approvers.RoleName = this.rolename;
             approvers.EmployeeNo = this.employee.EmployeeNo;
             this.paService.Updatepaapproverstatus(approvers).subscribe(data => {
                 this.status = data;
                 this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated Successfully' });
                 this.getmprpabyid(approvers.PAId);
             })
+
+        } else {
+            alert("Please select Approval status")
+        }
+        //approvers = this.purchasedetails.ApproversList.;
+            
+        
+        //else {
+        //    this.disableapprove = true;
+        //}
+       
         
 
     }

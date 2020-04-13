@@ -116,7 +116,7 @@ export class PurchaseCreditApproversModel {
     AuthorizationType: string
     RoleName: string;
     EmployeeNo: string;
-    RoleId: string;
+    RoleId: string; 
     ApproverLevel: number;
     ApproversRemarks: string;
     ApprovalStatus: string;
