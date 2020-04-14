@@ -17,7 +17,7 @@ export class purchasePaymentComponent implements OnInit {
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
-    public disableapprove: boolean = true;
+    public disableApprovers: boolean = false;
     public paitemvalue: boolean = false;
     public PAApprovers: MPRPAApproversModel;
     public vendor: Array<VendorMasterModel> = [];
@@ -225,6 +225,9 @@ export class purchasePaymentComponent implements OnInit {
                 if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
                     this.approvedemployee = true
                     this.rolename = this.purchasedetails.ApproversList[i]["RoleName"];
+                    if (this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Approved" || this.purchasedetails.ApproversList[i]["ApprovalStatus"] =="Rejected" ) {
+                        this.disableApprovers = true;
+                    } 
                 }
             }
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
@@ -296,7 +299,7 @@ export class purchasePaymentComponent implements OnInit {
     }
     Approvepa(approvers: MPRPAApproversModel) {
         if (approvers.ApprovalStatus != '' && approvers.ApprovalStatus != null) {
-            this.disableapprove = false;
+            //this.disableapprove = false;
             approvers.MPRRevisionId = this.mprrevisionid;
             approvers.PAId = this.paid;
             approvers.RoleName = this.rolename;
