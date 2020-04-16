@@ -112,6 +112,10 @@ export class EmployeeModel {
     Approvers: Array<PurchaseCreditApproversModel>[];
 }
 export class PurchaseCreditApproversModel {
+
+    Approvername: string
+    rolename: string;
+
     ApproverName: string
     AuthorizationType: string
     RoleName: string;

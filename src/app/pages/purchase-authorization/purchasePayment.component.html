@@ -267,7 +267,7 @@
   </div><br />
 
   <div *ngIf="showemployee && !pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <div *ngIf="employeelist && employeelist.Approvers.length>0" class="col-lg-8 col-md-8 col-sm-8">
+    <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -276,17 +276,10 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>{{employeelist.BuyerGroupManager}}</td>
-            <td>{{employeelist.BGRole}}</td>
-          </tr>
-          <tr>
-            <td>{{employeelist.ProjectManager}}</td>
-            <td>{{employeelist.PMRole}}</td>
-          </tr>
-          <tr *ngFor="let app of employeelist.Approvers">
-            <td>{{app.ApproverName}}</td>
-            <td>{{app.RoleId}}</td>
+ 
+          <tr *ngFor="let app of employeelist">
+            <td>{{app.Approvername}}</td>
+            <td>{{app.rolename}}</td>
           </tr>
         </tbody>
       </table>

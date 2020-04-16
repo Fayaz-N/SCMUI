@@ -29,7 +29,7 @@ export class purchaseauthorizationservice {
         return this.http.post<ItemsViewModel[]>(this.url + 'PA/GetItemsByMasterIDs', details, this.httpOptions);
     }
     ApproveItems(item: any): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/GetEmployeeMappings', item, this.httpOptions);
+        return this.http.post<any>(this.url + 'PA/GetEmployeeMappings1', item, this.httpOptions);
     }
 
     Approve(details: PADetailsModel): Observable<ItemsViewModel[]> {

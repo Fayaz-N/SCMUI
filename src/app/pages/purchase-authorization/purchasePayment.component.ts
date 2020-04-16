@@ -157,10 +157,11 @@ export class purchasePaymentComponent implements OnInit {
             //this.purchasedetails.Item = this.RFQItemID;
             //this.purchasedetails.Item = this.paitemdetails;
         }
-        for (var i = 0; i < this.employeelist.Approvers.length; i++) {
-            this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
-        }
-
+        //for (var i = 0; i < this.employeelist.Approvers.length; i++) {
+        //    //this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
+        //    this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
+        //}
+        this.purchasedetails.ApproversList = this.employeelist.Approvers;
         this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
         this.purchasedetails.BGRole = this.employeelist.BGRole;
         this.purchasedetails.ProjectManager = this.employeelist.ProjectManager;
@@ -260,9 +261,10 @@ export class purchasePaymentComponent implements OnInit {
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            //this.employeelist.Approvers
             this.paService.ApproveItems(item).subscribe(data => {
-                this.employeelist = data;
-                //this.employeelist.Approvers = data;
+                this.employeelist = data['Table'];
+                this.employeelist.Approvers = data['Table'];
                 //document.getElementsByClassName("displayemployee")[0].scrollIntoView(true)
             })
         }
