@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
+import { NgxSpinnerService } from "ngx-spinner";
 import { MprService } from 'src/app/services/mpr.service';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel } from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 @Component({
     selector: 'app-purchasePayment',
@@ -12,11 +13,12 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 })
 export class purchasePaymentComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
     public itemsform: FormGroup;
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
+    public paDocuments: padocuments;
     public disableApprovers: boolean = false;
     public paitemvalue: boolean = false;
     public PAApprovers: MPRPAApproversModel;
@@ -30,6 +32,7 @@ export class purchasePaymentComponent implements OnInit {
     public paitem: ItemsViewModel;
     public padetails: PADetailsModel;
     public pasubmitted: boolean;
+    public Requestrforapprove: boolean = true;
     public EditDialog: boolean;
     public showemployee: boolean;
     public paid: number;
@@ -73,7 +76,7 @@ export class purchasePaymentComponent implements OnInit {
         this.vendorDetails = new MPRVendorDetail();
         this.padetails = new PADetailsModel();
         this.paitemdetails = new Array<ItemsViewModel>();
-        
+        this.paDocuments = new padocuments();
         this.buyergroups = new Array<any>();
         this.departmentlist = new Array<any>();
         this.MPRItemDetailsid = new Array<any>();
@@ -126,7 +129,7 @@ export class purchasePaymentComponent implements OnInit {
             PODate: ['', [Validators.required]],
             Remarks: ['', [Validators.required]]
         })
-        
+
         //this.paService.itemdat$.subscribe(data => {
         //    this.selectedItems = data;
         //})
@@ -141,7 +144,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasetypes = data;
         })
     }
-    
+
 
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
         this.purchasedetails.Item = [];
@@ -218,17 +221,17 @@ export class purchasePaymentComponent implements OnInit {
                 //item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
-            
+
             //var employeeapprove;
-            
+
             for (var i = 0; i < this.purchasedetails.ApproversList.length; i++) {
                 var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo;
                 if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
                     this.approvedemployee = true
                     this.rolename = this.purchasedetails.ApproversList[i]["RoleName"];
-                    if (this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Approved" || this.purchasedetails.ApproversList[i]["ApprovalStatus"] =="Rejected" ) {
+                    if (this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Approved" || this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Rejected") {
                         this.disableApprovers = true;
-                    } 
+                    }
                 }
             }
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
@@ -237,6 +240,7 @@ export class purchasePaymentComponent implements OnInit {
             this.displayRfqTerms(this.rfqrevisionid)
             //this.displayapproveEmployee();
             this.showemployee = true;
+
         })
     }
     displayitems(padetails: PADetailsModel) {
@@ -269,6 +273,25 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
+    //fileChange(event: any, formName: string) {
+    //    let fileList: FileList = event.target.files;
+    //    if (fileList.length > 0) {
+    //        let file: File = fileList[0];
+    //        let formData: FormData = new FormData();
+    //        //var revisionId = this.mprRevisionModel.RevisionId.toString();
+    //        //formData.append(revisionId, file, file.name);
+    //        this.spinner.show();
+    //        this.paService.uploadpadocument(formData).subscribe(data => {
+    //            this.spinner.hide();
+    //            (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
+    //            this.paDocuments = new padocuments();
+    //            this.paDocuments.path = data;
+    //            this.paDocuments.filname = file.name;
+               
+    //            //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
+    //        });
+    //    }
+    //}
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
         var distinct = [];
         this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
@@ -297,9 +320,28 @@ export class purchasePaymentComponent implements OnInit {
                 }
             }
 
+
         })
     }
+    updateAddrs(event, paitem: ItemsViewModel) {
+        if (event.target.checked) {
+            //this.paitem.PONO = paitem.PONO
+            (<HTMLInputElement>document.getElementById("txtcopy1")).value = paitem.PONO;
+        }
+        else {
+            this.paitem.PONO = '';
+        }
+        //var n1 = document.getElementById("txtcopy1");
+        //var n2 = document.getElementById("txtcopy1");
+        //n2.append = n1.append;
+
+    }
+//     copyvalue() {
+//    var txt1 = document.getElementById("<%= txt1.ClientID %>").value;
+//    document.getElementById("<%= txt2.ClientID %>").value = txt1;
+//}
     Approvepa(approvers: MPRPAApproversModel) {
+       var data= this.purchasedetails.Item;
         if (approvers.ApprovalStatus != '' && approvers.ApprovalStatus != null) {
             //this.disableapprove = false;
             approvers.MPRRevisionId = this.mprrevisionid;
@@ -316,23 +358,29 @@ export class purchasePaymentComponent implements OnInit {
             alert("Please select Approval status")
         }
         //approvers = this.purchasedetails.ApproversList.;
-            
-        
+
+
         //else {
         //    this.disableapprove = true;
         //}
-       
-        
+
+
 
     }
-    AddPaitem(paitemid:any) {
+    RequestForApproval(Approvers: any) {
+        Approvers.PAid = this.paid;
+        this.paService.RequestForApproval(Approvers).subscribe(data => {
+            this.buyergroups = data;
+        })
+    }
+    AddPaitem(paitemid: any) {
         this.EditDialog = true;
         this.paitem = paitemid;
         //this.SubmitItem(paitemid);
     }
     Cancel() {
         this.EditDialog = false;
-    }
+    }    
     SubmitItem(paitem: ItemsViewModel) {
         if (this.PAsubmitForm.invalid) {
             return;
@@ -344,6 +392,7 @@ export class purchasePaymentComponent implements OnInit {
                 this.paid = data;
                 this.EditDialog = false;
                 paitem = new ItemsViewModel();
+                this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
             })
         }
         //this.paitem.EmployeeNo = this.employee.EmployeeNo;

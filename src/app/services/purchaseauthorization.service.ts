@@ -139,4 +139,13 @@ export class purchaseauthorizationservice {
     loadpareport(report: PAReportInputModel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/GetPaStatusReports', report, this.httpOptions)
     }
+    RequestForApproval(approvers: any): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/UpdateApproverforRequest', approvers, this.httpOptions)
+    }
+    uploadpadocument(formdata: FormData): Observable<any> {
+        return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
+            //.pipe(map(data => {
+            //    return data;
+            //}))
+    }
 } 

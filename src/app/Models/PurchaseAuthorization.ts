@@ -70,6 +70,8 @@ export class PADetailsModel {
     POdate: Date | null;
     PONO: string;
     venderid: number;
+    PAStatus: string;
+    POStatus: string;
 }
 export class ItemsViewModel {
     RFQItemsId: number;
@@ -110,6 +112,11 @@ export class EmployeeModel {
     ProjectMangerNo: string;
     Vendor: Array<VendorMasterModel>[];
     Approvers: Array<PurchaseCreditApproversModel>[];
+}
+export class padocuments {
+    Itemdetailsid: number;
+    filname: string;
+    path: string;
 }
 export class PurchaseCreditApproversModel {
 

@@ -15,19 +15,28 @@
   </div><br />
   <div class="row">
     <div class="col-lg-4 col-md-4 col-sm-4">
-      <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)"  [(ngModel)]="pofilters" placeholder="Select Department" [formControl]="mycontrol" />
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+        <input type="text" matInput [matAutocomplete]="auto" (keyup)="onKeyUp($event)" [(ngModel)]="pofilters.DepartmentId" placeholder="Select Department" [formControl]="mycontrol" />
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayfn">
           <mat-option *ngFor="let option of filtereddepartments | async" [value]="option">
             {{option.Department}}
           </mat-option>
         </mat-autocomplete>
+      </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.DepartmentId">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+            {{option.Department}}
+          </option>
+        </select>
       </mat-form-field>
     </div>
     <!--<div class="col-lg-4 col-md-4 col-sm-4">
       <mat-select-autocomplete class="grid-7-11"
                                [placeholder]="'Options Selection'"
-                               [errorMsg]="errorMessage" 
+                               [errorMsg]="errorMessage"
                                [showErrorMsg]="showError"
                                [options]="departmentlist"
                                [display]="'Department'"
@@ -37,28 +46,65 @@
                                [selectedOptions]=""
                                (selectionChange)="getSelectedOptions($event)">
       </mat-select-autocomplete>
-    </div>-->
+    </div>--> 
     <div class="col-lg-4 col-md-4 col-sm-4">
-      <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters" placeholder="Select BuyerGroup" [formControl]="buyercontrol" />
-        <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayfn2">
-          <mat-option *ngFor="let option of buyergroups" [value]="option">
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+    <input type="text" matInput [matAutocomplete]="auto1" [(ngModel)]="pofilters.BuyerGroupId" placeholder="Select BuyerGroup" [formControl]="buyercontrol" />
+    <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayfn2">
+      <mat-option *ngFor="let option of buyergroups" [value]="option">
+        {{option.BuyerGroup}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select BuyerGroup</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.BuyerGroupId">
+          <option value="" selected></option>
+          <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
             {{option.BuyerGroup}}
-          </mat-option>
-        </mat-autocomplete>
+          </option>
+        </select>
       </mat-form-field>
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
-      <mat-form-field class="example-full-width" style="width:100%">
-        <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters" placeholder="Select Vendor" [formControl]="vendorcontrol" />
-        <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayfn1">
-          <mat-option *ngFor="let option of filteredvendors | async" [value]="option">
+      <!--<mat-form-field class="example-full-width" style="width:100%">
+    <input type="text" matInput [matAutocomplete]="auto2" (keyup)="onKeyUp1($event)" [(ngModel)]="pofilters.VendorId" placeholder="Select Vendor" [formControl]="vendorcontrol" />
+    <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayfn1">
+      <mat-option *ngFor="let option of filteredvendors | async" [value]="option">
+        {{option.VendorName}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>-->
+      <mat-form-field style="width:100%">
+        <mat-label>Select Vendor</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.VendorId">
+          <option value="" selected></option>
+          <option *ngFor="let option of Vendors" [value]="option.VendorId">
             {{option.VendorName}}
-          </mat-option>
-        </mat-autocomplete>
+          </option>
+        </select>
       </mat-form-field>
     </div>
   </div><br />
+  <div class="row form-group">
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="docNo" class="form-label">PA Status:</label> &nbsp;
+      <select [(ngModel)]="pofilters.PAStatus" class="form-control dropdown">
+        <option value="Submitted">Submitted</option>
+        <option value="Pending">Pending</option>
+        <option value="Rejected">Rejected</option>
+        <option value="Approved">Approved</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4">
+      <label for="SaleOrderNo" class="form-label">PO Status:</label> &nbsp;
+      <select [(ngModel)]="pofilters.POStatus" class="form-control dropdown">
+        <option value="Pending">Pending</option>
+        <option value="PORelease">PO Release</option>
+      </select>&nbsp;
+    </div>
+
+  </div>
   <div class="row">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="GetMprpadetailsBySearch(pofilters)">Submit</button>
@@ -127,6 +173,8 @@
         <th>Vendor</th>
         <th>RequestedBY</th>
         <th>RequestedOn</th>
+        <th>PA Status</th>
+        <th>PO Status</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -141,6 +189,8 @@
         <td class="ptable-cell">{{rowData.VendorName}}</td>
         <td class="ptable-cell">{{rowData.RequestedBy}}</td>
         <td class="ptable-cell">{{rowData.RequestedOn}}</td>
+        <td class="ptable-cell">{{rowData.PAStatus}}</td>
+        <td class="ptable-cell">{{rowData.POStatus}}</td>
       </tr>
     </ng-template>
   </p-table><br />

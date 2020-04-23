@@ -130,6 +130,7 @@
     </div>
   </div>
 </div>
+
 <br />
 <div class="form-control" style="width:100%;height:100%">
   <div *ngIf="!pasubmitted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:inherit">
@@ -608,6 +609,7 @@
         <th>Status</th>
         <th>Remarks</th>
         <th>Status Date</th>
+        <th>Approval Request</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -617,6 +619,7 @@
         <td>{{rowData.ApprovalStatus}}</td>
         <td>{{rowData.ApproversRemarks}}</td>
         <td>{{rowData.ApprovedOn}}</td>
+        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Request</button></td>
       </tr>
     </ng-template>
   </p-table>
@@ -656,7 +659,7 @@
         <tr>
           <th>ITEM</th>
           <th>MPRNO</th>
-          <th>PONO</th>
+          <th>PONO :<input type="checkbox"  [checked]="false" (change)="updateAddrs($event,paitem)" /></th>
           <th>POITEMNO</th>
           <th>PODATE</th>
           <th>POREMARKS</th>
@@ -666,8 +669,8 @@
         <tr *ngFor="let items of paitem">
           <td>{{items.ItemDescription}}</td>
           <td>{{items.DocumentNo}}</td>
-          <td><input (keypress)="numberOnly($event)" formControlName="PONO" type="text" [(ngModel)]="items.PONO" maxlength="10" numberOnly class="form-control" /></td>
-          <td><input type="text" formControlName="POItemNo" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
+          <td><input (keypress)="numberOnly($event)" id="txtcopy1" formControlName="PONO" type="text" [(ngModel)]="items.PONO" maxlength="10" numberOnly class="form-control" /></td>
+          <td><input type="text"  formControlName="POItemNo" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
           <td><input formControlName="PODate" type="date" [(ngModel)]="items.PODate" class="form-control" /></td>
           <td><input formControlName="Remarks" type="text" [(ngModel)]="items.Remarks" class="form-control" /></td>
         </tr>

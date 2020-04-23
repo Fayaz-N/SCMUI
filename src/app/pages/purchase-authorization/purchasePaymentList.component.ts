@@ -6,11 +6,14 @@ import { FormControl } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
 import 'rxjs/add/observable/of';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel} from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel } from 'src/app/Models/PurchaseAuthorization'
+
+
 @Component({
     selector: 'app-purchasePaymentList',
   templateUrl: './purchasePaymentList.component.html',
 })
+
 export class purchasePaymentListComponent implements OnInit {
 
     constructor(private paService: purchaseauthorizationservice, private router: Router) {}
@@ -56,10 +59,11 @@ export class purchasePaymentListComponent implements OnInit {
         //);
        
     }
+ 
     loadAllVendor() {
         this.paService.LoadAllVendors().subscribe(data => {
-            this.Vendors = data;
-            this.filteredvendors = this.filterVendors('');
+            this.Vendors = data 
+            //this.filteredvendors = this.filterVendors('');
         })
     }
 
@@ -83,10 +87,11 @@ export class purchasePaymentListComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            this.filtereddepartments = this.filterStates('');
+            //this.filtereddepartments = this.filterStates('');
         });
     }
-   
+
+
     GetMprpadetailsBySearch(pofilters: PADetailsModel) {
         this.paService.GetMprpadetailsBySearch(pofilters).subscribe(data => {
             this.palist = data;
