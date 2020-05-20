@@ -101,7 +101,7 @@ export class purchasePaymentComponent implements OnInit {
         if (localStorage.getItem("PADetails")) {
             this.selectedItems = JSON.parse(localStorage.getItem("PADetails"));
             this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
-            this.target = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current);
+            this.target = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current) ||0;
             this.displayapproveEmployee();
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.rfqrevisionid.push(this.selectedItems[i]["rfqRevisionId"]);
@@ -124,8 +124,8 @@ export class purchasePaymentComponent implements OnInit {
             this.showemployee = true
         }
         this.PAsubmitForm = this.formBuilder.group({
-            PONO: ['', [Validators.required, Validators.maxLength(6), Validators.pattern("^[0-9]*$")]],
-            POItemNo: ['', [Validators.required, Validators.maxLength(10)]],
+            PONO: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+            POItemNo: ['', [Validators.required, Validators.maxLength(6)]],
             PODate: ['', [Validators.required]],
             Remarks: ['', [Validators.required]]
         })
@@ -152,7 +152,6 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.TermId = [];
         this.purchasedetails.VendorId = this.selectedItems[0]["VendorId"];
         this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
-        //console.log(this.employeelist.Approvers, "approver");
         for (var i = 0; i < this.selectedItems.length; i++) {
             this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
             this.paitemdetails.push(this.selectedItems[i]);
@@ -265,7 +264,6 @@ export class purchasePaymentComponent implements OnInit {
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
-            //this.employeelist.Approvers
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data['Table'];
                 this.employeelist.Approvers = data['Table'];
@@ -382,19 +380,26 @@ export class purchasePaymentComponent implements OnInit {
         this.EditDialog = false;
     }    
     SubmitItem(paitem: ItemsViewModel) {
-        if (this.PAsubmitForm.invalid) {
-            return;
-        }
-        else {
-            //this.paitemvalue = true;
-            var id = this.mprrevisionid;
-            this.paService.InsertPAitems(paitem).subscribe(data => {
-                this.paid = data;
-                this.EditDialog = false;
-                paitem = new ItemsViewModel();
-                this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
-            })
-        }
+        var id = this.mprrevisionid;
+        this.paService.InsertPAitems(paitem).subscribe(data => {
+            this.paid = data;
+            this.EditDialog = false;
+            paitem = new ItemsViewModel();
+            this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
+        })
+        //if (this.PAsubmitForm.invalid) {
+        //    return;
+        //}
+        //else {
+        //    this.paitemvalue = true;
+        //    var id = this.mprrevisionid;
+        //    this.paService.InsertPAitems(paitem).subscribe(data => {
+        //        this.paid = data;
+        //        this.EditDialog = false;
+        //        paitem = new ItemsViewModel();
+        //        this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
+        //    })
+        //}
         //this.paitem.EmployeeNo = this.employee.EmployeeNo;
         //this.purchasedetails.Item = paitem[0];
 

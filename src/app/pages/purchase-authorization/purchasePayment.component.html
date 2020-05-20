@@ -91,7 +91,7 @@
   <div class="row">
     <div class="settings" *ngIf="!pasubmitted" style="grid-gap:10px;display:grid;grid-template-columns:max-content max-content">
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Target Spend</label>
-      <span class="Supplier">: {{target | currency:'INR'}}</span>
+      <span class="Supplier">: {{target | currency:'INR' || ""}}</span>
 
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Sales Cost For The Job</label>
       <span class="Supplier"></span>
@@ -625,13 +625,13 @@
   </p-table>
 </div>
 <br />
-<div *ngIf="pasubmitted && approvedemployee"   class="form-control" style="height:100%;border-radius:0px; margin-left:0px;margin-top:5px">
+<div *ngIf="pasubmitted && approvedemployee"   class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
   <div  class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
     <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
     <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
   </div>
-  <div class="row form-inline pt-2">
+  <div class="form-inline pt-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
       &nbsp;&nbsp;
       <label class="form-label">Status:</label>&nbsp;
@@ -678,7 +678,7 @@
     </table>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PAsubmitForm.valid"  (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
         <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
       </div>
     </p-footer>

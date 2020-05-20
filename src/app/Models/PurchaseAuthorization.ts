@@ -99,6 +99,7 @@ export class ItemsViewModel {
     paitemid: number;
     paid: number;
     MRPItemsDetailsID: number;
+    MPRItemDetailsid: number;
     MPRRevisionId: number;
 }
 export class EmployeeModel {
