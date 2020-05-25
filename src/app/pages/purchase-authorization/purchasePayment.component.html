@@ -104,8 +104,8 @@
 
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
 
-      <span class="Supplier" *ngIf="target>sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
-      <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
+      <span class="Supplier" *ngIf="target>sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
+      <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
 
     </div>
   </div>
@@ -125,8 +125,8 @@
 
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
       <!--<span class="Supplier">: {{target-sum | currency:'INR'}}</span>-->
-      <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
-      <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
+      <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
+      <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
     </div>
   </div>
 </div>
@@ -609,7 +609,7 @@
         <th>Status</th>
         <th>Remarks</th>
         <th>Status Date</th>
-        <th>Approval Request</th>
+        <th>Remainder Mail</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -618,8 +618,8 @@
         <td>{{rowData.ApproverName}}  -   ({{rowData.RoleName}})</td>
         <td>{{rowData.ApprovalStatus}}</td>
         <td>{{rowData.ApproversRemarks}}</td>
-        <td>{{rowData.ApprovedOn}}</td>
-        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Request</button></td>
+        <td>{{rowData.ApprovedOn | date: 'dd/MM/yyyy hh:mm a'}}</td>
+        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
       </tr>
     </ng-template>
   </p-table>
@@ -628,8 +628,8 @@
 <div *ngIf="pasubmitted && approvedemployee"   class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
   <div  class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
-    <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Budget Is With In The Targeted Value</span></span>
-    <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Budget Is More Than The Targeted Value</span></span>
+    <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
+    <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
   </div>
   <div class="form-inline pt-2">
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">

@@ -271,25 +271,25 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
-    //fileChange(event: any, formName: string) {
-    //    let fileList: FileList = event.target.files;
-    //    if (fileList.length > 0) {
-    //        let file: File = fileList[0];
-    //        let formData: FormData = new FormData();
-    //        //var revisionId = this.mprRevisionModel.RevisionId.toString();
-    //        //formData.append(revisionId, file, file.name);
-    //        this.spinner.show();
-    //        this.paService.uploadpadocument(formData).subscribe(data => {
-    //            this.spinner.hide();
-    //            (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
-    //            this.paDocuments = new padocuments();
-    //            this.paDocuments.path = data;
-    //            this.paDocuments.filname = file.name;
+    fileChange(event: any, formName: string) {
+        let fileList: FileList = event.target.files;
+        if (fileList.length > 0) {
+            let file: File = fileList[0];
+            let formData: FormData = new FormData();
+            //var revisionId = this.mprRevisionModel.RevisionId.toString();
+            //formData.append(revisionId, file, file.name);
+            this.spinner.show();
+            this.paService.uploadpadocument(formData).subscribe(data => {
+                this.spinner.hide();
+                (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
+                this.paDocuments = new padocuments();
+                this.paDocuments.path = data;
+                this.paDocuments.filname = file.name;
                
-    //            //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
-    //        });
-    //    }
-    //}
+                //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
+            });
+        }
+    }
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
         var distinct = [];
         this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
@@ -367,8 +367,10 @@ export class purchasePaymentComponent implements OnInit {
     }
     RequestForApproval(Approvers: any) {
         Approvers.PAid = this.paid;
+        console.log(Approvers)
         this.paService.RequestForApproval(Approvers).subscribe(data => {
             this.buyergroups = data;
+            this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Reminder Sent Succesfully' });
         })
     }
     AddPaitem(paitemid: any) {
