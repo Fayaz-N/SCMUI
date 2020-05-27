@@ -5,6 +5,7 @@ import { Employee, MPRVendorDetail, MPRBuyerGroup } from '../../Models/mpr';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MprService } from 'src/app/services/mpr.service';
+import { constants } from 'src/app/Models/MPRConstants';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 @Component({
@@ -13,13 +14,14 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 })
 export class purchasePaymentComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
     public itemsform: FormGroup;
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
     public paDocuments: padocuments;
     public disableApprovers: boolean = false;
+    public uploaddocuments: boolean = false;
     public paitemvalue: boolean = false;
     public PAApprovers: MPRPAApproversModel;
     public vendor: Array<VendorMasterModel> = [];
@@ -159,10 +161,7 @@ export class purchasePaymentComponent implements OnInit {
             //this.purchasedetails.Item = this.RFQItemID;
             //this.purchasedetails.Item = this.paitemdetails;
         }
-        //for (var i = 0; i < this.employeelist.Approvers.length; i++) {
-        //    //this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
-        //    this.purchasedetails.ApproversList.push(this.employeelist.Approvers[i]);
-        //}
+
         this.purchasedetails.ApproversList = this.employeelist.Approvers;
         this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
         this.purchasedetails.BGRole = this.employeelist.BGRole;
@@ -178,15 +177,27 @@ export class purchasePaymentComponent implements OnInit {
         this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
             this.paid = data.Sid;
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
+            this.uploaddocuments = true;
+            //this.getmprpabyid(this.paid);
+        })
+    }
+    finalpa(purchasedetails: mprpadetailsmodel) {
+        this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
+        this.purchasedetails.ApproversList = this.employeelist.Approvers;
+        this.purchasedetails.PAId = this.paid;
+        this.paService.finalpa(purchasedetails).subscribe(data => {
+            this.paid = data.Sid;
             this.getmprpabyid(this.paid);
         })
     }
+
     LoadAllBuyerGroups() {
         this.paService.LoadAllmprBuyerGroups().subscribe(data => {
             this.buyergroups = data;
             //this.purchasedetails.BuyerGroupId = 0;
         })
     }
+
     LoadAllDeaprtments() {
 
         this.paService.LoadAllDepartments().subscribe(data => {
@@ -201,6 +212,8 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails = data;
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
+            this.purchasedetails.documents = data.documents;
+            console.log("iufuigdsfyg", this.purchasedetails.documents );
             this.pasubmitted = true;
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
@@ -271,21 +284,21 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
-    fileChange(event: any, formName: string) {
+    fileChange(event: any) {
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
             let file: File = fileList[0];
             let formData: FormData = new FormData();
-            //var revisionId = this.mprRevisionModel.RevisionId.toString();
-            //formData.append(revisionId, file, file.name);
+            var paid = "" + this.paid;
+            formData.append(paid, file, file.name);
             this.spinner.show();
             this.paService.uploadpadocument(formData).subscribe(data => {
                 this.spinner.hide();
                 (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
                 this.paDocuments = new padocuments();
                 this.paDocuments.path = data;
-                this.paDocuments.filname = file.name;
-               
+                this.paDocuments.filename = file.name;
+                console.log(this.paid);
                 //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
             });
         }
@@ -364,6 +377,30 @@ export class purchasePaymentComponent implements OnInit {
 
 
 
+    }
+
+    viewPADocument(path: string, documentname: string) {
+        var path1 = path.replace(/\\/g, "/");
+        console.log("mail", path1)
+        path1 = this.constants.PADocumentPath + path1;
+        window.open(path1);
+        //window.open("http://10.29.15.68:90/PADocuments/2.xlsx");
+        //this.showFileViewer = true;    
+    }
+    removePADoument(details: PurchaseCreditApproversModel) {
+        //var index = this.mprRevisionModel.MPRDocuments.findIndex(x => x.MprDocId == details.MprDocId);
+        //if (details.MprDocId) {
+        //    this.MprService.deleteMPRDocument(details).subscribe(data => {
+        //        if (data == true) {
+        //            this.mprRevisionModel.MPRDocuments.splice(index, 1);
+        //            this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
+        //        }
+        //    });
+        //}
+        //else {
+        //    this.mprRevisionModel.MPRDocuments.splice(index, 1);
+        //    this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
+        //}
     }
     RequestForApproval(Approvers: any) {
         Approvers.PAid = this.paid;

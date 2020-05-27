@@ -1,6 +1,7 @@
 <div style="text-align:center">
   <h3>Purchase Authorization</h3>
 </div>
+
 <div class="form-control" style="height:100%;width:100%">
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
@@ -127,6 +128,9 @@
       <!--<span class="Supplier">: {{target-sum | currency:'INR'}}</span>-->
       <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
       <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
+      ge
+
+
     </div>
   </div>
 </div>
@@ -218,7 +222,7 @@
           <th>PODate</th>
           <th class="ptable-cell">Remarks</th>
           <!--<th>Edit</th>-->
-          <th [pEditableRow]="rowData"><button pButton type="button"  pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
+          <th [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -277,7 +281,7 @@
           </tr>
         </thead>
         <tbody>
- 
+
           <tr *ngFor="let app of employeelist">
             <td>{{app.Approvername}}</td>
             <td>{{app.rolename}}</td>
@@ -371,16 +375,22 @@
       <table class="table table-bordered">
         <thead>
           <tr>
-            <th><span style="float:left">Terms </span></th>
+            <th>
+              <span style="float:left">
+                fl
+                Terms
+              </span>
+            </th>
+            fl
             <th><span style="float:left">RfqRevisionId</span></th>
             <!--<th><span style="float:left">Remarks</span></th>-->
             <!--<th rowspan="2"><span style="float:left">RFQNo </span> </th>-->
             <th rowspan="2">
-              <tr><h6 style="text-align:center">RfqNo</h6></tr>
-              <tr>
-                <td  *ngFor="let terms of rfqno"><span>{{terms.RFQNo}}</span></td>
-              </tr>
-            </th>
+          <tr><h6 style="text-align:center">RfqNo</h6></tr>
+          <tr>
+            <td *ngFor="let terms of rfqno"><span>{{terms.RFQNo}}</span></td>
+          </tr>
+          </th>
           </tr>
 
         </thead>
@@ -597,7 +607,21 @@
 <br />
 
 <div *ngIf="!pasubmitted" style="margin-top:10px;text-align:center">
-  <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Submit</button>
+  <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Proceed</button>
+</div>
+<br />
+<h6 *ngIf="uploaddocuments">Upload Documents</h6>
+<div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%">
+  <div class="row">
+    <div class="form-group">
+      <input type="file" class="file" id="uploaddocument" (change)="fileChange($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
+      <!--<i class="fa fa-remove" aria-hidden="true" (click)="removePADoument(document)"></i><br />-->
+    </div>
+  </div>
+</div>
+
+<div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
+  <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
 </div>
 
 <div *ngIf="pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
@@ -625,8 +649,12 @@
   </p-table>
 </div>
 <br />
-<div *ngIf="pasubmitted && approvedemployee"   class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
-  <div  class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
+<div *ngIf="pasubmitted && approvedemployee" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
+  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+    <label class="form-label"><b> Documents Attached :</b></label>
+    <i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(purchasedetails.documents.path,purchasedetails.documents.filename)" pTooltip="File Name: {{purchasedetails.documents.filename}}"></i>&nbsp;
+  </div>
+  <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
     <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
     <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
@@ -647,19 +675,19 @@
       <textarea type="text" class="form-control" [(ngModel)]="PAApprovers.ApproversRemarks"></textarea>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-      <button type="button"  *ngIf="pasubmitted && approvedemployee" [disabled]="disableApprovers"  class="btn btn-success" (click)="Approvepa(PAApprovers)" label="Save">Submit</button>
+      <button type="button" *ngIf="pasubmitted && approvedemployee" [disabled]="disableApprovers" class="btn btn-success" (click)="Approvepa(PAApprovers)" label="Save">Submit</button>
     </div>
   </div>
 </div>
 
-<p-dialog header="Add"  [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}" [closable]="false">
+<p-dialog header="Add" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}" [closable]="false">
   <form [formGroup]="PAsubmitForm">
     <table class="table table-bordered">
       <thead>
         <tr>
           <th>ITEM</th>
           <th>MPRNO</th>
-          <th>PONO :<input type="checkbox"  [checked]="false" (change)="updateAddrs($event,paitem)" /></th>
+          <th>PONO :<input type="checkbox" [checked]="false" (change)="updateAddrs($event,paitem)" /></th>
           <th>POITEMNO</th>
           <th>PODATE</th>
           <th>POREMARKS</th>
@@ -670,7 +698,7 @@
           <td>{{items.ItemDescription}}</td>
           <td>{{items.DocumentNo}}</td>
           <td><input (keypress)="numberOnly($event)" id="txtcopy1" formControlName="PONO" type="text" [(ngModel)]="items.PONO" maxlength="10" numberOnly class="form-control" /></td>
-          <td><input type="text"  formControlName="POItemNo" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
+          <td><input type="text" formControlName="POItemNo" [(ngModel)]="items.POItemNo" maxlength="6" class="form-control" numberOnly /></td>
           <td><input formControlName="PODate" type="date" [(ngModel)]="items.PODate" class="form-control" /></td>
           <td><input formControlName="Remarks" type="text" [(ngModel)]="items.Remarks" class="form-control" /></td>
         </tr>
@@ -678,7 +706,7 @@
     </table>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PAsubmitForm.valid"  (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PAsubmitForm.valid" (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
         <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
       </div>
     </p-footer>

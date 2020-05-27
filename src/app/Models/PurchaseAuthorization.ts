@@ -116,8 +116,9 @@ export class EmployeeModel {
 }
 export class padocuments {
     Itemdetailsid: number;
-    filname: string;
+    filename: string;
     path: string;
+    uploadeddate: Date;
 }
 export class PurchaseCreditApproversModel {
 
@@ -213,6 +214,7 @@ export class mprpadetailsmodel {
     department: DepartmentModel;
     Item: Array<ItemsViewModel>[];
     buyergroup: BuyerGroupModel;
+    documents: padocuments;
     // ApproversList: Array<MPRPAApproversModel>[];
     ApproversList: Array<PurchaseCreditApproversModel>[];
 }

@@ -6,6 +6,7 @@ import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitMo
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
+import { map } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 @Injectable({
@@ -86,6 +87,9 @@ export class purchaseauthorizationservice {
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/InsertPurchaseAuthorization', purchasedetails, this.httpOptions);
     }
+    finalpa(purchasedetails: mprpadetailsmodel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/finalpa', purchasedetails, this.httpOptions);
+    }
     LoadMprPADeatilsbyid(PID: number): Observable<mprpadetailsmodel> {
         return this.http.get<mprpadetailsmodel>(this.url + 'PA/GetMPRPADeatilsByPAID/' + PID, this.httpOptions);
     }
@@ -143,9 +147,9 @@ export class purchaseauthorizationservice {
         return this.http.post<any>(this.url + 'PA/UpdateApproverforRequest', approvers, this.httpOptions)
     }
     uploadpadocument(formdata: FormData): Observable<any> {
-        return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
-            //.pipe(map(data => {
-            //    return data;
-            //}))
+        return this.http.post<any>(this.url + 'PA/uploadExcel', formdata)
+            .pipe(map(data => {
+                return data;
+            }))
     }
 } 
