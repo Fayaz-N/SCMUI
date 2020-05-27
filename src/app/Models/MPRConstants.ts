@@ -16,6 +16,8 @@ export class constants {
   public rfqValidDays: number = 7;
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
+  public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
+  //public PADocumentPath = "http://49659/PADocuments/";
 
   public DepartmentId: searchParams = { tableName: 'MPRDepartments', fieldId: 'DepartmentId', fieldName: 'Department', condition: " where BoolInUse=1 and ", fieldAliasName: "DepartmentName", updateColumns: "" };
   public ProjectManager: searchParams = { tableName: 'ProjectManagers', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ProjectManagerName", updateColumns: "" };
