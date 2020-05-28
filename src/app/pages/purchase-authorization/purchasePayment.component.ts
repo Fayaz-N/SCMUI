@@ -16,6 +16,7 @@ export class purchasePaymentComponent implements OnInit {
 
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
     public itemsform: FormGroup;
+    myFiles: string[] = [];
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
@@ -55,11 +56,14 @@ export class purchasePaymentComponent implements OnInit {
     public Department: string;
     public BuyerGroupId: number;
     public Qty: number;
+    public documentid: number;
     public savingorexcessamount: number;
     public status: StatusCheckModel;
     public PAsubmitForm: FormGroup;
     public mprrevisionid: number;
     public rfqno: Array<any> = [];
+    public finalpasubmit: boolean = true;
+    public proceedvalue: boolean = true;
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -178,6 +182,7 @@ export class purchasePaymentComponent implements OnInit {
             this.paid = data.Sid;
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
             this.uploaddocuments = true;
+            this.proceedvalue = false;
             //this.getmprpabyid(this.paid);
         })
     }
@@ -186,7 +191,7 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.ApproversList = this.employeelist.Approvers;
         this.purchasedetails.PAId = this.paid;
         this.paService.finalpa(purchasedetails).subscribe(data => {
-            this.paid = data.Sid;
+            console.log(data);
             this.getmprpabyid(this.paid);
         })
     }
@@ -213,6 +218,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
+            console.log("documents", this.purchasedetails.documents)
             console.log("iufuigdsfyg", this.purchasedetails.documents );
             this.pasubmitted = true;
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
@@ -284,6 +290,13 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
+    getFileDetails(e) {
+        //console.log (e.target.files);
+        for (var i = 0; i < e.target.files.length; i++) {
+            this.myFiles.push(e.target.files[i]);
+        }
+        console.log("gdgsyd", this.myFiles);
+    }
     fileChange(event: any) {
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
@@ -294,14 +307,26 @@ export class purchasePaymentComponent implements OnInit {
             this.spinner.show();
             this.paService.uploadpadocument(formData).subscribe(data => {
                 this.spinner.hide();
-                (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
-                this.paDocuments = new padocuments();
-                this.paDocuments.path = data;
-                this.paDocuments.filename = file.name;
-                console.log(this.paid);
+                //(<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
+               // this.paDocuments = new padocuments();
+               // console.log("file", data);
+               // this.paDocuments = data;
+               //this.paDocuments.filename = file.name;
                 //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
             });
         }
+    }
+
+
+    uploadFiles() {
+        const frmData: FormData = new FormData();
+        var paid = "" + this.paid;
+        for (var i = 0; i < this.myFiles.length; i++) {
+            frmData.append(paid, this.myFiles[i]);
+        }
+        this.paService.uploadpadocument(frmData).subscribe(data => {
+            this.paDocuments = data
+        })
     }
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
         var distinct = [];
@@ -387,8 +412,17 @@ export class purchasePaymentComponent implements OnInit {
         //window.open("http://10.29.15.68:90/PADocuments/2.xlsx");
         //this.showFileViewer = true;    
     }
-    removePADoument(details: PurchaseCreditApproversModel) {
-        //var index = this.mprRevisionModel.MPRDocuments.findIndex(x => x.MprDocId == details.MprDocId);
+
+    removeSelectedFile(index) {
+        // Delete the item from fileNames list
+        this.myFiles.splice(index, 1);
+        // delete file from FileList
+       // this.myFiles.splice(index, 1);
+    }
+
+    removePADoument(documentid) {
+        var index = this.paDocuments.documentid;
+        console.log(index)
         //if (details.MprDocId) {
         //    this.MprService.deleteMPRDocument(details).subscribe(data => {
         //        if (data == true) {

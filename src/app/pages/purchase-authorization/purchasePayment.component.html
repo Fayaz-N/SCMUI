@@ -1,7 +1,19 @@
 <div style="text-align:center">
   <h3>Purchase Authorization</h3>
 </div>
+<div class="row form-control" style="width:100%;height:100%">
+  <div class="form-group">
+    <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
 
+    <!--<button (click)="uploadFiles()">Upload</button>-->
+    <div *ngFor="let selected of myFiles;let index = index">
+      <h6>{{selected.name}}</h6> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+      <!--<button mat-icon-button (click)="removeSelectedFile(index)">delete</button>-->
+      <br />
+    </div>
+    <button (click)="uploadFiles()">Upload</button>
+  </div>
+</div>
 <div class="form-control" style="height:100%;width:100%">
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
@@ -128,9 +140,6 @@
       <!--<span class="Supplier">: {{target-sum | currency:'INR'}}</span>-->
       <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
       <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
-      ge
-
-
     </div>
   </div>
 </div>
@@ -290,6 +299,7 @@
       </table>
     </div>
   </div>
+
 </div>
 <br />
 
@@ -377,11 +387,9 @@
           <tr>
             <th>
               <span style="float:left">
-                fl
                 Terms
               </span>
             </th>
-            fl
             <th><span style="float:left">RfqRevisionId</span></th>
             <!--<th><span style="float:left">Remarks</span></th>-->
             <!--<th rowspan="2"><span style="float:left">RFQNo </span> </th>-->
@@ -606,16 +614,23 @@
 </div>
 <br />
 
-<div *ngIf="!pasubmitted" style="margin-top:10px;text-align:center">
+<div *ngIf="!pasubmitted && proceedvalue" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Proceed</button>
 </div>
 <br />
 <h6 *ngIf="uploaddocuments">Upload Documents</h6>
 <div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%">
-  <div class="row">
+  <div class="row form-control" style="width:100%;height:100%">
     <div class="form-group">
-      <input type="file" class="file" id="uploaddocument" (change)="fileChange($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
-      <!--<i class="fa fa-remove" aria-hidden="true" (click)="removePADoument(document)"></i><br />-->
+      <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+
+      <!--<button (click)="uploadFiles()">Upload</button>-->
+      <div *ngFor="let selected of myFiles;let index = index">
+        <h6>{{selected.name}}</h6> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+        <!--<button mat-icon-button (click)="removeSelectedFile(index)">delete</button>-->
+        <br />
+      </div>
+      <button (click)="uploadFiles()">Upload</button>
     </div>
   </div>
 </div>
@@ -623,8 +638,14 @@
 <div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
 </div>
-
-<div *ngIf="pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+<div class="form-control" *ngIf="pasubmitted">
+  <div *ngFor="let document of purchasedetails.documents" class="col-lg-10 col-md-10 col-sm-10 form-group">
+    <label class="form-label"><b> Documents Attached :</b></label>
+    <i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(document.path,document.filename)" pTooltip="File Name: {{document.filename}}"></i>&nbsp;
+    <span>{{document.filename}} </span>&nbsp;&nbsp;
+  </div>
+</div>
+<div *ngIf="pasubmitted && finalpasubmit" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="purchasedetails.ApproversList" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
       <tr>
@@ -649,11 +670,9 @@
   </p-table>
 </div>
 <br />
+
 <div *ngIf="pasubmitted && approvedemployee" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
-  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-    <label class="form-label"><b> Documents Attached :</b></label>
-    <i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(purchasedetails.documents.path,purchasedetails.documents.filename)" pTooltip="File Name: {{purchasedetails.documents.filename}}"></i>&nbsp;
-  </div>
+
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
     <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
