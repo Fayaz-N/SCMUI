@@ -119,6 +119,7 @@ export class padocuments {
     filename: string;
     path: string;
     uploadeddate: Date;
+    documentid: number;
 }
 export class PurchaseCreditApproversModel {
 
@@ -214,7 +215,7 @@ export class mprpadetailsmodel {
     department: DepartmentModel;
     Item: Array<ItemsViewModel>[];
     buyergroup: BuyerGroupModel;
-    documents: padocuments;
+    documents: Array<padocuments>[];
     // ApproversList: Array<MPRPAApproversModel>[];
     ApproversList: Array<PurchaseCreditApproversModel>[];
 }
