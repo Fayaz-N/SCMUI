@@ -296,6 +296,7 @@ export class purchasePaymentComponent implements OnInit {
             this.myFiles.push(e.target.files[i]);
         }
         console.log("gdgsyd", this.myFiles);
+        (<HTMLInputElement>document.getElementById("file")).value = "";
     }
     fileChange(event: any) {
         let fileList: FileList = event.target.files;
@@ -305,15 +306,16 @@ export class purchasePaymentComponent implements OnInit {
             var paid = "" + this.paid;
             formData.append(paid, file, file.name);
             this.spinner.show();
-            this.paService.uploadpadocument(formData).subscribe(data => {
+           // this.paService.uploadpadocument(formData).subscribe(data => {
                 this.spinner.hide();
-                //(<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
+                //
                // this.paDocuments = new padocuments();
-               // console.log("file", data);
+                // console.log("file", data);
+                //(<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
                // this.paDocuments = data;
                //this.paDocuments.filename = file.name;
                 //this.mprRevisionModel.MPRDocuments.push(this.mprDocuments);
-            });
+            //});
         }
     }
 
@@ -321,12 +323,16 @@ export class purchasePaymentComponent implements OnInit {
     uploadFiles() {
         const frmData: FormData = new FormData();
         var paid = "" + this.paid;
+        var employeeno = this.employee.EmployeeNo
         for (var i = 0; i < this.myFiles.length; i++) {
             frmData.append(paid, this.myFiles[i]);
         }
+        console.log("formdata", frmData);
         this.paService.uploadpadocument(frmData).subscribe(data => {
             this.paDocuments = data
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'file uploaded Successfully' });
         })
+       
     }
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
         var distinct = [];

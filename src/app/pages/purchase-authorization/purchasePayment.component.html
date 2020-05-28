@@ -1,19 +1,7 @@
 <div style="text-align:center">
   <h3>Purchase Authorization</h3>
 </div>
-<div class="row form-control" style="width:100%;height:100%">
-  <div class="form-group">
-    <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
 
-    <!--<button (click)="uploadFiles()">Upload</button>-->
-    <div *ngFor="let selected of myFiles;let index = index">
-      <h6>{{selected.name}}</h6> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
-      <!--<button mat-icon-button (click)="removeSelectedFile(index)">delete</button>-->
-      <br />
-    </div>
-    <button (click)="uploadFiles()">Upload</button>
-  </div>
-</div>
 <div class="form-control" style="height:100%;width:100%">
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
@@ -618,33 +606,55 @@
   <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Proceed</button>
 </div>
 <br />
-<h6 *ngIf="uploaddocuments">Upload Documents</h6>
-<div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%">
-  <div class="row form-control" style="width:100%;height:100%">
+
+<div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%;">
+  <label class="form-label"><b> Upload Documents :</b></label>
+  <div class="row" style="width:100%;height:100%;margin-left:2px">
     <div class="form-group">
-      <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 12px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">
+      <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
 
       <!--<button (click)="uploadFiles()">Upload</button>-->
       <div *ngFor="let selected of myFiles;let index = index">
-        <h6>{{selected.name}}</h6> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+        <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
         <!--<button mat-icon-button (click)="removeSelectedFile(index)">delete</button>-->
         <br />
       </div>
-      <button (click)="uploadFiles()">Upload</button>
+      <div class="" style="margin-top:10px">
+        <button (click)="uploadFiles()">Upload</button>
+      </div>
     </div>
   </div>
 </div>
+<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;">
+  <label class="form-label"><b> Upload Documents :</b></label>
+  <div class="row" style="width:100%;height:100%;margin-left:2px">
 
-<div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
-  <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
-</div>
-<div class="form-control" *ngIf="pasubmitted">
-  <div *ngFor="let document of purchasedetails.documents" class="col-lg-10 col-md-10 col-sm-10 form-group">
-    <label class="form-label"><b> Documents Attached :</b></label>
-    <i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(document.path,document.filename)" pTooltip="File Name: {{document.filename}}"></i>&nbsp;
-    <span>{{document.filename}} </span>&nbsp;&nbsp;
+    <div class="form-group">
+      <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
+
+      <!--<button (click)="uploadFiles()">Upload</button>-->
+      <div *ngFor="let selected of myFiles;let index = index" style="margin-top:10px">
+        <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+      </div>&nbsp;&nbsp;
+      <div class="" style="margin-top:5px">
+        <button (click)="uploadFiles()">Upload</button>
+      </div>
+
+    </div>
   </div>
 </div>
+<div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
+  <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
+</div><br />
+<div class="form-control" *ngIf="pasubmitted && purchasedetails.documents.length>0" style="height:100%;width:100%">
+  <label class="form-label"><b> Documents Attached :</b></label>
+  <div *ngFor="let document of purchasedetails.documents" class="col-lg-10 col-md-10 col-sm-10">
+    <!--<a (click)="viewPADocument(document.path,document.filename)">{{document.filename}}</a>-->
+    <button (click)="viewPADocument(document.path,document.filename)" class="btn btn-link">{{document.filename}}</button>
+    <!--<i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(document.path,document.filename)" pTooltip="File Name: {{document.filename}}"></i>&nbsp;
+    <span><a> {{document.filename}} </a></span>&nbsp;&nbsp;-->
+  </div>
+</div><br />
 <div *ngIf="pasubmitted && finalpasubmit" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="purchasedetails.ApproversList" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
