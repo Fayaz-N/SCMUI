@@ -437,7 +437,7 @@ export class GenerateRFQComponent implements OnInit {
     if (this.PoFilterParams.RFQNo)
       this.dynamicData.query += " and RFQNo ='" + this.PoFilterParams.RFQNo + "'";
     if (this.PoFilterParams.Materialdescription)
-      this.dynamicData.query += " and Materialdescription = '" + this.PoFilterParams.Materialdescription + "' OR ItemId='" + this.PoFilterParams.Materialdescription + "'";
+      this.dynamicData.query += " and (Materialdescription = '" + this.PoFilterParams.Materialdescription + "' OR ItemId='" + this.PoFilterParams.Materialdescription + "')";
     if (this.PoFilterParams.VendorName)
       this.dynamicData.query += " and VendorName ='" + this.PoFilterParams.VendorName + "'";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
