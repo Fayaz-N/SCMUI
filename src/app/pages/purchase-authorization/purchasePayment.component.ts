@@ -17,6 +17,7 @@ export class purchasePaymentComponent implements OnInit {
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
     public itemsform: FormGroup;
     myFiles: string[] = [];
+    myfiles1: string[] = [];
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
@@ -180,10 +181,8 @@ export class purchasePaymentComponent implements OnInit {
         //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
         this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
             this.paid = data.Sid;
-            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
             this.uploaddocuments = true;
             this.proceedvalue = false;
-            //this.getmprpabyid(this.paid);
         })
     }
     finalpa(purchasedetails: mprpadetailsmodel) {
@@ -191,7 +190,7 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.ApproversList = this.employeelist.Approvers;
         this.purchasedetails.PAId = this.paid;
         this.paService.finalpa(purchasedetails).subscribe(data => {
-            console.log(data);
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Inserted Successfully' });
             this.getmprpabyid(this.paid);
         })
     }
@@ -212,6 +211,7 @@ export class purchasePaymentComponent implements OnInit {
     }
     getmprpabyid(paid: any) {
         //this.paitemdetails = new Array<ItemsViewModel>[];
+        this.uploaddocuments = false;
         this.MPRItemDetailsid = [];
         this.paService.LoadMprPADeatilsbyid(paid).subscribe(data => {
             this.purchasedetails = data;
@@ -295,9 +295,17 @@ export class purchasePaymentComponent implements OnInit {
         for (var i = 0; i < e.target.files.length; i++) {
             this.myFiles.push(e.target.files[i]);
         }
-        console.log("gdgsyd", this.myFiles);
         (<HTMLInputElement>document.getElementById("file")).value = "";
     }
+
+    getFileuploadDetails(e) {
+        //console.log (e.target.files);
+        for (var i = 0; i < e.target.files.length; i++) {
+            this.myfiles1.push(e.target.files[i]);
+        }
+        (<HTMLInputElement>document.getElementById("file1")).value = "";
+    }
+
     fileChange(event: any) {
         let fileList: FileList = event.target.files;
         if (fileList.length > 0) {
@@ -327,7 +335,6 @@ export class purchasePaymentComponent implements OnInit {
         for (var i = 0; i < this.myFiles.length; i++) {
             frmData.append(paid, this.myFiles[i]);
         }
-        console.log("formdata", frmData);
         this.paService.uploadpadocument(frmData).subscribe(data => {
             this.paDocuments = data
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'file uploaded Successfully' });
@@ -373,15 +380,8 @@ export class purchasePaymentComponent implements OnInit {
         else {
             this.paitem.PONO = '';
         }
-        //var n1 = document.getElementById("txtcopy1");
-        //var n2 = document.getElementById("txtcopy1");
-        //n2.append = n1.append;
-
     }
-//     copyvalue() {
-//    var txt1 = document.getElementById("<%= txt1.ClientID %>").value;
-//    document.getElementById("<%= txt2.ClientID %>").value = txt1;
-//}
+
     Approvepa(approvers: MPRPAApproversModel) {
        var data= this.purchasedetails.Item;
         if (approvers.ApprovalStatus != '' && approvers.ApprovalStatus != null) {
@@ -399,14 +399,6 @@ export class purchasePaymentComponent implements OnInit {
         } else {
             alert("Please select Approval status")
         }
-        //approvers = this.purchasedetails.ApproversList.;
-
-
-        //else {
-        //    this.disableapprove = true;
-        //}
-
-
 
     }
 
@@ -415,8 +407,7 @@ export class purchasePaymentComponent implements OnInit {
         console.log("mail", path1)
         path1 = this.constants.PADocumentPath + path1;
         window.open(path1);
-        //window.open("http://10.29.15.68:90/PADocuments/2.xlsx");
-        //this.showFileViewer = true;    
+  
     }
 
     removeSelectedFile(index) {
