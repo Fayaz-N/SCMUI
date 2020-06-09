@@ -634,10 +634,10 @@
 
       <!--<button (click)="uploadFiles()">Upload</button>-->
       <div *ngFor="let selected of myfiles1;let index = index" style="margin-top:10px">
-        <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
+        <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelecteduploadFile(index)"></i>
       </div>&nbsp;&nbsp;
       <div class="" style="margin-top:5px">
-        <button (click)="uploadFiles()">Upload</button>
+        <button (click)="uploadapprovedFiles()">Upload</button>
       </div>
 
     </div>

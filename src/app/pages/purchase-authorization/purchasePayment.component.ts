@@ -218,8 +218,6 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
-            console.log("documents", this.purchasedetails.documents)
-            console.log("iufuigdsfyg", this.purchasedetails.documents );
             this.pasubmitted = true;
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
@@ -290,21 +288,7 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
-    getFileDetails(e) {
-        //console.log (e.target.files);
-        for (var i = 0; i < e.target.files.length; i++) {
-            this.myFiles.push(e.target.files[i]);
-        }
-        (<HTMLInputElement>document.getElementById("file")).value = "";
-    }
 
-    getFileuploadDetails(e) {
-        //console.log (e.target.files);
-        for (var i = 0; i < e.target.files.length; i++) {
-            this.myfiles1.push(e.target.files[i]);
-        }
-        (<HTMLInputElement>document.getElementById("file1")).value = "";
-    }
 
     fileChange(event: any) {
         let fileList: FileList = event.target.files;
@@ -328,19 +312,62 @@ export class purchasePaymentComponent implements OnInit {
     }
 
 
+    getFileDetails(e) {
+        //console.log (e.target.files);
+        for (var i = 0; i < e.target.files.length; i++) {
+            this.myFiles.push(e.target.files[i]);
+            
+        }
+        (<HTMLInputElement>document.getElementById("file")).value = "";
+    }
+
+    getFileuploadDetails(e) {
+        //console.log (e.target.files);
+        for (var i = 0; i < e.target.files.length; i++) {
+            this.myfiles1.push(e.target.files[i]);
+        }
+        (<HTMLInputElement>document.getElementById("file1")).value = "";
+    }
+
     uploadFiles() {
+
         const frmData: FormData = new FormData();
         var paid = "" + this.paid;
-        var employeeno = this.employee.EmployeeNo
+        var employeeno = this.employee.EmployeeNo;
+            (<HTMLInputElement>document.getElementById("file")).value = "";
         for (var i = 0; i < this.myFiles.length; i++) {
             frmData.append(paid, this.myFiles[i]);
         }
+        this.myFiles.pop();
         this.paService.uploadpadocument(frmData).subscribe(data => {
             this.paDocuments = data
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'file uploaded Successfully' });
         })
        
     }
+
+    uploadapprovedFiles() {
+        const formData: FormData = new FormData();
+        var paid = "" + this.paid;
+        var employeeno = this.employee.EmployeeNo
+        for (var i = 0; i < this.myfiles1.length; i++) {
+            formData.append(paid, this.myfiles1[i]);
+        }
+        this.myfiles1.pop();
+        this.paService.uploadpadocument(formData).subscribe(data => {
+            this.paDocuments = data
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'file uploaded Successfully' });
+            this.getmprpabyid(this.paid);
+        })
+
+    }
+    removeSelectedFile(index) {
+        this.myFiles.splice(index, 1);
+    }
+    removeSelecteduploadFile(index) {
+        this.myfiles1.splice(index, 1);
+    }
+
     LoadVendorbymprdeptids(MPRItemDetailsid: any) {
         var distinct = [];
         this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
@@ -410,12 +437,7 @@ export class purchasePaymentComponent implements OnInit {
   
     }
 
-    removeSelectedFile(index) {
-        // Delete the item from fileNames list
-        this.myFiles.splice(index, 1);
-        // delete file from FileList
-       // this.myFiles.splice(index, 1);
-    }
+
 
     removePADoument(documentid) {
         var index = this.paDocuments.documentid;
