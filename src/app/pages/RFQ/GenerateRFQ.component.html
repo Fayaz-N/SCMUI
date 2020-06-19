@@ -29,7 +29,7 @@
     </div><br />
     <div class="row">
       <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
-        <div *ngIf="i<=vendorsLength" class="form-control suggested-List">
+        <div *ngIf="i<=vendorsLength && vendor.VendorId" class="form-control suggested-List">
           <span class="form-inline"><input type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
           <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 

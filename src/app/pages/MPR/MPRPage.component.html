@@ -2,8 +2,11 @@
   <form [formGroup]="MPRPageForm1">
     <div id="MPRPageForm1" class="my-animation">
       <div class="head-text pl-0">
-        <div class="col-md-6 pt-2">
+        <div class="col-md-4 pt-2">
           Material Purchase Requisition : <span *ngIf="mprRevisionModel.MPRDetail.DocumentNo" style="color:#dc3545;">{{mprRevisionModel.MPRDetail.DocumentNo}}</span>
+        </div>
+        <div class="col-md-3 pt-2">
+          Current Status: <span *ngIf="mprRevisionModel.StatusId" style="color:#dc3545;">{{currentStatus}}</span>
         </div>
         <div class="col-md-3 pt-2">
           <span *ngIf="mprRevisionList.length > 0" class="form-inline ml-2">
@@ -13,7 +16,7 @@
             </span>
           </span>
         </div>
-        <div *ngIf="form1Edit" class="col-md-3 edit pt-1">
+        <div *ngIf="form1Edit" class="col-md-2 edit pt-1">
           <button type="button" *ngIf="!showForm1EditBtn" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" (click)="onFormEdit('form1Edit','MPRPageForm1')"></button>
         </div>
       </div>
@@ -190,7 +193,7 @@
           <ng-template pTemplate="header">
             <tr class="mprltbldata">
               <th>S.No</th>
-              <th>Item Code & MPR Item Description</th>
+              <th style="width:250px">Item Code & MPR Item Description</th>
               <th>Quantity & Unit</th>
               <th>Sale Order Line Item No</th>
               <th>Reference Document No</th>
@@ -311,39 +314,6 @@
         </div>
       </div>
       <div class="form-control" style="height:100%;border-radius:0px;">
-        <p-table [value]="mprRevisionModel.MPRVendorDetails">
-          <ng-template pTemplate="caption">
-            Vendor Details :
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr class="mprltbldata">
-              <th>S.No</th>
-              <th>Name Of Vendor</th>
-              <th *ngIf="RfqGeneratedList.length>0">RFQ No</th>
-              <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
-              <th *ngIf="hideDeleteBtn">Remove</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-            <tr>
-              <td>
-                {{ri+1}}
-              </td>
-              <td>
-                <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}<span *ngIf="rowData.VendorMaster.VendorCode">-</span>{{rowData.VendorMaster.VendorCode}}</div>
-              </td>
-              <td *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId')]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink')}}</a></td>
-              <td style="text-align:center" *ngIf="!editing">
-                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
-              </td>
-              <td *ngIf="hideDeleteBtn">
-                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeVendor(rowData)"></button>
-              </td>
-            </tr>
-
-          </ng-template>
-        </p-table><br />
-
         <div>
           <div class="form-group row" style="margin-top:10px">
             <div *ngIf="!vendorFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -388,6 +358,40 @@
             </div>
           </div>
         </div>
+        <p-table [value]="mprRevisionModel.MPRVendorDetails">
+          <ng-template pTemplate="caption">
+            Vendor Details :
+          </ng-template>
+          <ng-template pTemplate="header">
+            <tr class="mprltbldata">
+              <th>S.No</th>
+              <th>Name Of Vendor</th>
+              <th *ngIf="RfqGeneratedList.length>0">RFQ No</th>
+              <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
+              <th *ngIf="hideDeleteBtn">Remove</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr>
+              <td>
+                {{ri+1}}
+              </td>
+              <td>
+                <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}<span *ngIf="rowData.VendorMaster.VendorCode">-</span>{{rowData.VendorMaster.VendorCode}}</div>
+              </td>
+              <td *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId')]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink')}}</a></td>
+              <td style="text-align:center" *ngIf="!editing">
+                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
+              </td>
+              <td *ngIf="hideDeleteBtn">
+                <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeVendor(rowData)"></button>
+              </td>
+            </tr>
+
+          </ng-template>
+        </p-table><br />
+
+
         <div *ngIf="!vendorFormEdit" style="text-align: center;">
           <button type="button" class="btn btn-success" (click)="onMPRVendorSubmit('MPRVendorId','showOtherDetailsForm','vendorFormEdit')" label="Save">Proceed</button>
         </div>
@@ -1181,6 +1185,7 @@
     <a *ngIf="showCompareRfq" id="mprPage6" [routerLink]="['/SCM/RFQComparision',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
     <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
     <a *ngIf="showManualStatus" (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
+    <a (click)="enableBuyerGrp()" pTooltip="Change Buyer Group"><i class="fa fa-shopping-cart"></i></a>
   </div>
 
   <div *ngIf="displayFooter" class="footer">
@@ -1208,6 +1213,9 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
       </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <button type="button" class="btn btn-success"  (click)="disableFooter('Acknowledge')">Close</button>
+      </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
           <option value="Select">Select</option>
@@ -1230,7 +1238,7 @@
         </label>&nbsp;
       </div>
     </div>
-
+    
   </div>
 
   <p-dialog [(visible)]="showFileViewer" [style]="{width: '800px', height: '600px'}" [contentStyle]="{'overflow':'visible'}">

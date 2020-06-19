@@ -60,8 +60,8 @@ export class MPRListComponent implements OnInit {
     else
       this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
     if (this.typeOfList == "MPRList") {
-      this.toDate = new Date();
-      this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
+      //this.toDate = new Date();
+     // this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
     }
 
     this.MPRfilterForm = this.formBuilder.group({

@@ -110,6 +110,7 @@ export class RFQFormComponent implements OnInit {
     this.addItemInfoForm.controls['EndQty'].clearValidators();
     this.addItemInfoForm.controls['Qty'].clearValidators();
     this.addItemInfoForm.controls['UnitId'].clearValidators();
+    
 
     this.loadCurrency();
     this.route.params.subscribe(params => {
@@ -128,8 +129,14 @@ export class RFQFormComponent implements OnInit {
       searchTxt = "";
     searchTxt = searchTxt.replace('*', '%');
     this.dynamicData.tableName = this.constants[name].tableName;
-    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    if (this.dynamicData.searchCondition && name == "venderid")
+      this.dynamicData.searchCondition += " OR VendorCode" + " like '%" + searchTxt + "%' ";
+    if (this.dynamicData.searchCondition && name == "ItemId")
+      this.dynamicData.searchCondition += " OR Material" + " like '%" + searchTxt + "%'" + "group by Material";
     this.dynamicData.searchCondition += " Order By " + this.constants[name].fieldName + "";
+    if (name == "ItemId")
+      this.dynamicData.query = "select Material,MAX(Materialdescription) as Materialdescription from MaterialMasterYGS left join RFQItems_N on RFQItems_N.ItemId =MaterialMasterYGS.Material left join RFQRevisions_N on RFQRevisions_N.rfqRevisionId =RFQItems_N.RFQRevisionId" + this.dynamicData.searchCondition + " ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -140,6 +147,12 @@ export class RFQFormComponent implements OnInit {
       var fName = "";
       this.searchresult.forEach(item => {
         fName = item[this.constants[name].fieldName];
+        if (name == "venderid") {
+          fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        }
+        if (name == "ItemId") {
+          fName = item[this.constants[name].fieldName] + " - " + item[this.constants[name].fieldId];
+        }
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId] };
         this.searchItems.push(value);
       });
@@ -188,6 +201,9 @@ export class RFQFormComponent implements OnInit {
     this.AddItemDialog = true;
     this.rfqItem = new RfqItemModel();
     this.AddItemForm.controls.ItemId.value = "";
+    this.AddItemForm.controls['PFAmount'].setValue("0");
+    this.AddItemForm.controls['FreightAmount'].setValue("0");
+    this.AddItemForm.controls['IGSTPercentage'].setValue("0");
   }
 
   Cancel(dialog: string) {
@@ -223,10 +239,15 @@ export class RFQFormComponent implements OnInit {
       return;
     }
     else {
+      if (!this.rfqItem.ItemId) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select item from the list' });
+        return;
+      }
       this.rfqRevisionModel.rfqitem = [];
       this.rfqRevisionModel.rfqitem.push(this.rfqItem);
-
+      this.spinner.show();
       this.RfqService.CreateRfq(this.rfqRevisionModel).subscribe(data => {
+        this.spinner.hide();
         this.rfqRevisionModel = data;
         this.AddItemDialog = false;
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Submitted' });
@@ -243,7 +264,9 @@ export class RFQFormComponent implements OnInit {
     else {
       if (this.rfqRevisionModel.RFQType != "Quote")
         this.rfqItemInfo.DeliveryDate = null;
+      this.spinner.show();
       this.RfqService.InsertRfqItemInfo(this.rfqItemInfo).subscribe(data => {
+        this.spinner.hide();
         this.rfqRevisionModel = data;
         this.AddItemInfodialog = false;
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'RFQ Items Info Submitted' });
@@ -260,59 +283,67 @@ export class RFQFormComponent implements OnInit {
   }
 
   PFPercentageChange() {
-    if (this.AddItemForm.controls['PFPercentage'].value != "") {
+    if (this.AddItemForm.controls['PFPercentage'].value != "" || this.AddItemForm.controls['PFPercentage'].value == "0") {
       this.AddItemForm.controls['PFAmount'].setValue("");
       this.AddItemForm.controls['PFAmount'].clearValidators();
+      this.AddItemForm.controls['PFAmount'].disable();
     }
     this.AddItemForm.controls['PFAmount'].updateValueAndValidity();
   }
 
   PFAmountChange() {
-    if (this.AddItemForm.controls['PFAmount'].value != "") {
+    if (this.AddItemForm.controls['PFAmount'].value != "" || this.AddItemForm.controls['PFAmount'].value == "0") {
       this.AddItemForm.controls['PFPercentage'].setValue("");
       this.AddItemForm.controls['PFPercentage'].clearValidators();
+      this.AddItemForm.controls['PFPercentage'].disable();
     }
     this.AddItemForm.controls['PFPercentage'].updateValueAndValidity();
   }
 
   FreightPercentageChange() {
-    if (this.AddItemForm.controls['FreightPercentage'].value != "") {
+    if (this.AddItemForm.controls['FreightPercentage'].value != "" || this.AddItemForm.controls['FreightPercentage'].value == "0") {
       this.AddItemForm.controls['FreightAmount'].setValue("");
       this.AddItemForm.controls['FreightAmount'].clearValidators();
+      this.AddItemForm.controls['FreightAmount'].disable();
     }
     this.AddItemForm.controls['FreightAmount'].updateValueAndValidity();
   }
 
   FreightAmountChange() {
-    if (this.AddItemForm.controls['FreightAmount'].value != "") {
+    if (this.AddItemForm.controls['FreightAmount'].value != "" || this.AddItemForm.controls['FreightAmount'].value == "0") {
       this.AddItemForm.controls['FreightPercentage'].setValue("");
       this.AddItemForm.controls['FreightPercentage'].clearValidators();
+      this.AddItemForm.controls['FreightPercentage'].disable();
     }
     this.AddItemForm.controls['FreightPercentage'].updateValueAndValidity();
   }
   IGSTPercentageChange() {
-    if (this.AddItemForm.controls['IGSTPercentage'].value != "") {
+    if (this.AddItemForm.controls['IGSTPercentage'].value != "" || this.AddItemForm.controls['IGSTPercentage'].value == "0") {
       this.AddItemForm.controls['SGSTPercentage'].setValue("");
       this.AddItemForm.controls['CGSTPercentage'].setValue("");
       this.AddItemForm.controls['SGSTPercentage'].clearValidators();
       this.AddItemForm.controls['CGSTPercentage'].clearValidators();
       this.AddItemForm.controls['SGSTPercentage'].updateValueAndValidity();
       this.AddItemForm.controls['CGSTPercentage'].updateValueAndValidity();
+      this.AddItemForm.controls['SGSTPercentage'].disable();
+      this.AddItemForm.controls['CGSTPercentage'].disable();
     }
   }
 
   IGSTEnablefromCGSTChange() {
-    if (this.AddItemForm.controls['CGSTPercentage'].value != "") {
+    if (this.AddItemForm.controls['CGSTPercentage'].value != "" || this.AddItemForm.controls['CGSTPercentage'].value == "0") {
       this.AddItemForm.controls['IGSTPercentage'].setValue("");
       this.AddItemForm.controls['IGSTPercentage'].clearValidators();
       this.AddItemForm.controls['IGSTPercentage'].updateValueAndValidity();
+      this.AddItemForm.controls['IGSTPercentage'].disable()
     }
   }
   IGSTEnablefromSGSTChange() {
-    if (this.AddItemForm.controls['SGSTPercentage'].value != "") {
+    if (this.AddItemForm.controls['SGSTPercentage'].value != "" || this.AddItemForm.controls['SGSTPercentage'].value == "0") {
       this.AddItemForm.controls['IGSTPercentage'].setValue("");
       this.AddItemForm.controls['IGSTPercentage'].clearValidators();
       this.AddItemForm.controls['IGSTPercentage'].updateValueAndValidity();
+      this.AddItemForm.controls['IGSTPercentage'].disable()
     }
   }
   rfqTypeChange() {
@@ -335,13 +366,14 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo = new RfqItemInfoModel();
     this.rfqItemInfo.RFQItemsId = rfqItemId;
     this.rfqItemInfo.CurrencyId = 0;
-    this.rfqItemInfo.Status = "Approved";
-    if (this.rfqRevisionModel.RFQType == "Rate Contract") {
+    if (this.rfqRevisionModel.RFQType == "Rate Contract" || this.rfqRevisionModel.RFQType == "Repeat Order") {
+      this.rfqItemInfo.Status = "Approved";
       this.addItemInfoForm.controls['Status'].setValidators([Validators.required]);
       this.addItemInfoForm.controls['ValidFrom'].setValidators([Validators.required]);
       this.addItemInfoForm.controls['ValidTo'].setValidators([Validators.required]);
     }
     else {
+      this.rfqItemInfo.Status = "";
       this.addItemInfoForm.controls['Status'].clearValidators();
       this.addItemInfoForm.controls['ValidFrom'].clearValidators();
       this.addItemInfoForm.controls['ValidTo'].clearValidators();
@@ -363,24 +395,24 @@ export class RFQFormComponent implements OnInit {
       this.AddItemForm.value.ItemId = details.ItemId;
       this.AddItemForm.controls['ItemId'].updateValueAndValidity();
     });
-    if (details.PFAmount)
+    if (details.PFAmount || details.PFAmount == "0")
       this.PFAmountChange();
-    if (details.PFPercentage)
+    if (details.PFPercentage || details.PFPercentage == "0")
       this.PFPercentageChange();
-    if (details.FreightAmount)
+    if (details.FreightAmount || details.FreightAmount == "0")
       this.FreightAmountChange();
-    if (details.FreightPercentage)
+    if (details.FreightPercentage || details.FreightPercentage == "0")
       this.FreightPercentageChange();
-    if (details.IGSTPercentage)
+    if (details.IGSTPercentage || details.IGSTPercentage == "0")
       this.IGSTPercentageChange();
-    if (details.CGSTPercentage)
+    if (details.CGSTPercentage || details.CGSTPercentage == "0")
       this.IGSTEnablefromCGSTChange();
-    if (details.SGSTPercentage)
+    if (details.SGSTPercentage || details.SGSTPercentage == "0")
       this.IGSTEnablefromSGSTChange();
 
   }
 
-  onItemInfoEdit(e: any,details: RfqItemInfoModel) {
+  onItemInfoEdit(e: any, details: RfqItemInfoModel) {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
     // this.rfqItemInfo.CurrencyId = details.CurrencyId;
@@ -389,7 +421,7 @@ export class RFQFormComponent implements OnInit {
     this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);
 
     if (details.UOM) {
-      this.bindSearchListData(e, 'addItemInfoForm', 'UnitId', "", (): any => {      
+      this.bindSearchListData(e, 'addItemInfoForm', 'UnitId', "", (): any => {
         this.showList = false;
         this.addItemInfoForm.controls['UnitId'].setValue(this.searchItems.filter(li => li.listName == "UnitId" && li.code == details.UOM)[0].name);
         this.addItemInfoForm.value.UnitId = details.UOM;

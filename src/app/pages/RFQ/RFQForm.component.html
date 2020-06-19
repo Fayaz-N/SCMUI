@@ -56,7 +56,7 @@
   </div>
 </form>
 <br />
-<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add Item" class="ui-button-info" (click)="showItemDialog()" style="float:right"></button><br /><br />
+<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add New Item" class="btn btn-success" (click)="showItemDialog()" style="float:right"></button><br /><br />
 <div class="form-control" style="height:100%;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
   <div class="row" style="margin-left: 0px; margin-right: 0px">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
@@ -98,7 +98,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th colspan="10" style="text-align: right">
-          <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Info" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId)"></button>
+          <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Price" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId)"></button>
         </th>
       </tr>
       <tr class="text-center mprltbldata">
@@ -192,7 +192,7 @@
         <span *ngIf="itemSubmitted && AddItemForm.controls.QuotationQty.errors" class="invalid-feedback">Please enter Qty.</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">P &amp; F Amount :</label>
+        <label class="form-label">P &amp; F Amount :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" [attr.disabled]="rfqItem.PFPercentage=='' || rfqItem.PFPercentage==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" formControlName="PFAmount" [(ngModel)]="rfqItem.PFAmount" (change)="PFAmountChange()" />
@@ -207,7 +207,7 @@
 
     <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">Freight Amount :</label>
+        <label class="form-label">Freight Amount :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" [attr.disabled]="rfqItem.FreightPercentage=='' || rfqItem.FreightPercentage==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" formControlName="FreightAmount" [(ngModel)]="rfqItem.FreightAmount" (change)="FreightAmountChange()" />
@@ -220,7 +220,7 @@
       </div>
 
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">CGST Percentage :</label>&nbsp;<span style="color:red">*</span>
+        <label class="form-label">CGST Percentage :</label>&nbsp;
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" [attr.disabled]="rfqItem.IGSTPercentage=='' || rfqItem.IGSTPercentage==undefined?null:true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="5" formControlName="CGSTPercentage" [(ngModel)]="rfqItem.CGSTPercentage" (change)="IGSTEnablefromCGSTChange()" [ngClass]="{ 'is-invalid': itemSubmitted && AddItemForm.controls.CGSTPercentage.errors }" />
@@ -237,7 +237,7 @@
         <input type="text" [attr.disabled]="rfqItem.CGSTPercentage=='' || rfqItem.CGSTPercentage==undefined?null:true || rfqItem.SGSTPercentage==''" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" formControlName="IGSTPercentage" [(ngModel)]="rfqItem.IGSTPercentage" (change)="IGSTPercentageChange()" />
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">SGST Percentage :</label>&nbsp;<span style="color:red">*</span>
+        <label class="form-label">SGST Percentage :</label>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" [attr.disabled]="rfqItem.IGSTPercentage=='' || rfqItem.IGSTPercentage==undefined?null:true" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="5" formControlName="SGSTPercentage" [(ngModel)]="rfqItem.SGSTPercentage" (change)="IGSTEnablefromSGSTChange()" [ngClass]="{ 'is-invalid': itemSubmitted && AddItemForm.controls.SGSTPercentage.errors }" />

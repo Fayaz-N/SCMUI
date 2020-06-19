@@ -70,7 +70,7 @@ export class MPRPageComponent implements OnInit {
   public RepeatOrderList: Array<MPRItemInfoes> = [];
   public RepeatOrder; showraisePo; showManualStatus: boolean = false;
   public vendorEmailList: Array<any> = [];
-  public DispatchLocation: string = "";
+  public DispatchLocation;currentStatus: string = "";
 
   //page load event
   ngOnInit() {
@@ -302,13 +302,13 @@ export class MPRPageComponent implements OnInit {
     searchTxt = searchTxt.replace('*', '%');
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.tableName = this.constants[name].tableName;
-    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '" + searchTxt + "%'";
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
     if (this.dynamicData.searchCondition && name == "ItemId")
-      this.dynamicData.searchCondition += " OR Material" + " like '" + searchTxt + "%'" + "group by Material";
+      this.dynamicData.searchCondition += " OR Material" + " like '%" + searchTxt + "%'" + "group by Material";
 
     if (this.dynamicData.searchCondition && name == "ClientName") {
       //this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'";
-      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '" + searchTxt + "%'" + " OR Address1" + " like '" + searchTxt + "%'" + " OR Address2" + " like '" + searchTxt + "%'" + " OR Address3" + " like '" + searchTxt + "%'" + " OR City" + " like '" + searchTxt + "%'";
+      this.dynamicData.searchCondition += " OR YGSSAPCustomerCode" + " like '%" + searchTxt + "%'" + " OR Address1" + " like '%" + searchTxt + "%'" + " OR Address2" + " like '%" + searchTxt + "%'" + " OR Address3" + " like '%" + searchTxt + "%'" + " OR City" + " like '%" + searchTxt + "%'";
       //this.dynamicData.searchCondition += " OR Address1" + " like '" + searchTxt + "%'";
     }
 
@@ -595,7 +595,7 @@ export class MPRPageComponent implements OnInit {
         this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
       else {
         if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
-        this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
+          this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
       }
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
       this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity()
@@ -775,12 +775,24 @@ export class MPRPageComponent implements OnInit {
       return;
     }
     else {
+      if (this.itemDetails.ItemId)
+        this.itemDetails.Itemid = this.itemDetails.ItemId;
+      if (!this.itemDetails.Itemid) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select item from the list' });
+        return;
+      }
+      if (!this.itemDetails.UnitId) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Units from the list' });
+        return;
+      }
       this.MPRItemDetailsSubmitted = false;
       this.itemDetails.RevisionId = this.mprRevisionModel.RevisionId;
       this.mprRevisionModel.MPRItemInfoes = [];
       this.mprRevisionModel.MPRItemInfoes.push(this.itemDetails);
       this.mprRevisionModel.MPRDocuments = this.mprRevisionModel.MPRDocuments.filter(li => li.ItemDetailsId == this.itemDetails.Itemdetailsid);
+      this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+        this.spinner.hide();
         this.mprRevisionModel = data;
         this.displayItemDialog = false;
       });
@@ -822,23 +834,31 @@ export class MPRPageComponent implements OnInit {
   }
 
   openMPR3Dialog(dialogName: string) {
-    this[dialogName] = true;
+    this.enableVendorAdd(dialogName);
     this.vendorDetails = new MPRVendorDetail();
+    this.newVendorDetails = new VendorMaster();
+    this.vendorEmailList = [];
   }
 
 
   onDocumentSubmit(dialogName: string, type: string) {
-    this.mprRevisionModel.MPRItemInfoes = [];
     if (type == "vendorDetails") {
       this.vendorSubmitted = true;
-      this.mprRevisionModel.MPRDocuments = [];
-      this.mprRevisionModel.MPRDocumentations = [];
       if (this.newVendor.invalid) {
         return;
       }
       else {
+        if (this.vendorEmailList.length == 0) {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Click add  button to add mails.' });
+          return;
+        }
+        this.mprRevisionModel.MPRItemInfoes = [];
+        this.mprRevisionModel.MPRDocuments = [];
+        this.mprRevisionModel.MPRDocumentations = [];
         this.newVendorDetails.Emailid = this.vendorEmailList.toString();
+        this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
+          this.spinner.hide();
           this.vendorSubmitted = false;
           this.vendorDetails.Vendorid = data;
           if (this.newVendorDetails.VendorName)
@@ -876,7 +896,9 @@ export class MPRPageComponent implements OnInit {
   }
 
   public updateDocumentation(dialogName: string) {
+    this.spinner.show();
     this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+      this.spinner.hide();
       this.mprRevisionModel = data;
       this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
       this[dialogName] = false;
@@ -1065,6 +1087,8 @@ export class MPRPageComponent implements OnInit {
         this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
           this.mprRevisionList = data;
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
+          if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId)
+          this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
           this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
@@ -1123,14 +1147,19 @@ export class MPRPageComponent implements OnInit {
     else
       this.showStatusDetails = false;
     //acknowledged or not
+    this.showAcknowledge = false;
     if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.mprRevisionModel.CheckStatus == "Approved" && this.mprRevisionModel.ApprovalStatus == "Approved") && (this.mprRevisionModel.SecondApprover == "-" || this.mprRevisionModel.SecondApprover == null)) {
       this.showAcknowledge = true;
     }
     else {
-      if (this.employee.OrgDepartmentId == 14 && (this.mprRevisionModel.SecondApproversStatus == "Approved") && (this.mprRevisionModel.ThirdApprover != null && this.mprRevisionModel.ThirdApproverStatus == "Approved"))
+      if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.employee.OrgDepartmentId == 14 && (this.mprRevisionModel.SecondApproversStatus == "Approved") && this.mprRevisionModel.ThirdApprover == null))
         this.showAcknowledge = true;
-      else
-        this.showAcknowledge = false;
+      else {
+        if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "Acknowledged").length <= 0) && (this.AccessList.filter(li => li.AccessName == "Acknowledged").length > 0) && (this.employee.OrgDepartmentId == 14 && this.mprRevisionModel.ThirdApprover != null && this.mprRevisionModel.ThirdApproverStatus == "Approved"))
+          this.showAcknowledge = true;
+        else
+          this.showAcknowledge = false;
+      }
     }
 
     //show PO raise icon based status and active rvision
@@ -1400,8 +1429,10 @@ export class MPRPageComponent implements OnInit {
       if (index > -1) {
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor Email already addedd' });
       }
-      else
+      else {
+        if (this.ValidateEmail())
         this.vendorEmailList.push(this.newVendorDetails.Emailid);
+      }
     }
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
@@ -1422,6 +1453,52 @@ export class MPRPageComponent implements OnInit {
     }
 
   }
+
+  //Purpose : <<SCM Open issues coding start from here>>
+  //enable buyergropu change footer
+  enableBuyerGrp() {
+    this.displayFooter = true;
+    this.showAcknowledge = true;
+  }
+
+  disableFooter() {
+    this.displayFooter = false;
+  }
+  enableVendorAdd(dialogName: string) {
+    if (this.employee.OrgDepartmentId == 14) {
+      if (this.MPRPageForm2.controls.PurchaseTypeId.value == "Single Vendor" && this.mprRevisionModel.MPRVendorDetails.length == 1)//single vendor
+      {
+        this[dialogName] = false;
+        this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Access to add one vendor only' });
+      }
+      else
+        this[dialogName] = true;
+    }
+    else {
+      if ((this.MPRPageForm2.controls.PurchaseTypeId.value == "Single Vendor" && this.mprRevisionModel.MPRVendorDetails.length == 1)) {
+        this[dialogName] = false;
+        this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Access to add one vendor only' });
+      }
+        else if (this.MPRPageForm2.controls.PurchaseTypeId.value != "Single Vendor") {
+          this[dialogName] = false;
+          this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'No Access to add  vendor' });
+      }
+      else {
+        this[dialogName] = true;
+      }
+      }
+  }
+
+  //function to validate email
+  ValidateEmail() {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.newVendorDetails.Emailid)) {
+      return true;
+    }
+    this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'You have entered an invalid email address!' });
+    return false;
+  }
+
+   //<<SCM Open issues coding Ended>>
 }
 
 

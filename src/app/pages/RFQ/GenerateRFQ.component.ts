@@ -8,6 +8,7 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, DynamicSearchResult, searchList, MPRVendorDetail, VendorMaster, PoFilterParams } from 'src/app/Models/mpr';
 import { rfqQuoteModel, RFQRevisionData } from 'src/app/Models/rfq';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-RFQItems',
@@ -15,7 +16,7 @@ import { rfqQuoteModel, RFQRevisionData } from 'src/app/Models/rfq';
 })
 
 export class GenerateRFQComponent implements OnInit {
-  constructor(private formBuilder: FormBuilder, public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
+  constructor(private formBuilder: FormBuilder, public RfqService: RfqService, public MprService: MprService, private spinner: NgxSpinnerService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
 
   public newVendor: FormGroup;
   public employee: Employee;
@@ -105,6 +106,8 @@ export class GenerateRFQComponent implements OnInit {
   openVendorDialog(dialogName: string) {
     this[dialogName] = true;
     this.vendorDetails = new MPRVendorDetail();
+    this.newVendorDetails = new VendorMaster();
+    this.vendorEmailList = [];
     this.selectedItem = new searchList();
   }
 
@@ -121,6 +124,8 @@ export class GenerateRFQComponent implements OnInit {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.tableName = this.constants[name].tableName;
     this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    if (this.dynamicData.searchCondition && name == "venderid")
+      this.dynamicData.searchCondition += " OR VendorCode" + " like '%" + searchTxt + "%' ";
     this.MprService.GetListItems(this.dynamicData).subscribe(data => {
       if (data.length == 0)
         this.showList = false;
@@ -131,6 +136,9 @@ export class GenerateRFQComponent implements OnInit {
       var fName = "";
       this.searchresult.forEach(item => {
         fName = item[this.constants[name].fieldName];
+        if (name == "venderid") {
+          fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        }
         var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
         this.searchItems.push(value);
       });
@@ -147,6 +155,8 @@ export class GenerateRFQComponent implements OnInit {
       this.PoFilterParams.VendorName = item.name;
     }
     else {
+      this.vendorEmailList = [];
+      this.newVendorDetails = new VendorMaster();
       var addvendor = true;
       if (this.rfqQuoteModel.length > 0) {
         for (var i = 0; i < this.rfqQuoteModel.length; i++) {
@@ -205,8 +215,10 @@ export class GenerateRFQComponent implements OnInit {
       if (index > -1) {
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor Email already addedd' });
       }
-      else
-        this.vendorEmailList.push(this.newVendorDetails.Emailid);
+      else {
+        if (this.ValidateEmail())
+          this.vendorEmailList.push(this.newVendorDetails.Emailid);
+      }
     }
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
@@ -228,8 +240,14 @@ export class GenerateRFQComponent implements OnInit {
         return;
       }
       else {
+        if (this.vendorEmailList.length == 0) {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Click add  button to add mails.' });
+          return;
+        }
         this.newVendorDetails.Emailid = this.vendorEmailList.toString();
+        this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
+          this.spinner.hide();
           this.vendorSubmitted = false;
           this.vendorDetailsArray = [];
           this.vendorDetails.Vendorid = data;
@@ -276,6 +294,7 @@ export class GenerateRFQComponent implements OnInit {
           }
           else {
             rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
+            rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.filter(li => li.VendorId != null)
             rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
           }
           this.rfqQuoteModel.push(rfqQuoteItems);
@@ -479,6 +498,16 @@ export class GenerateRFQComponent implements OnInit {
       this.selectedVendorList.splice(index2, 1);
     })
   }
+
+  //function to validate email
+  ValidateEmail() {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.newVendorDetails.Emailid)) {
+      return true;
+    }
+    this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'You have entered an invalid email address!' });
+    return false;
+  }
+
 }
 
 

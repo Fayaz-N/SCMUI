@@ -32,6 +32,7 @@ export class MPRDetail {
 export class MPRItemInfoes {
   Itemdetailsid: number;
   Itemid: string;
+  ItemId: string;
   RevisionId: number;
   ItemDescription: string;
   Quantity: string;

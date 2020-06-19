@@ -1,12 +1,13 @@
 <button *ngIf="typeOfList=='MPRPendingList'" type="button" class="btn btn-success p-1" style="height:35px" (click)="newMPRForm()">New MPR Form</button>
-<br /><br />
+<br />
 <div class="row">
   <div class="col-md-4"><h4>{{mprTitle}}</h4></div>
   <div class="col-md-6"></div>
   <div class="col-md-2 text-right">
-    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand"></i>
+    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="showHideFilterBlock()" pTooltip="Expand Filters"></i>
   </div>
-</div><br />
+</div>
+<br />
 <form [formGroup]="MPRfilterForm">
   <div *ngIf="showFilterBlock" class="form-control" style="height:100%;border-radius:0px;">
     <div class="row">
@@ -141,14 +142,21 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="ui-g-4 ui-md-4">
+      <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+        <label class="form-label">Status</label>
+        <div class="form-inline-list" style="margin-top:5px">
+          <p-checkbox value="Completed" label="Completed"></p-checkbox>&nbsp;&nbsp;&nbsp;
+          <p-checkbox value="Pending" label="Pending"></p-checkbox>
+          </div>
+        </div>
       </div>
-      <div class="ui-g-4 ui-md-4 text-center pr-3">
-        <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
-      </div>
+  <div class="row">
+    <div class="ui-g-4 ui-md-4">
     </div>
+    <div class="ui-g-4 ui-md-4 text-center pr-3">
+      <button type="button" class="btn btn-success" (click)="bindList()" label="Save">Submit</button>
+    </div>
+  </div>
   </div>
 </form>
 <div class="form-control h-100 p-0" style="border-radius:0px;">
@@ -229,14 +237,14 @@
 
 <p-dialog header="Delete MPR:" [(visible)]="showDeletedialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '700px'}">
   <div class="ui-g ui-fluid">
-      <div class="ui-g-12">
-        <div class="ui-g-12 form-group">
-          <label class="form-label">Remarks </label>&nbsp;<span style="color:red">*</span>
-          <div class="form-inline-list">
-            <textarea class="form-control forms-input" maxlength="500" [(ngModel)]="deleteMprInfo.DeletedRemarks"></textarea>
-          </div>
+    <div class="ui-g-12">
+      <div class="ui-g-12 form-group">
+        <label class="form-label">Remarks </label>&nbsp;<span style="color:red">*</span>
+        <div class="form-inline-list">
+          <textarea class="form-control forms-input" maxlength="500" [(ngModel)]="deleteMprInfo.DeletedRemarks"></textarea>
         </div>
       </div>
+    </div>
   </div>
   <p-footer>
     <div class="ui-dialog-buttonpane ui-helper-clearfix">
