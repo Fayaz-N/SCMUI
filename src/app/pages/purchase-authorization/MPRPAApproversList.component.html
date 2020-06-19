@@ -1,25 +1,70 @@
 <div class="form-control" style="height:100%">
-  <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-      <label class="form-label label">From Date</label><br />
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="fromdate" class="form-label">From Date</label><br />
       <p-calendar class="FromDate" [(ngModel)]="inputsearch.FromDate" [monthNavigator]="true"></p-calendar>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-      <label class="form-label label">To Date</label><br />
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="todate" class="form-label">To Date</label><br />
       <p-calendar class="ToDate" [(ngModel)]="inputsearch.ToDate" [monthNavigator]="true"></p-calendar>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-      <label class="form-label label">PA ID</label><br />
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="paid" class="form-label ">PA ID</label><br />
       <input class="form-control" [(ngModel)]="inputsearch.Paid">
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-      <label class="form-label label">Status</label><br />
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="pastatus" class="form-label">Status</label><br />
       <select class="form-control" [(ngModel)]="inputsearch.Status">
         <option value="Submitted">Submitted</option>
         <option value="Pending">Pending</option>
         <option value="Approved">Approved</option>
         <option value="Rejected">Rejected</option>
       </select>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="docNo" class="form-label">MPR Number:</label> &nbsp;
+      <input class="form-control" type="text" [(ngModel)]="inputsearch.DocumentNumber">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label for="docNo" class="form-label">RFQ Number:</label> &nbsp;
+      <input class="form-control" type="text" [(ngModel)]="inputsearch.rfqnumber">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="inputsearch.DepartmentId">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select BuyerGroup</mat-label>
+        <select matNativeControl [(ngModel)]="inputsearch.BuyerGroupId">
+          <option value="" selected></option>
+          <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+            {{option.BuyerGroup}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Vendor</mat-label>
+        <select matNativeControl [(ngModel)]="inputsearch.VendorId">
+          <option value="" selected></option>
+          <option *ngFor="let option of Vendors" [value]="option.VendorId">
+            {{option.VendorName}}
+          </option>
+        </select>
+      </mat-form-field>
     </div>
   </div>
 </div>
@@ -33,12 +78,14 @@
     <ng-template pTemplate="header">
       <tr>
         <th>S.No</th>
-        <th>Approver</th>
-        <th>PA ID</th>
-        <th>Role</th>
-        <th>Department</th>
-        <th>ApproverStatus</th>
-        <th>ApprovedOn</th>
+        <th class="ptable-cell">Approver</th>
+        <th class="ptable-cell">PA ID</th>
+        <th class="ptable-cell">Role</th>
+        <th class="ptable-cell">Vendor</th>
+        <th class="ptable-cell">Department</th>
+        <th class="ptable-cell">ApproverStatus</th>
+        <th class="ptable-cell">ApprovedOn</th>
+        <th class="ptable-cell">RequestedBy</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -49,9 +96,11 @@
         <td class="ptable-cell">{{rowData.Name}}</td>
         <td class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td class="ptable-cell">{{rowData.RoleName}}</td>
+        <td class="ptable-cell">{{rowData.VendorName}}</td>
         <td class="ptable-cell">{{rowData.Department}}</td>
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
         <td class="ptable-cell">{{rowData.ApprovedOn | date: 'dd/MM/yyyy  hh:mm a'}}</td>
+        <td class="ptable-cell">{{rowData.RequestedBy}}</td>
       </tr>
     </ng-template>
   </p-table><br />

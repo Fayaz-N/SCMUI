@@ -46,6 +46,7 @@ export class purchasePaymentListComponent implements OnInit {
         this.purchasetypes = new Array<mprpapurchasetypesmodel>();
         this.purchasedetails = new mprpadetailsmodel();
         this.buyergroups = new Array<any>();
+        this.palist = new Array<any>();
         this.pofilters = new PADetailsModel();
         //this.loadAllmprpalist();
         this.loadbuyergroups();
@@ -95,6 +96,7 @@ export class purchasePaymentListComponent implements OnInit {
     GetMprpadetailsBySearch(pofilters: PADetailsModel) {
         this.paService.GetMprpadetailsBySearch(pofilters).subscribe(data => {
             this.palist = data;
+            console.log("palist", this.palist)
         });
     }
     //displayfn(department: object) {

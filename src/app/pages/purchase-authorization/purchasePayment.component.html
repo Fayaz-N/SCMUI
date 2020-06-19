@@ -194,8 +194,8 @@
       <button type="button" class="btn btn-success" (click)="displayapproveEmployee()" label="Save">Approve Items</button>
     </div>-->
   </div><br />
-  <div *ngIf="pasubmitted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <p-table #dt [value]="purchasedetails.Item" [globalFilterFields]="['PONO']" [paginator]="true" [rows]="10" [resizableColumns]="true" editMode="row" p columnResizeMode="expand">
+  <div *ngIf="pasubmitted" class="form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+    <p-table #dt [value]="purchasedetails.Item" [globalFilterFields]="['PONO']" [responsive]="true" [paginator]="true" [autoLayout]="true" [rows]="10" editMode="row" columnResizeMode="expand" [style]="{'width':'100%','overflow':'auto!important'}">
       <ng-template pTemplate="header" let-rowData let-editing="editing">
         <tr>
           <th colspan="12" class="text-right">
@@ -204,47 +204,38 @@
         </tr>
         <tr>
           <th>Sl No</th>
-          <!--<th class="ptable-cell">Department</th>-->
-          <th class="ptable-cell">Item Description</th>
-          <th class="ptable-cell">Quantity</th>
-          <!--<th>Vendor Name</th>-->
-          <th>MPR NO</th>
-          <th>Target Spend</th>
+          <th class="ptable-cell">ItemDescription</th>
+          <th>Qty</th>
           <th>Price</th>
+          <th>Target Spend</th>
           <th>Total Price</th>
-          <th>Sale Order</th>
-          <th class="ptable-cell">Payment Term</th>
-          <th>PO NO</th>
-          <th>PO ItemNo</th>
-          <th>PODate</th>
-          <th class="ptable-cell">Remarks</th>
-          <!--<th>Edit</th>-->
           <th [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-        <!--<tr class="pull-right" [pEditableRow]="rowData">
-          <th><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
-        </tr>-->
         <tr [pEditableRow]="rowData">
-          <td class="text-center">{{ri+1}}</td>
-          <!--<td class="ptable-cell">{{rowData.Department}}</td>-->
-          <td class="ptable-cell">{{rowData.ItemDescription}}</td>
-          <td class="ptable-cell">{{rowData.QuotationQty}}</td>
-          <!--<td class="ptable-cell">{{rowData.VendorName}}</td>-->
-          <td class="ptable-cell">{{rowData.DocumentNo}}</td>
-          <td class="ptable-cell">{{rowData.TargetSpend}}</td>
-          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
-          <td class="ptable-cell">{{rowData.itemsum}}</td>
-          <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
-          <td class="ptable-cell">{{rowData.PaymentTermCode}}</td>
-          <td class="ptable-cell">{{rowData.PONO}}</td>
-          <td class="ptable-cell">{{rowData.POItemNo}}</td>
-          <td class="ptable-cell">{{rowData.PODate}}</td>
-          <td class="ptable-cell">{{rowData.Remarks}}</td>
-          <!--<td class="text-center">
-            <button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(rowData)"></button>
-          </td>-->
+          <td>{{ri+1}}</td>
+          <td class="ptable-cell">
+            {{rowData.ItemDescription}}&nbsp;&nbsp;
+            <div>
+              <div class="row" style="margin-left:3px;margin-right:2px;margin-top:15px">
+                <label style="width:200px">Mprno:<span><a [routerLink]="['/SCM/MPRForm',rowData.MPRRevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></span></label> &nbsp;&nbsp;
+                <label style="width:200px">Rfqno:<span><a [routerLink]="['/SCM/VendorQuoteView',rowData.RFQRevisionId]" target="_blank" routerLinkActive="active">{{rowData.RFQNo}}</a></span></label>
+              </div>
+              <div class="row" style="margin-left:3px;margin-right:2px">
+                <label style="width:200px">PONo:<span>{{rowData.PONO}}</span></label> &nbsp;&nbsp;
+                <label style="width:200px">POItemNo:<span>{{rowData.POItemNo}}</span></label>
+              </div>
+              <div class="row" style="margin-left:3px;margin-right:2px">
+                <label style="width:200px">PODate:<span>{{rowData.PODate}}</span></label> &nbsp;&nbsp;
+                <label style="width:200px">Remarks:<span>{{rowData.Remarks}}</span></label>
+              </div>
+            </div>
+          </td>
+          <td>{{rowData.QuotationQty}}</td>
+          <td>{{rowData.UnitPrice}}</td>
+          <td>{{rowData.TargetSpend}}</td>
+          <td>{{rowData.itemsum}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -254,15 +245,7 @@
           <td></td>
           <td></td>
           <td>{{target}}</td>
-          <td></td>
           <td>{{sum}}</td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
         </tr>
       </ng-template>
     </p-table>
@@ -323,30 +306,68 @@
 <div class="row head-text pl-0" style="margin-left:0px;width:100%">
   <div class="col-md-6 pt-2"> Vendors:</div>
 </div>
-<div class="form-control" style="height:100%">
-  <h6 style="font-weight:400">Considered Vendors:</h6>
-  <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4" style="margin-left:5px;">
-      <span class="Vendor">{{ven.VendorName}} </span>
-    </div>
+<div class="form-control" *ngIf="!pasubmitted" style="height:100%">
+  <!--<h6 style="font-weight:400">Considered Vendors:</h6>-->
+  <div style="height:100%;width:100%;margin-left:2px">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>
+            Considered vendors
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let ven of vendor">
+          <td>{{ven.VendorName}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Selected vendors</th>
+          <th>Payment Termcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:#0095ff">{{vendorname}}</td>
+          <td>{{paymentterm}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div *ngIf="pasubmitted" class="row" style="height:100%;width:100%;margin-left:0px">
-    <div *ngFor="let ven of vendor" class="col-xs-4 col-sm-4 col-md-4" style="margin-left:0px;">
-      <span class="Vendor form-control">{{ven.VendorName}} </span>
-    </div>
-  </div><br />
-
-  <h6 style="font-weight:400">Selected Vendors:</h6>
-  <div *ngIf="!pasubmitted" class="row form-control" style="height:100%;width:100%;margin-left:2px">
-    <div class="col-xs-4 col-sm-4 col-md-4" style="margin-left:5px;margin-left:5px">
-      <span class="Vendor" style="color:#0095ff">{{vendorname}} </span>
-    </div>
-  </div>
-  <div *ngIf="pasubmitted" class="row" style="height:100%;width:100%;margin-left:0px">
-    <div class="col-xs-4 col-sm-4 col-md-4" style="margin-left:5px;margin-left:0px">
-      <span class="Vendor form-control">{{selectedvendor}} </span>
-    </div>
-  </div>
+</div>
+<div *ngIf="pasubmitted" class="form-control" style="height:100%">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>
+          Considered vendors
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td *ngFor="let ven of vendor">{{ven.VendorName}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Selected vendors</th>
+        <th>Payment Termcode</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:#0095ff">{{selectedvendor}}</td>
+        <td>{{finalpaymentterm}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 <br />
 
@@ -395,7 +416,10 @@
             <td>{{terms.Terms}}</td>
             <td>{{terms.RFQrevisionId}}</td>
             <!--<td>{{terms.Remarks}}</td>-->
+
+
             <td>
+
               {{terms.VendorResponse}}<br /><br />
 
               <form>
@@ -435,14 +459,14 @@
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div>
-        <label for="ProjectName" class="form-label label" style="margin-left: 12px;">Packing And Forwarding:</label>
-        <input type="text" [(ngModel)]="purchasedetails.PackagingForwarding" class="form-control" style="width: 60%;margin-left: 12px;" />
+        <label for="ProjectName"  class="form-label label" style="margin-left: 12px;">Packing And Forwarding:</label>
+        <input type="text" [(ngModel)]="purchasedetails.PackagingForwarding"  class="form-control" style="width: 60%;margin-left: 12px;" />
       </div>
     </div>
     <div class="col-md-6 col-lg-6 col-sm-6 form-group">
       <div>
         <label for="ProjectCode" class="form-label label" style="margin-left: 12px;">Taxes:</label>&nbsp;&nbsp;
-        <input type="text" style="margin-left:12px;width: 60%;" [(ngModel)]="purchasedetails.Taxes" class="form-control" />
+        <input type="text"  style="margin-left:12px;width: 60%;" [(ngModel)]="purchasedetails.Taxes" class="form-control" />
       </div>
     </div>
   </div>
@@ -645,16 +669,19 @@
 </div>
 <div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
-</div><br />
+</div>
+<br />
 <div class="form-control" *ngIf="pasubmitted && purchasedetails.documents.length" style="height:100%;width:100%">
   <label class="form-label"><b> Documents Attached :</b></label>
   <div *ngFor="let document of purchasedetails.documents" class="col-lg-10 col-md-10 col-sm-10">
     <!--<a (click)="viewPADocument(document.path,document.filename)">{{document.filename}}</a>-->
+    )=
     <button (click)="viewPADocument(document.path,document.filename)" class="btn btn-link">{{document.filename}}</button>
     <!--<i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(document.path,document.filename)" pTooltip="File Name: {{document.filename}}"></i>&nbsp;
     <span><a> {{document.filename}} </a></span>&nbsp;&nbsp;-->
   </div>
-</div><br />
+</div>
+<br />
 <div *ngIf="pasubmitted && finalpasubmit" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="purchasedetails.ApproversList" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
