@@ -72,6 +72,7 @@ export class PADetailsModel {
     venderid: number;
     PAStatus: string;
     POStatus: string;
+    rfqnumber: string;
 }
 export class ItemsViewModel {
     RFQItemsId: number;
@@ -98,6 +99,7 @@ export class ItemsViewModel {
     Remarks: string;
     paitemid: number;
     paid: number;
+    RFQNo: number;
     MRPItemsDetailsID: number;
     MPRItemDetailsid: number;
     MPRRevisionId: number;
@@ -268,6 +270,11 @@ export class PAApproverDetailsInputModel {
     ToDate: Date;
     Status: string;
     CreatedBy: string;
+    DocumentNumber: string;
+    DepartmentId: number;
+    BuyerGroupId: number;
+    VendorId: number;
+    rfqnumber: string;
 }
 export class StatusCheckModel {
     sid: number;

@@ -14,7 +14,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 })
 export class purchasePaymentComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+ 
     public itemsform: FormGroup;
     myFiles: string[] = [];
     myfiles1: string[] = [];
@@ -65,6 +65,11 @@ export class purchasePaymentComponent implements OnInit {
     public rfqno: Array<any> = [];
     public finalpasubmit: boolean = true;
     public proceedvalue: boolean = true;
+    public paymentterm: string;
+    public finalpaymentterm: string;
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
+       
+    }
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -72,7 +77,7 @@ export class purchasePaymentComponent implements OnInit {
         else {
             this.router.navigateByUrl("Login");
         }
-
+        //this.purchasedetails.PackagingForwarding = "Included in Price";
         //this.paitemdetails = this.paService.itemvalues;
         this.PAApprovers = new MPRPAApproversModel();
         this.showemployee = false;
@@ -119,6 +124,7 @@ export class purchasePaymentComponent implements OnInit {
             else {
                 this.savingorexcessamount = this.target - this.sum;
             }
+            this.paymentterm = this.selectedItems[0]["PaymentTermCode"];
             this.purchasedetails.ProjectCode = this.selectedItems[0]["JobCode"];
             this.purchasedetails.ProjectName = this.selectedItems[0]["JobName"];
             this.Buyergroup = this.selectedItems[0].BuyerGroup;
@@ -128,7 +134,8 @@ export class purchasePaymentComponent implements OnInit {
             this.vendorname = this.selectedItems[0].VendorName;
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
-            this.showemployee = true
+            this.showemployee = true;
+            console.log("consideredrfq", this.selectedItems)
         }
         this.PAsubmitForm = this.formBuilder.group({
             PONO: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
@@ -137,9 +144,7 @@ export class purchasePaymentComponent implements OnInit {
             Remarks: ['', [Validators.required]]
         })
 
-        //this.paService.itemdat$.subscribe(data => {
-        //    this.selectedItems = data;
-        //})
+       
     }
     loadallpurchasemodes() {
         this.paService.LoadAllmprpapurchasemodes().subscribe(data => {
@@ -218,6 +223,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
+            this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
             this.pasubmitted = true;
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]

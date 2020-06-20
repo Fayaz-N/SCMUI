@@ -20,6 +20,7 @@ export class MPRPAApproversListComponent implements OnInit {
     public paapproverdeatils: Array<any>[];
     public purchasedetails: mprpadetailsmodel;
     public inputsearch: PAApproverDetailsInputModel;
+    public Vendors: Array<any> = [];
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -35,15 +36,38 @@ export class MPRPAApproversListComponent implements OnInit {
         this.approverslist = new Array<any>();
         this.paapproverdeatils = new Array<any>();
         this.inputsearch = new PAApproverDetailsInputModel();
+        this.loadbuyergroups();
+        this.loadAllVendor();
+        this.loadallmprdepartments();
         this.LoadmprApproverDetailsbySearch(this.inputsearch);
+        this.departmentlist = new Array<any>();
+        this.buyergroups = new Array<any>();
+        this.Vendors = new Array<any>();
     }
 
+    loadAllVendor() {
+        this.paService.LoadAllVendors().subscribe(data => {
+            this.Vendors = data
+            //this.filteredvendors = this.filterVendors('');
+        })
+    }
+    loadbuyergroups() {
+        this.paService.LoadAllmprBuyerGroups().subscribe(data => {
+            this.buyergroups = data;
 
+        })
+    }
     loadAllmprpaapproverslist() {
         this.paService.loadAllmprpaapproverslist().subscribe(data => {
             this.approverslist = data;
         })
        
+    }
+    loadallmprdepartments() {
+        this.paService.LoadAllDepartments().subscribe(data => {
+            this.departmentlist = data;
+            //this.filtereddepartments = this.filterStates('');
+        });
     }
 
     LoadmprApproverDetailsbySearch(inpusearch: PAApproverDetailsInputModel) {
