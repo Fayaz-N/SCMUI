@@ -1214,7 +1214,7 @@
         <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-        <button type="button" class="btn btn-success"  (click)="disableFooter('Acknowledge')">Close</button>
+        <button type="button" class="btn btn-success"  (click)="disableFooter()">Close</button>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
