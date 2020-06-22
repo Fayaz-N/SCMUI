@@ -111,11 +111,13 @@
   <div class="row form-group">
     <div class="col-lg-4 col-md-4 col-sm-4">
       <label class="form-label">From Date</label><br />
-      <p-calendar class="FromDate"  [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      <input type="date" class="form-control" [(ngModel)]="pofilters.fromDate">
+      <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
       <label class="form-label">To Date</label>&nbsp;<br />
-      <p-calendar class="toDate"  [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>
+      <input type="date" class="form-control" [(ngModel)]="pofilters.toDate">
+      <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
       <label for="paid" class="form-label ">PA ID</label><br />
