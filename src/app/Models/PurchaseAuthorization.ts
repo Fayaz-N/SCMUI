@@ -73,6 +73,9 @@ export class PADetailsModel {
     PAStatus: string;
     POStatus: string;
     rfqnumber: string;
+    fromDate: Date;
+    toDate: Date;
+    Paid: number;
 }
 export class ItemsViewModel {
     RFQItemsId: number;

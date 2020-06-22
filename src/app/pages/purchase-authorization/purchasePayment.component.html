@@ -41,8 +41,8 @@
           <label for="procSrc">Department: <span class="required-asterisk" style="color:red">*</span></label>
         </div>-->
         <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:<span class="required-asterisk" style="color:red">*</span></label>
-        <select [(ngModel)]="purchasedetails.PurchaseTypeId" class="form-control" style="margin-left: 12px;width:60%">
-          <option *ngFor="let pty of purchasetypes" [value]="pty.PurchaseTypeId"> {{pty.PurchaseType}} </option>
+        <select  class="form-control" [(ngModel)]="purchasedetails.PurchaseTypeId" style="margin-left: 12px;width:60%">
+          <option *ngFor="let pty of purchasetypes"  [value]="pty.PurchaseTypeId"> {{pty.PurchaseType}} </option>
         </select>
       </div>
       <div *ngIf="pasubmitted">

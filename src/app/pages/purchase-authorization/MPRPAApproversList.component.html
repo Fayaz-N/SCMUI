@@ -60,7 +60,7 @@
         <mat-label>Select Vendor</mat-label>
         <select matNativeControl [(ngModel)]="inputsearch.VendorId">
           <option value="" selected></option>
-          <option *ngFor="let option of Vendors" [value]="option.VendorId">
+          <option *ngFor="let option of Vendors" [value]="option.Vendorid">
             {{option.VendorName}}
           </option>
         </select>
@@ -97,7 +97,7 @@
           {{ri+1}}
         </td>
         <td class="ptable-cell">{{rowData.Name}}</td>
-        <td style="width:5em"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <td style="width:5em"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentNo}}</td>
         <td class="ptable-cell">{{rowData.RFQNo}}</td>
         <td class="ptable-cell">{{rowData.RoleName}}</td>

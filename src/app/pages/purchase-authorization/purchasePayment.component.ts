@@ -144,7 +144,20 @@ export class purchasePaymentComponent implements OnInit {
             Remarks: ['', [Validators.required]]
         })
 
-       
+        this.purchasedetails.PackagingForwarding = "Included in Price";
+        this.purchasedetails.Taxes = "GST Extra as applicable";
+        this.purchasedetails.Freight = "Included in Price";
+        this.purchasedetails.Insurance = "Included in Price";
+        this.purchasedetails.DeliveryCondition = "3 – 4 Weeks";
+        this.purchasedetails.CreditDays = 45;
+        this.purchasedetails.ShipmentMode = "By Road";
+        this.purchasedetails.PaymentTerms = "Full payment after 45 days of receipt of material";
+        this.purchasedetails.Warranty = "Not Applicable";
+        this.purchasedetails.BankGuarantee = "Not Applicable";
+        this.purchasedetails.LDPenaltyTerms = "Not Applicable";
+        this.purchasedetails.SpecialInstructions = "Not Applicable"
+        this.purchasedetails.FactorsForImports = "Not Applicable";
+        this.purchasedetails.SpecialRemarks = "Not Applicable";
     }
     loadallpurchasemodes() {
         this.paService.LoadAllmprpapurchasemodes().subscribe(data => {
@@ -159,36 +172,40 @@ export class purchasePaymentComponent implements OnInit {
 
 
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
-        this.purchasedetails.Item = [];
-        this.purchasedetails.ApproversList = [];
-        this.purchasedetails.TermId = [];
-        this.purchasedetails.VendorId = this.selectedItems[0]["VendorId"];
-        this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
-        for (var i = 0; i < this.selectedItems.length; i++) {
-            this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
-            this.paitemdetails.push(this.selectedItems[i]);
-            this.purchasedetails.Item.push(this.selectedItems[i]);
-            //this.purchasedetails.Item = this.RFQItemID;
-            //this.purchasedetails.Item = this.paitemdetails;
+        if (purchasedetails.PurchaseTypeId != undefined && purchasedetails.PurchaseModeId != undefined) {
+            this.purchasedetails.Item = [];
+            this.purchasedetails.ApproversList = [];
+            this.purchasedetails.TermId = [];
+            this.purchasedetails.VendorId = this.selectedItems[0]["VendorId"];
+            this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                this.RFQItemID.push(this.selectedItems[i].RFQItemsId)
+                this.paitemdetails.push(this.selectedItems[i]);
+                this.purchasedetails.Item.push(this.selectedItems[i]);
+            }
+
+            this.purchasedetails.ApproversList = this.employeelist.Approvers;
+            this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
+            this.purchasedetails.BGRole = this.employeelist.BGRole;
+            this.purchasedetails.ProjectManager = this.employeelist.ProjectManager;
+            this.purchasedetails.PMRole = this.employeelist.PMRole;
+            this.purchasedetails.BuyerGroupNo = this.employeelist.BuyerGroupNo;
+            this.purchasedetails.ProjectMangerNo = this.employeelist.ProjectMangerNo;
+            for (var i = 0; i < this.rfqterms.length; i++) {
+                this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
+            }
+            this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
+            //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
+            this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
+                this.paid = data.Sid;
+                this.uploaddocuments = true;
+                this.proceedvalue = false;
+            })
+        }
+        else {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select PurchaseType and Purchase Mode' });
         }
 
-        this.purchasedetails.ApproversList = this.employeelist.Approvers;
-        this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
-        this.purchasedetails.BGRole = this.employeelist.BGRole;
-        this.purchasedetails.ProjectManager = this.employeelist.ProjectManager;
-        this.purchasedetails.PMRole = this.employeelist.PMRole;
-        this.purchasedetails.BuyerGroupNo = this.employeelist.BuyerGroupNo;
-        this.purchasedetails.ProjectMangerNo = this.employeelist.ProjectMangerNo;
-        for (var i = 0; i < this.rfqterms.length; i++) {
-            this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
-        }
-        this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
-        //this.purchasedetails.Item.RFQItemsId = this.selectedItems[0].RFQItemsId;
-        this.paService.InsertPurchaseAuthorization(purchasedetails).subscribe(data => {
-            this.paid = data.Sid;
-            this.uploaddocuments = true;
-            this.proceedvalue = false;
-        })
     }
     finalpa(purchasedetails: mprpadetailsmodel) {
         this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
