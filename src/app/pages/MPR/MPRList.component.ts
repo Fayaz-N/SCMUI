@@ -81,8 +81,10 @@ export class MPRListComponent implements OnInit {
       BuyerGroupId: ['', [Validators.required]],
       AssignEmployee: ['', [Validators.required]],
       MPRStatusId: ['', [Validators.required]],
-      PurchaseTypeId: ['', [Validators.required]]
+      PurchaseTypeId: ['', [Validators.required]],
+      mprStatusListId: ['', [Validators.required]]
     });
+
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
       this.mprTitle = "MPR Checker List";
@@ -140,6 +142,8 @@ export class MPRListComponent implements OnInit {
       }
     }
 
+    this.mprFilterParams.mprStatusListId = [];
+    this.mprFilterParams.mprStatusListId[0] = "1";
 
     this.getStatusList();
 

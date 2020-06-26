@@ -6,7 +6,7 @@ import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Employee, DynamicSearchResult, searchList, MPRVendorDetail, VendorMaster, PoFilterParams } from 'src/app/Models/mpr';
+import { Employee, DynamicSearchResult, searchList, MPRVendorDetail, VendorMaster, PoFilterParams, MPRDocument } from 'src/app/Models/mpr';
 import { rfqQuoteModel, RFQRevisionData } from 'src/app/Models/rfq';
 import { NgxSpinnerService } from "ngx-spinner";
 
@@ -47,6 +47,14 @@ export class GenerateRFQComponent implements OnInit {
   public selectedRrepeatOrdervendorDetails: Array<any> = [];
   public rfqIndex; MPRItemDetailsid: number;
   public PoFilterParams: PoFilterParams;
+  public mprRevisiondata: Array<any> = [];
+  public MPRRFQDocuments: Array<MPRDocument> = [];
+  public selectedDocList: Array<MPRDocument> = [];
+  public showDocumentUpload: boolean = false;
+  public mprDocument = new MPRDocument();
+  public selectedDocVendors: any[];
+  public DocListVendors: any[];
+  public docName; path: string = "";
 
   //page load event
   ngOnInit() {
@@ -71,10 +79,20 @@ export class GenerateRFQComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"]) {
         this.MPRRevisionId = params["MPRRevisionId"];
+        this.getMPRData();
         this.getRFQItems();
       }
     });
     this.RFQRevisionData.RfqValidDate = this.constants.rfqValidDays;;
+  }
+
+  //Get MPRData
+  getMPRData() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select top(1) RevisionNo,DocumentNo,DocumentDescription,IssuePurposeId, DepartmentName,ProjectManagerName,JobCode,JobName,GEPSApprovalId,SaleOrderNo,ClientName,PlantLocation,BuyerGroupName from MPRRevisionDetails where revisionid=" + this.MPRRevisionId + " ";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.mprRevisiondata = data;
+    });
   }
 
   //Get total generated RFQ Items
@@ -90,12 +108,19 @@ export class GenerateRFQComponent implements OnInit {
           this.totalRfqItems = data;
           this.mprVendors = true;
         }
-        this.prepareRfQItems();
+        this.dynamicData = new DynamicSearchResult();
+        this.dynamicData.query = "select * from MPRDocuments where RevisionId=" + this.MPRRevisionId + " and DocumentTypeid=1"
+        this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+          this.MPRRFQDocuments = data;
+          this.prepareRfQItems();
+        });
+
         this.getYILTermsAndConditions();
       })
 
     })
   }
+
   getYILTermsAndConditions() {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = "select term.TermId,term.TermGroupId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
@@ -273,7 +298,7 @@ export class GenerateRFQComponent implements OnInit {
     }
   }
 
-  //pepare top 3 Suggested vendors
+  //pepare  Suggested vendors
   prepareRfQItems() {
     if (this.totalRfqItems.length > 0) {
       for (var i = 0; i < this.totalRfqItems.length; i++) {
@@ -295,7 +320,7 @@ export class GenerateRFQComponent implements OnInit {
           else {
             rfqQuoteItems.suggestedVendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);
             rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.filter(li => li.VendorId != null)
-            rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
+            //rfqQuoteItems.suggestedVendorDetails = rfqQuoteItems.suggestedVendorDetails.slice(0, 3);
           }
           this.rfqQuoteModel.push(rfqQuoteItems);
         }
@@ -336,18 +361,57 @@ export class GenerateRFQComponent implements OnInit {
       this.rfqQuoteModel[itemsIndex].repeatOrdervendorDetails[vendorIndex].QuotationQty = qty;
     if (checked) {
       var index = this.selectedVendorList.findIndex(x => x.RFQItemsId == vendor.RFQItemsId);
-      if (event.currentTarget.checked)
+      if (event.currentTarget.checked) {
+        //(<HTMLInputElement>document.getElementById("vis" + itemsIndex + vendorIndex)).disabled = false;
+        //(<HTMLInputElement>document.getElementById("mail" + itemsIndex + vendorIndex)).disabled = false;
+        //(<HTMLInputElement>document.getElementById("doc" + itemsIndex + vendorIndex)).disabled = false;
         this.selectedVendorList.push(vendor);
-      else
+      }
+      else {
         this.selectedVendorList.splice(index, 1);
+        //(<HTMLInputElement>document.getElementById("vis" + itemsIndex + vendorIndex)).disabled = true;
+        //(<HTMLInputElement>document.getElementById("mail" + itemsIndex + vendorIndex)).disabled = true;
+        //(<HTMLInputElement>document.getElementById("doc" + itemsIndex + vendorIndex)).disabled = true;
+        //(<HTMLInputElement>document.getElementById("vis" + itemsIndex + vendorIndex)).checked = false;
+        //(<HTMLInputElement>document.getElementById("mail" + itemsIndex + vendorIndex)).checked = false;
+        //(<HTMLInputElement>document.getElementById("doc" + itemsIndex + vendorIndex)).checked = false;
+      }
     }
   }
 
+  //select mail and vendor visibility  funcationality
+  selectVsblltyandEmail(vendor: any) {
+    var index = this.selectedVendorList.findIndex(x => x.VendorId == vendor.VendorId);
+    if ((<HTMLInputElement>document.getElementById("vis" + vendor.VendorId)).checked == true)
+      this.selectedVendorList[index].VendorVisibility = true;
+    else
+      this.selectedVendorList[index].VendorVisibility = false;
+    if ((<HTMLInputElement>document.getElementById("mail" + vendor.VendorId)).checked == true)
+      this.selectedVendorList[index].sendemail = true;
+    else
+      this.selectedVendorList[index].sendemail = false;
+  }
+
+  selectDoc(index: any, mprdoc: any, vendorid: any) {
+    var index1 = this.selectedDocList.findIndex(x => x.MprDocId == mprdoc.MprDocId && x.VendorId == mprdoc.VendorId);
+    if ((<HTMLInputElement>document.getElementById("doc" + index + mprdoc.MprDocId)).checked == true) {
+      this.mprDocument = new MPRDocument();
+      this.mprDocument.MprDocId = mprdoc.MprDocId;
+      this.mprDocument.Path = mprdoc.Path;
+      this.mprDocument.DocumentName = mprdoc.DocumentName;
+      this.mprDocument.VendorId = vendorid;
+      this.mprDocument.ItemDetailsId = mprdoc.ItemDetailsId;
+      this.mprDocument.DocumentTypeid = mprdoc.DocumentTypeid;
+      this.selectedDocList.push(this.mprDocument);
+    }
+    else {
+      this.selectedDocList.splice(index1, 1);
+    }
+  }
   //Conforamtion Data
   prepareVendorMatrix() {
     this.cols = [];
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
-
       this.rfqQuoteModel[i].suggestedVendorDetails.forEach(vendor => {
         if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
           var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType };
@@ -369,21 +433,22 @@ export class GenerateRFQComponent implements OnInit {
         }
       })
     }
-
+    this.DocListVendors = Array.from(this.selectedVendorList.reduce((m, t) => m.set(t.VendorId, t), new Map()).values());
   }
 
   bindCheckeMark(vendor: any, MPRItemDetailsid: number) {
     return this.selectedVendorList.filter(li => (li.VendorId == vendor.VendorId) && (li.MPRItemDetailsid == MPRItemDetailsid)).length > 0 ? true : false;
-
   }
 
   openrevisionDialog() {
     this.showConformationDialog = false;
-    this.showRevisionsDialog = true;
-    if (this.selectedVendorList.filter(li => li.RFQType == null).length > 0)
-      this.showTerms = true;
-    else
-      this.showTerms = false;
+    //this.showRevisionsDialog = true;
+    //if (this.selectedVendorList.filter(li => li.RFQType == null).length > 0)
+    //  this.showTerms = true;
+    //else
+    //  this.showTerms = false;
+
+    this.onVendorQuoteUpdate();
   }
 
   openConformDialog() {
@@ -420,10 +485,14 @@ export class GenerateRFQComponent implements OnInit {
       item.BankGuarantee = this.RFQRevisionData.BankGuarantee;
       item.DeliveryMinWeeks = this.RFQRevisionData.DeliveryMinWeeks;
       item.DeliveryMaxWeeks = this.RFQRevisionData.DeliveryMaxWeeks;
+      item.Remarks = this.RFQRevisionData.Remarks;
+      //item.DocList = this.selectedDocList.filter(li => li.VendorId == item.VendorId);
     });
     this.YILTermsAndConditions.forEach((el) => { el.CreatedBy = this.employee.EmployeeNo; })
-    this.RfqService.updateVendorQuotes(this.selectedVendorList, this.YILTermsAndConditions).subscribe(data => {
+    this.spinner.show();
+    this.RfqService.updateVendorQuotes(this.selectedVendorList, this.YILTermsAndConditions, this.selectedDocList).subscribe(data => {
       if (data) {
+        this.spinner.hide();
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Updated sucessfully' });
         this.showRevisionsDialog = false;
         this.router.navigate(["/SCM/RFQComparision", this.MPRRevisionId]);
@@ -506,6 +575,77 @@ export class GenerateRFQComponent implements OnInit {
     }
     this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'You have entered an invalid email address!' });
     return false;
+  }
+
+  scrollToView(id) {
+    var elmnt = document.getElementById(id);
+    elmnt.scrollIntoView(false);
+  }
+
+  viewDocument(path: string) {
+    var path1 = path.replace(/\\/g, "/");
+    path1 = this.constants.Documnentpath + path1;
+    window.open(path1);
+  }
+
+  uploadFileDialog() {
+    this.showDocumentUpload = true;
+    this.selectedDocVendors = [];
+    //this.itemdetailId = itemdetailId;
+  }
+
+  fileChange(event: any) {
+    let fileList: FileList = event.target.files;
+    if (fileList.length > 0) {
+      let file: File = fileList[0];
+      let formData: FormData = new FormData();
+      var revisionId = this.MPRRevisionId.toString();
+      formData.append(revisionId, file, file.name);
+      this.MprService.uploadFile(formData).subscribe(data => {
+        //upload in cloud server
+        this.MprService.InsertDocument(formData).subscribe(data => {
+        });
+
+        //this.mprDocument.ItemDetailsId = this.itemdetailId
+        this.path = data;
+        this.docName = file.name;
+      });
+    }
+  }
+
+  //to close upload dialog
+  onDocumentSubmit() {
+    if (this.path == "") {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Choose file' });
+      return;
+    }
+    if (this.selectedDocVendors.length == 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Vendor' });
+      return;
+    }
+    this.showDocumentUpload = false;
+    this.selectedDocVendors.forEach(item => {
+      this.mprDocument = new MPRDocument();
+      this.mprDocument.Path = this.path;
+      this.mprDocument.DocumentName = this.docName;
+      this.mprDocument.VendorId = item.VendorId;
+      this.mprDocument.ItemDetailsId = null;
+      this.mprDocument.DocumentTypeid = 5;
+      this.MPRRFQDocuments.push(this.mprDocument);
+      this.selectedDocList.push(this.mprDocument);
+    })
+  }
+  //get vendor name
+  getVendorName(vendorId) {
+    return this.selectedVendorList.filter(li => (li.VendorId == vendorId))[0].VendorName;
+  }
+
+  stringGen() {
+    var text = "";
+    var possible = "0123456789";
+    for (var i = 0; i < 3; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
   }
 
 }

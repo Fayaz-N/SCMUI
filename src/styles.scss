@@ -127,6 +127,11 @@ body .ui-widget {
   font-weight: bold;
   /*padding-right: 10px;*/
 }
+.lblEdit1 {
+  font-weight: bold;
+  width: 100%;
+  /*padding-right: 10px;*/
+}
 
 /*.ptable-cell {
   white-space: pre-wrap;
@@ -748,4 +753,18 @@ img {
   /* font-size: 11px; */
   border-width: 1px;
   border-style: solid;
+}
+.compar-card{
+  height:580px !important;
+  width:100% !important;
+  overflow:auto!important;
+}
+.gra-header{
+  position:sticky!important;
+  position:-webkit-sticky!important;
+  top:0;
+  /*z-index:999;*/
+}
+.card{
+  font-size:12px !important
 }

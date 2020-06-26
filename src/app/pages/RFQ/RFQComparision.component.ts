@@ -7,7 +7,7 @@ import { RfqService } from 'src/app/services/rfq.service ';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { rfqQuoteModel, VendorDetails, rfqTerms } from 'src/app/Models/rfq';
-import { Employee, MPRItemInfoes } from 'src/app/Models/mpr';
+import { Employee, MPRItemInfoes, DynamicSearchResult } from 'src/app/Models/mpr';
 import { parse } from 'cfb/types';
 
 @Component({
@@ -34,6 +34,8 @@ export class RFQComparisionComponent implements OnInit {
   public PreviousPrices: MPRItemInfoes;
   public showPODialog: boolean = false;
   public poRowIndex: number;
+  public rfqrevisionsList: Array<any> = [];
+  public dynamicData = new DynamicSearchResult();
 
   //page load event
   ngOnInit() {
@@ -57,9 +59,18 @@ export class RFQComparisionComponent implements OnInit {
       this.prepareRfQItems();
       if (this.rfqTermsList.length > 0)
         this.prepareTermNames();
+      this.getRfqrevisionList();
     })
   }
 
+  //ger rfqrevision list
+  getRfqrevisionList() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select rm.RfqMasterId,rm.RFQNo,rm.RFQUniqueNo,rm.VendorId,rfqr.RevisionNo,rfqr.rfqRevisionId,rfqr.ActiveRevision from RFQMaster rm inner join RFQRevisions_N rfqr on rfqr.rfqMasterId=rm.RfqMasterId where ActiveRevision=1 and MPRRevisionId=" + this.MPRRevisionId + "";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.rfqrevisionsList = data;
+    });
+  }
 
   prepareRfQItems() {
     this.prepareColsData();
@@ -78,6 +89,7 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.PONumber = this.RfqCompareItems[i].PONumber;
           rfqQuoteItems.PODate = this.RfqCompareItems[i].PODate;
           rfqQuoteItems.POPrice = this.RfqCompareItems[i].POPrice;
+          rfqQuoteItems.POUnitPrice = this.RfqCompareItems[i].POUnitPrice;
           rfqQuoteItems.PORemarks = this.RfqCompareItems[i].PORemarks;
           rfqQuoteItems.ActiveRevision = this.RfqCompareItems[i].ActiveRevision;//from rfq revision_n 
           rfqQuoteItems.ItemDescription = this.RfqCompareItems[i].ItemDescription;
@@ -246,6 +258,17 @@ export class RFQComparisionComponent implements OnInit {
     });
     return totalPrice;
   }
+
+  //calculate total po price
+  calculateTotalPOPrice() {
+    let totalPrice: number = 0;
+    this.rfqQuoteModel.forEach(item => {
+      if (item.POPrice)
+        totalPrice += parseInt(item.POPrice);
+    });
+    return totalPrice;
+  }
+
   discountCalculation(vendor: any) {
     this.tp = 0;
     if (vendor.UnitPrice && vendor.vendorQuoteQty)
@@ -303,6 +326,7 @@ export class RFQComparisionComponent implements OnInit {
   dialogCancel() {
     this.showPODialog = false;
   }
+
   addPreviousprice() {
     this.RfqService.PreviouPriceUpdate(this.PreviousPrices).subscribe(data => {
       if (data) {

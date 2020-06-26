@@ -361,11 +361,12 @@ export class RFQFormComponent implements OnInit {
     this.RFQForm.controls['QuoteValidTo'].updateValueAndValidity();
   }
 
-  showItemInfo(rfqItemId: any) {
+  showItemInfo(rfqItemId: any, qty: any) {
     this.AddItemInfodialog = true;
     this.rfqItemInfo = new RfqItemInfoModel();
     this.rfqItemInfo.RFQItemsId = rfqItemId;
     this.rfqItemInfo.CurrencyId = 0;
+    this.rfqItemInfo.Qty = qty;
     if (this.rfqRevisionModel.RFQType == "Rate Contract" || this.rfqRevisionModel.RFQType == "Repeat Order") {
       this.rfqItemInfo.Status = "Approved";
       this.addItemInfoForm.controls['Status'].setValidators([Validators.required]);

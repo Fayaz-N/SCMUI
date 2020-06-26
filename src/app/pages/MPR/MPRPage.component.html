@@ -358,7 +358,7 @@
             </div>
           </div>
         </div>
-        <p-table [value]="mprRevisionModel.MPRVendorDetails">
+        <p-table [value]="mprRevisionModel.MPRVendorDetails" [style]="{'width':'100%','overflow':'auto!important'}">
           <ng-template pTemplate="caption">
             Vendor Details :
           </ng-template>
@@ -366,24 +366,24 @@
             <tr class="mprltbldata">
               <th>S.No</th>
               <th>Name Of Vendor</th>
-              <th *ngIf="RfqGeneratedList.length>0">RFQ No</th>
+              <th style="text-align:center"  *ngIf="RfqGeneratedList.length>0">RFQ No</th>
               <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
               <th *ngIf="hideDeleteBtn">Remove</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
             <tr>
-              <td>
+              <td class="ptable-cell">
                 {{ri+1}}
               </td>
-              <td>
+              <td class="ptable-cell">
                 <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}<span *ngIf="rowData.VendorMaster.VendorCode">-</span>{{rowData.VendorMaster.VendorCode}}</div>
               </td>
-              <td *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId')]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink')}}</a></td>
-              <td style="text-align:center" *ngIf="!editing">
+              <td class="ptable-cell"  style="text-align:left"  *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><span *ngFor="let Item of RfqGeneratedList"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>&nbsp;</span></td>
+              <td class="ptable-cell" style="text-align:center" *ngIf="!editing">
                 <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
               </td>
-              <td *ngIf="hideDeleteBtn">
+              <td class="ptable-cell" *ngIf="hideDeleteBtn">
                 <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeVendor(rowData)"></button>
               </td>
             </tr>

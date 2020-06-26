@@ -1021,6 +1021,7 @@ export class MPRPageComponent implements OnInit {
     })
 
   }
+
   fileChange(event: any, formName: string) {
     let fileList: FileList = event.target.files;
     if (fileList.length > 0) {
@@ -1031,6 +1032,9 @@ export class MPRPageComponent implements OnInit {
       this.spinner.show();
       this.MprService.uploadFile(formData).subscribe(data => {
         this.spinner.hide();
+        //upload in cloud server
+        this.MprService.InsertDocument(formData).subscribe(data => {
+        });
         (<HTMLInputElement>document.getElementById("uploadInputFile")).value = "";
         this.mprDocuments = new MPRDocument();
         this.mprDocuments.Path = data;
@@ -1325,9 +1329,9 @@ export class MPRPageComponent implements OnInit {
     this.showNewVendor = true;
   }
   //bind rfq link in vendor details
-  getRfqData(vendorId: string, type: string) {
+  getRfqData(vendorId: string, type: string, rfqRevisionId:any) {
     if (this.RfqGeneratedList.length > 0) {
-      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId)[0];
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId)[0];
       if (res) {
         if (type == "rfqLink")
           return res.RFQNo;

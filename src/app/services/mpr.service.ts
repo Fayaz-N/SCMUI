@@ -169,7 +169,7 @@ export class MprService {
   uploadFile(formdata: FormData): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
       .pipe(map(data => {
-        return data;
+        return data;     
       }))
   }
   uploadExcel(formdata: FormData): Observable<any> {
@@ -199,5 +199,10 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/sendMailtoVendor/', mailObj, this.httpOptions);
   }
 
+//save file in cloud server
+  InsertDocument(formData: FormData): Observable<any> {
+    return this.http.post<any>('http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/UploadFile', formData)
+      .pipe(map(data => { return data }));
+  }
 }
 

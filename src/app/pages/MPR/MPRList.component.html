@@ -142,13 +142,13 @@
           </div>
         </div>
       </div>
-      <!--<div class="col-lg-6 col-md-6 col-sm-6 form-group">
+      <div class="col-lg-6 col-md-6 col-sm-6 form-group">
         <label class="form-label">Status</label>
         <div class="form-inline-list" style="margin-top:5px">
-          <p-checkbox value="Completed" label="Completed"></p-checkbox>&nbsp;&nbsp;&nbsp;
-          <p-checkbox value="Pending" label="Pending"></p-checkbox>
+          <p-checkbox value="1" label="Completed"  formControlName="mprStatusListId" [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>&nbsp;&nbsp;&nbsp;
+          <p-checkbox value="2" label="Pending" formControlName="mprStatusListId"  [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>
           </div>
-        </div>-->
+        </div>
       </div>
   <div class="row">
     <div class="ui-g-4 ui-md-4">
@@ -176,6 +176,7 @@
         <th style="width:100px">Department Name</th>
         <th style="width:100px" *ngIf="showCMMFilter">Purpose of issuing MPR</th>
         <th style="width:100px" *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
+        <th style="width:100px">MPRStatus</th>
         <th style="width:100px" *ngIf="showCMMFilter">Ge Ps Approval Id</th>
         <th style="width:100px" *ngIf="showCMMFilter">Buyer Group Name</th>
         <th style="width:100px">Preapared By</th>
@@ -185,7 +186,6 @@
         <th style="width:100px">Approved By</th>
         <th style="width:100px">Approver Status</th>
         <th style="width:100px">AssignTo</th>
-        <th style="width:100px">MPRStatus</th>
         <th style="width:100px">Purchase Type</th>
         <th style="width:100px">Edit</th>
         <th style="width:100px">Copy</th>
@@ -203,6 +203,7 @@
         <td class="ptable-cell"><span *ngIf="mprFilterParams.ORgDepartmentid">{{employee.OrgDepartmentName}}</span><span *ngIf="mprFilterParams.ORgDepartmentid==''">{{rowData.DepartmentName}}</span></td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
         <td *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
+        <td class="ptable-cell">{{rowData.MPRStatus}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
         <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.BuyerGroupName}}</td>
         <td class="ptable-cell">{{rowData.PreparedName}}</td>
@@ -212,7 +213,6 @@
         <td class="ptable-cell">{{rowData.ApproverName}}</td>
         <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
         <td class="ptable-cell">{{rowData.AssignEmployeeName}}</td>
-        <td class="ptable-cell">{{rowData.MPRStatus}}</td>
         <td class="ptable-cell">{{rowData.PurchaseType}}</td>
         <td><button *ngIf="(typeOfList=='MPRList' || typeOfList=='MPRPendingList') && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
         <td><button pButton type="button" icon="fa fa-copy" class="ui-button-info p-1" (click)="onRevisionCopy(rowData)"></button></td>

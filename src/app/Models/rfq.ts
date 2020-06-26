@@ -21,6 +21,7 @@ export class rfqQuoteModel {
   PONumber: number;
   PODate: Date;
   POPrice: string;
+  POUnitPrice: string;
   PORemarks: string;
   PONo: string;
   RFQNo: string;
@@ -50,9 +51,11 @@ export class RFQRevisionData {
   BankGuarantee: string;
   DeliveryMinWeeks: number;
   DeliveryMaxWeeks: number;
-  VendorVisibility: boolean
+  VendorVisibility: boolean;
+  Remarks: string;
   rfqmaster: RFQMasters;
   rfqitem: Array<RfqItemModel> = [];
+  sendemail: boolean;
 }
 
 export class VendorDetails {

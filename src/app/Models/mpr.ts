@@ -70,6 +70,7 @@ export class MPRDocument {
   UplaodedDate: Date
   Path: string;
   DocumentTypeid: number;
+  VendorId: number;
   Deleteflag: boolean
 
 }
@@ -310,6 +311,7 @@ export class mprFilterParams {
   AssignEmployee: string;
   MPRStatusId: string;
   PurchaseTypeId: string;
+  mprStatusListId: any;
 }
 
 export class MPRScope {

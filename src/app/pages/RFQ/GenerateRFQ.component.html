@@ -1,76 +1,149 @@
-<div style="float:initial">
-  <label>Add Vendor : &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openVendorDialog('showVendorDialog')"></button><br />
+<div *ngIf="mprRevisiondata.length>0" id="page1">
+  <div class="row " style="margin-top:10px">
+    <div class="col-md-6 pt-2">
+      Material Purchase Requisition : <span style="color:#dc3545;"><a [routerLink]="['/SCM/MPRForm',MPRRevisionId]">{{mprRevisiondata[0].DocumentNo}}</a></span>
+    </div>
+    <div class="col-md-3 pt-2">
+      <span class="form-inline ml-2">
+        Revision No:<span>{{mprRevisiondata[0].RevisionNo}}</span>
+      </span>
+    </div>
+  </div>
+  <div class="form-control" style="height:100%;border-radius:0px;">
+    <div class="row">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Document Number  </label>
+        <span class="valueEdit">{{mprRevisiondata[0].DocumentNo}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Document Description  </label>
+        <span class="valueEdit">{{mprRevisiondata[0].DocumentDescription}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Purpose Issuing MPR</label>
+        <span class="valueEdit">{{mprRevisiondata[0].IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Department</label>
+        <span class="valueEdit">{{mprRevisiondata[0].DepartmentName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Project Manager</label>
+        <span class="valueEdit">{{mprRevisiondata[0].ProjectManagerName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Job Code</label>
+        <span class="valueEdit">{{mprRevisiondata[0].JobCode}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Job Name</label>
+        <span class="valueEdit">{{mprRevisiondata[0].JobName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Ge Ps Approval Id</label>
+        <span class="valueEdit">{{mprRevisiondata[0].GEPSApprovalId}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Sale Order No</label>
+        <span class="valueEdit">{{mprRevisiondata[0].SaleOrderNo}}</span>
+      </div>
+    </div>
+    <div class="row " style="margin-top:10px">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Name of the Client</label>
+        <span class="valueEdit">{{mprRevisiondata[0].ClientName}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Plant Location</label>
+        <span class="valueEdit">{{mprRevisiondata[0].PlantLocation}}</span>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+        <label class="form-label lblEdit">Buyer of Group </label>
+        <span class="valueEdit">{{mprRevisiondata[0].BuyerGroupName}}</span>
+      </div>
+    </div>
+  </div>
 </div>
 <br />
-<span><input type="text" class="sug-icon" disabled />&nbsp;&nbsp;<b>Suggested Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Manual Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><input type="text" class="repeat-icon" disabled />&nbsp;&nbsp;<b>Repeated Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><b>PQP - </b>Previous Quoted Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><b>Dis - </b>Discount</span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
-<span><b>RC - </b>Rate Contract</span>&nbsp;&nbsp;&nbsp;&nbsp;
-<br /><br />
+<div id="page2">
+  <div style="float:initial">
+    <label>Add Vendor : &nbsp;</label><button type="button" pButton icon="fa fa-plus" (click)="openVendorDialog('showVendorDialog')"></button><br />
+  </div>
+  <br />
+  <span><input type="text" class="sug-icon" disabled />&nbsp;&nbsp;<b>Suggested Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Manual Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><input type="text" class="repeat-icon" disabled />&nbsp;&nbsp;<b>Repeated Vendors</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>PQP - </b>Previous Quoted Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>Dis - </b>Discount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <span><b>RC - </b>Rate Contract</span>&nbsp;&nbsp;&nbsp;&nbsp;
+  <br />
+  <br />
 
-<div class="bg-white p-2">
-  <div class="container-fluid pl-0 pr-0 border-0 bg-transparent" *ngFor="let Item of rfqQuoteModel;let k=index">
-    <div class="row">
-      <div class="col-md-12">
-        <label class="form-label font-weight-bold">Material :</label>&nbsp;<span>{{Item.ItemId}}</span>&nbsp;&nbsp;
-        <label class="form-label font-weight-bold">Material Description :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
-        <label class="form-label font-weight-bold">MPR Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
-        <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
-        <label class="form-label font-weight-bold">RC:</label><i [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
-        <span class="form-inline">
-          <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,Item)" label="Save">Assign RO</button><br />
-          &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k)" label="Save">De Assign RO</button><br />
-        </span>
-      </div>
-    </div><br />
-    <div class="row">
-      <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
-        <div *ngIf="i<=vendorsLength && vendor.VendorId" class="form-control suggested-List">
-          <span class="form-inline"><input type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
-          <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
-
-          <div class="row">
-            <div class="col-sm-6">
-              <b>PQP : </b>&nbsp;{{vendor.UnitPrice}}
-            </div>
-            <div class="col-sm-6">
-              <b>Q : </b>&nbsp;{{vendor.vendorQuoteQty}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <b>Dis : </b>&nbsp;{{vendor.Discount}}
-            </div>
-            <div class="col-sm-6">
-              <b>PT : </b>&nbsp;{{vendor.PaymentTermCode}}
-            </div>
-          </div>
-
+  <div class="bg-white p-2">
+    <div class="container-fluid pl-0 pr-0 border-0 bg-transparent" *ngFor="let Item of rfqQuoteModel;let k=index">
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label font-weight-bold">Material :</label>&nbsp;<span>{{Item.ItemId}}</span>&nbsp;&nbsp;
+          <label class="form-label font-weight-bold">Material Description :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
+          <label class="form-label font-weight-bold">MPR Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
+          <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="form-label font-weight-bold">RC:</label><i [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
+          <span class="form-inline">
+            <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,Item)" label="Save">Assign RO</button><br />
+            &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k)" label="Save">De Assign RO</button><br />
+          </span>
         </div>
-      </div>
-      <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
-        <div class="form-control manual-List">
-          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
-          <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
+      </div><br />
+      <div class="row">
+        <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
+          <!--<div *ngIf="i<=vendorsLength && vendor.VendorId" class="form-control suggested-List">-->
+          <div *ngIf="vendor.VendorId" class="form-control suggested-List">
+            <span class="form-inline"><input type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
-          <div class="row">
-            <div class="col-sm-6">
-              <b>PQP : </b>&nbsp;{{mvendor.UnitPrice}}
+            <div class="row">
+              <div class="col-sm-6">
+                <b>PQP : </b>&nbsp;{{vendor.UnitPrice}}
+              </div>
+              <div class="col-sm-6">
+                <b>Q : </b>&nbsp;{{vendor.vendorQuoteQty}}
+              </div>
             </div>
-            <div class="col-sm-6">
-              <b>Q : </b>&nbsp;{{mvendor.vendorQuoteQty}}
+            <div class="row">
+              <div class="col-sm-6">
+                <b>Dis : </b>&nbsp;{{vendor.Discount}}
+              </div>
+              <div class="col-sm-6">
+                <b>PT : </b>&nbsp;{{vendor.PaymentTermCode}}
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-sm-6">
-              <b>Dis : </b>&nbsp;{{mvendor.Discount}}
+        </div>
+        <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
+          <div class="form-control manual-List">
+            <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
+            <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
+            <div class="row">
+              <div class="col-sm-6">
+                <b>PQP : </b>&nbsp;{{mvendor.UnitPrice}}
+              </div>
+              <div class="col-sm-6">
+                <b>Q : </b>&nbsp;{{mvendor.vendorQuoteQty}}
+              </div>
             </div>
-            <div class="col-sm-6">
-              <b>PT : </b>&nbsp;{{mvendor.PaymentTermCode}}
+            <div class="row">
+              <div class="col-sm-6">
+                <b>Dis : </b>&nbsp;{{mvendor.Discount}}
+              </div>
+              <div class="col-sm-6">
+                <b>PT : </b>&nbsp;{{mvendor.PaymentTermCode}}
+              </div>
             </div>
           </div>
         </div>
@@ -99,257 +172,370 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
-
-
-
-<div class="footer">
-  <div class="row form-inline pt-2">
-    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
-      <button type="button" class="btn btn-success" (click)="openConformDialog()" label="Save">Submit</button>
-    </div>
-  </div>
-
-</div>
-<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
-  <div class="ui-g ui-fluid">
-    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList','')" label="Cancel"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-<p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px'}">
-  <div class="ui-g-12">
-    <div class="ui-g-8 form-group">
-      <label class="form-label">Vendor</label>
-      <div class="form-inline-list">
-        <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
-        <span class="input-group-append">
-          <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
-        </span>
-        <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
-      </div>
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Add New Vendor</label>
-      <div class="form-inline ml-4">
-        <p-inputSwitch [(ngModel)]="showNewVendor" (click)="showVendorClick()"></p-inputSwitch>
-        &nbsp;&nbsp;<span class="form-label">{{showNewVendor==true?'Yes':'No'}}</span>
-      </div>
-    </div>
-  </div>
-  <form [formGroup]="newVendor">
+<br />
+<div id="page3" class="form-control" style="height:100%;">
+  <div class="row">
     <div class="ui-g-12">
-      <div *ngIf="showNewVendor">
-        <label class="form-label">Vendor Name</label>
-        <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
-        <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="invalid-feedback">vendor Name Required.</span><br />
+      <div class="ui-g-4 form-group">
+        <label class="form-label">RFQ Valid Days</label>
+        <input type="number" [(ngModel)]="RFQRevisionData.RfqValidDate" class="form-control" />
       </div>
-
-      <label class="form-label">Email Id</label>
-      <div class="form-inline-list">
-        <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
-        <span class="input-group-append">
-          <button type="button" class="btn btn-primary" (click)="addEmail()" label="Add">Add</button>
-        </span>
-        <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span>
-      </div><br />
-      <div *ngFor="let email of vendorEmailList">
-        <span style="color:#28a745">{{email}}</span>&nbsp;&nbsp;
-        <i class="fa fa-remove" aria-hidden="true" (click)="removeVendorEmail(email)"></i>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Remarks</label>
+        <textarea [(ngModel)]="RFQRevisionData.Remarks" class="form-control"></textarea>
       </div>
-      <div *ngIf="showNewVendor">
-        <label class="form-label">Contact No</label>
-        <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
-        <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
-      </div>
-    </div>
-  </form>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="onVendorSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog','')" label="Cancel"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-<p-dialog header="Conform Data:" [(visible)]="showConformationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '800px'}">
-  <p-table [columns]="cols" [value]="rfqQuoteModel">
-    <ng-template pTemplate="header" let-columns>
-      <tr class="mprltbldata">
-        <th>Item Name</th>
-        <th *ngFor="let col of columns">
-          {{col.VendorName}}
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr>
-        <td>{{rowData.ItemName}}</td>
-        <td *ngFor="let col of columns">
-          <i [ngClass]="bindCheckeMark(col,rowData.MPRItemDetailsid)?'pi pi-check check-color':'pi pi-times times-color'"></i> &nbsp;<span *ngIf="col.RFQType">- &nbsp;{{col.RFQType}}</span>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="openrevisionDialog()" label="Proceed"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showConformationDialog','')" label="Back"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-
-<p-dialog header="Revision Data:" [(visible)]="showRevisionsDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '800px'}">
-  <div class="ui-g-12">
-    <div class="ui-g-4 form-group">
-      <label class="form-label">RFQ Valid Days</label>
-      <input type="number" [(ngModel)]="RFQRevisionData.RfqValidDate" class="form-control" />
-    </div>
-    <!--<div class="ui-g-4 form-group">
-      <label class="form-label">Packing Forwarding</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.PackingForwading" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Excise Duty</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.ExciseDuty" />
-    </div>-->
-  </div>
-  <!--<div class="ui-g-12">
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Sales Tax</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.salesTax" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Freight</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.freight" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Insurance</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.Insurance" />
-    </div>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Custom Duty</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.CustomsDuty" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Payment Days</label>
-      <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.PaymentTermDays" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Payment Remarks</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.PaymentTermRemarks" />
-    </div>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Bank Gurantee</label>
-      <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.BankGuarantee" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Delivery Minweeks</label>
-      <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMinWeeks" />
-    </div>
-    <div class="ui-g-4 form-group">
-      <label class="form-label">Delivery MaxWeeks</label>
-      <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMaxWeeks" />
-    </div>
-  </div>-->
-  <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0 && showTerms">
-    <label class="form-label"><b style="text-decoration:underline">Terms And Conditions:</b></label><br />
-    <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
-      <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<p>{{term.Terms}}</p>
-    </div>
-  </div>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="onVendorQuoteUpdate()" label="Save"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showRevisionsDialog','showConformationDialog')" label="Back"></button>
-    </div>
-  </p-footer>
-</p-dialog>
-
-<p-dialog header="Assign PO For Repeat Orders:" [(visible)]="assignRoDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'95%','height':'70%','overflow':'auto'}">
-  <div class="row">
-    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-      <label class="form-label">PO Number : </label>&nbsp;
-      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.PONO">
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-      <label class="form-label">RFQ Number :</label>&nbsp;
-      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.RFQNo">
-    </div>
-    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
-      <label class="form-label">Item Description or Code :</label>&nbsp;
-      <input type="text" class="form-control" [(ngModel)]="PoFilterParams.Materialdescription">
-    </div>
-  </div><br />
-  <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
-      <label class="form-label">Vendor Name:</label>&nbsp;&nbsp;
-      <div class="form-inline-list">
-        <input type="text" class="form-control forms-input" [(ngModel)]="PoFilterParams.VendorName" [value]="PoFilterParams.VendorName" (keyup)="onsrchTxtChange('venderid',PoFilterParams.VendorName,'PoFilterParams')">
-        <div class="input-group-append">
-          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'PoFilterParams','venderid',PoFilterParams.VendorName,undefined)"></button>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
-      <button type="button" class="btn btn-success" (click)="bindRepeatOrderList()">Search</button>
     </div>
   </div>
   <br />
-  <p-table [value]="repeatOrdervendorDetailsList" [style]="{'width':'97%','height':'80%','overflow':'auto!important'}"
-           [responsive]="true" [rows]="50"
-           [resizableColumns]="true"
-           columnResizeMode="expand"
-           [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
-           appendTo="body" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="PAItemID">
-    <ng-template pTemplate="header" let-columns>
-      <tr class="mprltbldata">
-        <th style="width: 3em">
-          <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-        </th>
-        <th>RFQ Split Itemid</th>
-        <th>RFQ NO</th>
-        <th>PO NO</th>
-        <th>Vendor Name</th>
-        <th>Material Code</th>
-        <th>Material Description</th>
-        <th>HSN Code</th>
-        <th>Unit Price</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
-      <tr>
-        <td>
-          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-        </td>
-        <td class="ptable-cell">{{rowData.RfqSplitItemId}}</td>
-        <td class="ptable-cell">{{rowData.RFQNo}}</td>
-        <td class="ptable-cell">{{rowData.PONO}}</td>
-        <td class="ptable-cell">{{rowData.VendorName}}</td>
-        <td class="ptable-cell">{{rowData.ItemId}}</td>
-        <td class="ptable-cell">{{rowData.Materialdescription}}</td>
-        <td class="ptable-cell">{{rowData.HsNCode}}</td>
-        <td class="ptable-cell">{{rowData.UnitPrice}}</td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <p-footer>
-    <div class="ui-dialog-buttonpane ui-helper-clearfix">
-      <button type="button" pButton icon="fa fa-check" (click)="assignRepeatorders()" label="Proceed"></button>
-      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('assignRoDialog','')" label="Back"></button>
+  <div class="row" style="margin:0px">
+    <label class="form-label"><b style="text-decoration:underline">Terms And Conditions:</b></label><br />
+  </div>
+  <div class="row" style="margin:0px">
+    <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
+      <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<span>{{term.Terms}}</span>
     </div>
-  </p-footer>
-</p-dialog>
+  </div>
+  <div class="row" style="margin:0px">
+    <div class="col-xs-4 col-md-4 col-sm-4"></div>
+    <button type="button" class="btn btn-success" (click)="openConformDialog()" label="Save">Submit</button>
+  </div>
+  </div>
+
+  <div class="icon-bar">
+    <a id="page1" (click)="scrollToView('page1')" pTooltip="MPR Details"><i class="fa fa-home"></i></a>
+    <a id="page2" (click)="scrollToView('page2')" pTooltip="Generate RFQ"><i class="fa fa-plus-square"></i></a>
+    <a id="page3" (click)="scrollToView('page3')" pTooltip="Terms & Conditions"><i class="fa fa-user-secret"></i></a>
+  </div>
+
+  <!--<div class="footer">
+    <div class="row form-inline pt-2">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+        <button type="button" class="btn btn-success" (click)="openConformDialog()" label="Save">Submit</button>
+      </div>
+    </div>
+  </div>-->
+  <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+    <div class="ui-g ui-fluid">
+      <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList','')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Select Vendor :" [(visible)]="showVendorDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '600px'}">
+    <div class="ui-g-12">
+      <div class="ui-g-8 form-group">
+        <label class="form-label">Vendor</label>
+        <div class="form-inline-list">
+          <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':vendorSubmitted && !vendorDetails.VendorName }">
+          <span class="input-group-append">
+            <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
+          </span>
+          <span *ngIf="vendorSubmitted && !vendorDetails.VendorName" class="invalid-feedback">Select Vendor.</span>
+        </div>
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Add New Vendor</label>
+        <div class="form-inline ml-4">
+          <p-inputSwitch [(ngModel)]="showNewVendor" (click)="showVendorClick()"></p-inputSwitch>
+          &nbsp;&nbsp;<span class="form-label">{{showNewVendor==true?'Yes':'No'}}</span>
+        </div>
+      </div>
+    </div>
+    <form [formGroup]="newVendor">
+      <div class="ui-g-12">
+        <div *ngIf="showNewVendor">
+          <label class="form-label">Vendor Name</label>
+          <input type="text" class="form-control" formControlName="VendorName" [(ngModel)]="newVendorDetails.VendorName" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.VendorName.errors }" />
+          <span *ngIf="vendorSubmitted && newVendor.controls.VendorName.errors" class="invalid-feedback">vendor Name Required.</span><br />
+        </div>
+
+        <label class="form-label">Email Id</label>
+        <div class="form-inline-list">
+          <input type="email" class="form-control" formControlName="Emailid" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.Emailid.errors }" [(ngModel)]="newVendorDetails.Emailid" />
+          <span class="input-group-append">
+            <button type="button" class="btn btn-primary" (click)="addEmail()" label="Add">Add</button>
+          </span>
+          <span *ngIf="vendorSubmitted && newVendor.controls.Emailid.errors" class="invalid-feedback">Enter valid email.</span>
+        </div><br />
+        <div *ngFor="let email of vendorEmailList">
+          <span style="color:#28a745">{{email}}</span>&nbsp;&nbsp;
+          <i class="fa fa-remove" aria-hidden="true" (click)="removeVendorEmail(email)"></i>
+        </div>
+        <div *ngIf="showNewVendor">
+          <label class="form-label">Contact No</label>
+          <input type="number" class="form-control" maxlength="10" formControlName="ContactNo" [ngClass]="{ 'is-invalid': vendorSubmitted &&  newVendor.controls.ContactNo.errors }" [(ngModel)]="newVendorDetails.ContactNo" />
+          <span *ngIf="vendorSubmitted && newVendor.controls.ContactNo.errors" class="invalid-feedback">Enter valid contact number.</span><br />
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onVendorSubmit('showVendorDialog','vendorDetails')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showVendorDialog','')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Conform Data:" [(visible)]="showConformationDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'900px','height':'70%','overflow':'auto'}">
+    <p-table [columns]="cols" [value]="rfqQuoteModel" [style]="{'width':'800px','height':'80%','overflow':'auto!important'}">
+      <ng-template pTemplate="header" let-columns>
+        <tr class="mprltbldata">
+          <th style="width:200px;text-align:center">Item Name</th>
+          <th style="width:300px" *ngFor="let col of columns">
+            <span class="form-inline"> {{col.VendorName}}<br /></span><span class="form-inline"><input type="checkbox" id='vis{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Ven Vis &nbsp;<input type="checkbox" id='mail{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Send mail</span>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td>
+            {{rowData.ItemName}}
+          </td>
+          <td *ngFor="let col of columns;let k=index">
+            <div class="col-sm-12 col-xs-12 col-md-12 form-inline">
+              <i [ngClass]="bindCheckeMark(col,rowData.MPRItemDetailsid)?'pi pi-check check-color':'pi pi-times times-color'"></i> &nbsp;<span *ngIf="col.RFQType">- &nbsp;{{col.RFQType}}</span>&nbsp;
+              <div *ngIf="bindCheckeMark(col,rowData.MPRItemDetailsid)">
+                <div *ngFor="let document of MPRRFQDocuments;let i=index">
+                  <div class="m-1" style="font-size: 10px" *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==rowData.MPRItemDetailsid">
+                    <span class="form-inline">
+                      <input type="checkbox" id='doc{{i+""+document.MprDocId}}' class="checkmark vndorinputchk" (click)="selectDoc(i,document,col.VendorId)">&nbsp;
+                      <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path)"></i>&nbsp;{{document.DocumentName}}
+                    </span>
+                  </div>
+                  <!--<div class="m-1" style="font-size: 10px" *ngIf="col.VendorId==document.VendorId && document.DocumentTypeid==4 || document.DocumentTypeid==5">
+                    <span class="form-inline">
+                      <input type="checkbox" id='doc{{i+""+document.MprDocId}}' class="checkmark vndorinputchk" checked >&nbsp;
+                      <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path)"></i>&nbsp;{{document.DocumentName}}
+                    </span>
+                  </div>-->
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table><br />
+    <button class="btn btn bg-primary" style="color:#fff!important;height: 34px;font-size: 10px;border-radius: 36px" (click)="uploadFileDialog()">Upload File</button><br />
+    <br />
+    <table border="1" style="border: 1px solid #c8c8c8;width:800px">
+      <tr class="mprltbldata">
+        <th style="text-align:center">Item Name</th>
+        <th style="text-align:center" *ngFor="let col of cols">
+          <span class="form-inline"> {{col.VendorName}}<br /></span>
+        </th>
+      </tr>
+      <tr>
+        <td style="text-align:center">Supporting Documents</td>
+        <td *ngFor="let col of cols;let k=index">
+          <div *ngFor="let document of MPRRFQDocuments;let i=index">
+            <div class="m-1" style="font-size: 10px" *ngIf="col.VendorId==document.VendorId && document.DocumentTypeid==5">
+              <span class="form-inline">
+                <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path)"></i>&nbsp;{{document.DocumentName}}
+              </span>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="openrevisionDialog()" label="Proceed"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showConformationDialog','')" label="Back"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Revision Data:" [(visible)]="showRevisionsDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '800px'}">
+    <div class="ui-g-12">
+      <div class="ui-g-4 form-group">
+        <label class="form-label">RFQ Valid Days</label>
+        <input type="number" [(ngModel)]="RFQRevisionData.RfqValidDate" class="form-control" />
+      </div>
+      <!--<div class="ui-g-4 form-group">
+        <label class="form-label">Packing Forwarding</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.PackingForwading" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Excise Duty</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.ExciseDuty" />
+      </div>-->
+    </div>
+    <!--<div class="ui-g-12">
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Sales Tax</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.salesTax" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Freight</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.freight" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Insurance</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.Insurance" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Custom Duty</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.CustomsDuty" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Payment Days</label>
+        <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.PaymentTermDays" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Payment Remarks</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.PaymentTermRemarks" />
+      </div>
+    </div>
+    <div class="ui-g-12">
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Bank Gurantee</label>
+        <input type="text" class="form-control" [(ngModel)]="RFQRevisionData.BankGuarantee" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Delivery Minweeks</label>
+        <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMinWeeks" />
+      </div>
+      <div class="ui-g-4 form-group">
+        <label class="form-label">Delivery MaxWeeks</label>
+        <input type="number" class="form-control" [(ngModel)]="RFQRevisionData.DeliveryMaxWeeks" />
+      </div>
+    </div>-->
+    <div class="ui-g-12" *ngIf="YILTermsAndConditions.length>0 && showTerms">
+      <label class="form-label"><b style="text-decoration:underline">Terms And Conditions:</b></label><br />
+      <div class="ui-g-12 form-inline" *ngFor="let term of YILTermsAndConditions; let i = index;">
+        <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<p>{{term.Terms}}</p>
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onVendorQuoteUpdate()" label="Save"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showRevisionsDialog','showConformationDialog')" label="Back"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Upload File :" [(visible)]="showDocumentUpload" [responsive]="true" showEffect="fade" [modal]="true" [style]="{width: '500px'}">
+    <div class="ui-g-12">
+      <!--<div class="ui-g-6 form-inline">
+        <input type="checkbox" style="height:20px;width:20px" [(ngModel)]="mprDocType">&nbsp;<p>MPR Document</p>
+      </div>
+      <div class="ui-g-6 form-inline">
+        <input type="checkbox" style="height:20px;width:20px" [(ngModel)]="rfqDocType">&nbsp;<p>RFQ Document</p>
+      </div>-->
+    </div>
+    <div class="ui-g-1">
+      <label class="form-label">File:</label>
+    </div>
+    <div class="ui-g-6">
+      <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
+      <input type="file" class="form-control file" id="uploadInputFile" (change)="fileChange($event)" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
+    </div>
+    <div class="ui-g-12">
+      <p-table #dt [value]="DocListVendors" [(selection)]="selectedDocVendors" dataKey="VendorId" [rowHover]="true" [loading]="loading">
+        <ng-template pTemplate="header">
+          <tr>
+            <th> <p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
+            <th>Vendor Name</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-vendor>
+          <tr class="ui-selectable-row">
+            <td>
+              <p-tableCheckbox [value]="vendor"></p-tableCheckbox>
+            </td>
+            <td>
+              <span class="ui-column-title">{{vendor.VendorName}}</span>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit()" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload')" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
+  <p-dialog header="Assign PO For Repeat Orders:" [(visible)]="assignRoDialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'95%','height':'70%','overflow':'auto'}">
+    <div class="row">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <label class="form-label">PO Number : </label>&nbsp;
+        <input type="text" class="form-control" [(ngModel)]="PoFilterParams.PONO">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+        <label class="form-label">RFQ Number :</label>&nbsp;
+        <input type="text" class="form-control" [(ngModel)]="PoFilterParams.RFQNo">
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+        <label class="form-label">Item Description or Code :</label>&nbsp;
+        <input type="text" class="form-control" [(ngModel)]="PoFilterParams.Materialdescription">
+      </div>
+    </div><br />
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-6 form-inline">
+        <label class="form-label">Vendor Name:</label>&nbsp;&nbsp;
+        <div class="form-inline-list">
+          <input type="text" class="form-control forms-input" [(ngModel)]="PoFilterParams.VendorName" [value]="PoFilterParams.VendorName" (keyup)="onsrchTxtChange('venderid',PoFilterParams.VendorName,'PoFilterParams')">
+          <div class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'PoFilterParams','venderid',PoFilterParams.VendorName,undefined)"></button>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 form-inline">
+        <button type="button" class="btn btn-success" (click)="bindRepeatOrderList()">Search</button>
+      </div>
+    </div>
+    <br />
+    <p-table [value]="repeatOrdervendorDetailsList" [style]="{'width':'97%','height':'80%','overflow':'auto!important'}"
+             [responsive]="true" [rows]="50"
+             [resizableColumns]="true"
+             columnResizeMode="expand"
+             [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+             appendTo="body" [(selection)]="selectedRrepeatOrdervendorDetails" dataKey="PAItemID">
+      <ng-template pTemplate="header" let-columns>
+        <tr class="mprltbldata">
+          <th style="width: 3em">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th>RFQ Split Itemid</th>
+          <th>RFQ NO</th>
+          <th>PO NO</th>
+          <th>Vendor Name</th>
+          <th>Material Code</th>
+          <th>Material Description</th>
+          <th>HSN Code</th>
+          <th>Unit Price</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+          <td>
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td class="ptable-cell">{{rowData.RfqSplitItemId}}</td>
+          <td class="ptable-cell">{{rowData.RFQNo}}</td>
+          <td class="ptable-cell">{{rowData.PONO}}</td>
+          <td class="ptable-cell">{{rowData.VendorName}}</td>
+          <td class="ptable-cell">{{rowData.ItemId}}</td>
+          <td class="ptable-cell">{{rowData.Materialdescription}}</td>
+          <td class="ptable-cell">{{rowData.HsNCode}}</td>
+          <td class="ptable-cell">{{rowData.UnitPrice}}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="button" pButton icon="fa fa-check" (click)="assignRepeatorders()" label="Proceed"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('assignRoDialog','')" label="Back"></button>
+      </div>
+    </p-footer>
+  </p-dialog>
 
 
