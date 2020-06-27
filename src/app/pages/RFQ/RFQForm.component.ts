@@ -34,6 +34,7 @@ export class RFQFormComponent implements OnInit {
   public rfqItem: RfqItemModel;
   public rfqItemInfo: RfqItemInfoModel;
   public currncyArray: any[] = [];
+  public rfqResponded: boolean = false;
 
   //page load eventl
   ngOnInit() {
@@ -61,7 +62,8 @@ export class RFQFormComponent implements OnInit {
       RFQType: ['', [Validators.required]],
       QuoteValidFrom: ['', [Validators.required]],
       QuoteValidTo: ['', [Validators.required]],
-      VendorVisibility: ['', [Validators.required]]
+      VendorVisibility: ['', [Validators.required]],
+      RFQResponded: ['', [Validators.required]]
     });
 
     this.AddItemForm = this.formBuilder.group({
@@ -100,6 +102,7 @@ export class RFQFormComponent implements OnInit {
 
     this.RFQForm.controls['RFQType'].clearValidators();
     this.RFQForm.controls['VendorVisibility'].clearValidators();
+    this.RFQForm.controls['RFQResponded'].clearValidators();
     this.AddItemForm.controls['VendorModelNo'].clearValidators();
     this.AddItemForm.controls['MfgPartNo'].clearValidators();
     this.AddItemForm.controls['MfgModelNo'].clearValidators();
@@ -110,7 +113,7 @@ export class RFQFormComponent implements OnInit {
     this.addItemInfoForm.controls['EndQty'].clearValidators();
     this.addItemInfoForm.controls['Qty'].clearValidators();
     this.addItemInfoForm.controls['UnitId'].clearValidators();
-    
+
 
     this.loadCurrency();
     this.route.params.subscribe(params => {
@@ -223,7 +226,8 @@ export class RFQFormComponent implements OnInit {
     else {
       this.rfqRevisionModel.CreatedBy = parseInt(this.employee.EmployeeNo);
       this.rfqRevisionModel.rfqmaster.CreatedBy = this.employee.EmployeeNo;
-
+      if (this.rfqResponded)
+        this.rfqRevisionModel.StatusId = 8;//rfq responded
       this.RfqService.CreateRfq(this.rfqRevisionModel).subscribe(data => {
         this.rfqRevisionModel = data;
         this.showRfqItem = true;
@@ -467,6 +471,8 @@ export class RFQFormComponent implements OnInit {
   loadRFQData(revisionId: number) {
     this.RfqService.GetRfqDetailsById(revisionId).subscribe(data => {
       this.rfqRevisionModel = data;
+      if (this.rfqRevisionModel.StatusId && this.rfqRevisionModel.StatusId == 8)
+        this.rfqResponded = true;
       this.RFQForm.controls["QuoteValidFrom"].setValue(this.rfqRevisionModel.QuoteValidFrom);
       this.RFQForm.controls["QuoteValidTo"].setValue(this.rfqRevisionModel.QuoteValidTo);
 
@@ -488,6 +494,18 @@ export class RFQFormComponent implements OnInit {
     else
       return "";
 
+  }
+
+  //bind status Text
+  getStatusText(statusId: any) {
+    if (statusId == 7)
+      return 'RFQ Generated';
+    else if (statusId == 8)
+      return 'RFQ Responded'
+    else if (statusId == 17)
+      return 'RFQ Finalized';
+    else
+      return '';
   }
 }
 

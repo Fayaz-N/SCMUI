@@ -3,6 +3,9 @@
     <div class="col-md-6 pt-2">
       RFQ Form : <span *ngIf="rfqRevisionModel.rfqmaster && rfqRevisionModel.rfqmaster.RFQNo" style="color:#dc3545;">{{rfqRevisionModel.rfqmaster.RFQNo}}</span>
     </div>
+    <div class="col-md-6 pt-2" *ngIf="rfqRevisionModel.StatusId">
+      Current Status : <span  style="color:#dc3545;">{{getStatusText(rfqRevisionModel.StatusId)}}</span>
+    </div>
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
     <div class="row " style="margin-top:10px">
@@ -29,9 +32,13 @@
         </div>
       </div>
 
-      <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group">
         <p-checkbox [(ngModel)]="rfqRevisionModel.rfqmaster.VendorVisibility" formControlName="VendorVisibility" binary="true"></p-checkbox>
         &nbsp;&nbsp;Vendor Visibility
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group" *ngIf="showRfqItem" >
+        <p-checkbox [(ngModel)]="rfqResponded" formControlName="RFQResponded" binary="true" ></p-checkbox>
+        &nbsp;&nbsp;RFQ Responded
       </div>
     </div>
     <div class="row" *ngIf="rfqRevisionModel.RFQType=='Rate Contract'">

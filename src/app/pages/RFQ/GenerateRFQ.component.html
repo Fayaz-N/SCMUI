@@ -1,7 +1,7 @@
 <div *ngIf="mprRevisiondata.length>0" id="page1">
   <div class="row " style="margin-top:10px">
     <div class="col-md-6 pt-2">
-      Material Purchase Requisition : <span style="color:#dc3545;"><a [routerLink]="['/SCM/MPRForm',MPRRevisionId]">{{mprRevisiondata[0].DocumentNo}}</a></span>
+      Material Purchase Requisition : <span style="color:#dc3545;"><a [routerLink]="['/SCM/MPRForm',MPRRevisionId]" target="_blank">{{mprRevisiondata[0].DocumentNo}}</a></span>
     </div>
     <div class="col-md-3 pt-2">
       <span class="form-inline ml-2">

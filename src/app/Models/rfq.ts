@@ -58,6 +58,7 @@ export class RFQRevisionData {
   rfqmaster: RFQMasters;
   rfqitem: Array<RfqItemModel> = [];
   sendemail: boolean;
+  StatusId: number;
 }
 
 export class VendorDetails {

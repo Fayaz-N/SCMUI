@@ -62,16 +62,17 @@ export class MPRPageComponent implements OnInit {
   public statusList: Array<any> = [];
   public displayFooter: boolean;
   public disableStatusSubmit: boolean = false;
-  public showAcknowledge; showStatusDetails; showPage: boolean = false;
+  public showAcknowledge; showStatusDetails; showPage; rfqGenerated; rfqResponded; rfqRaised: boolean = false;
   public doc: SafeResourceUrl;
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
   public RfqGeneratedList: Array<any> = [];
   public PAdetailsList: Array<any> = [];
   public RepeatOrderList: Array<MPRItemInfoes> = [];
-  public RepeatOrder; showraisePo; showManualStatus; showPALink; deleteDocument; viewRfq;editRfq: boolean = false;
+  public RepeatOrder; showraisePo; showManualStatus; showPALink; deleteDocument; viewRfq; editRfq: boolean = false;
   public vendorEmailList: Array<any> = [];
   public DispatchLocation; currentStatus: string = "";
+  public rfqCommunicationList: Array<any> = [];
 
   //page load event
   ngOnInit() {
@@ -98,6 +99,7 @@ export class MPRPageComponent implements OnInit {
     this.newVendorDetails = new VendorMaster();
     this.RfqGeneratedList = [];
     this.PAdetailsList = [];
+    this.rfqCommunicationList = [];
     this.MPRAssignment = new MPRAssignment();
     //create static drop down text from 0 to 100
     Array(100).fill(1).map((x, i) => {
@@ -249,6 +251,7 @@ export class MPRPageComponent implements OnInit {
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
         this.getPAdetails(revisionId);
+        this.getCommunicationList();
       }
       else {
         if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
@@ -973,12 +976,19 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
+    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
     })
   }
 
+  getCommunicationList() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select * from RFQCommunications";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.rfqCommunicationList = data;
+    })
+  }
   getPAdetails(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
     this.dynamicData.query = "select distinct PAID, VendorName, RFQNo,PAStatus,PAStatusUpdate, POStatus,POStatusUpdate from LoadItemsByPAID where MPRRevisionId = " + revisionId;
@@ -1125,7 +1135,7 @@ export class MPRPageComponent implements OnInit {
             this.deleteDocument = true;
           if (this.AccessList.filter(li => li.AccessName == "ViewRFQ").length > 0)
             this.viewRfq = true;
-          if (this.AccessList.filter(li => li.AccessName == "ViewRFQ").length > 0 && this.viewRfq==true)
+          if (this.AccessList.filter(li => li.AccessName == "ViewRFQ").length > 0 && this.viewRfq == true)
             this.editRfq = true;
           if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
@@ -1361,6 +1371,28 @@ export class MPRPageComponent implements OnInit {
         return "";
     }
   }
+
+  //get rfq status details
+  getRfqStatus(vendorId: string, rfqRevisionId: any) {
+    if (this.RfqGeneratedList.length > 0) {
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId)[0];
+      if (res && res.StatusId) {
+        return res.StatusId;
+      }
+      else
+        return "";
+    }
+  }
+
+  //rfq raised
+  checkrfqRaised(rfqRevisionId: any) {
+    if (this.rfqCommunicationList.length > 0)
+      var res = this.rfqCommunicationList.filter(li => li.rfqRevisionId == rfqRevisionId)[0];
+    if (res)
+      return true;
+    else
+      return false;
+  }
   showVendorClick() {
     this.newVendorDetails.Vendorid = 0;
     this.newVendor.controls['VendorName'].setValidators([Validators.required]);
@@ -1522,7 +1554,10 @@ export class MPRPageComponent implements OnInit {
   }
 
   editRFQ(rfqrevisionId: any) {
-    this.router.navigate(['/SCM/RFQForm', rfqrevisionId]);
+    // this.router.navigate(['/SCM/RFQForm', rfqrevisionId]);
+    this.router.navigate([]).then(result => {
+      window.open('/SCM/RFQForm/' + rfqrevisionId + '', '_blank');
+    });
   }
 
   //<<SCM Open issues coding Ended>>

@@ -360,13 +360,19 @@
         </div>
         <p-table [value]="mprRevisionModel.MPRVendorDetails" [style]="{'width':'100%','overflow':'auto!important'}">
           <ng-template pTemplate="caption">
-            Vendor Details :
+            <span style="float:left">Vendor Details :</span>
+            <div class="col-lg-8 col-md-8 col-sm-8">
+              <img style="height: 20px; width: 20px;" src="assets/rfqgenerate.png">&nbsp;RFQ Generated&nbsp;
+              <img style="height: 20px; width: 20px;" src="assets/rfqresponded.png">&nbsp;RFQ Responded&nbsp;
+              <img style="height: 20px; width: 20px;" src="assets/rfqraised.png">&nbsp;RFQ Raised&nbsp;
+            </div>
           </ng-template>
           <ng-template pTemplate="header">
             <tr class="mprltbldata">
               <th>S.No</th>
               <th>Name Of Vendor</th>
               <th style="text-align:center;width:200px" *ngIf="RfqGeneratedList.length>0">RFQ No</th>
+              <th style="text-align:center;">RFQ Status</th>
               <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
               <th *ngIf="hideDeleteBtn">Remove</th>
             </tr>
@@ -381,11 +387,16 @@
               </td>
               <td class="ptable-cell" style="text-align:left" *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster">
                 <div *ngIf="!viewRfq">
-                  <span *ngFor="let Item of RfqGeneratedList">
+                  <label *ngFor="let Item of RfqGeneratedList">
                     <a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" target="_blank" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>&nbsp;
-                    <i *ngIf="!editRfq && getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)"  class="fa fa-edit"  style="margin-left: 1px;color: red!important;cursor: pointer;" (click)="editRFQ(Item.rfqRevisionId)"></i><br />
-                  </span>
+                    <i *ngIf="!editRfq && getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 1px;color: red!important;cursor: pointer;" (click)="editRFQ(Item.rfqRevisionId)"></i><br />
+                  </label>
                 </div>
+              </td>
+              <td class="ptable-cell">
+                <span *ngIf="!viewRfq">
+                  <label *ngFor="let Item of RfqGeneratedList"> <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==7" style="height: 20px; width: 20px;" src="assets/rfqgenerate.png">&nbsp;&nbsp; <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==8" style="height: 20px; width: 20px;" src="assets/rfqresponded.png">&nbsp;&nbsp;<img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;" src="assets/rfqraised.png">
+                </label></span>
               </td>
               <td class="ptable-cell" style="text-align:center" *ngIf="!editing">
                 <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
@@ -802,6 +813,8 @@
               <label for="InchargeName" class="form-label">Incharge Names </label>&nbsp;&nbsp;
               <button type="button" [disabled]="form3Edit" pButton icon="fa fa-plus" (click)="showInchargeDialogToAdd('displayInchargeDialog')"></button>
             </div>
+            di
+            as
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Remarks</label>
               <div class="form-inline">
@@ -1512,6 +1525,7 @@
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit('showDocumentationDialog','documentations')" label="Submit"></button>
         <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentationDialog')" label="Cancel"></button>
+        iv
       </div>
     </p-footer>
   </p-dialog>
