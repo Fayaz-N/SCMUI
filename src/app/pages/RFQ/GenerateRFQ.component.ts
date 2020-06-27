@@ -312,7 +312,11 @@ export class GenerateRFQComponent implements OnInit {
           rfqQuoteItems.TargetSpend = this.totalRfqItems[i].TargetSpend;
           rfqQuoteItems.MprQuantity = this.totalRfqItems[i].MprQuantity;
           rfqQuoteItems.QuotationQty = this.totalRfqItems[i].QuotationQty;//rfqitems
+          rfqQuoteItems.UnitPrice = this.totalRfqItems[i].UnitPrice;//rfqitemsinfo
           rfqQuoteItems.vendorQuoteQty = this.totalRfqItems[i].vendorQuoteQty;//rfqitemsinfo
+          rfqQuoteItems.Discount = this.totalRfqItems[i].Discount;//rfqitemsinfo
+          rfqQuoteItems.PaymentTermCode = this.totalRfqItems[i].PaymentTermCode;//rfqrevision
+          rfqQuoteItems.RFQNo = this.totalRfqItems[i].RFQNo;//rfqitemsinfo
           rfqQuoteItems.RateContract = this.totalRfqItems[i].RateContract;//rfqitemsinfo
           if (this.mprVendors) {
             rfqQuoteItems.manualvendorDetails = this.totalRfqItems.filter(li => li.MPRItemDetailsid == this.totalRfqItems[i].MPRItemDetailsid);

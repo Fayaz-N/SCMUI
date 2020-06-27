@@ -97,6 +97,7 @@ export class VendorQuotationViewComponent implements OnInit {
       this.RFQCommunications.RemarksDate = new Date();
       if (this.newRevision) {
         this.RfqService.addNewRevision(this.RfqRevisionId).subscribe(data => {
+          this.displayCommunicationDialog = false;
           if (data) {
             this.RFQCommunications.RfqRevisionId = data;
             this.updateCommunication();

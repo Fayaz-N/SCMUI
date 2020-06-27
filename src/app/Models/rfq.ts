@@ -12,6 +12,8 @@ export class rfqQuoteModel {
   MprQuantity: string;
   QuotationQty: string;
   vendorQuoteQty: string;
+  PaymentTermCode: string;
+  Discount: string;
   UnitPrice: string;
   leastPrice: string;
   RfqDocStatus: string;

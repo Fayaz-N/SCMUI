@@ -104,7 +104,7 @@
         <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
           <!--<div *ngIf="i<=vendorsLength && vendor.VendorId" class="form-control suggested-List">-->
           <div *ngIf="vendor.VendorId" class="form-control suggested-List">
-            <span class="form-inline"><input type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}</b></span>
+            <span class="form-inline"><input *ngIf="!vendor.RFQNo" type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}} - {{vendor.RFQNo}}</b></span>
             <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
             <div class="row">
@@ -437,7 +437,7 @@
       <input type="file" class="form-control file" id="uploadInputFile" (change)="fileChange($event)" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
     </div>
     <div class="ui-g-12">
-      <p-table #dt [value]="DocListVendors" [(selection)]="selectedDocVendors" dataKey="VendorId" [rowHover]="true" [loading]="loading">
+      <p-table  [value]="DocListVendors" [(selection)]="selectedDocVendors" dataKey="VendorId" [rowHover]="true">
         <ng-template pTemplate="header">
           <tr>
             <th> <p-tableHeaderCheckbox></p-tableHeaderCheckbox></th>
@@ -459,7 +459,7 @@
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button type="button" pButton icon="fa fa-check" (click)="onDocumentSubmit()" label="Submit"></button>
-        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload')" label="Cancel"></button>
+        <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showDocumentUpload','')" label="Cancel"></button>
       </div>
     </p-footer>
   </p-dialog>

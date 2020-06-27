@@ -32,7 +32,7 @@
           </div>
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="SaleOrderNo" class="form-label">Document Description</label>&nbsp;<span style="color:red">*</span>
-            <textarea class="form-control" formControlName="DocumentDescription"  maxlength="200" [(ngModel)]="mprRevisionModel.MPRDetail.DocumentDescription" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.DocumentDescription.errors }"></textarea>
+            <textarea class="form-control" formControlName="DocumentDescription" maxlength="200" [(ngModel)]="mprRevisionModel.MPRDetail.DocumentDescription" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.DocumentDescription.errors }"></textarea>
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.DocumentDescription.errors" class="invalid-feedback">Document Description Required.</span>
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -70,7 +70,7 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ProjectManager" class="form-label">Project Manager</label>&nbsp;<span style="color:red">*</span>
             <div class="form-inline-list ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="ProjectManager"  (keypress)="onsrchTxtChange('ProjectManager','mprRevisionModel')" [value]="MPRPageForm1.controls.ProjectManager.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.ProjectManager.value.trim()=='' || !mprRevisionModel.ProjectManager)}">
+              <input type="text" class="form-control forms-input" formControlName="ProjectManager" (keypress)="onsrchTxtChange('ProjectManager','mprRevisionModel')" [value]="MPRPageForm1.controls.ProjectManager.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.ProjectManager.value.trim()=='' || !mprRevisionModel.ProjectManager)}">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','ProjectManager',MPRPageForm1.controls.ProjectManager.value,undefined)"></button>
               </div>
@@ -149,7 +149,7 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="BuyerGroupId" class="form-label">Buyer of Group</label>&nbsp;<span style="color:red">*</span>
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input"  formControlName="BuyerGroupId"   (keypress)="onsrchTxtChange('BuyerGroupId','mprRevisionModel')"  [value]="MPRPageForm1.controls.BuyerGroupId.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.BuyerGroupId.value.trim()=='' ||  !mprRevisionModel.BuyerGroupId)}">
+              <input type="text" class="form-control forms-input" formControlName="BuyerGroupId" (keypress)="onsrchTxtChange('BuyerGroupId','mprRevisionModel')" [value]="MPRPageForm1.controls.BuyerGroupId.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.BuyerGroupId.value.trim()=='' ||  !mprRevisionModel.BuyerGroupId)}">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','BuyerGroupId',MPRPageForm1.controls.BuyerGroupId.value,undefined)"></button>
               </div>
@@ -200,8 +200,8 @@
               <th>Mfg part No</th>
               <th>Mfg model No</th>
               <th>Target Spend</th>
-              <th>Documents</th>
-              <th>PO No</th>
+              <th style="text-align:center">Documents</th>
+              <th style="width:100px;text-align:center">PO No</th>
               <th>Edit</th>
               <th *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
               <th *ngIf="hideDeleteBtn">Remove</th>
@@ -252,7 +252,7 @@
 
             <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Target Spend Remarks</label>
-              <textarea class="form-control" type="text"  maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
+              <textarea class="form-control" type="text" maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
               <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
             </div>
             <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -269,7 +269,7 @@
               <div *ngFor="let document of MPR3Documents">
                 <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>&nbsp;
                 <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
-                <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+                <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
               </div>
               <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
                 <ng-template pTemplate="caption">
@@ -366,7 +366,7 @@
             <tr class="mprltbldata">
               <th>S.No</th>
               <th>Name Of Vendor</th>
-              <th style="text-align:center"  *ngIf="RfqGeneratedList.length>0">RFQ No</th>
+              <th style="text-align:center;width:200px" *ngIf="RfqGeneratedList.length>0">RFQ No</th>
               <th style="text-align:center"><button type="button" [disabled]="vendorFormEdit" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showVendorDialog')"></button></th>
               <th *ngIf="hideDeleteBtn">Remove</th>
             </tr>
@@ -379,7 +379,14 @@
               <td class="ptable-cell">
                 <div *ngIf="rowData.VendorMaster">{{rowData.VendorMaster.VendorName}}<span *ngIf="rowData.VendorMaster.VendorCode">-</span>{{rowData.VendorMaster.VendorCode}}</div>
               </td>
-              <td class="ptable-cell"  style="text-align:left"  *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster"><span *ngFor="let Item of RfqGeneratedList"><a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>&nbsp;</span></td>
+              <td class="ptable-cell" style="text-align:left" *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster">
+                <div *ngIf="!viewRfq">
+                  <span *ngFor="let Item of RfqGeneratedList">
+                    <a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" target="_blank" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>&nbsp;
+                    <i *ngIf="!editRfq && getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)"  class="fa fa-edit"  style="margin-left: 1px;color: red!important;cursor: pointer;" (click)="editRFQ(Item.rfqRevisionId)"></i><br />
+                  </span>
+                </div>
+              </td>
               <td class="ptable-cell" style="text-align:center" *ngIf="!editing">
                 <button [disabled]="vendorFormEdit" pButton type="button" icon="fa fa-edit" class="ui-button-info" style="margin-left: 1px;" (click)="EditVendor('showVendorDialog',rowData)"></button>
               </td>
@@ -390,8 +397,6 @@
 
           </ng-template>
         </p-table><br />
-
-
         <div *ngIf="!vendorFormEdit" style="text-align: center;">
           <button type="button" class="btn btn-success" (click)="onMPRVendorSubmit('MPRVendorId','showOtherDetailsForm','vendorFormEdit')" label="Save">Proceed</button>
         </div>
@@ -399,6 +404,36 @@
     </div>
   </form>
   <br />
+  <div id="padetails" *ngIf="PAdetailsList.length>0">
+    <p-table [value]="PAdetailsList" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="caption">
+        PA Details :
+      </ng-template>
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="text-align:center">S.No</th>
+          <th style="text-align:center">PA Id</th>
+          <th style="text-align:center">Name Of Vendor</th>
+          <th style="text-align:center">RFQ No</th>
+          <th style="text-align:center">PA Status && Date</th>
+          <th style="text-align:center">PO Status && Date</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td class="ptable-cell">
+            {{ri+1}}
+          </td>
+          <!--<td class="ptable-cell" style="text-align:center">{{rowData.PAID}}</td>-->
+          <td class="ptable-cell" style="text-align:center"><span *ngIf="!showPALink">{{rowData.PAID}}</span><a *ngIf="showPALink" [routerLink]="['/SCM/mprpa',rowData.PAID]" target="_blank" routerLinkActive="active">{{rowData.PAID}}</a></td>
+          <td class="ptable-cell" style="text-align:left">{{rowData.VendorName}}</td>
+          <td class="ptable-cell" style="text-align:center">{{rowData.RFQNo}}</td>
+          <td class="ptable-cell" style="text-align:left">{{rowData.PAStatus}} - {{rowData.PAStatusUpdate | date:constants.dateFormat}} </td>
+          <td class="ptable-cell" style="text-align:left">{{rowData.POStatus}} - {{rowData.POStatusUpdate | date:constants.dateFormat}} </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div><br />
   <form *ngIf="showOtherDetailsForm" [formGroup]="MPRPageForm3" id="MPRPageForm3">
     <!--<form [formGroup]="MPRPageForm3">-->
     <div class="my-animation">
@@ -459,7 +494,7 @@
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ScopeId',MPRPageForm3.controls.ScopeId.value,undefined)"></button>
                 </span>
-                <span *ngIf="MPRForm3Submitted && (MPRPageForm3.controls.ScopeId.value.trim()=='' ||  !mprRevisionModel.ScopeId)"  class="invalid-feedback">Select Scope Shall Include.</span>
+                <span *ngIf="MPRForm3Submitted && (MPRPageForm3.controls.ScopeId.value.trim()=='' ||  !mprRevisionModel.ScopeId)" class="invalid-feedback">Select Scope Shall Include.</span>
               </div>
             </div>
             <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -489,7 +524,13 @@
               </div>-->
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Training Required</label>
+              <label class="form-label">
+                Training
+                Required
+                v
+              </label>
+              g
+              v
               <div class="form-inline ml-4">
                 <p-inputSwitch [(ngModel)]="mprRevisionModel.TrainingRequired" (click)="trainingRequiredChange()" formControlName="TrainingRequired" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRPageForm3.controls.TrainingRequired.errors }"></p-inputSwitch>
                 &nbsp;&nbsp;<span class="form-label">{{mprRevisionModel.TrainingRequired==true?'Yes':'No'}}</span>
@@ -615,8 +656,10 @@
               <label class="lblEdit">No. of sets of Quality Assurance Plan Required</label>
               <span *ngIf="form3Edit" class="valueEdit">{{mprRevisionModel.NoOfSetsOfQAP}}</span>
             </div>-->
+            it
             <div *ngIf="!form3Edit" class="col-lg-12 col-md-12 col-sm-12 form-inline">
-              <label>Gurantee Period Required</label>&nbsp;&nbsp;&nbsp;&nbsp;
+              <label>Gurantee Period Required</label>>&
+              nbsp;&nbsp;&nbsp;&nbsp;
 
               <select class="form-control" formControlName="supplyMonths" (change)="monthChanges();">
                 <option *ngFor="let number of numbers" [ngValue]="number">{{number}}</option>
@@ -712,7 +755,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Source Of Procurement</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="ProcurementSourceId" (keypress)="onsrchTxtChange('ProcurementSourceId','mprRevisionModel')"  [value]="MPRPageForm3.controls.ProcurementSourceId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && (MPRPageForm3.controls.ProcurementSourceId.value.trim()=='' || !mprRevisionModel.ProcurementSourceId)}">
+                <input type="text" class="form-control forms-input" formControlName="ProcurementSourceId" (keypress)="onsrchTxtChange('ProcurementSourceId','mprRevisionModel')" [value]="MPRPageForm3.controls.ProcurementSourceId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && (MPRPageForm3.controls.ProcurementSourceId.value.trim()=='' || !mprRevisionModel.ProcurementSourceId)}">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','ProcurementSourceId',MPRPageForm3.controls.ProcurementSourceId.value,undefined)"></button>
                 </span>
@@ -727,7 +770,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Customs Duty For Imports</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list">
-                <input type="text" class="form-control forms-input" formControlName="CustomsDutyId"  (keypress)="onsrchTxtChange('CustomsDutyId','mprRevisionModel')" [value]="MPRPageForm3.controls.CustomsDutyId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && (MPRPageForm3.controls.CustomsDutyId.value.trim()=='' || !mprRevisionModel.CustomsDutyId)}">
+                <input type="text" class="form-control forms-input" formControlName="CustomsDutyId" (keypress)="onsrchTxtChange('CustomsDutyId','mprRevisionModel')" [value]="MPRPageForm3.controls.CustomsDutyId.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted && (MPRPageForm3.controls.CustomsDutyId.value.trim()=='' || !mprRevisionModel.CustomsDutyId)}">
                 <span class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','CustomsDutyId',MPRPageForm3.controls.CustomsDutyId.value,undefined)"></button>
                 </span>
@@ -1178,6 +1221,7 @@
     <a id="mprPage1" (click)="scrollToView('MPRPageForm1','mprPage1')" pTooltip="MPR Title"><i class="fa fa-home"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRMaterialId','mprPage2')" pTooltip="MPR Material"><i class="fa fa-info"></i></a>
     <a id="mprPage2" (click)="scrollToView('MPRVendorId','mprPage2')" pTooltip="MPR Vendors"><i class="fa fa-users"></i></a>
+    <a id="padetails" (click)="scrollToView('padetails','padetails')" pTooltip="PA Details"><i class="fa fa-first-order"></i></a>
     <a id="mprPage3" (click)="scrollToView('MPRPageForm3','mprPage3')" pTooltip="MPR Other Info"><i class="fa fa-info-circle"></i></a>
     <a id="mprPage4" (click)="scrollToView('MPRCommunicationId','mprPage4')" pTooltip="MPR Communication"><i class="fa fa-envelope"></i></a>
     <a id="mprPage5" (click)="scrollToView('MPRStatusId','mprPage5')" pTooltip="MPR Status"><i class="fa fa-globe"></i></a>
@@ -1186,6 +1230,7 @@
     <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
     <a *ngIf="showManualStatus" (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
     <a (click)="enableBuyerGrp()" pTooltip="Change Buyer Group"><i class="fa fa-shopping-cart"></i></a>
+    <a [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
   </div>
 
   <div *ngIf="displayFooter" class="footer">
@@ -1214,7 +1259,7 @@
         <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
       </div>
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-        <button type="button" class="btn btn-success"  (click)="disableFooter()">Close</button>
+        <button type="button" class="btn btn-success" (click)="disableFooter()">Close</button>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
@@ -1238,7 +1283,7 @@
         </label>&nbsp;
       </div>
     </div>
-    
+
   </div>
 
   <p-dialog [(visible)]="showFileViewer" [style]="{width: '800px', height: '600px'}" [contentStyle]="{'overflow':'visible'}">
@@ -1277,7 +1322,7 @@
         </div>
         <div class="ui-g-12 form-group">
           <label class="form-label">MPR Item Description</label>&nbsp;<span style="color:red">*</span>
-          <textarea formControlName="ItemDescription"  maxlength="200" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
+          <textarea formControlName="ItemDescription" maxlength="200" [(ngModel)]="itemDetails.ItemDescription" class="form-control" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.ItemDescription.value}"></textarea>
           <span *ngIf="MPRItemDetailsSubmitted && MPRItemDetailsForm.controls.ItemDescription.errors" class="invalid-feedback">Item Description Required.</span>
         </div>
 
@@ -1307,21 +1352,21 @@
         <div class="ui-g-12">
           <div class="ui-g-6 form-group">
             <label class="form-label">Sale Order Line Item No</label>
-            <input type="text" formControlName="SOLineItemNo"  maxlength="12"  [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
+            <input type="text" formControlName="SOLineItemNo" maxlength="12" [(ngModel)]="itemDetails.SOLineItemNo" class="form-control" />
           </div>
           <div class="ui-g-6 form-group">
             <label class="form-label">Reference If Any</label>
-            <input type="text" formControlName="ReferenceDocNo"  maxlength="100"  [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
+            <input type="text" formControlName="ReferenceDocNo" maxlength="100" [(ngModel)]="itemDetails.ReferenceDocNo" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">
           <div class="ui-g-6 form-group">
             <label class="form-label">Mfg. Part Number</label>
-            <input type="text" formControlName="MfgPartNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
+            <input type="text" formControlName="MfgPartNo" maxlength="100" [(ngModel)]="itemDetails.MfgPartNo" class="form-control" />
           </div>
           <div class="ui-g-6 form-group">
             <label class="form-label">Mfg. Model Number </label>
-            <input type="text" formControlName="MfgModelNo"  maxlength="100"  [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
+            <input type="text" formControlName="MfgModelNo" maxlength="100" [(ngModel)]="itemDetails.MfgModelNo" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">
@@ -1340,7 +1385,7 @@
             <div *ngIf="document.DocumentTypeid==1 && document.ItemDetailsId==itemDetails.Itemdetailsid">
               <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)"></i>&nbsp;
               <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
-              <i class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+              <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
             </div>
           </div>
         </div>
@@ -1375,7 +1420,7 @@
       <div class="ui-g-8 form-group">
         <label class="form-label">Vendor</label>&nbsp;<span style="color:red">*</span>
         <div class="form-inline-list">
-          <input type="text" [disabled]="showNewVendor"  [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
+          <input type="text" [disabled]="showNewVendor" [(ngModel)]="vendorDetails.VendorName" class="form-control" [ngClass]="{ 'is-invalid':!showNewVendor&&vendorSubmitted && !vendorDetails.VendorName }">
           <span class="input-group-append">
             <button type="button" [disabled]="showNewVendor" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'','venderid',vendorDetails.VendorName,undefined)"></button>
           </span>

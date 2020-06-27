@@ -67,10 +67,11 @@ export class MPRPageComponent implements OnInit {
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
   public RfqGeneratedList: Array<any> = [];
+  public PAdetailsList: Array<any> = [];
   public RepeatOrderList: Array<MPRItemInfoes> = [];
-  public RepeatOrder; showraisePo; showManualStatus: boolean = false;
+  public RepeatOrder; showraisePo; showManualStatus; showPALink; deleteDocument; viewRfq;editRfq: boolean = false;
   public vendorEmailList: Array<any> = [];
-  public DispatchLocation;currentStatus: string = "";
+  public DispatchLocation; currentStatus: string = "";
 
   //page load event
   ngOnInit() {
@@ -96,6 +97,7 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionDetails = new mprRevision();
     this.newVendorDetails = new VendorMaster();
     this.RfqGeneratedList = [];
+    this.PAdetailsList = [];
     this.MPRAssignment = new MPRAssignment();
     //create static drop down text from 0 to 100
     Array(100).fill(1).map((x, i) => {
@@ -246,6 +248,7 @@ export class MPRPageComponent implements OnInit {
         this.spinner.show();
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
+        this.getPAdetails(revisionId);
       }
       else {
         if (params["MPRRevisionId"] && this.constants.RequisitionId) { //revise mpr
@@ -322,7 +325,7 @@ export class MPRPageComponent implements OnInit {
       //if (data.length == 0)
       //  this.showList = false;
       //else
-        this.showList = true;
+      this.showList = true;
       this.searchresult = data;
       this.searchItems = [];
       var fName = "";
@@ -588,7 +591,7 @@ export class MPRPageComponent implements OnInit {
   onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
     this.displayItemDialog = true;
     this.itemDetails = new MPRItemInfoes();
-    this.itemDetails = details; 
+    this.itemDetails = details;
     this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
       this.showList = false;
       if (details.Itemid == "0000")
@@ -816,7 +819,7 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.InspectionComments = this.mprRevisionModel.InspectionComments[0];
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this, this.mprRevisionModel.PreparedOn = new Date();
-      
+
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
@@ -966,16 +969,24 @@ export class MPRPageComponent implements OnInit {
   getStatusList() {
     this.MprService.getStatusList().subscribe(data => {
       this.statusList = data;
-
     })
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
+    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId  where RFQMaster.MPRRevisionId = " + revisionId;
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
     })
   }
+
+  getPAdetails(revisionId: string) {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select distinct PAID, VendorName, RFQNo,PAStatus,PAStatusUpdate, POStatus,POStatusUpdate from LoadItemsByPAID where MPRRevisionId = " + revisionId;
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.PAdetailsList = data;
+    })
+  }
+
   onstatusUpdate(statusType: string) {
     if (statusType != "") {
       this.mprStatusUpdate.typeOfuser = statusType;
@@ -1092,7 +1103,7 @@ export class MPRPageComponent implements OnInit {
           this.mprRevisionList = data;
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
           if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId)
-          this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
+            this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
           this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
@@ -1108,6 +1119,14 @@ export class MPRPageComponent implements OnInit {
           }
 
           //Access based functionalities
+          if (this.AccessList.filter(li => li.AccessName == "MPRPAView").length > 0)
+            this.showPALink = true;
+          if (this.AccessList.filter(li => li.AccessName == "DeleteDcoument").length > 0)
+            this.deleteDocument = true;
+          if (this.AccessList.filter(li => li.AccessName == "ViewRFQ").length > 0)
+            this.viewRfq = true;
+          if (this.AccessList.filter(li => li.AccessName == "ViewRFQ").length > 0 && this.viewRfq==true)
+            this.editRfq = true;
           if (this.AccessList.filter(li => li.AccessName == "EditMPR").length > 0)
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
           if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
@@ -1308,7 +1327,7 @@ export class MPRPageComponent implements OnInit {
 
   scrollToView(id, navId) {
     var elmnt = document.getElementById(id);
-    elmnt.scrollIntoView();
+    elmnt.scrollIntoView(false);
     //var navelmnt = document.getElementById(navId);
     // navelmnt.classList.add("active");
   }
@@ -1329,12 +1348,12 @@ export class MPRPageComponent implements OnInit {
     this.showNewVendor = true;
   }
   //bind rfq link in vendor details
-  getRfqData(vendorId: string, type: string, rfqRevisionId:any) {
+  getRfqData(vendorId: string, type: string, rfqRevisionId: any) {
     if (this.RfqGeneratedList.length > 0) {
       var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId)[0];
       if (res) {
         if (type == "rfqLink")
-          return res.RFQNo;
+          return res.RFQNo + "-" + res.RevisionNo;
         else
           return res.rfqRevisionId;
       }
@@ -1435,7 +1454,7 @@ export class MPRPageComponent implements OnInit {
       }
       else {
         if (this.ValidateEmail())
-        this.vendorEmailList.push(this.newVendorDetails.Emailid);
+          this.vendorEmailList.push(this.newVendorDetails.Emailid);
       }
     }
     else {
@@ -1483,14 +1502,14 @@ export class MPRPageComponent implements OnInit {
         this[dialogName] = false;
         this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Access to add one vendor only' });
       }
-        else if (this.MPRPageForm2.controls.PurchaseTypeId.value != "Single Vendor") {
-          this[dialogName] = false;
-          this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'No Access to add  vendor' });
+      else if (this.MPRPageForm2.controls.PurchaseTypeId.value != "Single Vendor") {
+        this[dialogName] = false;
+        this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'No Access to add  vendor' });
       }
       else {
         this[dialogName] = true;
       }
-      }
+    }
   }
 
   //function to validate email
@@ -1502,7 +1521,11 @@ export class MPRPageComponent implements OnInit {
     return false;
   }
 
-   //<<SCM Open issues coding Ended>>
+  editRFQ(rfqrevisionId: any) {
+    this.router.navigate(['/SCM/RFQForm', rfqrevisionId]);
+  }
+
+  //<<SCM Open issues coding Ended>>
 }
 
 
