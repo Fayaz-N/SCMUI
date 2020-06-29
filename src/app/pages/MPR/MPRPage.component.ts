@@ -1553,7 +1553,7 @@ export class MPRPageComponent implements OnInit {
     return false;
   }
 
-  editRFQ(rfqrevisionId: any) {
+  editRFQData(rfqrevisionId: any) {
     // this.router.navigate(['/SCM/RFQForm', rfqrevisionId]);
     this.router.navigate([]).then(result => {
       window.open('/SCM/RFQForm/' + rfqrevisionId + '', '_blank');
