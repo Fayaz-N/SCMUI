@@ -8,6 +8,7 @@ import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
+import { __param } from 'tslib';
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
@@ -31,11 +32,13 @@ export class purchasePaymentComponent implements OnInit {
     public configuration: ConfigurationModel;
     public rfqterms: Array<any> = [];
     public employeelist: EmployeeModel;
+    public incompletedapprovers: any;
     public vendorDetails: MPRVendorDetail;
     public paitemdetails: Array<ItemsViewModel> = [];
     public paitem: ItemsViewModel;
     public padetails: PADetailsModel;
     public pasubmitted: boolean;
+    public panotsubmitted: boolean;
     public Requestrforapprove: boolean = true;
     public EditDialog: boolean;
     public showemployee: boolean;
@@ -67,6 +70,9 @@ export class purchasePaymentComponent implements OnInit {
     public proceedvalue: boolean = true;
     public paymentterm: string;
     public finalpaymentterm: string;
+    public paincompleted: boolean = false;
+    public updatevalue: boolean = true;
+    public cols: any[];
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
        
     }
@@ -102,7 +108,10 @@ export class purchasePaymentComponent implements OnInit {
         this.loadallpurchasetypes();
         this.LoadAllBuyerGroups();
         this.LoadAllDeaprtments();
+        this.cols = new Array<any>();
         this.EditDialog = false;
+        this.incompletedapprovers = new Array<any>();
+        this.employeelist = new EmployeeModel();
 
         this.route.params.subscribe(params => {
             if (params["PAId"]) {
@@ -110,6 +119,7 @@ export class purchasePaymentComponent implements OnInit {
                 this.getmprpabyid(this.paid);
             }
         })
+
         if (localStorage.getItem("PADetails")) {
             this.selectedItems = JSON.parse(localStorage.getItem("PADetails"));
             this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
@@ -135,7 +145,6 @@ export class purchasePaymentComponent implements OnInit {
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
             this.showemployee = true;
-            console.log("consideredrfq", this.selectedItems)
         }
         this.PAsubmitForm = this.formBuilder.group({
             PONO: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
@@ -144,12 +153,18 @@ export class purchasePaymentComponent implements OnInit {
             Remarks: ['', [Validators.required]]
         })
 
+        //this.cols = [
+        //    { field: 'Terms', header: 'Terms' },
+        //    { field: 'RFQrevisionId', header: 'Rfqrevisionid' },
+        //    { field: 'rfq', header: 'Rfqno' }
+        //];
+
         this.purchasedetails.PackagingForwarding = "Included in Price";
         this.purchasedetails.Taxes = "GST Extra as applicable";
         this.purchasedetails.Freight = "Included in Price";
         this.purchasedetails.Insurance = "Included in Price";
         this.purchasedetails.DeliveryCondition = "3 – 4 Weeks";
-        this.purchasedetails.CreditDays = 45;
+        //this.purchasedetails.CreditDays = 45;
         this.purchasedetails.ShipmentMode = "By Road";
         this.purchasedetails.PaymentTerms = "Full payment after 45 days of receipt of material";
         this.purchasedetails.Warranty = "Not Applicable";
@@ -185,12 +200,6 @@ export class purchasePaymentComponent implements OnInit {
             }
 
             this.purchasedetails.ApproversList = this.employeelist.Approvers;
-            this.purchasedetails.BuyerGroupManager = this.employeelist.BuyerGroupManager;
-            this.purchasedetails.BGRole = this.employeelist.BGRole;
-            this.purchasedetails.ProjectManager = this.employeelist.ProjectManager;
-            this.purchasedetails.PMRole = this.employeelist.PMRole;
-            this.purchasedetails.BuyerGroupNo = this.employeelist.BuyerGroupNo;
-            this.purchasedetails.ProjectMangerNo = this.employeelist.ProjectMangerNo;
             for (var i = 0; i < this.rfqterms.length; i++) {
                 this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
             }
@@ -241,44 +250,69 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
             this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
-            this.pasubmitted = true;
-            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-                this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
-            }
-            this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
-            this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
-            this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
-            if (this.target > this.sum) {
-                this.savingorexcessamount = this.target - this.sum;
-            }
-            else {
-                this.savingorexcessamount = this.target - this.sum;
-            }
-            this.selectedvendor = this.purchasedetails.Item[0]["VendorName"];
-            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-                this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
-                //item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
-            }
-            this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
-
-            //var employeeapprove;
-
-            for (var i = 0; i < this.purchasedetails.ApproversList.length; i++) {
-                var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo;
-                if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
-                    this.approvedemployee = true
-                    this.rolename = this.purchasedetails.ApproversList[i]["RoleName"];
-                    if (this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Approved" || this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Rejected") {
-                        this.disableApprovers = true;
+            if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted") {
+                this.pasubmitted = true;
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
+                }
+                this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
+                this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
+                this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
+                if (this.target > this.sum) {
+                    this.savingorexcessamount = this.target - this.sum;
+                }
+                else {
+                    this.savingorexcessamount = this.target - this.sum;
+                }
+                this.selectedvendor = this.purchasedetails.Item[0]["VendorName"];
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
+                }
+                this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+                for (var i = 0; i < this.purchasedetails.ApproversList.length; i++) {
+                    var employeeapprove = this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo;
+                    if (this.purchasedetails.ApproversList[i]["EmployeeNo"] === this.employee.EmployeeNo) {
+                        this.approvedemployee = true
+                        this.rolename = this.purchasedetails.ApproversList[i]["RoleName"];
+                        if (this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Approved" || this.purchasedetails.ApproversList[i]["ApprovalStatus"] == "Rejected") {
+                            this.disableApprovers = true;
+                        }
                     }
                 }
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.rfqrevisionid.push(this.purchasedetails.Item[i]["RFQRevisionId"]);
+                }
+                this.displayRfqTerms(this.rfqrevisionid)
+                this.showemployee = true;
+            } 
+            else {
+                this.paincompleted = true;
+                this.displayapproveEmployee1();
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
+                }
+                this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
+                this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
+                this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
+                if (this.target > this.sum) {
+                    this.savingorexcessamount = this.target - this.sum;
+                }
+                else {
+                    this.savingorexcessamount = this.target - this.sum;
+                }
+                this.selectedvendor = this.purchasedetails.Item[0]["VendorName"];
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
+                }
+                this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.rfqrevisionid.push(this.purchasedetails.Item[i]["RFQRevisionId"]);
+                }
+                this.displayRfqTerms(this.rfqrevisionid)
+                this.showemployee = true;
             }
-            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-                this.rfqrevisionid.push(this.purchasedetails.Item[i]["RFQRevisionId"]);
-            }
-            this.displayRfqTerms(this.rfqrevisionid)
-            //this.displayapproveEmployee();
-            this.showemployee = true;
+
 
         })
     }
@@ -289,9 +323,8 @@ export class purchasePaymentComponent implements OnInit {
     }
 
     displayapproveEmployee() {
-        debugger;
+        console.log("items1", this.selectedItems)
         this.MPRItemDetailsid = [];
-        //this.employeelist.Approvers = [];
         let item = new ConfigurationModel();
         if (this.selectedItems.length > 0) {
             item.MPRItemDetailsid = [];
@@ -307,10 +340,35 @@ export class purchasePaymentComponent implements OnInit {
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data['Table'];
                 this.employeelist.Approvers = data['Table'];
-                //document.getElementsByClassName("displayemployee")[0].scrollIntoView(true)
+                this.incompletedapprovers = this.employeelist;
             })
         }
     }
+    displayapproveEmployee1() {
+        this.MPRItemDetailsid = [];
+        let item = new ConfigurationModel();
+        if (this.purchasedetails.Item.length > 0) {
+            item.MPRItemDetailsid = [];
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"];
+            }
+
+            item["UnitPrice"] = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
+            item["TargetSpend"] = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
+            item["DeptID"] = this.purchasedetails.DepartmentID;
+            item["PaymentTermCode"] = this.purchasedetails.Item[0]["PaymentTermCode"];
+            for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"])
+                item.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
+            }
+            this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            this.paService.ApproveItems(item).subscribe(data => {
+                this.employeelist = data['Table'];
+                this.employeelist.Approvers = data['Table'];
+            })
+        }
+    }
+
 
 
     fileChange(event: any) {
@@ -395,8 +453,6 @@ export class purchasePaymentComponent implements OnInit {
         var distinct = [];
         this.paService.LoadVendorbymprdeptids(MPRItemDetailsid).subscribe(data => {
             this.vendor = data;
-            //Array.from(new Set(this.vendor.map((items: any) => items.VendorName)))
-            //this.vendor.map(x => x.Vendorid).filter((value, index, self) => self.indexOf(value) === index)
         })
     }
 
@@ -410,7 +466,12 @@ export class purchasePaymentComponent implements OnInit {
     displayRfqTerms(rfqrevisionid: any) {
         this.paService.getrfqtermsbyrevisionid(rfqrevisionid).subscribe(data => {
             this.rfqterms = data;
-
+            this.cols = [
+                { field: 'Terms', header: 'Terms' },
+                { field: 'rfqrevisionid', header: 'rfqrevisionid' },
+                { field: 'Rfq', header: 'Rfqno' }
+            ];
+            console.log("terms", this.cols)
             let lookup = {};
             for (let i = 0; i < this.rfqterms.length; i++) {
                 if (!lookup[this.rfqterms[i]]) {
@@ -525,6 +586,57 @@ export class purchasePaymentComponent implements OnInit {
             return false;
         }
         return true;
+
+    }
+    onSearchChange(creditdays: any) {
+        console.log("payment", creditdays)
+        //let value = event;
+        this.displaycustomapproveEmployee(creditdays);
+    }
+    displaycustomapproveEmployee(creditdays: any) {
+        this.MPRItemDetailsid = [];
+        let item = new ConfigurationModel();
+        if (this.selectedItems.length > 0) {
+            item.MPRItemDetailsid = [];
+            item["UnitPrice"] = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
+            item["TargetSpend"] = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current);
+            item["DeptID"] = this.selectedItems[0].DepartmentId;
+            item["PaymentTermCode"] = creditdays;
+            for (var i = 0; i < this.selectedItems.length; i++) {
+                this.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid)
+                item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
+            }
+            this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            this.paService.ApproveItems(item).subscribe(data => {
+                this.employeelist = data['Table'];
+                this.employeelist.Approvers = data['Table'];
+            })
+        }
+    }
+    UpdatePurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
+        
+        if (purchasedetails.PurchaseTypeId != undefined && purchasedetails.PurchaseModeId != undefined) {
+            this.updatevalue = false;
+            this.purchasedetails.PAId = this.paid;
+            this.purchasedetails.Item = [];
+            this.purchasedetails.ApproversList = [];
+            this.purchasedetails.TermId = [];
+            this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
+            this.purchasedetails.ApproversList = this.employeelist.Approvers;
+            for (var i = 0; i < this.rfqterms.length; i++) {
+                this.purchasedetails.TermId.push(this.rfqterms[i]["RfqTermsid"])
+            }
+            this.purchasedetails.RequestedBy = this.employee.EmployeeNo;
+            this.paService.UpdatePurchaseAuthorization(purchasedetails).subscribe(data => {
+                this.paid = data.Sid;
+                this.uploaddocuments = true;
+                this.proceedvalue = false;
+                
+            })
+        }
+        else {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select PurchaseType and Purchase Mode' });
+        }
 
     }
 }

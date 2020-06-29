@@ -35,6 +35,7 @@ import { MPRPAApproversListComponent } from './purchase-authorization/MPRPAAppro
 import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component';
 import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
+import { PAIncompletedListComponent } from './purchase-authorization/PAIncompletedList.component';
 
 const routes: Routes = [{
   path: '',
@@ -87,7 +88,8 @@ const routes: Routes = [{
     { path: "MPRPAApproverList", component: MPRPAApproversListComponent, canActivate: [AuthGuard] },
     { path: "MPRStatusChart", component: MPRStatusChartComponent, canActivate: [AuthGuard] },
 
-    { path: "pareports", component: PAReportListComponent, canActivate: [AuthGuard] }
+      { path: "pareports", component: PAReportListComponent, canActivate: [AuthGuard] },
+    { path: "incompletedpa", component: PAIncompletedListComponent, canActivate: [AuthGuard] }
     // {
     //      path: '',
     //      redirectTo: 'Login',

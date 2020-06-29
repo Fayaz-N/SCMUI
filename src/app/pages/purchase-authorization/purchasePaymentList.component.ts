@@ -6,7 +6,8 @@ import { FormControl } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
 import 'rxjs/add/observable/of';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel } from 'src/app/Models/PurchaseAuthorization'
+import { MessageService } from 'primeng/api';
+import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, padeletemodel } from 'src/app/Models/PurchaseAuthorization'
 
 
 @Component({
@@ -16,7 +17,7 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel,
 
 export class purchasePaymentListComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router) {}
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService) {}
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
@@ -149,6 +150,14 @@ export class purchasePaymentListComponent implements OnInit {
         // I want to get the full object and display the name
         if (!option) return '';
         return option.BuyerGroup;
+    }
+    deletepa(padelete: padeletemodel) {
+        padelete.employeeno = this.employee.EmployeeNo;
+        this.paService.Deletepa(padelete).subscribe(data => {
+            this.paid = data;
+            this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'PA Deleted Successfully' });
+            this.GetMprpadetailsBySearch(this.pofilters);
+        })
     }
 
 }

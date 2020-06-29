@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -87,6 +87,9 @@ export class purchaseauthorizationservice {
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/InsertPurchaseAuthorization', purchasedetails, this.httpOptions);
     }
+    UpdatePurchaseAuthorization(purchasedetails: mprpadetailsmodel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/UpdatePurchaseAuthorization', purchasedetails, this.httpOptions);
+    }
     finalpa(purchasedetails: mprpadetailsmodel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/finalpa', purchasedetails, this.httpOptions);
     }
@@ -126,7 +129,7 @@ export class purchaseauthorizationservice {
         return this.http.post<any>(this.url + 'PA/UpdateMprpaApproverStatus', approvers, this.httpOptions);
     }
     getrfqtermsbyrevisionid(rfqrevisionid: any): Observable<any> {
-        return this.http.post<any>(this.url + 'PA/getrfqtermsbyrevisionid', rfqrevisionid, this.httpOptions);
+        return this.http.post<any>(this.url + 'PA/getrfqtermsbyrevisionsid1', rfqrevisionid, this.httpOptions);
     }
     InsertPAitems(paitem: ItemsViewModel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/InsertPaitems', paitem, this.httpOptions);
@@ -151,5 +154,11 @@ export class purchaseauthorizationservice {
             .pipe(map(data => {
                 return data;
             }))
+    }
+    Deletepa(data: padeletemodel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/DeletePAByPAid', data, this.httpOptions)
+    }
+    loadAllIncompltedpalist(model: painutmodel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/LoadIncompletedPAlist', model, this.httpOptions)
     }
 } 

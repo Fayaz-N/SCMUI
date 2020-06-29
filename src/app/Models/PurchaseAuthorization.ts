@@ -106,6 +106,7 @@ export class ItemsViewModel {
     MRPItemsDetailsID: number;
     MPRItemDetailsid: number;
     MPRRevisionId: number;
+    Mprrfqsplititemid: number;
 }
 export class EmployeeModel {
     EmployeeNo: number;
@@ -177,6 +178,10 @@ export class mprpapurchasemodesmodel {
     PurchaseMode: string;
     XOrder: number;
 }
+export class padeletemodel {
+    PAId: number;
+    employeeno: string;
+}
 export class mprpadetailsmodel {
     PAId: number;
     RequestedBy: string;
@@ -214,6 +219,7 @@ export class mprpadetailsmodel {
     PMRole: string;
     LoginEmployee: string;
     ProjectManager: string;
+    PAStatus: string;
     ProjectMangerNo: string;
     purchasemodes: mprpapurchasemodesmodel;
     purchasetypes: mprpapurchasetypesmodel;
@@ -282,9 +288,16 @@ export class PAApproverDetailsInputModel {
 export class StatusCheckModel {
     sid: number;
     status: string;
+    paid: number;
 }
 export class PAReportInputModel {
     FromDate: Date;
     ToDate: Date;
     MPRRevisionId: number;
+}
+export class painutmodel {
+    PAId: number;
+    mprno: string;
+    employeeno: string;
+    padate: Date;
 }

@@ -57,6 +57,17 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.vendorDetails = new MPRVendorDetail();
         this.buyergroups = new MPRBuyerGroup();
         this.projectmanger = new ProjectManager();
+
+        this.activeroute.params.subscribe(params => {
+            if (params["Mprrevisionid"]) {
+                this.padetails.RevisionID = params["Mprrevisionid"]
+                this.displayitems(this.padetails)
+            }
+        })
+        if (this.padetails.RevisionID!=0) {
+            this.displayitems(this.padetails);
+        }
+        
         //this.checked = false;
     }
     displayitems(padetails: PADetailsModel) {

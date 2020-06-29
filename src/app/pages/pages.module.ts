@@ -61,7 +61,7 @@ import { DashboardComponent } from './Dashboard/Dashboard.component';
 import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 
 import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
-
+import { PAIncompletedListComponent } from './purchase-authorization/PAIncompletedList.component';
 
 @NgModule({
   imports: [
@@ -130,7 +130,8 @@ import { PAReportListComponent } from './purchase-authorization/PAReportList.com
     MPRPAApproversListComponent,
     DashboardComponent,
     MPRStatusChartComponent,
-      PAReportListComponent
+      PAReportListComponent,
+      PAIncompletedListComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]
