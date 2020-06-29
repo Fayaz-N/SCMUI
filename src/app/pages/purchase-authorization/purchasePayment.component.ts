@@ -466,11 +466,21 @@ export class purchasePaymentComponent implements OnInit {
     displayRfqTerms(rfqrevisionid: any) {
         this.paService.getrfqtermsbyrevisionid(rfqrevisionid).subscribe(data => {
             this.rfqterms = data;
-            this.cols = [
-                { field: 'Terms', header: 'Terms' },
-                { field: 'rfqrevisionid', header: 'rfqrevisionid' },
-                { field: 'Rfq', header: 'Rfqno' }
-            ];
+            if (this.selectedItems.length != 0) {
+                this.cols = [
+                    { field: 'Terms', header: 'Terms' },
+                    { field: 'RFQrevisionId', header: 'RFQrevisionId' },
+                    { field: this.selectedItems[0]["RFQNo"], header: this.selectedItems[0]["RFQNo"] }
+                ];
+            }
+            else {
+                this.cols = [
+                    { field: 'Terms', header: 'Terms' },
+                    { field: 'RFQrevisionId', header: 'RFQrevisionId' },
+                    { field: this.purchasedetails.Item[0]["RFQNo"], header: this.purchasedetails.Item[0]["RFQNo"] }
+                ];
+            }
+
             console.log("terms", this.cols)
             let lookup = {};
             for (let i = 0; i < this.rfqterms.length; i++) {

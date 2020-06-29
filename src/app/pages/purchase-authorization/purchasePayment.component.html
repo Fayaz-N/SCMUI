@@ -9,9 +9,9 @@
         <label for="BuyerGroup" class="form-label label" style="margin-left: 12px;">BuyerGroup:</label>&nbsp;&nbsp;
         <input type="text" disabled="true" class="form-control" style="margin-left: 12px;width:60%;" [value]="Buyergroup">
       </div>
-      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
+      <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-12 col-md-12 col-sm-12 form-group">
         <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
-        <span class="valueEdit">: {{purchasedetails.buyergroup.BuyerGroup}}</span>
+        <span class="valueEdit"> {{purchasedetails.buyergroup.BuyerGroup}}</span>
       </div>
       <div *ngIf="paincompleted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
         <label for="BuyerGroup" class="form-label lblEdit" style="margin-left: 0px;">BuyerGroup:</label>
@@ -32,7 +32,7 @@
         <span class="valueEdit"> {{purchasedetails.department.Department}}</span>
       </div>
     </div>
-  </div><br />
+  </div>
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
@@ -42,8 +42,8 @@
         </select>
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
-        <label for="Purchasetype" class="form-label lblEdit" style="margin-left: 0px;">Purchase Type</label>
-        <span class="valueEdit">: {{purchasedetails.purchasetypes.PurchaseType}}</span>
+        <label for="Purchasetype" class="form-label lblEdit" style="margin-left: 0px;">Purchase Type:</label>
+        <span class="valueEdit"> {{purchasedetails.purchasetypes.PurchaseType}}</span>
       </div>
       <div class="form-group" *ngIf="paincompleted">
         <label for="Purchasetype" class="form-label label" style="margin-left: 12px;">Purchase Type:<span class="required-asterisk" style="color:red">*</span></label>
@@ -60,8 +60,8 @@
         </select>
       </div>
       <div *ngIf="pasubmitted" style="margin-top:5px" class="col-lg-8 col-md-8 col-sm-8 form-group">
-        <label for="Purchasemode" class="form-label lblEdit" style="margin-left: 0px;">Purchase Mode</label>
-        <span class="valueEdit">: {{purchasedetails.purchasemodes.PurchaseMode}}</span>
+        <label for="Purchasemode" class="form-label lblEdit" style="margin-left: 0px;">Purchase Mode:</label>
+        <span class="valueEdit"> {{purchasedetails.purchasemodes.PurchaseMode}}</span>
       </div>
       <div class="form-group" *ngIf="paincompleted">
         <label for="PurchaseMode" class="form-label label" style="margin-left: 12px;">Purchase Mode:<span class="required-asterisk" style="color:red">*</span></label>&nbsp;&nbsp;
@@ -70,7 +70,7 @@
         </select>
       </div>
     </div>
-  </div><br />
+  </div>
   <div class="row">
     <div class="col-md-6 col-lg-6 col-sm-6">
       <div class="form-group" *ngIf="!pasubmitted && !paincompleted">
@@ -440,14 +440,16 @@
   </div>
 </div>
 <br />
-
+<div class="row head-text pl-0" style="margin-left:0px;width:100%">
+  <div class="col-md-6 pt-2"> RfqTerms:</div>
+</div>
 <div class="form-control" style="height:100%;width:100%">
   <div *ngIf="!pasubmitted && !paincompleted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px;overflow-x:scroll">
     <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
       <p-table #dt [columns]="cols" [value]="rfqterms">
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th>
+            <th *ngFor="let col of columns">
               {{col.header}}
             </th>
           </tr>
@@ -465,49 +467,49 @@
   </div>
   <div *ngIf="pasubmitted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
+      <p-table #dt [columns]="cols" [value]="rfqterms">
+        <ng-template pTemplate="header" let-columns>
           <tr>
-            <th><span style="float:left">Terms </span></th>
-            <th><span style="float:left">RfqRevisionId </span> </th>
-            <th rowspan="2"><span colspan="5" style="float:left">RFQNo </span></th>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
           </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let terms of rfqterms">
-            <td>{{terms.Terms}}</td>
-            <td>{{terms.RFQrevisionId}}</td>
-            <td>{{terms.RFQNo}}</td>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
           </tr>
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </div>
   </div>
   <div *ngIf="paincompleted" class="row" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <div *ngIf="rfqterms.length>0" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
+      <p-table #dt [columns]="cols" [value]="rfqterms">
+        <ng-template pTemplate="header" let-columns>
           <tr>
-            <th><span style="float:left">Terms </span></th>
-            <th><span style="float:left">RfqRevisionId </span> </th>
-            <th rowspan="2"><span colspan="5" style="float:left">RFQNo </span></th>
+            <th *ngFor="let col of columns">
+              {{col.header}}
+            </th>
           </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let terms of rfqterms">
-            <td>{{terms.Terms}}</td>
-            <td>{{terms.RFQrevisionId}}</td>
-            <td>{{terms.RFQNo}}</td>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
           </tr>
-        </tbody>
-      </table>
+        </ng-template>
+      </p-table>
     </div>
   </div>
 </div>
-<div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
+<div *ngIf="showemployee && !pasubmitted && !paincompleted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Approvers:</div>
 </div>
-<div class="form-control" style="height:100%;width:100%">
+<div *ngIf="showemployee && !pasubmitted && !paincompleted" class="form-control" style="height:100%;width:100%">
   <div class="row inline">
     <div class="col-md-6 col-lg-6 col-sm-6" style="display:inline">
       <label for="ProjectName" class="form-label" style="margin-left: 0px;">Credit Days:</label>
