@@ -142,14 +142,22 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-6 col-md-6 col-sm-6 form-group">
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Status</label>
         <div class="form-inline-list" style="margin-top:5px">
-          <p-checkbox value="1" label="Completed"  formControlName="mprStatusListId" [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>&nbsp;&nbsp;&nbsp;
-          <p-checkbox value="2" label="Pending" formControlName="mprStatusListId"  [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>
-          </div>
+          <p-checkbox value="1" label="Completed" formControlName="mprStatusListId" [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>&nbsp;&nbsp;&nbsp;
+          <p-checkbox value="2" label="Pending" formControlName="mprStatusListId" [(ngModel)]="mprFilterParams.mprStatusListId"></p-checkbox>
         </div>
       </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">PO NO</label>
+        <input class="form-control" type="text" formControlName="PONO" [(ngModel)]="mprFilterParams.PONO">
+      </div>
+      <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+        <label class="form-label">PA Id</label>
+        <input class="form-control" type="text" formControlName="PAID" [(ngModel)]="mprFilterParams.PAID">
+      </div>
+    </div>
   <div class="row">
     <div class="ui-g-4 ui-md-4">
     </div>

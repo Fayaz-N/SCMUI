@@ -312,6 +312,8 @@ export class mprFilterParams {
   MPRStatusId: string;
   PurchaseTypeId: string;
   mprStatusListId: any;
+  PONO: string;
+  PAID: string;
 }
 
 export class MPRScope {

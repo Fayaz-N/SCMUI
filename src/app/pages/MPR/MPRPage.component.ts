@@ -39,7 +39,7 @@ export class MPRPageComponent implements OnInit {
   public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
   public formEdit = false;
-  public formName; statusAckTxt: string = "AckNowledge";
+  public formName; statusAckTxt: string = "Acknowledge";
   public txtName: string;
   public mprRevisionModel: mprRevision;
   public mprRevisionList: Array<mprRevision> = [];

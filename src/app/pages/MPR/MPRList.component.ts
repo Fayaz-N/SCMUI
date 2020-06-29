@@ -82,7 +82,9 @@ export class MPRListComponent implements OnInit {
       AssignEmployee: ['', [Validators.required]],
       MPRStatusId: ['', [Validators.required]],
       PurchaseTypeId: ['', [Validators.required]],
-      mprStatusListId: ['', [Validators.required]]
+      mprStatusListId: ['', [Validators.required]],
+      PONO: ['', [Validators.required]],
+      PAID: ['', [Validators.required]]
     });
 
     this.mprFilterParams.ListType = this.typeOfList;
