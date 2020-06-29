@@ -120,8 +120,7 @@
       <span class="Supplier">: {{purchasedetails.SupplierReference}}</span>
 
       <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
-
-      <span class="Supplier" *ngIf="target>sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
+      <span class="Supplier" *ngIf="target>=sum" style="color:green">: {{savingorexcessamount| currency:'INR'}} <span style="color:green;padding:35px">Total purchase cost value is with in the Target spend value</span></span>
       <span class="Supplier" *ngIf="target<sum" style="color:red">: {{savingorexcessamount| currency:'INR'}} <span style="color:red;padding:35px">Total purchase cost value is exceeding the Target spend value</span></span>
 
     </div>
@@ -372,7 +371,7 @@
       </tbody>
     </table>
     <div class="row col-md-6 col-lg-6 col-sm-6">
-      <label style="width:200px">RfqComparison:<span *ngFor="let item of selectedItems"><a [routerLink]="['/SCM/RFQComparision',item.MPRRevisionId]" target="_blank" routerLinkActive="active">{{item.DocumentNo}}</a></span></label> &nbsp;&nbsp;
+      <label style="width:200px">RfqComparison:<span ><a [routerLink]="['/SCM/RFQComparision',mprrevisionid]" target="_blank" routerLinkActive="active">{{purchasedetails.mprno}}</a></span></label> &nbsp;&nbsp;
     </div>
   </div>
 </div>
@@ -405,6 +404,9 @@
       </tr>
     </tbody>
   </table>
+  <div class="row col-md-6 col-lg-6 col-sm-6">
+    <label style="width:200px">RfqComparison:<span *ngFor="let item of purchasedetails.Item"><a [routerLink]="['/SCM/RFQComparision',item.MPRRevisionId]" target="_blank" routerLinkActive="active">{{item.DocumentNo}}</a></span></label> &nbsp;&nbsp;
+  </div>
 </div>
 <div *ngIf="paincompleted" class="form-control" style="height:100%">
   <table class="table table-bordered">
@@ -509,31 +511,40 @@
 <div *ngIf="showemployee && !pasubmitted && !paincompleted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Approvers:</div>
 </div>
-<div *ngIf="showemployee && !pasubmitted && !paincompleted" class="form-control" style="height:100%;width:100%">
+<div *ngIf="showemployee && !pasubmitted && !paincompleted" class="form-control" style="height:100%;width:100%;position:relative">
+
   <div class="row inline">
-    <div class="col-md-6 col-lg-6 col-sm-6" style="display:inline">
+    <div class="col-md-6 col-lg-6 col-sm-6" style="display:inline;margin-left:14px">
       <label for="ProjectName" class="form-label" style="margin-left: 0px;">Credit Days:</label>
       <input type="text" [(ngModel)]="purchasedetails.CreditDays" class="form-control" (input)="onSearchChange($event.target.value)" style="margin-left: 0px;width:50%" />
       <!--<button type="submit" class="btn btn-primary" (click)="addInput(purchasedetails.CreditDays)"><i class="fa fa-search"></i></button>-->
     </div>
   </div>
   <div *ngIf="showemployee && !pasubmitted && !paincompleted " style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th><span style="float:left">ApproverName </span> </th>
-            <th><span style="float:left">Role </span></th>
-          </tr>
-        </thead>
-        <tbody>
+      <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
+        <table class="table table-bordered">
+          <ngx-spinner bdOpacity=0.9
+                       bdColor="#f4f4f9"
+                       size="medium"
+                       color="#1010ee"
+                       type="ball-clip-rotate"
+                       [fullScreen]="false">
+          </ngx-spinner>
+            <thead>
+              <tr>
+                <th><span style="float:left">ApproverName </span> </th>
+                <th><span style="float:left">Role </span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of employeelist">
+                <td>{{app.Approvername}}</td>
+                <td>{{app.rolename}}</td>
+              </tr>
+            </tbody>
+          
+        </table>
 
-          <tr *ngFor="let app of employeelist">
-            <td>{{app.Approvername}}</td>
-            <td>{{app.rolename}}</td>
-          </tr>
-        </tbody>
-      </table>
     </div>
   </div>
   <div *ngIf="paincompleted" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">

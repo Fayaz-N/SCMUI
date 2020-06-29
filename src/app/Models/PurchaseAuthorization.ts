@@ -184,6 +184,7 @@ export class padeletemodel {
 }
 export class mprpadetailsmodel {
     PAId: number;
+    mprno: string;
     RequestedBy: string;
     RequestedOn: Date;
     PurchaseTypeId: number;

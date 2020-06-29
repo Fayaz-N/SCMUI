@@ -79,6 +79,7 @@ const routes: Routes = [{
     { path: 'Viewaccess', component: ViewAccessComponent, canActivate: [AuthGuard] },
     { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
     { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
+    { path: "PADetails/:RevisionId", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard]  },
     { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
     { path: "AddSlab", component: AddSlabsComponent, canActivate: [AuthGuard] },
     { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },

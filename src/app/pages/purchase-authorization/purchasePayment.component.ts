@@ -72,6 +72,7 @@ export class purchasePaymentComponent implements OnInit {
     public finalpaymentterm: string;
     public paincompleted: boolean = false;
     public updatevalue: boolean = true;
+    public mprno: string;
     public cols: any[];
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
        
@@ -142,6 +143,8 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.DepartmentID = this.selectedItems[0].DepartmentId;
             this.Department = this.selectedItems[0].Department;
             this.vendorname = this.selectedItems[0].VendorName;
+            this.purchasedetails.mprno = this.selectedItems[0].DocumentNo;
+            this.mprrevisionid = this.selectedItems[0].MPRRevisionId;
             this.displayRfqTerms(this.rfqrevisionid);
             localStorage.removeItem("PADetails");
             this.showemployee = true;
@@ -599,8 +602,6 @@ export class purchasePaymentComponent implements OnInit {
 
     }
     onSearchChange(creditdays: any) {
-        console.log("payment", creditdays)
-        //let value = event;
         this.displaycustomapproveEmployee(creditdays);
     }
     displaycustomapproveEmployee(creditdays: any) {
@@ -617,7 +618,9 @@ export class purchasePaymentComponent implements OnInit {
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
+            this.spinner.show();
             this.paService.ApproveItems(item).subscribe(data => {
+                this.spinner.hide();
                 this.employeelist = data['Table'];
                 this.employeelist.Approvers = data['Table'];
             })

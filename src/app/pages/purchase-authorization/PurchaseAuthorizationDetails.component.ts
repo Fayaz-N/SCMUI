@@ -5,7 +5,7 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, ProjectManager } from 's
 import { MPRVendorDetail, DynamicSearchResult, searchList, mprRevision, MPRItemInfoes, MPRBuyerGroup, Employee, Department } from 'src/app/Models/mpr'
 import { constants } from 'src/app/Models/MPRConstants'
 import { MprService } from 'src/app/services/mpr.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute} from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -15,7 +15,9 @@ import { MessageService } from 'primeng/api';
 export class PurchaseAuthorizationDetailsComponent implements OnInit {
     selectedItems1 = [];
 
-    constructor(public paService: purchaseauthorizationservice, public messageservice: MessageService, public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) { }
+    constructor(public paService: purchaseauthorizationservice, public messageservice: MessageService,public constants: constants, public mprservice: MprService, private routing: Router, private activeroute: ActivatedRoute) {
+
+    }
     public hivalue = true;
     public Vendorid: number;
     public approvevalue = false;
@@ -58,16 +60,18 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.buyergroups = new MPRBuyerGroup();
         this.projectmanger = new ProjectManager();
 
-        this.activeroute.params.subscribe(params => {
-            if (params["Mprrevisionid"]) {
-                this.padetails.RevisionID = params["Mprrevisionid"]
-                this.displayitems(this.padetails)
-            }
-        })
-        if (this.padetails.RevisionID!=0) {
-            this.displayitems(this.padetails);
-        }
+       
+            this.activeroute.params.subscribe(params => {
+                if (params["RevisionId"]) {
+                    this.padetails.RevisionID = params["RevisionId"];
+                    this.displayitems(this.padetails);
+                }
+                else {
+
+                }
+            })
         
+
         //this.checked = false;
     }
     displayitems(padetails: PADetailsModel) {
