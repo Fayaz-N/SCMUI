@@ -190,6 +190,7 @@
           <th>SaleOrder</th>
           <th>Payment Term</th>
           <th>MPR NO</th>
+          <th>HSNCode</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -205,6 +206,7 @@
           <td class="ptable-cell">{{rowData.SaleOrderNo}}</td>
           <td class="ptable-cell">{{rowData.PaymentTermCode}}</td>
           <td class="ptable-cell">{{rowData.DocumentNo}}</td>
+          <td class="ptable-cell">{{rowData.HSNCode}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -310,6 +312,9 @@
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <label style="width:200px">PODate:<span>{{rowData.PODate}}</span></label> &nbsp;&nbsp;
                 <label style="width:200px">Remarks:<span>{{rowData.Remarks}}</span></label>
+              </div>
+              <div class="row" style="margin-left:3px;margin-right:2px">
+                <label style="width:200px">HSNCode:<span>{{rowData.HSNCode}}</span></label>
               </div>
             </div>
           </td>
@@ -507,12 +512,11 @@
       </p-table>
     </div>
   </div>
-</div>
-<div *ngIf="showemployee && !pasubmitted && !paincompleted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
+</div><br />
+<div *ngIf="showemployee && !pasubmitted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Approvers:</div>
 </div>
 <div *ngIf="showemployee && !pasubmitted && !paincompleted" class="form-control" style="height:100%;width:100%;position:relative">
-
   <div class="row inline">
     <div class="col-md-6 col-lg-6 col-sm-6" style="display:inline;margin-left:14px">
       <label for="ProjectName" class="form-label" style="margin-left: 0px;">Credit Days:</label>
@@ -521,33 +525,33 @@
     </div>
   </div>
   <div *ngIf="showemployee && !pasubmitted && !paincompleted " style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-      <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
-        <table class="table table-bordered">
-          <ngx-spinner bdOpacity=0.9
-                       bdColor="#f4f4f9"
-                       size="medium"
-                       color="#1010ee"
-                       type="ball-clip-rotate"
-                       [fullScreen]="false">
-          </ngx-spinner>
-            <thead>
-              <tr>
-                <th><span style="float:left">ApproverName </span> </th>
-                <th><span style="float:left">Role </span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let app of employeelist">
-                <td>{{app.Approvername}}</td>
-                <td>{{app.rolename}}</td>
-              </tr>
-            </tbody>
-          
-        </table>
+    <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
+      <table class="table table-bordered">
+        <ngx-spinner bdOpacity=0.9
+                     bdColor="#f4f4f9"
+                     size="medium"
+                     color="#1010ee"
+                     type="ball-clip-rotate"
+                     [fullScreen]="false">
+        </ngx-spinner>
+        <thead>
+          <tr>
+            <th><span style="float:left">ApproverName </span> </th>
+            <th><span style="float:left">Role </span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of employeelist">
+            <td>{{app.Approvername}}</td>
+            <td>{{app.rolename}}</td>
+          </tr>
+        </tbody>
+
+      </table>
 
     </div>
   </div>
-  <div *ngIf="paincompleted" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+  <div *ngIf="showemployee  && paincompleted && !pasubmitted" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
     <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
       <table class="table table-bordered">
         <thead>
@@ -557,7 +561,6 @@
           </tr>
         </thead>
         <tbody>
-
           <tr *ngFor="let app of employeelist">
             <td>{{app.Approvername}}</td>
             <td>{{app.rolename}}</td>
@@ -566,6 +569,7 @@
       </table>
     </div>
   </div>
+
 </div>
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Terms and Conditions:</div>
