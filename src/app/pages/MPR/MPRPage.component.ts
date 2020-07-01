@@ -840,7 +840,8 @@ export class MPRPageComponent implements OnInit {
   }
 
   openMPR3Dialog(dialogName: string) {
-    this.enableVendorAdd(dialogName);
+    //this.enableVendorAdd(dialogName);
+    this[dialogName] = true;
     this.vendorDetails = new MPRVendorDetail();
     this.newVendorDetails = new VendorMaster();
     this.vendorEmailList = [];
