@@ -61,7 +61,7 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.PreparedBy = this.employee.EmployeeNo;
     if (this.typeOfList == "MPRList") {
       //this.toDate = new Date();
-     // this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
+      // this.fromDate = new Date(new Date().setDate(new Date().getDate() - 30));
     }
 
     this.MPRfilterForm = this.formBuilder.group({
@@ -145,7 +145,7 @@ export class MPRListComponent implements OnInit {
     }
 
     this.mprFilterParams.mprStatusListId = [];
-    this.mprFilterParams.mprStatusListId[0] = "1";
+    this.mprFilterParams.mprStatusListId[0] = "2";
 
     this.getStatusList();
 
@@ -171,6 +171,8 @@ export class MPRListComponent implements OnInit {
     this.mprFilterParams.ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
     if (this.MPRfilterForm.controls.DepartmentId.value == "")
       this.mprFilterParams.DepartmentId = "";
+    if (this.typeOfList != "MPRList")
+      this.mprFilterParams.mprStatusListId = [];
     this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
       this.mprList = data;
       if (this.typeOfList == "MPRList") {
