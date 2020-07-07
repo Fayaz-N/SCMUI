@@ -207,6 +207,15 @@ export class RFQFormComponent implements OnInit {
     this.AddItemForm.controls['PFAmount'].setValue("0");
     this.AddItemForm.controls['FreightAmount'].setValue("0");
     this.AddItemForm.controls['IGSTPercentage'].setValue("0");
+
+    this.PFAmountChange();
+    this.PFPercentageChange();
+    this.FreightAmountChange();
+    this.FreightPercentageChange();
+    this.IGSTPercentageChange();
+    this.IGSTEnablefromCGSTChange();
+    this.IGSTEnablefromSGSTChange();
+
   }
 
   Cancel(dialog: string) {
