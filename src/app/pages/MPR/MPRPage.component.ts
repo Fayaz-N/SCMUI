@@ -538,7 +538,9 @@ export class MPRPageComponent implements OnInit {
     else {
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this.mprRevisionModel.PreparedOn = new Date();
+      this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+        this.spinner.hide();
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
         //document.getElementById(formId).animate([{ transform: 'translateX(500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
@@ -626,7 +628,9 @@ export class MPRPageComponent implements OnInit {
   removeDoument(details: MPRDocument) {
     var index = this.mprRevisionModel.MPRDocuments.findIndex(x => x.MprDocId == details.MprDocId);
     if (details.MprDocId) {
+      this.spinner.show();
       this.MprService.deleteMPRDocument(details).subscribe(data => {
+        this.spinner.hide();
         if (data == true) {
           this.mprRevisionModel.MPRDocuments.splice(index, 1);
           this.MPR3Documents = this.mprRevisionModel.MPRDocuments.filter(li => li.DocumentTypeid == 2);
@@ -656,7 +660,9 @@ export class MPRPageComponent implements OnInit {
   removeVendor(details: MPRVendorDetail) {
     var index = this.mprRevisionModel.MPRVendorDetails.findIndex(x => x.VendorDetailsId == details.VendorDetailsId);
     if (details.VendorDetailsId) {
+      this.spinner.show();
       this.MprService.deleteMPRVendor(details).subscribe(data => {
+        this.spinner.hide();
         if (data == true) {
           this.mprRevisionModel.MPRVendorDetails.splice(index, 1);
 
@@ -691,7 +697,9 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel.MPRDocumentations = [];
       this.mprRevisionModel.MPRIncharges = [];
       this.mprRevisionModel.MPRCommunications = [];
+      this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+        this.spinner.hide();
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
         //document.getElementById(formId).animate([{ transform: 'translateX(500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
@@ -705,7 +713,9 @@ export class MPRPageComponent implements OnInit {
   removeDoumentation(details: MPRDocumentations) {
     var index = this.mprRevisionModel.MPRDocumentations.findIndex(x => x.DocumentationId == details.DocumentationId);
     if (details.DocumentationId) {
+      this.spinner.show();
       this.MprService.deleteDocumentation(details).subscribe(data => {
+        this.spinner.hide();
         if (data == true) {
           this.mprRevisionModel.MPRDocumentations.splice(index, 1);
           //this.MPR3Documents = this.mprRevisionModel.MPRDocumentations.filter(li => li.DocumentTypeid == 2);
@@ -768,7 +778,9 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionModel.MPRCommunications = [];
     this.mprRevisionModel.MPRIncharges = [];
     this.mprRevisionModel.MPRIncharges.push(this.mprIncharges);
+    this.spinner.show();
     this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+      this.spinner.hide();
       this.mprRevisionModel.MPRIncharges = data.MPRIncharges;
       this[dialog] = false;
     });
@@ -822,8 +834,10 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.InspectionComments = this.mprRevisionModel.InspectionComments[0];
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this, this.mprRevisionModel.PreparedOn = new Date();
-
+      this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+        this.spinner.hide();
+        this.loadMPRData(this.mprRevisionModel.RevisionId);
         this.mprRevisionModel = data;
         this.animateCSS(formId, 'slideInRight');
         //document.getElementById(formId).animate([{ transform: 'translateX(500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
@@ -1000,6 +1014,14 @@ export class MPRPageComponent implements OnInit {
 
   onstatusUpdate(statusType: string) {
     if (statusType != "") {
+      if (statusType == "MPRManualStatus" && (!this.mprStatusUpdate.StatusId || !this.mprStatusUpdate.Remarks)) {
+          if (!this.mprStatusUpdate.StatusId)
+          this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Select Status" });
+        if (!this.mprStatusUpdate.Remarks)
+          this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Enter Remarks" });
+        return true;
+
+      }
       this.mprStatusUpdate.typeOfuser = statusType;
       if (this.mprStatusUpdate.BuyerGroupId)
         this.mprStatusUpdate.MPRAssignments = [];
@@ -1027,7 +1049,9 @@ export class MPRPageComponent implements OnInit {
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
     this.mprStatusUpdate.RequisitionId = this.mprRevisionModel.RequisitionId;
     this.mprStatusUpdate.PreparedBy = this.employee.EmployeeNo;
+    this.spinner.show();
     this.MprService.statusUpdate(this.mprStatusUpdate).subscribe(data => {
+      this.spinner.hide();
       this.mprRevisionModel = data;
       if (statusType == "MPRManualStatus")
         this.showManualStatusgDialog = false;
@@ -1039,6 +1063,7 @@ export class MPRPageComponent implements OnInit {
         this.showCompareRfq = true;
       }
 
+      this.loadMPRData(this.mprRevisionModel.RevisionId);
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     })
 
@@ -1054,6 +1079,10 @@ export class MPRPageComponent implements OnInit {
       this.spinner.show();
       this.MprService.uploadFile(formData).subscribe(data => {
         this.spinner.hide();
+        if (data.Message) {
+          this.messageService.add({ severity: 'error', summary: 'Validation', detail: data.Message });
+          return true;
+        }
         //upload in cloud server
         this.MprService.InsertDocument(formData).subscribe(data => {
         });
@@ -1142,6 +1171,10 @@ export class MPRPageComponent implements OnInit {
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
           if (this.AccessList.filter(li => li.AccessName == "DeleteMPR").length > 0)
             this.hideDeleteBtn = true;
+
+          //if mpr close hiding the edit buttons
+          if (this.mprRevisionDetails.StatusId == 19)
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
 
           this.bindStatusDetails();
           this.showPage = true;
@@ -1284,10 +1317,12 @@ export class MPRPageComponent implements OnInit {
           this.DispatchLocation = data[item];
           this[formName].controls[item].setValue("Others");
         }
-        if (this.specifyDispatchDisply == false)
+        if (this.specifyDispatchDisply == false) {
           this.mprRevisionModel.DispatchLocation = this.DispatchLocation;
-        this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
-
+          this[formName].controls['specifyDispatchLocation'].setValue(data[item]);
+        }
+        else
+          this.MPRPageForm3.controls['specifyDispatchLocation'].clearValidators();
       }
 
       //if (this.constants[item]) {
@@ -1420,7 +1455,9 @@ export class MPRPageComponent implements OnInit {
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
       this.mprRevisionModel.MPRItemInfoes = this.RepeatOrderList;
       this.mprRevisionModel.PurchaseTypeId = 5;
-      this.MprService.copyMprRevision(this.mprRevisionModel, true).subscribe(data => {
+      this.spinner.show();
+      this.MprService.copyMprRevision(this.mprRevisionModel, true, false).subscribe(data => {
+        this.spinner.hide();
         if (data) {
           this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Order Added' });
         }
@@ -1468,7 +1505,9 @@ export class MPRPageComponent implements OnInit {
   }
   onPoRaiseSubmit(dialog: any) {
     this.mprRevisionModel.ORequestedBy = this.employee.EmployeeNo;
+    this.spinner.show();
     this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
+      this.spinner.hide();
       this.mprRevisionModel = data;
       this[dialog] = false;
       this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Request for issuing po addedd' });

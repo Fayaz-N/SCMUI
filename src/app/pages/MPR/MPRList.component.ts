@@ -256,15 +256,25 @@ export class MPRListComponent implements OnInit {
   }
 
   onRevise(mprData: any) {
-    this.constants.RequisitionId = mprData.RequisitionId;
-    this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
+    //this.constants.RequisitionId = mprData.RequisitionId;
+    //this.router.navigate(["/SCM/MPRForm", mprData.RevisionId]);
+    this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
+    this.mprRevisionModel.RevisionId = mprData.RevisionId;
+    this.mprRevisionModel.RequisitionId = mprData.RequisitionId;
+    this.spinner.show();
+    this.MprService.copyMprRevision(this.mprRevisionModel, false, true).subscribe(data => {
+      this.spinner.hide();
+      this.router.navigate(["/SCM/MPRForm", data.RevisionId]);
+    })
 
   }
   onRevisionCopy(mprData: any) {
     this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
     this.mprRevisionModel.RevisionId = mprData.RevisionId;
     this.mprRevisionModel.RequisitionId = mprData.RequisitionId;
-    this.MprService.copyMprRevision(this.mprRevisionModel, false).subscribe(data => {
+    this.spinner.show();
+    this.MprService.copyMprRevision(this.mprRevisionModel, false, false).subscribe(data => {
+      this.spinner.hide();
       this.router.navigate(["/SCM/MPRForm", data.RevisionId]);
     })
 
