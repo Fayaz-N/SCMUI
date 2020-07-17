@@ -345,7 +345,6 @@
   <div class="col-md-6 pt-2"> Vendors:</div>
 </div>
 <div class="form-control" *ngIf="!pasubmitted && !paincompleted" style="height:100%">
-  <!--<h6 style="font-weight:400">Considered Vendors:</h6>-->
   <div style="height:100%;width:100%;margin-left:2px">
     <table class="table table-bordered">
       <thead>
@@ -855,11 +854,11 @@
 <div *ngIf="!pasubmitted && proceedvalue && !paincompleted" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Proceed</button>
 </div>
-<br />
+
 <div *ngIf="paincompleted && updatevalue" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="UpdatePurchaseAuthorization(purchasedetails)">Update</button>
 </div>
-<br />
+
 <div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%;">
   <label class="form-label"><b> Upload Documents :</b></label>
   <div class="row" style="width:100%;height:100%;margin-left:2px">
@@ -878,14 +877,14 @@
     </div>
   </div>
 </div>
-<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;">
+<!--<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;">
   <label class="form-label"><b> Upload Documents :</b></label>
   <div class="row" style="width:100%;height:100%;margin-left:2px">
 
     <div class="form-group">
       <input type="file" id="file1" multiple (change)="getFileuploadDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
 
-      <!--<button (click)="uploadFiles()">Upload</button>-->
+     
       <div *ngFor="let selected of myfiles1;let index = index" style="margin-top:10px">
         <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelecteduploadFile(index)"></i>
       </div>&nbsp;&nbsp;
@@ -895,7 +894,7 @@
 
     </div>
   </div>
-</div>
+</div>-->
 <div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
 </div>
@@ -908,7 +907,25 @@
     <span><a> {{document.filename}} </a></span>&nbsp;&nbsp;-->
   </div>
 </div>
-<br />
+<div *ngIf="pasubmitted && purchasedetails.PAStatus=='Rejected'" class="form-control" style="height:100%;width:100%;margin-top:7px">
+  <table class="table table-bordered" style="background-color:lightcoral">
+    <thead>
+      <tr>
+        <th>PArequestedBy</th>
+        <th>PARejectedBy</th>
+        <th>PArejectedOn</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let app of purchasedetails.ApproversList">
+      <tr *ngIf="app.ApprovalStatus=='Rejected'">
+        <td>{{app.parequested}}</td>
+        <td>{{app.ApproverName}}</td>
+        <td>{{app.ApprovedOn | date}}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
 <div *ngIf="pasubmitted && finalpasubmit" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
   <p-table [value]="purchasedetails.ApproversList" [paginator]="false" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
@@ -928,14 +945,14 @@
         <td>{{rowData.ApprovalStatus}}</td>
         <td>{{rowData.ApproversRemarks}}</td>
         <td>{{rowData.ApprovedOn | date: 'dd/MM/yyyy hh:mm a'}}</td>
-        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
+        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' && purchasedetails.PAStatus!='Rejected' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 <br />
 
-<div *ngIf="pasubmitted && approvedemployee" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
+<div *ngIf="pasubmitted && approvedemployee && purchasedetails.PAStatus!='Rejected'" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
 
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
@@ -953,7 +970,7 @@
         <option value="Approved">Approved</option>
       </select>&nbsp;
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-inline ">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
       <label class="form-label">Remarks:</label>&nbsp;
       <textarea type="text" class="form-control" [(ngModel)]="PAApprovers.ApproversRemarks"></textarea>
     </div>

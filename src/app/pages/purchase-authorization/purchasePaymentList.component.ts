@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { Employee } from '../../Models/mpr';
-import { FormControl } from '@angular/forms'
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
 import 'rxjs/add/observable/of';
@@ -17,7 +17,7 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel,
 
 export class purchasePaymentListComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService) {}
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public formbuilder: FormBuilder) { }
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
     public employee: Employee;
@@ -31,6 +31,9 @@ export class purchasePaymentListComponent implements OnInit {
     public filtereddepartments: any;
     public filteredvendors: any;
     public brand: string;
+    public DeleteDialog: boolean;
+    public padelete: padeletemodel;
+    public PADeleteForm: FormGroup;
 
     mycontrol = new FormControl();
     vendorcontrol = new FormControl();
@@ -49,8 +52,10 @@ export class purchasePaymentListComponent implements OnInit {
         this.buyergroups = new Array<any>();
         this.palist = new Array<any>();
         this.pofilters = new PADetailsModel();
+        this.DeleteDialog = false;
         //this.loadAllmprpalist();
         this.loadbuyergroups();
+        this.padelete = new padeletemodel();
         this.loadAllVendor();
         //this.filtereddepartments = [];
        
@@ -59,7 +64,9 @@ export class purchasePaymentListComponent implements OnInit {
         //this.filteredoptions = this.mycontrol.valueChanges.pipe(startWith(''),
         //    map(value => this._filter(value))
         //);
-       
+        this.PADeleteForm = this.formbuilder.group({
+            Remarks: ['', [Validators.required]]
+        })
     }
  
     loadAllVendor() {
@@ -152,12 +159,22 @@ export class purchasePaymentListComponent implements OnInit {
         return option.BuyerGroup;
     }
     deletepa(padelete: padeletemodel) {
+        this.DeleteDialog = true;
+        this.paid = padelete.PAId
+    }
+    finaldelete(padelete: padeletemodel) {
+        this.DeleteDialog = false;
+        padelete.PAId = this.paid;
         padelete.employeeno = this.employee.EmployeeNo;
         this.paService.Deletepa(padelete).subscribe(data => {
             this.paid = data;
             this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'PA Deleted Successfully' });
             this.GetMprpadetailsBySearch(this.pofilters);
         })
+
+    }
+    Cancel() {
+        this.DeleteDialog = false;
     }
 
 }

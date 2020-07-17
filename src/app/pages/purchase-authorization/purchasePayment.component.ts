@@ -253,7 +253,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
             this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
-            if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted") {
+            if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted" || this.purchasedetails.PAStatus == "Rejected") {
                 this.pasubmitted = true;
                 for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                     this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
@@ -570,6 +570,7 @@ export class purchasePaymentComponent implements OnInit {
     }    
     SubmitItem(paitem: ItemsViewModel) {
         var id = this.mprrevisionid;
+        paitem.EmployeeNo = this.employee.EmployeeNo;
         this.paService.InsertPAitems(paitem).subscribe(data => {
             this.paid = data;
             this.EditDialog = false;

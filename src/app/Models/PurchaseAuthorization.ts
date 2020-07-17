@@ -92,7 +92,7 @@ export class ItemsViewModel {
     selectAll: boolean;
     DepartmentId: number;
     itemsum: number;
-    EmployeeNo: number;
+    EmployeeNo: string;
     Name: string;
     sum: number;
     TragetSpend: number;
@@ -145,6 +145,7 @@ export class PurchaseCreditApproversModel {
     ApproverId: number;
     roleorder: number;
     PAId: number;
+    parequested: string;
 }
 
 export class ConfigurationModel {
@@ -181,6 +182,7 @@ export class mprpapurchasemodesmodel {
 export class padeletemodel {
     PAId: number;
     employeeno: string;
+    Remarks: string;
 }
 export class mprpadetailsmodel {
     PAId: number;

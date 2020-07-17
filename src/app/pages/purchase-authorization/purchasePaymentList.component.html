@@ -220,3 +220,21 @@
     </ng-template>
   </p-table><br />
 </div>
+<p-dialog header="Add"  [(visible)]="DeleteDialog" showEffect="fade" [modal]="true" [style]="{width: '550px'}" [closable]="false">
+  <form [formGroup]="PADeleteForm">
+    <div class="" style="margin-left:12px"></div>
+    <label for="ProjectName" class="form-label label">Remarks :</label>
+    <textarea [(ngModel)]="padelete.Remarks" formControlName="Remarks" class="form-control" style="margin-left: 12px;"></textarea>
+    <div *ngIf="PADeleteForm.controls['Remarks'].invalid && (PADeleteForm.controls['Remarks'].dirty || PADeleteForm.controls['Remarks'].touched)" class="alert alert-danger" style="margin-left:12px">
+      <div *ngIf="PADeleteForm.controls['Remarks'].errors.required">
+        Remarks is required.
+      </div>
+    </div><br />
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix"  style="margin-left: 12px;">
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PADeleteForm.valid" (click)="finaldelete(padelete)" label="Insert"></button>&nbsp;&nbsp;
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>
