@@ -64,48 +64,56 @@
 </form>
 <br />
 <button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add New Item" class="btn btn-success" (click)="showItemDialog()" style="float:right"></button><br /><br />
-<div class="form-control" style="height:100%;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
+<div class="form-control" style="height:100%;margin-top: 15px;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
   <div class="row" style="margin-left: 0px; margin-right: 0px">
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Rfq Item Id</label>
-      <span class="valueEdit font-weight-bold">{{item.RFQItemsId}}</span>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Rfq Item Id</label><br>
+      <span class=" font-weight-bold">{{item.RFQItemsId}}</span>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Material Id</label><br />
+      <span class=" font-weight-bold">{{item.ItemId}}</span>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Item Code</label>
-      <span class="valueEdit font-weight-bold">{{item.ItemName}}</span>
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Material Description </label><br />
+      <span class=" font-weight-bold">{{item.ItemName}}</span>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Quantity</label>
-      <span class="valueEdit font-weight-bold">{{item.QuotationQty}}</span>
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">MPR Item Description</label><br />
+      <span class=" font-weight-bold">{{item.ItemDescription}}</span>
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Vendor Model No</label>
-      <span class="valueEdit font-weight-bold">{{item.VendorModelNo}}</span>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Quantity</label><br />
+      <span class=" font-weight-bold">{{item.QuotationQty}}</span>
     </div>
     <br>
   </div>
   <div class="row" style="margin-left: 0px; margin-right: 0px">
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">HSN Code</label>
-      <span class="valueEdit font-weight-bold">{{item.HSNCode}}</span>
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Vendor Model No</label><br />
+      <span class=" font-weight-bold">{{item.VendorModelNo}}</span>
+    </div>
+    <div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">HSN Code</label><br />
+      <span class=" font-weight-bold">{{item.HSNCode}}</span>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Mfg Model No</label>
+      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Mfg Model No</label><br />
       <span class="valueEdit font-weight-bold">{{item.MfgModelNo}}</span>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group table-bordered">
-      <label class="form-label lblEdit font-weight-bold" style="color: orangered; text-decoration: underline">Mfg Part No</label>
-      <span class="valueEdit font-weight-bold">{{item.MfgPartNo}}</span>
+      <label class="form-label  font-weight-bold" style="color: orangered; text-decoration: underline">Mfg Part No</label><br />
+      <span class=" font-weight-bold">{{item.MfgPartNo}}</span>
     </div>&nbsp;
     <button pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onItemEdit($event,item)" style="height:30px;width:30px"></button>&nbsp;
-    <button pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;height:30px;width:30px" (click)="ondeleteRFQItem(item,itemindex)"></button>
+    <button *ngIf="!item.ItemId" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;height:30px;width:30px" (click)="ondeleteRFQItem(item,itemindex)"></button>
     <br>
   </div>
   <p-table [value]="item.iteminfo">
     <ng-template pTemplate="header">
       <tr>
         <th colspan="10" style="text-align: right">
-          <button type="button" pButton icon="fa fa-plus" pTooltip="Add Item Price" class="ui-button-info" (click)="showItemInfo(item.RFQItemsId,item.QuotationQty)"></button>
+          <button type="button"  class="btn btn-primary" style="font-size: 14px;" (click)="showItemInfo(item.RFQItemsId,item.QuotationQty)">Add Item Price</button>
         </th>
       </tr>
       <tr class="text-center mprltbldata">
@@ -144,7 +152,7 @@
       </tr>
     </ng-template>
   </p-table>
-</div>
+</div><br />
 
 <p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
   <div class="ui-g ui-fluid">

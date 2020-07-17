@@ -63,7 +63,7 @@
         </select>&nbsp;
       </div>
     </div>
-    <div *ngIf="showCMMFilter" class="row">
+    <div  class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Department</label>&nbsp;
         <div class="form-inline-list">
@@ -180,13 +180,13 @@
             <th style="width:100px">S.No</th>
             <th style="width:110px">MPR Document Number</th>
             <th style="width:100px">Description</th>
-            <th style="width:100px" *ngIf="showCMMFilter">Job Code</th>
-            <th style="width:100px" *ngIf="showCMMFilter">Job Name</th>
-            <th style="width:100px" *ngIf="showCMMFilter">Purpose of issuing MPR</th>
-            <th style="width:100px" *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value">Item Description</th>
+            <th style="width:100px">Job Code</th>
+            <th style="width:100px" >Job Name</th>
+            <th style="width:100px" >Purpose of issuing MPR</th>
+            <th style="width:100px" *ngIf="MPRfilterForm.controls.ItemDescription.value">Item Description</th>
             <th style="width:100px">MPRStatus</th>
-            <th style="width:100px" *ngIf="showCMMFilter">Ge Ps Approval Id</th>
-            <th style="width:100px" *ngIf="showCMMFilter">Buyer Group Name</th>
+            <th style="width:100px">Ge Ps Approval Id</th>
+            <th style="width:100px">Buyer Group Name</th>
             <th style="width:100px">Preapared By</th>
             <th style="width:100px">Preapared On</th>
             <th style="width:100px">Check By</th>
@@ -207,13 +207,13 @@
             <td> {{ri+1}}</td>
             <td class="ptable-cell" style="font-size:11px !important;width:110px"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
             <td class="ptable-cell">{{rowData.DocumentDescription}}</td>
-            <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobCode}}</td>
-            <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.JobName}}</td>
-            <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
-            <td *ngIf="showCMMFilter && MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
+            <td  class="ptable-cell">{{rowData.JobCode}}</td>
+            <td class="ptable-cell">{{rowData.JobName}}</td>
+            <td class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
+            <td *ngIf="MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
             <td class="ptable-cell">{{rowData.MPRStatus}}</td>
-            <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
-            <td *ngIf="showCMMFilter" class="ptable-cell">{{rowData.BuyerGroupName}}</td>
+            <td class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
+            <td class="ptable-cell">{{rowData.BuyerGroupName}}</td>
             <td class="ptable-cell">{{rowData.PreparedName}}</td>
             <td class="ptable-cell">{{rowData.PreparedOn | date :  constants.dateFormat}}</td>
             <td class="ptable-cell">{{rowData.CheckedName}}</td>

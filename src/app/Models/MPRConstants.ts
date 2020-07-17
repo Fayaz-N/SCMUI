@@ -7,6 +7,7 @@ import { searchParams, AccessList } from '../Models/mpr';
 export class constants {
   public url = 'http://localhost:49659/Api/';
   //public url = 'http://10.29.15.183:90/Api/';
+  //public url = 'http://10.29.15.68:90/Api/';
 
   public accessTokenUrl = "http://10.29.15.183:90/token";
   //public accessTokenUrl = "http://localhost:49659/token";
@@ -39,7 +40,7 @@ export class constants {
   public CheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "CheckedName", updateColumns: "" };
   //public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade>'m2' and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public ApprovedBy: searchParams = { tableName: 'MPRApproversView', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ApproverName", updateColumns: "" };
-  public Incharge: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where Grade='m1' and DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
+  public Incharge: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where  DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public toEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public ccEmail: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "", updateColumns: "" };
   public JobCode: searchParams = { tableName: 'MPRRevisions', fieldId: 'JobCode', fieldName: 'JobCode', condition: " where ", fieldAliasName: "", updateColumns: "" };

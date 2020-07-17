@@ -73,6 +73,7 @@ export class MPRPageComponent implements OnInit {
   public vendorEmailList: Array<any> = [];
   public DispatchLocation; currentStatus: string = "";
   public rfqCommunicationList: Array<any> = [];
+  public targetspendError: boolean = false;
 
   //page load event
   ngOnInit() {
@@ -590,7 +591,12 @@ export class MPRPageComponent implements OnInit {
 
   calculateTargetSpend() {
     if (this.mprRevisionModel.MPRItemInfoes.length > 0)
-      return this.mprRevisionModel.MPRItemInfoes.map(li => li.TargetSpend).reduce((prev, next) => prev + next);
+      var val = this.mprRevisionModel.MPRItemInfoes.map(li => li.TargetSpend).reduce((prev, next) => prev + next);
+    if (this.mprRevisionModel.MPRItemInfoes.filter(li => li.TargetSpend != null).length > 0)
+      this.targetspendError = false;
+    else
+      this.targetspendError = true;
+      return val;
   }
 
   onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
@@ -1012,10 +1018,17 @@ export class MPRPageComponent implements OnInit {
     })
   }
 
+  statusChange() {
+    if (this.targetspendError && this.mprStatusUpdate.status == "Approved" && this.mprStatusUpdate.typeOfuser =="Approver")
+      this.disableStatusSubmit = true;
+    else
+      this.disableStatusSubmit = false;
+  }
+
   onstatusUpdate(statusType: string) {
     if (statusType != "") {
       if (statusType == "MPRManualStatus" && (!this.mprStatusUpdate.StatusId || !this.mprStatusUpdate.Remarks)) {
-          if (!this.mprStatusUpdate.StatusId)
+        if (!this.mprStatusUpdate.StatusId)
           this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Select Status" });
         if (!this.mprStatusUpdate.Remarks)
           this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Enter Remarks" });

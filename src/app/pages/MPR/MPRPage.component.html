@@ -1238,7 +1238,7 @@
     <a [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
   </div>
 
-  <div  *ngIf="displayFooter" class="footer">
+  <div *ngIf="displayFooter" class="footer">
     <div class="row form-inline pt-2">
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <label class="form-label">Employee</label>
@@ -1263,13 +1263,17 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
         <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
       </div>
-      <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
         <button type="button" class="btn btn-success" (click)="disableFooter()">Close</button>
       </div>
+      <div  *ngIf="showStatusDetails" class="col-lg-2 col-md-2 col-sm-2 form-inline">
+        <span *ngIf="targetspendError"  style="font-size:10px;color:white;font-weight: bold;">Target Spend is zero</span> 
+      </div>
+     
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
-        &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="mprStatusUpdate.status">
+        &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" (change)="statusChange()" [(ngModel)]="mprStatusUpdate.status">
           <option value="Select">Select</option>
-          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName" >{{List.StatusName}}</option>
         </select>&nbsp;
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
@@ -1277,7 +1281,7 @@
         <textarea type="text" maxlength="500" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline">
-        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>
+        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>&nbsp;<span *ngIf="targetspendError && mprStatusUpdate.status=='Approved' &&  this.mprStatusUpdate.typeOfuser =='Approver'" style="font-size:10px;color:white">Enter target spend to approve</span>
       </div>
     </div>
     <div class="row form-inline pt-2">

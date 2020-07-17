@@ -96,7 +96,7 @@
             <!--<th style="width:100px !important;">Item Description</th>-->
             <!--<th style="width:100px !important;">Quantity</th>-->
             <th style="text-align:center;width:200px">Previous Prices</th>
-            <th *ngFor="let col of columns;let colInd=index" style="width:200px">
+            <th *ngFor="let col of columns;let colInd=index" style="width:250px">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
               {{col.VendorName}}<br /><label>RFQ No's List : </label>&nbsp;
               <span *ngFor="let item of rfqrevisionsList" ><a *ngIf="item.VendorId==col.VendorId" style="color:#fff !important"  [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]"> {{item.RevisionNo + ","}}</a></span><br />
@@ -107,7 +107,13 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns" let-rowIndex="rowIndex">
           <tr>
-            <td><b>Name - </b>{{rowData.ItemName}}<br /><b>Desc - </b>{{rowData.ItemDescription}}<br /><b>Qty - </b>{{rowData.QuotationQty}}</td>
+            <td>
+              <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 form-group">
+                  <b>MS Code - </b>{{rowData.ItemId}}<br /><b>Name - </b>{{rowData.ItemName}}<br /><b>Desc - </b>{{rowData.ItemDescription}}<br /><b>Qty - </b>{{rowData.QuotationQty}}
+                </div>
+            </div>
+            </td>
             <td>
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 form-group">
@@ -153,15 +159,15 @@
                   <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
                 </div>-->
                 <div class="row">
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">Q</label>
                     <span class="valueEdit">{{vendor.vendorQuoteQty}}</span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">Price </label>
                     <span class="valueEdit">{{vendor.UnitPrice}}</span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">Discount </label>
                     <span class="valueEdit" *ngIf="vendor.Discount">{{vendor.Discount}}</span>
                     <span class="valueEdit" *ngIf="vendor.DiscountPercentage">{{(vendor.DiscountPercentage/100)*(vendor.UnitPrice * vendor.vendorQuoteQty)}}</span>
@@ -171,15 +177,15 @@
                 <div class="row">
 
                   <!--<span>{{discountCalculation(vendor)}}</span>-->
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">FRA</label>
                     <span class="valueEdit">{{vendor.FreightAmount}}</span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">PFA</label>
                     <span class="valueEdit">{{vendor.PFAmount}}</span>
                   </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">TP</label>
                     <span class="valueEdit">{{vendor.TotalPrice}}</span>
                   </div>
