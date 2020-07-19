@@ -224,6 +224,7 @@ export class mprpadetailsmodel {
     ProjectManager: string;
     PAStatus: string;
     ProjectMangerNo: string;
+    Deleteflag: boolean;
     purchasemodes: mprpapurchasemodesmodel;
     purchasetypes: mprpapurchasetypesmodel;
     department: DepartmentModel;
@@ -232,6 +233,19 @@ export class mprpadetailsmodel {
     documents: Array<padocuments>[];
     // ApproversList: Array<MPRPAApproversModel>[];
     ApproversList: Array<PurchaseCreditApproversModel>[];
+    request: Array<parequestedanddeletemodel>[];
+}
+export class parequestedanddeletemodel {
+    paid: number;
+    RequestedBy: string;
+    parequested: string;
+    RequestedOn: Date;
+    PAStatus: string;
+    PAStatusUpdate: Date;
+    DeleteFlag: boolean;
+    DeleteBy: string;
+    DeleteOn: Date;
+    padeleted: string;
 }
 export class MPRPAApproversModel {
     ApproverId: number;
@@ -245,6 +259,9 @@ export class MPRPAApproversModel {
     EmployeeNo: string;
     PAId: number;
     MPRRevisionId: number;
+    Pastatus: string;
+    Pastatusupdate: Date;
+    PARequestedOn: Date;
 }
 export class BuyerGroupModel {
     BuyerGroupId: number;

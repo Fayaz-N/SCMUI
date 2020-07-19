@@ -907,6 +907,46 @@
     <span><a> {{document.filename}} </a></span>&nbsp;&nbsp;-->
   </div>
 </div>
+<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;margin-top:7px">
+  <table class="table table-bordered" style="background-color:#8cb55d">
+    <thead>
+      <tr>
+        <th>PArequestedBy</th>
+        <th>PArequestedon</th>
+        <th>PAStatus</th>
+        <th>PAStatusUpdate</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let app of purchasedetails.request">
+      <tr>
+        <td>{{app.parequested}}</td>
+        <td>{{app.RequestedOn | date}}</td>
+        <td>{{app.PAStatus}}</td>
+        <td>{{app.PAStatusUpdate | date}}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
+<div *ngIf="pasubmitted && purchasedetails.Deleteflag" class="form-control" style="height:100%;width:100%;margin-top:7px">
+  <table class="table table-bordered" style="background-color:lightcoral">
+    <thead>
+      <tr>
+        <th>PArequestedBy</th>
+        <th>PADeletedBy</th>
+        <th>PADeletedOn</th>
+      </tr>
+    </thead>
+    <tbody *ngFor="let app of purchasedetails.request">
+      <tr>
+        <td>{{app.parequested}}</td>
+        <td>{{app.padeleted}}</td>
+        <td>{{app.DeleteOn | date}}</td>
+      </tr>
+    </tbody>
+
+  </table>
+</div>
 <div *ngIf="pasubmitted && purchasedetails.PAStatus=='Rejected'" class="form-control" style="height:100%;width:100%;margin-top:7px">
   <table class="table table-bordered" style="background-color:lightcoral">
     <thead>
@@ -945,14 +985,14 @@
         <td>{{rowData.ApprovalStatus}}</td>
         <td>{{rowData.ApproversRemarks}}</td>
         <td>{{rowData.ApprovedOn | date: 'dd/MM/yyyy hh:mm a'}}</td>
-        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' && purchasedetails.PAStatus!='Rejected' " class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
+        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag" class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 <br />
 
-<div *ngIf="pasubmitted && approvedemployee && purchasedetails.PAStatus!='Rejected'" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
+<div *ngIf="pasubmitted && approvedemployee && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
 
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>

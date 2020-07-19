@@ -251,6 +251,7 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails = data;
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
+            console.log("purchasedetails", this.purchasedetails)
             this.purchasedetails.documents = data.documents;
             this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
             if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted" || this.purchasedetails.PAStatus == "Rejected") {
