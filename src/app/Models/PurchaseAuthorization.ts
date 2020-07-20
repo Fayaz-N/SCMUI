@@ -246,6 +246,7 @@ export class parequestedanddeletemodel {
     DeleteBy: string;
     DeleteOn: Date;
     padeleted: string;
+    Remarks: string;
 }
 export class MPRPAApproversModel {
     ApproverId: number;
