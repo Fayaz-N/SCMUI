@@ -405,11 +405,11 @@
       <tr>
         <td style="color:#0095ff">{{selectedvendor}}</td>
         <td>{{finalpaymentterm}}</td>
-      </tr>
+      </tr>   
     </tbody>
   </table>
   <div class="row col-md-6 col-lg-6 col-sm-6">
-    <label style="width:200px">RfqComparison:<span *ngFor="let item of purchasedetails.Item"><a [routerLink]="['/SCM/RFQComparision',item.MPRRevisionId]" target="_blank" routerLinkActive="active">{{item.DocumentNo}}</a></span></label> &nbsp;&nbsp;
+    RfqComparison:<label style="width:200px" *ngFor="let item of purchasedetails.Item;let i=index"><span *ngIf="i < 1"><a [routerLink]="['/SCM/RFQComparision',item.MPRRevisionId]" target="_blank" routerLinkActive="active">{{item.DocumentNo}}</a></span></label> &nbsp;&nbsp;
   </div>
 </div>
 <div *ngIf="paincompleted" class="form-control" style="height:100%">
@@ -852,11 +852,11 @@
 <br />
 
 <div *ngIf="!pasubmitted && proceedvalue && !paincompleted" style="margin-top:10px;text-align:center">
-  <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)">Proceed</button>
+  <button type="button" class="btn btn-success" label="Save" (click)="InsertPurchaseAuthorization(purchasedetails)" onclick="this.disabled=true">Proceed</button>
 </div>
 
 <div *ngIf="paincompleted && updatevalue" style="margin-top:10px;text-align:center">
-  <button type="button" class="btn btn-success" label="Save" (click)="UpdatePurchaseAuthorization(purchasedetails)">Update</button>
+  <button type="button" class="btn btn-success" label="Save" (click)="UpdatePurchaseAuthorization(purchasedetails)" onclick="this.disabled=true">Update</button>
 </div>
 
 <div *ngIf="uploaddocuments" class="form-control" style="height:100%;width:100%;">
@@ -896,7 +896,7 @@
   </div>
 </div>-->
 <div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
-  <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)">Submit</button>
+  <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)" onclick="this.disabled=true">Submit</button>
 </div>
 <div class="form-control" *ngIf="pasubmitted && purchasedetails.documents.length" style="height:100%;width:100%">
   <label class="form-label"><b> Documents Attached :</b></label>
@@ -935,6 +935,7 @@
         <th>PArequestedBy</th>
         <th>PADeletedBy</th>
         <th>PADeletedOn</th>
+        <th>Remarks</th>
       </tr>
     </thead>
     <tbody *ngFor="let app of purchasedetails.request">
@@ -985,7 +986,7 @@
         <td>{{rowData.ApprovalStatus}}</td>
         <td>{{rowData.ApproversRemarks}}</td>
         <td>{{rowData.ApprovedOn | date: 'dd/MM/yyyy hh:mm a'}}</td>
-        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag" class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)">Send</button></td>
+        <td><button type="button" *ngIf="rowData.ApprovalStatus != 'Approved' && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag" class="btn btn-success" label="Save" (click)="RequestForApproval(rowData)" onclick="this.disabled=true">Send</button></td>
       </tr>
     </ng-template>
   </p-table>
@@ -1005,7 +1006,6 @@
       <label class="form-label">Status:</label>&nbsp;
       <select [(ngModel)]="PAApprovers.ApprovalStatus" class="form-control dropdown">
         <option value="Submitted">Submitted</option>
-        <option value="Pending">Pending</option>
         <option value="Rejected">Rejected</option>
         <option value="Approved">Approved</option>
       </select>&nbsp;
@@ -1015,7 +1015,7 @@
       <textarea type="text" class="form-control" [(ngModel)]="PAApprovers.ApproversRemarks"></textarea>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
-      <button type="button" *ngIf="pasubmitted && approvedemployee" [disabled]="disableApprovers" class="btn btn-success" (click)="Approvepa(PAApprovers)" label="Save">Submit</button>
+      <button type="button" *ngIf="pasubmitted && approvedemployee" [disabled]="disableApprovers" class="btn btn-success" (click)="Approvepa(PAApprovers)" label="Save" onclick="this.disabled=true">Submit</button>
     </div>
   </div>
 </div>
