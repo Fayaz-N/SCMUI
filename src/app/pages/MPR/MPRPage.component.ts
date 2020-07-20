@@ -1299,7 +1299,7 @@ export class MPRPageComponent implements OnInit {
     else
       this.showRfqGen = this.showCompareRfq = false;
 
-    if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "MPR Rejected").length > 0) || (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "MPR Closed").length > 0))
+    if ((this.mprRevisionDetails.StatusId == 15) || (this.mprRevisionDetails.StatusId==19))  //mpr closed or mpr rejected
     this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = false;//hide links
   }
 
