@@ -358,7 +358,7 @@
         <label class="form-label">Currency Value:</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <input type="number" value="{{rfqItemInfo.CurrencyValue}}" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" formControlName="CurrencyValue" [(ngModel)]="rfqItemInfo.CurrencyValue" [ngClass]="{ 'is-invalid': itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors}" />
+        <input type="number" value="{{rfqItemInfo.CurrencyValue}}" class="form-control"  ngModel maxlength="7" formControlName="CurrencyValue" [(ngModel)]="rfqItemInfo.CurrencyValue" [ngClass]="{ 'is-invalid': itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors}" />
         <span *ngIf="itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors" class="invalid-feedback">Please enter currency value.</span>
       </div>
     </div>

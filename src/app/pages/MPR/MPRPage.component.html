@@ -1234,8 +1234,8 @@
     <a *ngIf="showCompareRfq" id="mprPage6" [routerLink]="['/SCM/RFQComparision',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Compare RFQ"><i class="fa fa-list-alt"></i></a>
     <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
     <a *ngIf="showManualStatus" (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
-    <a (click)="enableBuyerGrp()" pTooltip="Change Buyer Group"><i class="fa fa-shopping-cart"></i></a>
-    <a [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
+    <a *ngIf="showBuyerGrp" (click)="enableBuyerGrp()" pTooltip="Change Buyer Group"><i class="fa fa-shopping-cart"></i></a>
+    <a *ngIf="showgenPA"  [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
   </div>
 
   <div *ngIf="displayFooter" class="footer">

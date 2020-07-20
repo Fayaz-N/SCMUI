@@ -28,7 +28,7 @@ export class MPRPageComponent implements OnInit {
   public form1Edit; materialFormEdit; vendorFormEdit; form3Edit; showForm1EditBtn; showMaterialEditBtn; showVendorEditBtn; shoForm3EditBtn; showCommEditBtn: boolean = false;
   public MPRForm1Submitted; MPRItemDetailsSubmitted; vendorSubmitted; MPRForm2Submitted; MPRForm3Submitted; MPRCommunicationSubmitted = false;
   public displayInchargeDialog; showVendorDialog; showDocumentationDialog; displayCommunicationDialog; showPOordingDialog; showManualStatusgDialog; showFileViewer: boolean = false;
-  public showRfqGen; showCompareRfq; hideDeleteBtn: boolean = false;
+  public showRfqGen; showCompareRfq; hideDeleteBtn; showBuyerGrp; showgenPA: boolean = false;
   public dynamicData = new DynamicSearchResult();
   public searchItems: Array<searchList> = [];
   public searchresult: Array<object> = [];
@@ -1299,6 +1299,8 @@ export class MPRPageComponent implements OnInit {
     else
       this.showRfqGen = this.showCompareRfq = false;
 
+    if ((this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "MPR Rejected").length > 0) || (this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.Status == "MPR Closed").length > 0))
+    this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = false;//hide links
   }
 
   bindMPRPageForm(formName: string, data: any) {
