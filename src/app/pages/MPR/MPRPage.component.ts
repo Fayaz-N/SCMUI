@@ -1300,7 +1300,9 @@ export class MPRPageComponent implements OnInit {
       this.showRfqGen = this.showCompareRfq = false;
 
     if ((this.mprRevisionDetails.StatusId == 15) || (this.mprRevisionDetails.StatusId==19))  //mpr closed or mpr rejected
-    this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = false;//hide links
+      this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = false;//hide links
+    else
+      this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = true;
   }
 
   bindMPRPageForm(formName: string, data: any) {
