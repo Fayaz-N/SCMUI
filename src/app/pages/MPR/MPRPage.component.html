@@ -967,7 +967,7 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
-                  <span style="float:left">Checker: </span>
+                  <span style="float:left">Checker: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.CheckStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton  (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
                 </th>
               </tr>
             </thead>
@@ -994,7 +994,7 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
-                  <span style="float:left">Approver: </span>
+                  <span style="float:left">Approver: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.ApprovalStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
                 </th>
               </tr>
             </thead>
@@ -1023,7 +1023,7 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
-                  <span style="float:left">Second Approver: </span>
+                  <span style="float:left">Second Approver: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.SecondApproversStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
                 </th>
               </tr>
             </thead>
@@ -1050,7 +1050,7 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
-                  <span style="float:left">Third Approver: </span>
+                  <span style="float:left">Third Approver: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.ThirdApproverStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
                 </th>
               </tr>
             </thead>
@@ -1261,7 +1261,7 @@
       </div>
 
       <div class="col-lg-3 col-md-3 col-sm-3 form-inline" *ngIf="showAcknowledge">
-        <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge')" label="Save">{{statusAckTxt}}</button>
+        <button type="button" class="btn btn-success" [disabled]="mprStatusUpdate.BuyerGroupName=='' && this.mprStatusUpdate.MPRAssignments.length<=0" (click)="onstatusUpdate('Acknowledge','')" label="Save">{{statusAckTxt}}</button>
       </div>
       <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
         <button type="button" class="btn btn-success" (click)="disableFooter()">Close</button>
@@ -1281,7 +1281,7 @@
         <textarea type="text" maxlength="500" [(ngModel)]="mprStatusUpdate.Remarks" class="form-control"></textarea>
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline">
-        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('')" label="Save">Submit</button>&nbsp;<span *ngIf="targetspendError && mprStatusUpdate.status=='Approved' &&  this.mprStatusUpdate.typeOfuser =='Approver'" style="font-size:10px;color:white">Enter target spend to approve</span>
+        <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="onstatusUpdate('','')" label="Save">Submit</button>&nbsp;<span *ngIf="targetspendError && mprStatusUpdate.status=='Approved' &&  this.mprStatusUpdate.typeOfuser =='Approver'" style="font-size:10px;color:white">Enter target spend to approve</span>
       </div>
     </div>
     <div class="row form-inline pt-2">
@@ -1714,7 +1714,7 @@
     </div>
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
-        <button type="button" pButton icon="fa fa-check" (click)="onstatusUpdate('MPRManualStatus')" label="Submit"></button>
+        <button type="button" pButton icon="fa fa-check" (click)="onstatusUpdate('MPRManualStatus','')" label="Submit"></button>
 
       </div>
     </p-footer>

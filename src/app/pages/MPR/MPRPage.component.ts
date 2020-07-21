@@ -1025,7 +1025,7 @@ export class MPRPageComponent implements OnInit {
       this.disableStatusSubmit = false;
   }
 
-  onstatusUpdate(statusType: string) {
+  onstatusUpdate(statusType: string,statusDetails:any) {
     if (statusType != "") {
       if (statusType == "MPRManualStatus" && (!this.mprStatusUpdate.StatusId || !this.mprStatusUpdate.Remarks)) {
         if (!this.mprStatusUpdate.StatusId)
@@ -1040,23 +1040,60 @@ export class MPRPageComponent implements OnInit {
         this.mprStatusUpdate.MPRAssignments = [];
     }
     else {
-      if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "Checker";
-      else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "Approver";
-      else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.SecondApproversStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "SecondApprover";
-      else if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.ThirdApproverStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "ThirdApproverThirdApprover";
+      if (statusDetails) {
+        this.mprStatusUpdate = statusDetails;
+        if (this.mprRevisionModel.PreparedBy == this.employee.EmployeeNo) {
+          this.mprStatusUpdate.typeOfuser = "Requestor";
+        }
+        if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) {
+          this.mprStatusUpdate.typeOfuser = "Checker";
+          this.mprStatusUpdate.status = statusDetails.CheckStatus;
+          this.mprStatusUpdate.Remarks = statusDetails.CheckerRemarks;
+        }
+        else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo) {
+          this.mprStatusUpdate.typeOfuser = "Approver";
+          this.mprStatusUpdate.status = statusDetails.ApprovalStatus;
+          this.mprStatusUpdate.Remarks = statusDetails.ApproverRemarks;
+        }
+        else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo) {
+          this.mprStatusUpdate.typeOfuser = "SecondApprover";
+          this.mprStatusUpdate.status = statusDetails.SecondApproversStatus;
+          this.mprStatusUpdate.Remarks = statusDetails.SecondApproverRemarks;
+        }
+        else if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo) {
+          this.mprStatusUpdate.typeOfuser = "ThirdApproverThirdApprover";
+          this.mprStatusUpdate.status = statusDetails.ThirdApproverStatus;
+          this.mprStatusUpdate.Remarks = statusDetails.ThirdApproverRemarks;
+        }
 
-      else if (this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.OCheckStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "OChecker";
-      else if (this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.OApprovalStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "OApprover";
-      else if (this.mprRevisionModel.OSecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.OSecondApproversStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "OSecondApprover";
-      else if (this.mprRevisionModel.OThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.OThirdApproverStatus != 'Approved')
-        this.mprStatusUpdate.typeOfuser = "OThirdApproverThirdApprover";
+        else if (this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo)
+          this.mprStatusUpdate.typeOfuser = "OChecker";
+        else if (this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo)
+          this.mprStatusUpdate.typeOfuser = "OApprover";
+        else if (this.mprRevisionModel.OSecondApprover == this.employee.EmployeeNo)
+          this.mprStatusUpdate.typeOfuser = "OSecondApprover";
+        else if (this.mprRevisionModel.OThirdApprover == this.employee.EmployeeNo)
+          this.mprStatusUpdate.typeOfuser = "OThirdApproverThirdApprover";
+      }
+      else {
+        if (this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.CheckStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "Checker";
+        else if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "Approver";
+        else if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.SecondApproversStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "SecondApprover";
+        else if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.ThirdApproverStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "ThirdApproverThirdApprover";
+
+        else if (this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo && this.mprRevisionModel.OCheckStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "OChecker";
+        else if (this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.OApprovalStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "OApprover";
+        else if (this.mprRevisionModel.OSecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.OSecondApproversStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "OSecondApprover";
+        else if (this.mprRevisionModel.OThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.OThirdApproverStatus != 'Approved')
+          this.mprStatusUpdate.typeOfuser = "OThirdApproverThirdApprover";
+      }
 
     }
     this.mprStatusUpdate.RevisionId = this.mprRevisionModel.RevisionId;
@@ -1077,6 +1114,9 @@ export class MPRPageComponent implements OnInit {
       }
 
       this.loadMPRData(this.mprRevisionModel.RevisionId);
+      if (statusDetails)
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Reminder Sent' });
+      else
       this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     })
 
@@ -1286,11 +1326,11 @@ export class MPRPageComponent implements OnInit {
     else
       this.displayFooter = false;
     if (this.AccessList.length > 0) {
-      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0 && this.employee.OrgDepartmentId == 14)//for CMM
+      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0 && this.employee.OrgDepartmentId == 14 && (this.mprRevisionDetails.StatusId != 15) || (this.mprRevisionDetails.StatusId!=19))//for CMM
         this.showRfqGen = true;
       if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0 && this.employee.OrgDepartmentId == 14)
         this.showCompareRfq = true;
-      if (this.AccessList.filter(li => li.AccessName == "AddManualStatus").length > 0 && this.employee.OrgDepartmentId == 14)
+      if (this.AccessList.filter(li => li.AccessName == "AddManualStatus").length > 0 && this.employee.OrgDepartmentId == 14 && (this.mprRevisionDetails.StatusId != 15) || (this.mprRevisionDetails.StatusId != 19))
         this.showManualStatus = true;
 
     }
@@ -1300,9 +1340,9 @@ export class MPRPageComponent implements OnInit {
       this.showRfqGen = this.showCompareRfq = false;
 
     if ((this.mprRevisionDetails.StatusId == 15) || (this.mprRevisionDetails.StatusId==19))  //mpr closed or mpr rejected
-      this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = false;//hide links
+     this.showBuyerGrp = this.showgenPA = false;//hide links
     else
-      this.showRfqGen = this.showManualStatus = this.showBuyerGrp = this.showgenPA = true;
+     this.showBuyerGrp = this.showgenPA = true;
   }
 
   bindMPRPageForm(formName: string, data: any) {
