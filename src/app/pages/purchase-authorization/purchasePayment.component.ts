@@ -18,6 +18,7 @@ export class purchasePaymentComponent implements OnInit {
  
     public itemsform: FormGroup;
     myFiles: string[] = [];
+    //myFiles: Array<File>;
     myfiles1: string[] = [];
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
@@ -398,10 +399,9 @@ export class purchasePaymentComponent implements OnInit {
 
 
     getFileDetails(e) {
-        //console.log (e.target.files);
-        for (var i = 0; i < e.target.files.length; i++) {
+        //this.myFiles = e.target.files;
+        for (var i=0; i < e.target.files.length; i++) {
             this.myFiles.push(e.target.files[i]);
-            
         }
         (<HTMLInputElement>document.getElementById("file")).value = "";
     }
@@ -423,6 +423,14 @@ export class purchasePaymentComponent implements OnInit {
         for (var i = 0; i < this.myFiles.length; i++) {
             frmData.append(paid, this.myFiles[i]);
         }
+
+        //this.myFiles.pop();
+        //var paid = "" + this.paid;
+        //const formData: any = new FormData();
+        //let files: any[] = this.myFiles;
+        //for (let i = 0; i < files.length; i++) {
+        //    formData.append(paid, files[i]);
+        //}
         this.myFiles.pop();
         this.paService.uploadpadocument(frmData).subscribe(data => {
             this.paDocuments = data
