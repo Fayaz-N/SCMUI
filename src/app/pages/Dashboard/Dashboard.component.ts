@@ -90,7 +90,7 @@ export class DashboardComponent {
   }
   getPAListCnt() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select count(*) as count from MPRPAApprovers where ApprovalStatus in ('pending', 'submitted') and Approver =" + this.employee.EmployeeNo+"";
+    this.dynamicData.query = "select  count(*) as count from MPRPAApprovers mprap inner join MPRPADetails mprpa on mprap.PAId=mprpa.PAId  where  mprap.ApprovalStatus in ('pending', 'submitted')  and mprpa.DeleteFlag=0 and mprpa.PAStatus not in ('Rejected')  and mprap.Approver =" + this.employee.EmployeeNo+"";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {   
       this.PAListCnt = data[0].count;
     })
