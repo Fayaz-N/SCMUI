@@ -222,6 +222,7 @@
           <td></td>
           <td></td>
           <td></td>
+          <td></td>
         </tr>
       </ng-template>
 
@@ -864,11 +865,8 @@
   <div class="row" style="width:100%;height:100%;margin-left:2px">
     <div class="form-group">
       <input type="file" id="file" multiple (change)="getFileDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
-
-      <!--<button (click)="uploadFiles()">Upload</button>-->
       <div *ngFor="let selected of myFiles;let index = index">
         <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelectedFile(index)"></i>
-        <!--<button mat-icon-button (click)="removeSelectedFile(index)">delete</button>-->
         <br />
       </div>
       <div class="" style="margin-top:10px">
@@ -877,7 +875,8 @@
     </div>
   </div>
 </div>
-<!--<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;">
+
+<div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;">
   <label class="form-label"><b> Upload Documents :</b></label>
   <div class="row" style="width:100%;height:100%;margin-left:2px">
 
@@ -894,7 +893,7 @@
 
     </div>
   </div>
-</div>-->
+</div>
 <div *ngIf="uploaddocuments" style="margin-top:10px;text-align:center">
   <button type="button" class="btn btn-success" label="Save" (click)="finalpa(purchasedetails)" onclick="this.disabled=true">Submit</button>
 </div>
