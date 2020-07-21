@@ -81,7 +81,7 @@ export class DashboardComponent {
 
   getMPRtotalcnt() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus not in ('Approved', 'MPR Rejected','Sent for Modification')) or (ApprovedBy =" + this.employee.EmployeeNo +" and ApprovalStatus not in ('Approved', 'MPR Rejected','Sent for Modification'))";
+    this.dynamicData.query = "select * from MPRRevisionDetails_woItems where BoolValidRevision = 1 and(CheckedBy = " + this.employee.EmployeeNo + " and CheckStatus not in ('Approved', 'MPR Rejected','MPR Closed','Sent for Modification')) or (ApprovedBy =" + this.employee.EmployeeNo +" and ApprovalStatus not in ('Approved', 'MPR Rejected','MPR Closed','Sent for Modification'))";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.MPRList = data;
       this.checkerListCnt = this.MPRList.filter(li => li.CheckedBy == this.employee.EmployeeNo).length;
