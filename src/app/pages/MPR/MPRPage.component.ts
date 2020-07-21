@@ -1195,7 +1195,7 @@ export class MPRPageComponent implements OnInit {
         this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
           this.mprRevisionList = data;
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
-          if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId)
+          if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId && this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0])
             this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
           this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
