@@ -178,7 +178,7 @@
   <div *ngIf="!pasubmitted && !paincompleted" class="row form-control" style="height:100%;border-radius:0px; margin-left:0px;">
     <p-table [value]="selectedItems" [paginator]="true" [rows]="10" [resizableColumns]="true" p columnResizeMode="expand">
       <ng-template pTemplate="header">
-        <tr>
+        <tr class="pt-2">
           <th style="width: 5em">Sl No</th>
           <th style="width:7em">Department</th>
           <th>Vendor Name</th>
@@ -194,7 +194,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-        <tr>
+        <tr class="pt-2">
           <td class="ptable-cell">{{ri+1}}</td>
           <td class="ptable-cell">{{rowData.Department}}</td>
           <td class="ptable-cell">{{rowData.VendorName}}</td>
@@ -210,14 +210,14 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
-        <tr>
+        <tr class="pt-2">
           <td></td>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
           <td></td>
-          <td>{{sum}}</td>
+          <td>{{sum | currency:'INR' }}</td>
           <td>{{target}}</td>
           <td></td>
           <td></td>
@@ -321,8 +321,8 @@
           </td>
           <td>{{rowData.QuotationQty}}</td>
           <td>{{rowData.UnitPrice}}</td>
-          <td>{{rowData.TargetSpend}}</td>
-          <td>{{rowData.itemsum}}</td>
+          <td>{{rowData.TargetSpend| currency:'INR'}}</td>
+          <td>{{rowData.itemsum | currency:'INR'}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
@@ -331,8 +331,8 @@
           <td></td>
           <td></td>
           <td></td>
-          <td>{{target}}</td>
-          <td>{{sum}}</td>
+          <td>{{target| currency:'INR':'symbol':'1.2-2'}}</td>
+          <td>{{sum| currency:'INR':'symbol':'1.2-2'}}</td>
         </tr>
       </ng-template>
     </p-table>
