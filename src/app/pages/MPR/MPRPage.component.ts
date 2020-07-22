@@ -600,9 +600,10 @@ export class MPRPageComponent implements OnInit {
   }
 
   onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
+    this.spinner.show();
     this.displayItemDialog = true;
     this.itemDetails = new MPRItemInfoes();
-    this.itemDetails = details;
+    this.itemDetails = details;   
     this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
       this.showList = false;
       if (details.Itemid == "0000")
@@ -612,7 +613,8 @@ export class MPRPageComponent implements OnInit {
           this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
       }
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
-      this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity()
+      this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity();
+      this.spinner.hide();
     });
     if (details.UnitId) {
       this.bindSearchListData(e, formName, 'UnitId', "", (): any => {

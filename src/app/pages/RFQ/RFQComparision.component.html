@@ -98,8 +98,8 @@
             <th style="text-align:center;width:200px">Previous Prices</th>
             <th *ngFor="let col of columns;let colInd=index" style="width:250px">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
-              {{col.VendorName}}<br /><label>RFQ No's List : </label>&nbsp;
-              <span *ngFor="let item of rfqrevisionsList" ><a *ngIf="item.VendorId==col.VendorId" style="color:#fff !important"  [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]"> {{item.RevisionNo + ","}}</a></span><br />
+              {{col.VendorName}}<br /><label>RFQ revision's List : </label>&nbsp;
+              <span *ngFor="let item of rfqrevisionsList" ><a *ngIf="item.VendorId==col.VendorId" style="color:#fff !important" [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]"><span *ngIf="col.rfqRevisionId!=item.rfqRevisionId"> {{item.rfqRevisionId + ","}}</span><span *ngIf="col.rfqRevisionId==item.rfqRevisionId" style="color:#11d3b8c9;text-decoration:underline"> {{item.rfqRevisionId + ","}}</span></a></span><br />
               <label>Current RFQ No : </label>&nbsp;<span style="color:#11d3b8c9"> {{col.RFQNo}}</span><br />
               <label>Date : </label>&nbsp;<span style="color:#11d3b8c9">{{col.RFQValidDate | date :  constants.dateFormat}}</span>
             </th>
@@ -287,7 +287,7 @@
   </div>
 </div>
 
-<p-dialog header="Add" [(visible)]="showPODialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'50%','overflow':'auto!important'}">
+<p-dialog header="Add Previous PO Price Information" [(visible)]="showPODialog" [responsive]="true" showEffect="fade" [modal]="true" [style]="{'width':'60%','overflow':'auto!important'}">
   <div class="ui-g-12">
     <div class="ui-g-2">
       <label for="procSrc">PONo: </label>
@@ -307,7 +307,7 @@
   </div>
   <div class="ui-g-12">
     <div class="ui-g-2">
-      <label for="procSrc">PO Price: </label>
+      <label for="procSrc">PO Unit price: </label>
     </div>
     <div class="ui-g-5">
       <input type="text" [(ngModel)]="PreviousPrices.POPrice" class="form-control" />

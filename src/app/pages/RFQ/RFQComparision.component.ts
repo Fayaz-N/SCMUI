@@ -66,7 +66,7 @@ export class RFQComparisionComponent implements OnInit {
   //ger rfqrevision list
   getRfqrevisionList() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select rm.RfqMasterId,rm.RFQNo,rm.RFQUniqueNo,rm.VendorId,rfqr.RevisionNo,rfqr.rfqRevisionId,rfqr.ActiveRevision from RFQMaster rm inner join RFQRevisions_N rfqr on rfqr.rfqMasterId=rm.RfqMasterId where ActiveRevision=1 and (MPRRevisionId=" + this.MPRRevisionId + " or  MPRRevisionId is null)";
+    this.dynamicData.query = "select rm.RfqMasterId,rm.RFQNo,rm.RFQUniqueNo,rm.VendorId,rfqr.RevisionNo,rfqr.rfqRevisionId,rfqr.ActiveRevision from RFQMaster rm inner join RFQRevisions_N rfqr on rfqr.rfqMasterId=rm.RfqMasterId where ActiveRevision=1";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.rfqrevisionsList = data;
     });
