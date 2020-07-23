@@ -179,130 +179,135 @@
         </div>
       </div>
       <div class="form-control" style="height:100%;border-radius:0px;">
-        <p-table [value]="mprRevisionModel.MPRItemInfoes">
+        <div class="card" style="border:none">
+          <div class="card-body" style="overflow:auto !important">
+            <p-table [value]="mprRevisionModel.MPRItemInfoes" [style]="{'width':'1230px','overflow':'auto!important'}">
+              <ng-template pTemplate="caption">
+                <div style="display:inline">
+                  <span style="float:left">Item Details : </span>
+                  <span style="padding-left:100px" class="form-inline">
+                    <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
+                    <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
+                    &nbsp; &nbsp;<label class="mt-2">DownLoad format :</label>&nbsp; <button  class="mt-2" type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr class="mprltbldata">
+                  <th style="width:50px">S.No</th>
+                  <th style="width:250px">Item Code & MPR Item Description</th>
+                  <th style="width:100px">Quantity & Unit</th>
+                  <th style="width:100px">Sale Order Line Item No</th>
+                  <th style="width:100px">Reference Doc No</th>
+                  <th style="width:100px">Mfg part No</th>
+                  <th style="width:100px">Mfg model No</th>
+                  <th style="width:100px">Target Spend</th>
+                  <th style="text-align:center;width:100px">Documents</th>
+                  <th style="width:100px;text-align:center">PO No</th>
+                  <th style="width:50px">Edit</th>
+                  <th style="width:50px" *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
+                  <th style="width:70px" *ngIf="hideDeleteBtn">Remove</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr>
+                  <td class="ptable-cell">
+                    {{ri+1}}
+                  </td>
+                  <td class="ptable-cell">{{rowData.Itemid}} - {{rowData.ItemDescription}}</td>
+                  <td class="ptable-cell">{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
+                  <td class="ptable-cell">{{rowData.SOLineItemNo}}</td>
+                  <td class="ptable-cell">{{rowData.ReferenceDocNo}}</td>
+                  <td class="ptable-cell">{{rowData.MfgPartNo}}</td>
+                  <td class="ptable-cell">{{rowData.MfgModelNo}}</td>
+                  <td class="ptable-cell">{{rowData.TargetSpend}}</td>
+                  <td class="ptable-cell">
+                    <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+                      <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
+                    </div>
+                  </td>
+                  <td>{{getPOnumbers(rowData)}}</td>
+                  <td style="text-align:center">
+                    <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
+                  </td>
+                  <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
+                    <input type="checkbox" style="height:15px;width:15px" (click)="selectMprLineItems($event,ri,rowData)">
+                  </td>
+                  <td style="text-align:center" *ngIf="hideDeleteBtn">
+                    <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+          </div>
+        <br /><br />
+          <div class="col-sm-4 col-lg-4 col-md-4"></div><div class="col-sm-4 col-lg-4 col-md-4" style="float:right"><button *ngIf="!materialFormEdit && RepeatOrder" class="btn btn-success" (click)="onRevisionCopy()">Repeat Order</button></div>
+          <br /><br />
+          <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
+            <div class="form-group row">
+              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label">Total Target Spend(INR)</label>
+                <input class="form-control" [disabled]="true" readonly formControlName="TargetSpend" type="text" [value]="MPRPageForm2.controls.TargetSpend.value" [ngModel]="calculateTargetSpend()">
+              </div>
+              <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label lblEdit">Total Target Spend(INR) </label>
+                <span class="valueEdit">{{calculateTargetSpend()}}</span>
+              </div>
+
+              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label">Target Spend Remarks</label>
+                <textarea class="form-control" type="text" maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
+                <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
+              </div>
+              <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label lblEdit">Target Spend Remarks </label>
+                <span class="valueEdit">{{mprRevisionModel.TargetedSpendRemarks}}</span>
+              </div>
+
+              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label">Supporting Documents For Target Spent</label>&nbsp; &nbsp;
+                <button type="button" [disabled]="mprRevisionModel.MPRItemInfoes.length > 0 ? false:true" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentUpload')"></button>
+              </div>
+              <div *ngIf="MPR3Documents.length>0" class="col-lg-4 col-md-4 col-sm-4 form-group">
+                <label class="form-label"><b>Supporting Documents For Target Spent :</b></label>
+                <div *ngFor="let document of MPR3Documents">
+                  <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>&nbsp;
+                  <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
+                  <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+                </div>
+                <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
           <ng-template pTemplate="caption">
-            <div style="display:inline">
-              <span style="float:left">Item Details : </span>
-              <span style="padding-left:350px" class="form-inline">
-                <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
-                <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
-                &nbsp; <label>DownLoad format :</label>&nbsp; <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
-              </span>
-            </div>
+            Supporting Documents For Target Spent :
           </ng-template>
           <ng-template pTemplate="header">
-            <tr class="mprltbldata">
+            <tr>
               <th>S.No</th>
-              <th style="width:250px">Item Code & MPR Item Description</th>
-              <th>Quantity & Unit</th>
-              <th>Sale Order Line Item No</th>
-              <th>Reference Document No</th>
-              <th>Mfg part No</th>
-              <th>Mfg model No</th>
-              <th>Target Spend</th>
-              <th style="text-align:center">Documents</th>
-              <th style="width:100px;text-align:center">PO No</th>
-              <th>Edit</th>
-              <th *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
-              <th *ngIf="hideDeleteBtn">Remove</th>
+              <th>Document</th>
+              <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
             </tr>
           </ng-template>
-          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-            <tr>
-              <td class="ptable-cell">
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+            <tr *ngIf="rowData.DocumentTypeid==2">
+              <td>
                 {{ri+1}}
               </td>
-              <td class="ptable-cell">{{rowData.Itemid}} - {{rowData.ItemDescription}}</td>
-              <td class="ptable-cell">{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
-              <td class="ptable-cell">{{rowData.SOLineItemNo}}</td>
-              <td class="ptable-cell">{{rowData.ReferenceDocNo}}</td>
-              <td class="ptable-cell">{{rowData.MfgPartNo}}</td>
-              <td class="ptable-cell">{{rowData.MfgModelNo}}</td>
-              <td class="ptable-cell">{{rowData.TargetSpend}}</td>
-              <td class="ptable-cell">
-                <div *ngFor="let document of mprRevisionModel.MPRDocuments">
-                  <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
-                </div>
-              </td>
-              <td>{{getPOnumbers(rowData)}}</td>
-              <td style="text-align:center">
-                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
-              </td>
-              <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
-                <input type="checkbox" style="height:15px;width:15px" (click)="selectMprLineItems($event,ri,rowData)">
-              </td>
+              <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
               <td style="text-align:center" *ngIf="hideDeleteBtn">
-                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
+                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
               </td>
             </tr>
           </ng-template>
-        </p-table><br /><br />
-        <div class="col-sm-4 col-lg-4 col-md-4"></div><div class="col-sm-4 col-lg-4 col-md-4" style="float:right"><button *ngIf="!materialFormEdit && RepeatOrder" class="btn btn-success" (click)="onRevisionCopy()">Repeat Order</button></div>
-        <br /><br />
-        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
-          <div class="form-group row">
-            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Total Target Spend(INR)</label>
-              <input class="form-control" [disabled]="true" readonly formControlName="TargetSpend" type="text" [value]="MPRPageForm2.controls.TargetSpend.value" [ngModel]="calculateTargetSpend()">
-            </div>
-            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label lblEdit">Total Target Spend(INR) </label>
-              <span class="valueEdit">{{calculateTargetSpend()}}</span>
-            </div>
-
-            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Target Spend Remarks</label>
-              <textarea class="form-control" type="text" maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
-              <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
-            </div>
-            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label lblEdit">Target Spend Remarks </label>
-              <span class="valueEdit">{{mprRevisionModel.TargetedSpendRemarks}}</span>
-            </div>
-
-            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label">Supporting Documents For Target Spent</label>&nbsp; &nbsp;
-              <button type="button" [disabled]="mprRevisionModel.MPRItemInfoes.length > 0 ? false:true" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentUpload')"></button>
-            </div>
-            <div *ngIf="MPR3Documents.length>0" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="form-label"><b>Supporting Documents For Target Spent :</b></label>
-              <div *ngFor="let document of MPR3Documents">
-                <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>&nbsp;
-                <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
-                <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
+        </p-table>-->
               </div>
-              <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
-                <ng-template pTemplate="caption">
-                  Supporting Documents For Target Spent :
-                </ng-template>
-                <ng-template pTemplate="header">
-                  <tr>
-                    <th>S.No</th>
-                    <th>Document</th>
-                    <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-                  <tr *ngIf="rowData.DocumentTypeid==2">
-                    <td>
-                      {{ri+1}}
-                    </td>
-                    <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
-                    <td style="text-align:center" *ngIf="hideDeleteBtn">
-                      <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
-                    </td>
-                  </tr>
-                </ng-template>
-              </p-table>-->
             </div>
           </div>
-        </div>
 
-        <br />
-        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0 && !materialFormEdit" style="text-align: center;">
-          <button type="button" class="btn btn-success" (click)="onMPRMaterialSubmit('MPRMaterialId','showVendorForm','materialFormEdit')" label="Save">Proceed</button>
+          <br />
+          <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0 && !materialFormEdit" style="text-align: center;">
+            <button type="button" class="btn btn-success" (click)="onMPRMaterialSubmit('MPRMaterialId','showVendorForm','materialFormEdit')" label="Save">Proceed</button>
+          </div>
         </div>
-      </div>
     </div>
     <br />
     <div *ngIf="showVendorForm" id="MPRVendorId" class="my-animation">
