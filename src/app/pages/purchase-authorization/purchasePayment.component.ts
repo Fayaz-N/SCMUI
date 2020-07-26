@@ -546,8 +546,8 @@ export class purchasePaymentComponent implements OnInit {
 
 
     removePADoument(documentid) {
-        var index = this.paDocuments.documentid;
-        console.log(index)
+        //var index = this.paDocuments.documentid;
+        //console.log(index)
         //if (details.MprDocId) {
         //    this.MprService.deleteMPRDocument(details).subscribe(data => {
         //        if (data == true) {
@@ -660,6 +660,14 @@ export class purchasePaymentComponent implements OnInit {
         else {
             this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please select PurchaseType and Purchase Mode' });
         }
+
+    }
+    Deletefile(documents: number) {
+        this.paDocuments.DocumentId = documents
+        this.paService.DeletePADocument(this.paDocuments).subscribe(data => {
+            this.paDocuments.DocumentId = data.Sid;
+            this.getmprpabyid(this.paid);
+        })
 
     }
 }

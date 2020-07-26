@@ -125,7 +125,7 @@ export class padocuments {
     filename: string;
     path: string;
     uploadeddate: Date;
-    documentid: number;
+    DocumentId: number;
 }
 export class PurchaseCreditApproversModel {
 

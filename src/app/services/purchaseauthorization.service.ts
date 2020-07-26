@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -160,5 +160,8 @@ export class purchaseauthorizationservice {
     }
     loadAllIncompltedpalist(model: painutmodel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/LoadIncompletedPAlist', model, this.httpOptions)
+    }
+    DeletePADocument(documents: padocuments): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/DeletePADocument', documents, this.httpOptions)
     }
 } 

@@ -74,39 +74,40 @@
   </div>
 </div>
 <div class="form-control" style="height:100%;border-radius:0px;margin-top:40px">
-  <p-table #dt [value]="paapproverdeatils" [paginator]="true" [rows]="10"  [resizableColumns]="true" [responsive]="true" [scrollable]="true">
+  <p-table #dt [value]="paapproverdeatils" [paginator]="true" [style]="{'width':'100%','overflow':'auto!important'}" [rows]="10"  [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true" >
     <ng-template pTemplate="header">
-      <tr>
-        <th style="width:4em">S.No</th>
-        <th class="ptable-cell">Approver</th>
-        <th style="width:5em">PA ID</th>
-        <th class="ptable-cell">MPRNo</th>
-        <th class="ptable-cell">RFQNo</th>
-        <th>Role</th>
-        <th class="ptable-cell">Vendor</th>
-        <th class="ptable-cell">Department</th>
-        <th class="ptable-cell">BuyerGroup</th>
-        <th class="ptable-cell">ApproverStatus</th>
-        <th class="ptable-cell">ApprovedOn</th>
-        <th class="ptable-cell">RequestedBy</th>
+      <tr style="font-size: 12px !important;">
+        <th style="width:50px">S.No</th>
+        <!--<th style="width:100px">Approver</th>-->
+        <th style="width:50px">PA ID</th>
+        <!--<th style="width:100px;">MPRNo</th>-->
+        <th style="width:100px;">MPR NO</th>
+        <!--<th style="width:100px">RFQNo</th>-->
+        <!--<th style="width:100px">Role</th>-->
+        <th style="width:100px">Vendor</th>
+        <th style="width:110px">Department</th>
+        <th style="width:110px">Buyer Group</th>
+        <th style="width:130px">Approval Status</th>
+        <!--<th style="width:110px">ApprovedOn</th>-->
+        <th style="width:110px">Requestor</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-      <tr>
-        <td style="width:4em">
+      <tr style="font-size: 12px !important;">
+        <td class="ptable-cell" style="text-align:center !important">
           {{ri+1}}
         </td>
-        <td class="ptable-cell">{{rowData.Name}}</td>
-        <td style="width:5em"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <!--<td class="ptable-cell">{{rowData.Name}}</td>-->
+        <td class="ptable-cell" style="text-align:center !important"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td class="ptable-cell">{{rowData.DocumentNo}}</td>
-        <td class="ptable-cell">{{rowData.RFQNo}}</td>
-        <td class="ptable-cell">{{rowData.RoleName}}</td>
         <td class="ptable-cell">{{rowData.VendorName}}</td>
         <td class="ptable-cell">{{rowData.Department}}</td>
-        <td class="ptable-cell">{{rowData.BuyerGroup}}</td>
-        <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
-        <td class="ptable-cell">{{rowData.ApprovedOn | date: 'dd/MM/yyyy  hh:mm a'}}</td>
-        <td class="ptable-cell">{{rowData.RequestedBy}}</td>
+        <td class="ptable-cell" style="font-size: 10px !important;">{{rowData.BuyerGroup}}</td>
+        <td class="ptable-cell">
+          {{rowData.ApprovalStatus}} <br />
+          {{rowData.ApprovedOn | date: 'dd/MM/yyyy  hh:mm a'}}
+        </td>
+        <td class="ptable-cell">{{rowData.parequested}}</td>
       </tr>
     </ng-template>
   </p-table><br />

@@ -900,10 +900,9 @@
 <div class="form-control" *ngIf="pasubmitted && purchasedetails.documents.length" style="height:100%;width:100%">
   <label class="form-label"><b> Documents Attached :</b></label>
   <div *ngFor="let document of purchasedetails.documents" class="col-lg-10 col-md-10 col-sm-10">
-    <!--<a (click)="viewPADocument(document.path,document.filename)">{{document.filename}}</a>-->
     <button (click)="viewPADocument(document.path,document.filename)" class="btn btn-link">{{document.filename}}</button>
-    <!--<i class="fa fa-paperclip" aria-hidden="true" (click)="viewPADocument(document.path,document.filename)" pTooltip="File Name: {{document.filename}}"></i>&nbsp;
-    <span><a> {{document.filename}} </a></span>&nbsp;&nbsp;-->
+    <button type="button" *ngIf="purchasedetails.PAStatus!='Approved'" class="btn btn-danger btn-sm" (click)="Deletefile(document.DocumentId)">Delete</button>
+    <!--<i class="fa fa-remove" aria-hidden="true" (click)="removeSelecteduploadFile(index)"></i>-->
   </div>
 </div>
 <div *ngIf="pasubmitted" class="form-control" style="height:100%;width:100%;margin-top:7px">
