@@ -1299,7 +1299,7 @@ export class MPRPageComponent implements OnInit {
     //for PO raising details
     if ((this.mprRevisionModel.OCheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.OCheckStatus == "Pending" || this.mprRevisionModel.OCheckStatus == "Submitted" || this.mprRevisionModel.OCheckStatus == "Sent for Modification") {
       this.mprStatusUpdate.status = this.mprRevisionModel.OCheckStatus;
-      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OCheckStatus;
+      this.mprStatusUpdate.Remarks = this.mprRevisionModel.OCheckerRemarks;
       this.showStatusDetails = true;
     }
     else if ((this.mprRevisionModel.OApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.OCheckStatus == "Approved") && this.mprRevisionModel.OApprovalStatus == "Pending" || this.mprRevisionModel.OApprovalStatus == "Submitted" || this.mprRevisionModel.OApprovalStatus == "Sent for Modification") {
