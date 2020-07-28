@@ -236,19 +236,20 @@ export class MPRPageComponent implements OnInit {
     this.POraiseForm.controls['OSecondApprover'].clearValidators();
     this.POraiseForm.controls['OThirdApprover'].clearValidators();
 
-    if (localStorage.getItem("EmployeeList"))
-      this.EmployeeList = JSON.parse(localStorage.getItem("EmployeeList"));
-    else {
-      this.MprService.getEmployeeList().subscribe(data => {
-        this.EmployeeList = data;
-        var list = this.EmployeeList.filter(li => li.Grade == 'M1');
-        localStorage.setItem("EmployeeList", JSON.stringify(list));
-      });
-    }
+    //if (localStorage.getItem("EmployeeList"))
+    //  this.EmployeeList = JSON.parse(localStorage.getItem("EmployeeList"));
+    //else {
+    //  this.MprService.getEmployeeList().subscribe(data => {
+    //    this.EmployeeList = data;
+    //    var list = this.EmployeeList.filter(li => li.Grade == 'M1');
+    //    localStorage.setItem("EmployeeList", JSON.stringify(list));
+    //  });
+    //}
     this.route.params.subscribe(params => {
       if (params["MPRRevisionId"] && !this.constants.RequisitionId) { //load mpr revision data 
         var revisionId = params["MPRRevisionId"];
         this.spinner.show();
+        this.getEmpList();
         this.loadMPRData(revisionId);
         this.getRfqGeneratedList(revisionId);
         this.getPAdetails(revisionId);
@@ -283,7 +284,11 @@ export class MPRPageComponent implements OnInit {
     });
 
   }
-
+  getEmpList() {
+    this.MprService.getEmployeeList().subscribe(data => {
+      this.EmployeeList = data;
+    });
+  }
   public noWhitespaceValidator(control: FormControl) {
     const isWhitespace = (control.value || '').trim().length === 0;
     const isValid = !isWhitespace;
@@ -596,14 +601,14 @@ export class MPRPageComponent implements OnInit {
       this.targetspendError = false;
     else
       this.targetspendError = true;
-      return val;
+    return val;
   }
 
   onRowEditInit(e: any, formName: string, details: MPRItemInfoes) {
     this.spinner.show();
     this.displayItemDialog = true;
     this.itemDetails = new MPRItemInfoes();
-    this.itemDetails = details;   
+    this.itemDetails = details;
     this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
       this.showList = false;
       if (details.Itemid == "0000")
@@ -1021,13 +1026,13 @@ export class MPRPageComponent implements OnInit {
   }
 
   statusChange() {
-    if (this.targetspendError && this.mprStatusUpdate.status == "Approved" && this.mprStatusUpdate.typeOfuser =="Approver")
+    if (this.targetspendError && this.mprStatusUpdate.status == "Approved" && this.mprStatusUpdate.typeOfuser == "Approver")
       this.disableStatusSubmit = true;
     else
       this.disableStatusSubmit = false;
   }
 
-  onstatusUpdate(statusType: string,statusDetails:any) {
+  onstatusUpdate(statusType: string, statusDetails: any) {
     if (statusType != "") {
       if (statusType == "MPRManualStatus" && (!this.mprStatusUpdate.StatusId || !this.mprStatusUpdate.Remarks)) {
         if (!this.mprStatusUpdate.StatusId)
@@ -1119,7 +1124,7 @@ export class MPRPageComponent implements OnInit {
       if (statusDetails)
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Reminder Sent' });
       else
-      this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     })
 
   }
@@ -1328,7 +1333,7 @@ export class MPRPageComponent implements OnInit {
     else
       this.displayFooter = false;
     if (this.AccessList.length > 0) {
-      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0 && this.employee.OrgDepartmentId == 14 && (this.mprRevisionDetails.StatusId != 15) || (this.mprRevisionDetails.StatusId!=19))//for CMM
+      if (this.AccessList.filter(li => li.AccessName == "GenerateRFQ").length > 0 && this.employee.OrgDepartmentId == 14 && (this.mprRevisionDetails.StatusId != 15) || (this.mprRevisionDetails.StatusId != 19))//for CMM
         this.showRfqGen = true;
       if (this.AccessList.filter(li => li.AccessName == "CompareRFQ").length > 0 && this.employee.OrgDepartmentId == 14)
         this.showCompareRfq = true;
@@ -1341,10 +1346,10 @@ export class MPRPageComponent implements OnInit {
     else
       this.showRfqGen = this.showCompareRfq = false;
 
-    if ((this.mprRevisionDetails.StatusId == 15) || (this.mprRevisionDetails.StatusId==19))  //mpr closed or mpr rejected
-     this.showBuyerGrp = this.showgenPA = false;//hide links
+    if ((this.mprRevisionDetails.StatusId == 15) || (this.mprRevisionDetails.StatusId == 19))  //mpr closed or mpr rejected
+      this.showBuyerGrp = this.showgenPA = false;//hide links
     else
-     this.showBuyerGrp = this.showgenPA = true;
+      this.showBuyerGrp = this.showgenPA = true;
   }
 
   bindMPRPageForm(formName: string, data: any) {
