@@ -376,7 +376,7 @@
       </tbody>
     </table>
     <div class="row col-md-6 col-lg-6 col-sm-6">
-      <label style="width:200px">RfqComparison:<span ><a [routerLink]="['/SCM/RFQComparision',mprrevisionid]" target="_blank" routerLinkActive="active">{{purchasedetails.mprno}}</a></span></label> &nbsp;&nbsp;
+      <label style="width:200px">RfqComparison:<span><a [routerLink]="['/SCM/RFQComparision',mprrevisionid]" target="_blank" routerLinkActive="active">{{purchasedetails.mprno}}</a></span></label> &nbsp;&nbsp;
     </div>
   </div>
 </div>
@@ -406,7 +406,7 @@
       <tr>
         <td style="color:#0095ff">{{selectedvendor}}</td>
         <td>{{finalpaymentterm}}</td>
-      </tr>   
+      </tr>
     </tbody>
   </table>
   <div class="row col-md-6 col-lg-6 col-sm-6">
@@ -512,7 +512,8 @@
       </p-table>
     </div>
   </div>
-</div><br />
+</div>
+<br />
 <div *ngIf="showemployee && !pasubmitted" class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Approvers:</div>
 </div>
@@ -551,25 +552,30 @@
 
     </div>
   </div>
-  <div *ngIf="showemployee  && paincompleted && !pasubmitted" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-    <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th><span style="float:left">ApproverName </span> </th>
-            <th><span style="float:left">Role </span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let app of employeelist">
-            <td>{{app.Approvername}}</td>
-            <td>{{app.rolename}}</td>
-          </tr>
-        </tbody>
-      </table>
+</div>
+<div *ngIf="showemployee  && paincompleted && !pasubmitted" class="form-control" style="height:100%;border-radius:0px; margin-left:0px; margin-top:0px">
+  <!--<div class="row inline">
+    <div class="col-md-6 col-lg-6 col-sm-6" style="display:inline;margin-left:14px">
+      <label for="ProjectName" class="form-label" style="margin-left: 0px;">Credit Days:</label>
+      <input type="text" [(ngModel)]="purchasedetails.CreditDays" class="form-control" (input)="onSearchChange($event.target.value)" style="margin-left: 0px;width:50%" />
     </div>
+  </div>-->
+  <div *ngIf="employeelist" class="col-lg-8 col-md-8 col-sm-8">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th><span style="float:left">ApproverName </span> </th>
+          <th><span style="float:left">Role </span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of employeelist">
+          <td>{{app.Approvername}}</td>
+          <td>{{app.rolename}}</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-
 </div>
 <div class="row head-text pl-0" style="margin-left:0px;margin-top:20px;width:100%">
   <div class="col-md-6 pt-2">Terms and Conditions:</div>
@@ -883,7 +889,7 @@
     <div class="form-group">
       <input type="file" id="file1" multiple (change)="getFileuploadDetails($event)" style="margin-left: 0px;" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls">&nbsp;&nbsp;
 
-     
+
       <div *ngFor="let selected of myfiles1;let index = index" style="margin-top:10px">
         <span>{{selected.name}}</span> <i class="fa fa-remove" aria-hidden="true" (click)="removeSelecteduploadFile(index)"></i>
       </div>&nbsp;&nbsp;
@@ -1004,7 +1010,7 @@
       &nbsp;&nbsp;
       <label class="form-label">Status:</label>&nbsp;
       <select [(ngModel)]="PAApprovers.ApprovalStatus" class="form-control dropdown">
-        <option value="Submitted">Submitted</option>
+        <option value="Pending">Pending</option>
         <option value="Rejected">Rejected</option>
         <option value="Approved">Approved</option>
       </select>&nbsp;
