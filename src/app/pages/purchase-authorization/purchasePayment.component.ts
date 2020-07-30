@@ -345,7 +345,7 @@ export class purchasePaymentComponent implements OnInit {
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data['Table'];
                 this.employeelist.Approvers = data['Table'];
-                this.incompletedapprovers = this.employeelist;
+                //this.incompletedapprovers = this.employeelist;
             })
         }
     }
@@ -369,7 +369,9 @@ export class purchasePaymentComponent implements OnInit {
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
             this.paService.ApproveItems(item).subscribe(data => {
                 this.employeelist = data['Table'];
-                this.employeelist.Approvers = data['Table'];
+                this.employeelist.Approvers = data['Table'];  
+                //this.employeelist.Approvers = data;
+                console.log("employeelist", this.employeelist)
             })
         }
     }
@@ -616,13 +618,16 @@ export class purchasePaymentComponent implements OnInit {
     }
     displaycustomapproveEmployee(creditdays: any) {
         this.MPRItemDetailsid = [];
+        console.log("purchasedetails",this.purchasedetails)
         let item = new ConfigurationModel();
         if (this.selectedItems.length > 0) {
             item.MPRItemDetailsid = [];
             item["UnitPrice"] = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
             item["TargetSpend"] = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current);
             item["DeptID"] = this.selectedItems[0].DepartmentId;
-            item["PaymentTermCode"] = creditdays;
+            //item["PaymentTermCode"] = creditdays;
+            item["Creditdays"] = creditdays;
+
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid)
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);
