@@ -41,7 +41,7 @@ export class TokuchuReqListComponent implements OnInit {
 
   getEmplist() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select EmployeeNo,Name from employee where OrgDepartmentId=14";
+    this.dynamicData.query = "select EmployeeNo,Name from employee where  DOL is null and OrgDepartmentId=14";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.verifyEmpList = data;
     })

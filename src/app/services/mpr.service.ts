@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -198,7 +198,9 @@ export class MprService {
   sendMailtoVendor(mailObj: sendMailObj): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/sendMailtoVendor/', mailObj, this.httpOptions);
   }
-
+  updateItemId(data: materialUpdate): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/updateItemId/', data, this.httpOptions);
+  }
 //save file in cloud server
   InsertDocument(formData: FormData): Observable<any> {
     return this.http.post<any>('http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/UploadFile', formData)
