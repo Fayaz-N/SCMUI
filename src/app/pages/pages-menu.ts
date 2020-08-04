@@ -167,7 +167,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'PAIncompleted List',
                 link: '/SCM/incompletedpa',
                 icon: 'layers-outline'
-            }
+          },
+          {
+            title: 'Tokuchu Req List',
+            link: '/SCM/TokochuReqList',
+            icon: 'layers-outline'
+          }
         ],
     },
     {

@@ -36,6 +36,8 @@ import { AddSlabsComponent } from './purchase-authorization/AddSlabs.component';
 import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
 import { PAIncompletedListComponent } from './purchase-authorization/PAIncompletedList.component';
+import { TokuchuRequestComponent } from './purchase-authorization/Tokuchurequest.component';
+import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component'
 
 const routes: Routes = [{
   path: '',
@@ -79,7 +81,7 @@ const routes: Routes = [{
     { path: 'Viewaccess', component: ViewAccessComponent, canActivate: [AuthGuard] },
     { path: 'Configuration', component: ConfigComponent, canActivate: [AuthGuard] },
     { path: "PADetails", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
-    { path: "PADetails/:RevisionId", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard]  },
+    { path: "PADetails/:RevisionId", component: PurchaseAuthorizationDetailsComponent, canActivate: [AuthGuard] },
     { path: "EmployeeConfiguration", component: PurchaseAuthorizationComponent, canActivate: [AuthGuard] },
     { path: "AddSlab", component: AddSlabsComponent, canActivate: [AuthGuard] },
     { path: "CreditDays", component: CreditAuthorizationComponent, canActivate: [AuthGuard] },
@@ -89,8 +91,12 @@ const routes: Routes = [{
     { path: "MPRPAApproverList", component: MPRPAApproversListComponent, canActivate: [AuthGuard] },
     { path: "MPRStatusChart", component: MPRStatusChartComponent, canActivate: [AuthGuard] },
 
-      { path: "pareports", component: PAReportListComponent, canActivate: [AuthGuard] },
-    { path: "incompletedpa", component: PAIncompletedListComponent, canActivate: [AuthGuard] }
+    { path: "pareports", component: PAReportListComponent, canActivate: [AuthGuard] },
+    { path: "incompletedpa", component: PAIncompletedListComponent, canActivate: [AuthGuard] },
+    { path: "TokochuRequest", component: TokuchuRequestComponent, canActivate: [AuthGuard] },
+    { path: "TokochuRequest/:TokuchRequestid", component: TokuchuRequestComponent, canActivate: [AuthGuard] },
+    { path: "TokochuReqList", component: TokuchuReqListComponent, canActivate: [AuthGuard] },
+
     // {
     //      path: '',
     //      redirectTo: 'Login',

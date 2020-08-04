@@ -1,0 +1,257 @@
+<div style="text-align:center"><h4>Tokuchu Request</h4></div>
+<div class="card m-2">
+  <div class="row head-text pl-0" style="margin-left:0px;width:100%">
+    <div class="col-md-6 pt-2"> Vendors:</div>
+  </div>
+  <div class="form-control" style="height:100%">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>
+            Considered vendors
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td *ngFor="let ven of vendor">{{ven.VendorName}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Selected vendors</th>
+          <th>Payment Termcode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:#0095ff">{{selectedvendor}}</td>
+          <td>{{finalpaymentterm}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="row col-md-6 col-lg-6 col-sm-6">
+      RfqComparison:<label style="width:200px" *ngFor="let item of purchasedetails.Item;let i=index"><span *ngIf="i < 1"><a [routerLink]="['/SCM/RFQComparision',item.MPRRevisionId]" target="_blank" routerLinkActive="active">{{item.DocumentNo}}</a></span></label> &nbsp;&nbsp;
+    </div>
+  </div>
+</div>
+<div class="card  m-2">
+  <div *ngIf="tokuchuRequest && tokuchuRequest.TokuchRequestid" class="row" style="padding-left:20px">
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Tokuchu Req Id: </span><span style="color: #dc3545;">{{tokuchuRequest.TokuchRequestid }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PA Id: </span><span style="color: #dc3545;">{{tokuchuRequest.PAId }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Prepared By: </span><span *ngIf="tokuchuRequest.PreparedBY" style="color: #dc3545;">{{getEmpName(tokuchuRequest.PreparedBY)}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Prepared On: </span><span style="color: #dc3545;">{{tokuchuRequest.Preparedon | date :  constants.dateFormat}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Downloaded By: </span><span style="color: #dc3545;">{{getEmpName(tokuchuRequest.DownloadedBy)}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Downloaded On: </span><span style="color: #dc3545;">{{tokuchuRequest.DownloadedOn | date :  constants.dateFormat}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Status: </span><span style="color: #dc3545;">{{tokuchuRequest.CompletedStatus }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Status On: </span><span style="color: #dc3545;">{{tokuchuRequest.CompletedOn | date :  constants.dateFormat}}</span></div>
+  </div>
+  </div>
+<div class="card  m-2">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table [value]="purchasedetails.Item" dataKey="paitemid" [style]="{'width':'100%','overflow':'auto!important'}"
+             [responsive]="true" [rows]="50"
+             [resizableColumns]="true"
+             columnResizeMode="expand"
+             [paginator]="true" [rowsPerPageOptions]="[25,50,75,100]"
+             appendTo="body">
+      <ng-template pTemplate="header" let-rowData let-editing="editing">
+        <tr class="mprltbldata">
+          <th style="width: 3em">
+            <!--<p-tableHeaderCheckbox></p-tableHeaderCheckbox>-->
+          </th>
+          <th style="width:60px">Sl No</th>
+          <th class="ptable-cell" style="width:250px;text-align:center">Description</th>
+          <th class="ptable-cell" style="width:80px;text-align:center">Standard Lead Time</th>
+          <th class="ptable-cell" style="width:150px;text-align:center">Category Level</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+        <tr [pEditableRow]="rowData">
+          <td>
+            <input type="checkbox" *ngIf="showSubmit" id='item{{rowData.paitemid }}' class="checkmark vndorinputchk" (click)="selectItem(rowData,$event)">
+            <!--<p-tableCheckbox *ngIf="rowData.PreVerifiedStatus!='Approved' && rowData.VerifiedStatus!='Approved'" (click)="selectItem(rowData,e)" #e [value]="rowData"></p-tableCheckbox>-->
+          </td>
+          <td>{{ri+1}}</td>
+          <td class="ptable-cell">
+            <div class="row">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <span><b>Rfq Item Id: </b> {{rowData.RFQItemsId}}</span>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Material id: </b> {{rowData.materialid}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Material Desc: </b> {{rowData.Materialdescription}}</span>&nbsp;&nbsp;<button *ngIf="showSubmit" type="button" style="font-size:10px" class="btn btn-primary" (click)="showMaterialDialog(ri,rowData.MRPItemsDetailsID)">Edit</button>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <span><b>Item Desc: </b> {{rowData.ItemDescription}}</span>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Mfg ModelNo: </b>{{rowData.MfgModelNo}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Mfg PartNo: </b> {{rowData.MfgPartNo}}</span>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Vendor ModelNo: </b> {{rowData.VendorModelNo}}</span>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-6">
+                <span><b>Manufacturer Name: </b> {{rowData.ManufacturerName}}</span>
+              </div>
+            </div>
+            <div class="row mt-2">
+              <div class="col-lg-12 col-md-12 col-sm-12">
+                <span><b>Edit Details: </b><a [routerLink]="['/SCM/RFQForm',rowData.RFQRevisionId]" target="_blank" routerLinkActive="active">{{rowData.RFQNo}}</a></span>
+              </div>
+            </div>
+          </td>
+          <td><input [disabled]="!showSubmit" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
+          <td style="display:inline-block;border:none">
+            <label class="form-label">Category  Level1:</label>&nbsp;<select class="form-control dropdown m-1" [disabled]="!showSubmit" [(ngModel)]="rowData.ProductCategorylevel1id" (change)="ProductCategorylevel1change(rowData.ProductCategorylevel1id)">
+              <option *ngFor="let option of ProductCategory1List" [ngValue]="option.P1CategoryId">{{option.CategoryName}}</option>
+            </select>
+            <label class="form-label m-1">Category  Level2:</label>&nbsp;<select class="form-control dropdown" [disabled]="!showSubmit" [(ngModel)]="rowData.ProductCategorylevel2id">
+              <option *ngFor="let option of ProductCategory2filterList" [ngValue]="option.p2CategoryId">{{option.SubCategoryName}}</option>
+            </select>
+          </td>
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+  </div>
+<div class="card  m-2">
+  <div *ngIf="tokuchuRequest  && tokuchuRequest.TokuchRequestid" class="row" style="padding-left:20px">
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PreVerified By: </span><span style="color: #dc3545;">{{getEmpName(tokuchuRequest.PreVerifiedBy)}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PreVerified On: </span><span style="color: #dc3545;">{{tokuchuRequest.PreVerifiedOn  | date :  constants.dateFormat}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PreVerified Status: </span><span style="color: #dc3545;">{{tokuchuRequest.PreVerifiedStatus }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PreVerified Remarks: </span><span style="color: #dc3545;">{{tokuchuRequest.PreVerifiedRemarks}}</span></div>
+  </div>
+  <div *ngIf="tokuchuRequest  && tokuchuRequest.TokuchRequestid" class="row" style="padding-left:20px">
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified By: </span><span style="color: #dc3545;">{{getEmpName(tokuchuRequest.VerifiedBy) }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified On: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedOn  | date :  constants.dateFormat}}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified Status: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedStatus }}</span></div>
+    <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Verified Remarks: </span><span style="color: #dc3545;">{{tokuchuRequest.VerifiedRemarks}}</span></div>
+  </div>
+  <div class="row m-2" *ngIf="showSubmit">
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      &nbsp;&nbsp;<label class="form-label">Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.VerifiedBy">
+        <option value="Select">Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
+      <button type="button" class="btn btn-primary" (click)="submitTokuchuRequest()">Submit</button>
+    </div>
+  </div>
+  <div class="row m-2" *ngIf="showPreverSts">
+    <!--<div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      &nbsp;&nbsp;<label class="form-label">Pre Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.VerifiedBy">
+        <option value="Select" disabled>Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>-->
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      &nbsp;&nbsp;<label class="form-label">Pre Verified Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.PreVerifiedStatus">
+        <option value="Select">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label">Pre Verified Remarks:</label>&nbsp;
+      <textarea type="text" maxlength="1000" [(ngModel)]="tokuchuRequest.PreVerifiedRemarks" class="form-control"></textarea>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
+      <button type="button" class="btn btn-primary" (click)="submitTokuchuRequest()">Submit</button>
+    </div>
+  </div>
+  <div class="row m-2" *ngIf="showverSts">
+    <!--<div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+      &nbsp;&nbsp;<label class="form-label">Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.VerifiedBy">
+        <option value="Select" disabled>Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>-->
+    cl
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      &nbsp;&nbsp;<label class="form-label">Verified Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.VerifiedStatus">
+        <option value="Select">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
+      <label class="form-label">Verfied Remarks:</label>&nbsp;
+      <textarea type="text" maxlength="1000" [(ngModel)]="tokuchuRequest.VerifiedRemarks" class="form-control"></textarea>
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
+      <button type="button" class="btn btn-primary" (click)="submitTokuchuRequest()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<div class="card m-2">
+  <h4 class="m-2">Process Track</h4>
+  <p-table [value]="tokuchuRequest.TokuchuProcessTracks">
+    <ng-template pTemplate="header">
+      <tr class="mprltbldata">
+        <th>Employee Name</th>
+        <th>Status</th>
+        <th>Status Updated On</th>
+        <th>Remarks</th>
+
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+      <tr>
+        <td>{{rowData.Statusby}}</td>
+        <td>{{rowData.Status}}</td>
+        <td>{{rowData.StatusDate  | date :  constants.dateFormat}}</td>
+        <td>{{rowData.Remarks}}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (onChange)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Item Details :" [(visible)]="displayItemDialog" [responsive]="true" showEffect="fade" [modal]="true" [contentStyle]="{'max-height':'500px'}" [style]="{width: '700px'}">
+  <div class="ui-g ui-fluid">
+    <form [formGroup]="MPRItemDetailsForm">
+      <div class="ui-g-12">
+        <label class="form-label">Items</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;<span style="font-size:10px;color:#d60028">Pls type material name starting 3 or 4 letters for better search , incase search results delays more than 20 sec , then required item is not in the search list. Incase item is new pls type new in search area and click the search button then select the “Item not in the list” and proceed with MPR item description.</span>
+        <div class="form-inline-list">
+          <input type="text" formControlName="ItemId" (keypress)="onsrchTxtChange('ItemId','itemDetails')" [value]="MPRItemDetailsForm.controls.ItemId.value" class="form-control forms-input">
+          <span class="input-group-append">
+            <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRItemDetailsForm','ItemId',MPRItemDetailsForm.controls.ItemId.value,undefined)"></button>
+          </span>
+        </div>
+      </div>
+    </form>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="materialidUpdate()" label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('displayItemDialog')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

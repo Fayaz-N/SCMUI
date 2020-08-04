@@ -62,6 +62,8 @@ import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 
 import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
 import { PAIncompletedListComponent } from './purchase-authorization/PAIncompletedList.component';
+import { TokuchuRequestComponent } from './purchase-authorization/Tokuchurequest.component';
+import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component'
 
 @NgModule({
   imports: [
@@ -130,8 +132,10 @@ import { PAIncompletedListComponent } from './purchase-authorization/PAIncomplet
     MPRPAApproversListComponent,
     DashboardComponent,
     MPRStatusChartComponent,
-      PAReportListComponent,
-      PAIncompletedListComponent
+    PAReportListComponent,
+    PAIncompletedListComponent,
+    TokuchuRequestComponent,
+    TokuchuReqListComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

@@ -193,6 +193,7 @@
         <th>Vendor</th>
         <th width="110px">RequestedBY</th>
         <th width="110px">RequestedOn</th>
+        <th width="110px">Tokochu Request</th>
         <th>PA Status</th>
         <th>PO Status</th>
         <th>Delete</th>
@@ -211,6 +212,7 @@
         <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.Name}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.RequestedOn | date: 'dd/MM/yyyy'}}</td>
+        <td  class="ptable-cell"><button  *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
         <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
         <td class="text-center">

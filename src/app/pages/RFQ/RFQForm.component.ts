@@ -80,6 +80,7 @@ export class RFQFormComponent implements OnInit {
       SGSTPercentage: ['', [Validators.required]],
       MfgPartNo: ['', [Validators.required]],
       MfgModelNo: ['', [Validators.required]],
+      ManufacturerName: ['', [Validators.required]],
       RequestRemarks: ['', [Validators.required]],
     });
 
@@ -401,6 +402,7 @@ export class RFQFormComponent implements OnInit {
   }
 
   onItemEdit(e: any, details: RfqItemModel) {
+    this.spinner.show();
     this.rfqItem = details;
     this.AddItemDialog = true;
     this.bindSearchListData(e, 'AddItemForm', 'ItemId', "", (): any => {
@@ -411,6 +413,7 @@ export class RFQFormComponent implements OnInit {
         this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
       this.AddItemForm.value.ItemId = details.ItemId;
       this.AddItemForm.controls['ItemId'].updateValueAndValidity();
+      this.spinner.hide();
     });
     if (details.PFAmount || details.PFAmount == "0")
       this.PFAmountChange();

@@ -48,6 +48,7 @@ export class MPRItemInfoes {
   PODate: Date;
   POPrice: string;
   PORemarks: string;
+  Materialdescription: string;
   DeleteFlag: boolean
 }
 
@@ -389,4 +390,13 @@ export class DeleteMpr {
   DeletedRemarks: string;
   Deletedby: string;
   RevisionId: number;
+}
+
+export class materialUpdate {
+  Itemdetailsid: number;
+  RevisionId: number
+  Itemid: string;
+  RFQItemsId: number;
+  Materialdescription: string;
+  MPRRevisionId: string;
 }

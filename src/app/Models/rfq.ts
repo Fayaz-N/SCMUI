@@ -171,7 +171,7 @@ export class RfqItemModel {
   RfqVendorBOM: Array<any> = [];
   MfgPartNo: string;
   MfgModelNo: string;
-
+  ManufacturerName: string;
 }
 
 export class rfqFilterParams {

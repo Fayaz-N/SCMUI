@@ -1,0 +1,85 @@
+<div class="card m-2">
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">From Date</label><br />
+      <input type="date" class="form-control" [(ngModel)]="tokuchufilters.fromDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label">To Date</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="tokuchufilters.toDate">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      <label class="form-label ">PA ID</label><br />
+      <input class="form-control" [(ngModel)]="tokuchufilters.Paid">
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      &nbsp;&nbsp;<label class="form-label">Prepared By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchufilters.PreparedBY">
+        <option value="">Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group">
+      &nbsp;&nbsp;<label class="form-label">Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchufilters.VerifiedBy">
+        <option value="">Select</option>
+        <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>
+  </div>
+  <div class="row m-2">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="getTokuchuReqList()">Submit</button>
+    </div>
+  </div>
+</div>
+<div class="card compar-card m-2">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table [value]="tokuchuReqList" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th style="width:50px">S.No</th>
+          <th style="width:100px">Tokuch Request Id</th>
+          <th style="width:100px">PA Id</th>
+          <th style="width:150px">Prepared By</th>
+          <th style="width:100px">Prepared On</th>
+          <!--<th style="width:100px">PAId</th>-->
+          <th style="width:100px">GepsId</th>
+          <th style="width:150px">Pre Verified By</th>
+          <th style="width:100px">Pre Verified On</th>
+          <th style="width:120px">Pre Verified Status</th>
+          <th style="width:150px">Verified By</th>
+          <th style="width:100px">Verified On</th>
+          <th style="width:120px">Verified Status</th>
+          <th style="width:120px">Ariba Downloaded By</th>
+          <th style="width:120px">Ariba Downloaded On</th>
+          <th style="width:120px">Ariba Status </th>
+          <th style="width:120px">Ariba Status On</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+        <tr>
+          <td style="width:4em">
+            {{ri+1}}
+          </td>
+          <td class="ptable-cell"><button class="btn btn-link" (click)="goTokuchuRequest(rowData)" >{{rowData.TokuchRequestid}}</button></td>
+          <td class="ptable-cell">{{rowData.PAId}}</td>
+          <td class="ptable-cell">{{rowData.PreparedByName}}</td>
+          <td class="ptable-cell">{{rowData.Preparedon | date :  constants.dateFormat}}</td>
+          <!--<td pEditableColumn class="ptable-cell">{{rowData.PAId}}</td>-->
+          <td class="ptable-cell">{{rowData.GepsId}}</td>
+          <td class="ptable-cell">{{rowData.PreVerifiedByname}}</td>
+          <td class="ptable-cell">{{rowData.PreVerifiedOn | date :  constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.PreVerifiedStatus}}</td>
+          <td class="ptable-cell">{{rowData.VerifiedByname}}</td>
+          <td class="ptable-cell">{{rowData.VerifiedOn | date :  constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.VerifiedStatus}}</td>
+          <td class="ptable-cell">{{rowData.DownloadedBy}}</td>
+          <td class="ptable-cell">{{rowData.DownloadedOn | date :  constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.CompletedStatus}}</td>
+          <td class="ptable-cell">{{rowData.CompletedOn | date :  constants.dateFormat}}</td>
+        </tr>
+      </ng-template>
+    </p-table><br />
+  </div>
+</div>

@@ -184,7 +184,7 @@
       </div>
 
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">Vendor Model No :</label>
+        <label class="form-label">Vendor Model No :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" ngModel maxlength="50" formControlName="VendorModelNo" [(ngModel)]="rfqItem.VendorModelNo" />
@@ -268,18 +268,24 @@
 
     <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">Mfg Part No. :</label>
+        <label class="form-label">Mfg Part No. :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" ngModel maxlength="100" formControlName="MfgPartNo" [(ngModel)]="rfqItem.MfgPartNo" />
         <!-- <span *ngIf="itemSubmitted && AddItem.controls.MfgPartNo.errors" class="invalid-feedback">Please enter Mfg Part No.</span> -->
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <label class="form-label">Mfg Model No. :</label>
+        <label class="form-label">Mfg Model No. :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <input type="text" class="form-control" ngModel maxlength="100" formControlName="MfgModelNo" [(ngModel)]="rfqItem.MfgModelNo" />
         <!-- <span *ngIf="itemSubmitted && AddItem.controls.MfgModelNo.errors" class="invalid-feedback">Please enter Mfg Model No.</span> -->
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <label class="form-label">Manufacturer Name:</label>&nbsp;<span style="color:red">*</span>
+      </div>
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <input type="text" class="form-control" ngModel maxlength="150" formControlName="ManufacturerName" [(ngModel)]="rfqItem.ManufacturerName" />
       </div>
     </div>
 
