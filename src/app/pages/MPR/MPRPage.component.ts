@@ -1233,7 +1233,7 @@ export class MPRPageComponent implements OnInit {
             this.hideDeleteBtn = true;
 
 
-          if ((this.mprRevisionModel.PreparedBy == this.employee.EmployeeNo || this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo || this.employee.OrgDepartmentId != 14) && this.mprRevisionModel.CheckStatus == 'Approved')
+          if ((this.mprRevisionModel.PreparedBy == this.employee.EmployeeNo || this.mprRevisionModel.CheckedBy == this.employee.EmployeeNo) && this.mprRevisionModel.CheckStatus == 'Approved')
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
 
           if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus == 'Approved')
@@ -1244,6 +1244,9 @@ export class MPRPageComponent implements OnInit {
 
           if (this.mprRevisionModel.ThirdApprover == this.employee.EmployeeNo && this.mprRevisionModel.ThirdApproverStatus == 'Approved')
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = true;
+
+          if (this.employee.OrgDepartmentId == 14)
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = this.showCommunicationForm = false;
 
           //if mpr close hiding the edit buttons
           if (this.mprRevisionDetails.StatusId == 12 || this.mprRevisionDetails.StatusId == 15 || this.mprRevisionDetails.StatusId == 19)
