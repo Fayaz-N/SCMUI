@@ -1184,7 +1184,7 @@ export class MPRPageComponent implements OnInit {
             this.mprRevisionModel = data;
             this.displayItemDialog = false;
           });
-          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'file uploaded' });
+          this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'file uploaded' });
         }
       });
     }
@@ -1539,7 +1539,7 @@ export class MPRPageComponent implements OnInit {
       this.MprService.copyMprRevision(this.mprRevisionModel, true, false).subscribe(data => {
         this.spinner.hide();
         if (data) {
-          this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Order Added' });
+          this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'Order Added' });
         }
       })
     }
@@ -1590,7 +1590,7 @@ export class MPRPageComponent implements OnInit {
       this.spinner.hide();
       this.mprRevisionModel = data;
       this[dialog] = false;
-      this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Request for issuing po addedd' });
+      this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'Request for issuing po addedd' });
     });
   }
 
