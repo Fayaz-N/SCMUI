@@ -358,10 +358,15 @@ export class TokuchuProcessTrack {
   TokuchProcessTrackid: number;
   TokuchRequestid: number;
   Status: string;
-  Remarks: string
-  StatusDate: Date
-  Statusby: string
+  Remarks: string;
+  StatusDate: Date;
+  Statusby: string;
+  DeleteFlag: boolean;
+  DeltedBy: string;
+  DeletedOn: Date;
+  Deletedremarks: string;
 }
+
 export class MPRPADetail {
 
 }
