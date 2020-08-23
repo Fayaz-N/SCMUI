@@ -185,7 +185,7 @@ export class MPRListComponent implements OnInit {
           if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
           }
           else {
-            this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+            //this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
           }
         }
       }

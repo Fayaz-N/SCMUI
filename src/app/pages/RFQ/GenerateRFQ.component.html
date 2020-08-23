@@ -89,12 +89,14 @@
     <div class="container-fluid pl-0 pr-0 border-0 bg-transparent" *ngFor="let Item of rfqQuoteModel;let k=index">
       <div class="row">
         <div class="col-md-12">
+          <span>{{k+1}}</span>&nbsp;&nbsp;- &nbsp;&nbsp;
+          <label class="form-label font-weight-bold">MPR Item Id : </label>&nbsp;<span>{{Item.MPRItemDetailsid}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
           <label class="form-label font-weight-bold">Material :</label>&nbsp;<span>{{Item.ItemId}}</span>&nbsp;&nbsp;
           <label class="form-label font-weight-bold">Material Description :</label>&nbsp;<span>{{Item.ItemName}}</span>&nbsp;&nbsp;
           <label class="form-label font-weight-bold">MPR Item Description : </label>&nbsp;<span> {{Item.ItemDescription}}</span>&nbsp;&nbsp;
           <label class="form-label font-weight-bold">Quantity : </label>&nbsp;<span>{{Item.MprQuantity}}</span>&nbsp;&nbsp;&nbsp;&nbsp;
           <label class="form-label font-weight-bold">RC:</label><i [ngClass]="Item.RateContract>=1?'pi pi-check check-color':'pi pi-times times-color'"></i>
-          <span class="form-inline">
+          <span class="form-inline" *ngIf="Item.RateContract<=0">
             <button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="showAssignRoDialog(k,Item)" label="Save">Assign RO</button><br />
             &nbsp;<button *ngIf="Item.RateContract<=0" type="button" class="btn btn-success" style="font-size:10px" (click)="deAssignPo(k)" label="Save">De Assign RO</button><br />
           </span>
@@ -104,7 +106,7 @@
         <div class="col-md-3 mb-3" *ngFor="let vendor of Item.suggestedVendorDetails; let i=index">
           <!--<div *ngIf="i<=vendorsLength && vendor.VendorId" class="form-control suggested-List">-->
           <div *ngIf="vendor.VendorId" class="form-control suggested-List">
-            <span class="form-inline"><input *ngIf="!vendor.RFQNo" type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}} - {{vendor.RFQNo}}</b></span>
+            <span class="form-inline"><input *ngIf="!vendor.RFQNo" type="checkbox" id='vendor{{k+""+i}}' class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'SQty',vendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{vendor.VendorName}}>{{vendor.VendorName}}-{{vendor.VendorCode}}-{{vendor.RFQNo}}</b></span>
             <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='SQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'SQty',vendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
 
             <div class="row">
@@ -127,7 +129,7 @@
         </div>
         <div class="col-md-3 mb-3" *ngFor="let mvendor of Item.manualvendorDetails; let i=index">
           <div class="form-control manual-List">
-            <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}</b></span>
+            <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'MQty',mvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{mvendor.VendorName}}>{{mvendor.VendorName}}-{{mvendor.VendorCode}}</b></span>
             <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='MQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'MQty',mvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
             <div class="row">
               <div class="col-sm-6">
@@ -151,7 +153,7 @@
 
       <div class="col-md-3 mb-3" *ngFor="let rvendor of Item.repeatOrdervendorDetails; let i=index">
         <div class="form-control repeat-List">
-          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'RQty',rvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{rvendor.VendorName}}>{{rvendor.VendorName}}</b></span>
+          <span class="form-inline"><input type="checkbox" class="checkmark vndorinputchk" (click)="selectVendorList($event,k,i,'RQty',rvendor,true)"><b class="<!--fixed-text--> bvendor" pTooltip={{rvendor.VendorName}}>{{rvendor.VendorName}}-{{rvendor.VendorCode}}</b></span>
           <span class="form-inline"><b>RFQ Quantity : </b>&nbsp;<input id='RQty{{k+""+i}}' (input)="selectVendorList($event,k,i,'RQty',rvendor,false)" type="number" class="form-control numbox" value={{Item.MprQuantity}} /></span>
           <div class="row">
             <div class="col-sm-6">
@@ -171,6 +173,7 @@
           </div>
         </div>
       </div>
+      <hr style="width:100%;text-align:left;margin-left:0">
     </div>
   </div>
 </div>

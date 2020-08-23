@@ -58,26 +58,49 @@ export class DashboardComponent {
 
   }
 
-  getTotalMPRCnt() {
-    this.dynamicData = new DynamicSearchResult();
-    if (this.employee.OrgDepartmentId == 14)
-      this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
-    else
-      this.dynamicData.query = " Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and PreparedBy=" + this.employee.EmployeeNo+" and CheckedBy != '-' and ApprovedBy != '-'";
-    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-      this.totalMPRCnt = data[0].count;
-    })
-  }
+  //getTotalMPRCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  if (this.employee.OrgDepartmentId == 14)
+  //    this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
+  //  else
+  //    this.dynamicData.query = " Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and PreparedBy=" + this.employee.EmployeeNo+" and CheckedBy != '-' and ApprovedBy != '-'";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.totalMPRCnt = data[0].count;
+  //  })
+  //}
 
-  getCompletedMPRCnt() {
-    this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select count(*) as count from MPRStatusTrackDetails ms inner join MPRRevisions mpr on mpr.RevisionId=ms.RevisionId  where mpr.BoolValidRevision=1 and ms.StatusId in (12,16,19)";
-    if (this.employee.OrgDepartmentId != 14)
-      this.dynamicData.query += " and mpr.PreparedBy='" + this.employee.EmployeeNo + "'";
-    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-      this.completedMPRCnt = data[0].count;
-    })
-  }
+    getTotalMPRCnt() {
+        this.dynamicData = new DynamicSearchResult();
+        if (this.employee.OrgDepartmentId == 14)
+            this.dynamicData.query = "Select Count(*) as count from MPRRevisionDetails_woItems mpr left join  MPR_GetAssignEmployeList mprasgn on mprasgn.MprRevisionId = mpr.RevisionId Where BoolValidRevision=1  and  CheckStatus='Approved' and ApprovalStatus='Approved' and (SecondApprover ='-') and (ThirdApprover ='-' ) OR (SecondApprover!='-' and SecondApproversStatus='Approved') or (ThirdApprover!='-' and ThirdApproverStatus='Approved')";
+        else
+            this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-'";
+        this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+            this.totalMPRCnt = data[0].count;
+        })
+    }
+
+
+  //getCompletedMPRCnt() {
+  //  this.dynamicData = new DynamicSearchResult();
+  //  this.dynamicData.query = "select count(*) as count from MPRStatusTrackDetails ms inner join MPRRevisions mpr on mpr.RevisionId=ms.RevisionId  where mpr.BoolValidRevision=1 and ms.StatusId in (12,16,19)";
+  //  if (this.employee.OrgDepartmentId != 14)
+  //    this.dynamicData.query += " and mpr.PreparedBy='" + this.employee.EmployeeNo + "'";
+  //  this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+  //    this.completedMPRCnt = data[0].count;
+  //  })
+  //}
+
+    getCompletedMPRCnt() {
+        this.dynamicData = new DynamicSearchResult();
+        //this.dynamicData.query = "select count(*) as count from MPRStatusTrackDetails ms inner join MPRRevisions mpr on mpr.RevisionId=ms.RevisionId  where mpr.BoolValidRevision=1 and ms.StatusId in (12,16,19)";
+        this.dynamicData.query = "select count(*) as count from MPRRevisions mpr where mpr.BoolValidRevision=1 and mpr.StatusId in (12,15,19)";
+        if (this.employee.OrgDepartmentId != 14)
+            this.dynamicData.query = " Select Count(distinct(mpr.RevisionId)) as count from MPRRevisions mpr left join MPRIncharges mprinch on mpr.RevisionId = mprinch.RevisionId Where BoolValidRevision = 1 and mpr.deleteflag = 0  and (mpr.PreparedBy =" + this.employee.EmployeeNo + " or mprinch.Incharge = " + this.employee.EmployeeNo + ") and  CheckedBy != '-' and ApprovedBy != '-' and mpr.StatusId in (12,15,19)";
+        this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+            this.completedMPRCnt = data[0].count;
+        })
+    }
 
   getMPRtotalcnt() {
     this.dynamicData = new DynamicSearchResult();
