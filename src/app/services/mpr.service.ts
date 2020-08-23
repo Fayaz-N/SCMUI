@@ -205,6 +205,12 @@ export class MprService {
   InsertDocument(formData: FormData): Observable<any> {
     return this.http.post<any>('http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/UploadFile', formData)
       .pipe(map(data => { return data }));
-  }
+    }
+    Loadstoragelocationbydepartment(): Observable<any> {
+        return this.http.get<any>(this.url + 'MPR/Loadstoragelocationsbydepartment', this.httpOptions);
+    }
+    LoadJobCodesbysaleorder(saleorder: number): Observable<any> {
+        return this.http.get<any>(this.url + 'MPR/LoadJobCodesbysaleorder/' + saleorder);
+    }
 }
 

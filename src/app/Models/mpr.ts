@@ -159,7 +159,8 @@ export class mprRevision {
   MPRStatusTracks: MPRStatusTrack;
   MPRTargetedSpendSupportingDocs: MPRTargetedSpendSupportingDoc;
   MPRVendorDetails: Array<MPRVendorDetail> = [];
-  MPRStatusTrackDetails: Array<any> = []
+    MPRStatusTrackDetails: Array<any> = []
+    saleorderdeatils: SaleOrderDetails;
   MPRDetail: MPRDetail;
   RequisitionId: number;
   DepartmentId: number;
@@ -273,9 +274,23 @@ export class mprRevision {
   OThirdApproverStatusChangedOn: Date;
   OThirdApproverRemarks: string;
   DeleteFlag: boolean;
+  StorageLocation: string;
+  soldtopartyname: string;
+  shiptopartyname: string;
+    Endusername: string;
+    Enduser: string;
+    shiptoparty: string;
+    soldtoparty: string;
 }
 
-
+export class SaleOrderDetails {
+    soldtopartyname: string
+    shiptopartyname: string;
+    Endusername: string;
+    shiptoparty: string;
+    soldtoparty: string;
+    Enduser: string;
+}
 
 export class MPRStatusUpdate {
   RevisionId: number;

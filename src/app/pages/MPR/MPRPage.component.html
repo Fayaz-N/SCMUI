@@ -82,22 +82,56 @@
             <span class="valueEdit">{{MPRPageForm1.value.ProjectManager}}</span>
 
           </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4">
+            <label for="SaleOrderNo" class="form-label">Sale Order No</label>
+            <div class="form-inline-list ml-2">
+              <input type="text" class="form-control" id="SaleOrderNo" maxlength="100" formControlName="SaleOrderNo" [(ngModel)]="mprRevisionModel.SaleOrderNo" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.SaleOrderNo.errors }">
+              <div class="input-group-append">
+                <button class="btn btn-primary btn-xs" type="button">
+                  <i class="fa fa-search" (click)="loadjobcodes(MPRPageForm1.controls.SaleOrderNo.value,'MPRPageForm1')"></i>
+                </button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.SaleOrderNo.errors" class="invalid-feedback">Sale OrderNo Required.</span>
+            </div>
+              <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
+              
+            </div>
+          <!--<div class="col-lg-4 col-md-4 col-sm-4 input-group form-group">
+            <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
+              <button class="btn btn-secondary" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+          </div>-->
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Sale Order No</label>
+            <span class="valueEdit">{{mprRevisionModel.SaleOrderNo}}</span>
+          </div>
+        </div>
+        <div class="row">
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="JobCode" class="form-label">Job Code</label>
             <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="mprRevisionModel.JobCode" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
           </div>
+          <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="JobCode" class="form-label">Job Code</label>
+            <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="jobcodes.ProjectDefinition" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
+          </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Code </label>
             <span class="valueEdit">{{mprRevisionModel.JobCode}}</span>
           </div>
-        </div>
-        <div class="row">
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="JobName" class="form-label">Job Name</label>
             <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="mprRevisionModel.JobName" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
           </div>
+          <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="JobName" class="form-label">Job Name</label>
+            <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="jobcodes.ProjectText" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
+            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
+          </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Name </label>
             <span class="valueEdit">{{mprRevisionModel.JobName}}</span>
@@ -111,14 +145,36 @@
             <label class="lblEdit">Ge Ps Approval Id</label>
             <span class="valueEdit">{{mprRevisionModel.GEPSApprovalId}}</span>
           </div>
+        </div>
+        <div class="row">
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="SaleOrderNo" class="form-label">Sale Order No</label>
-            <input type="text" class="form-control form-inline  ml-2 " id="SaleOrderNo" maxlength="100" formControlName="SaleOrderNo" [(ngModel)]="mprRevisionModel.SaleOrderNo" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.SaleOrderNo.errors }">
-            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.SaleOrderNo.errors" class="invalid-feedback">Sale OrderNo Required.</span>
+            <label for="ClientName" class="form-label">Sold To Party</label>&nbsp;
+            <div class="form-inline-list  ml-2 ">
+              <input type="text" class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value" (keypress)="onsrchTxtChange('soldtoparty','mprRevisionModel')" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)}">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','soldtoparty',MPRPageForm1.controls.soldtoparty.value,undefined)"></button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)" class="invalid-feedback">Select Client Name.</span>
+            </div>
+
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label class="lblEdit">Sale Order No</label>
-            <span class="valueEdit">{{mprRevisionModel.SaleOrderNo}}</span>
+            <label class="lblEdit">Soldtoparty</label>
+            <span class="valueEdit">{{mprRevisionModel.soldtopartyname}}</span>
+          </div>
+          <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label for="ClientName" class="form-label">End User Name</label>&nbsp;
+            <div class="form-inline-list  ml-2 ">
+              <input type="text" class="form-control forms-input" formControlName="Enduser" [value]="MPRPageForm1.controls.Enduser.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Enduser)}">
+              <div class="input-group-append">
+                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','Enduser',MPRPageForm1.controls.Enduser.value,undefined)"></button>
+              </div>
+              <span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Endusername)" class="invalid-feedback">Select Client Name.</span>
+            </div>
+          </div>
+          <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+            <label class="lblEdit">Enduser</label>
+            <span class="valueEdit">{{mprRevisionModel.Enduser}}</span>
           </div>
         </div>
 
@@ -181,7 +237,7 @@
       <div class="form-control" style="height:100%;border-radius:0px;">
         <div class="card" style="border:none">
           <div class="card-body" style="overflow:auto !important">
-            <p-table [value]="mprRevisionModel.MPRItemInfoes" [style]="{'width':'1230px','overflow':'auto!important'}">
+            <!--<p-table [value]="mprRevisionModel.MPRItemInfoes" [style]="{'width':'1230px','overflow':'auto!important'}">
               <ng-template pTemplate="caption">
                 <div style="display:inline">
                   <span style="float:left">Item Details : </span>
@@ -238,76 +294,144 @@
                   </td>
                 </tr>
               </ng-template>
+            </p-table>-->
+            <p-table [value]="mprRevisionModel.MPRItemInfoes" [responsive]="true" [autoLayout]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+              <ng-template pTemplate="caption">
+                <div style="display:inline">
+                  <span style="float:left">Item Details : </span>
+                  <span style="padding-left:100px" class="form-inline">
+                    <button type="button" [disabled]="materialFormEdit" pButton icon="fa fa-plus" (click)="showItemDialogToAdd('displayItemDialog')"></button> &nbsp;&nbsp;
+                    <label>Item List Upload :</label>&nbsp; <input type="file" id="uploadInputFile" [disabled]="materialFormEdit" class="form-control" (change)="uploadExcel($event)" placeholder="Upload Excel" accept=".xlsx,.xls">
+                    &nbsp; &nbsp;<label class="mt-2">DownLoad format :</label>&nbsp; <button class="mt-2" type="button" [disabled]="materialFormEdit" pButton icon="fa fa-download" (click)="downLoadExcelFormat()"></button>
+                  </span>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header">
+                <tr class="mprltbldata">
+                  <th>S.No</th>
+                  <th class="ptable-cell">Item Code & MPR Item Description</th>
+                  <th style="width:90px">Quantity & Unit</th>
+                  <th style="width:110px">Target Spend</th>
+                  <th style="text-align:center;width:80px">Documents</th>
+                  <th style="width:30px">Edit</th>
+                  <th style="width:50px" *ngIf="!materialFormEdit && RepeatOrder">Repeat Order</th>
+                  <th style="width:30px" *ngIf="hideDeleteBtn">Remove</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr>
+                  <td class="ptable-cell">
+                    {{ri+1}}
+                  </td>
+                  <td class="ptable-cell">
+                    {{rowData.Itemid}} - {{rowData.ItemDescription}}
+                    <div class="row" style="margin-left:3px;margin-right:2px;margin-top:15px">
+                      <label style="width:220px"><b>SO Line Item No:</b><span>{{rowData.SOLineItemNo}}</span></label> &nbsp;&nbsp;
+                      <label style="width:220px">Reference:<span>{{rowData.ReferenceDocNo}}</span></label>
+                    </div>
+                    <div class="row" style="margin-left:3px;margin-right:2px">
+                      <label style="width:220px">Project:<span>shfjkdshfjhdbfdjskbfjkdshf</span></label> &nbsp;&nbsp;
+                      <label style="width:220px">WBS:<span>sdjkhbfjkdshfjkdshbhfjkdbsfjkbdbsjkfdsj</span></label>
+                    </div>
+                    <div class="row" style="margin-left:3px;margin-right:2px">
+                      <label style="width:220px">SystemModel:<span>{{rowData.SOLineItemNo}}</span></label>&nbsp;&nbsp;
+                      <label style="width:220px">PO NO:<span>{{getPOnumbers(rowData)}}</span></label>
+                    </div>
+                    <div class="row" style="margin-left:3px;margin-right:2px">
+                      <label>Mfg part No:<span>{{rowData.MfgPartNo}}</span></label>&nbsp;&nbsp;
+                    </div>
+                    <div class="row" style="margin-left:3px;margin-right:2px">
+                      <label style="width:250px">Mfg model No:<span>{{rowData.MfgModelNo}}</span></label>
+                    </div>
+                  </td>
+                  <td>{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
+                  <td>{{rowData.TargetSpend}}</td>
+                  <td class="ptable-cell">
+                    <div *ngFor="let document of mprRevisionModel.MPRDocuments">
+                      <i *ngIf="document.ItemDetailsId==rowData.Itemdetailsid && document.DocumentTypeid==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>
+                    </div>
+                  </td>
+                  <td style="text-align:center">
+                    <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-pencil" class="ui-button-info" (click)="onRowEditInit($event,'MPRPageForm1',rowData)"></button>
+                  </td>
+                  <td style="text-align:center" *ngIf="!materialFormEdit && RepeatOrder">
+                    <input type="checkbox" style="height:15px;width:15px" (click)="selectMprLineItems($event,ri,rowData)">
+                  </td>
+                  <td style="text-align:center" *ngIf="hideDeleteBtn">
+                    <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="onMPRInfoDelete(rowData,ri)"></button>
+                  </td>
+                </tr>
+              </ng-template>
             </p-table>
           </div>
-          </div>
+        </div>
         <br /><br />
-          <div class="col-sm-4 col-lg-4 col-md-4"></div><div class="col-sm-4 col-lg-4 col-md-4" style="float:right"><button *ngIf="!materialFormEdit && RepeatOrder" class="btn btn-success" (click)="onRevisionCopy()">Repeat Order</button></div>
-          <br /><br />
-          <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
-            <div class="form-group row">
-              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label">Total Target Spend(INR)</label>
-                <input class="form-control" [disabled]="true" readonly formControlName="TargetSpend" type="text" [value]="MPRPageForm2.controls.TargetSpend.value" [ngModel]="calculateTargetSpend()">
-              </div>
-              <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label lblEdit">Total Target Spend(INR) </label>
-                <span class="valueEdit">{{calculateTargetSpend()}}</span>
-              </div>
+        <div class="col-sm-4 col-lg-4 col-md-4"></div><div class="col-sm-4 col-lg-4 col-md-4" style="float:right"><button *ngIf="!materialFormEdit && RepeatOrder" class="btn btn-success" (click)="onRevisionCopy()">Repeat Order</button></div>
+        <br /><br />
+        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0">
+          <div class="form-group row">
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Total Target Spend(INR)</label>
+              <input class="form-control" [disabled]="true" readonly formControlName="TargetSpend" type="text" [value]="MPRPageForm2.controls.TargetSpend.value" [ngModel]="calculateTargetSpend()">
+            </div>
+            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label lblEdit">Total Target Spend(INR) </label>
+              <span class="valueEdit">{{calculateTargetSpend()}}</span>
+            </div>
 
-              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label">Target Spend Remarks</label>
-                <textarea class="form-control" type="text" maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
-                <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
-              </div>
-              <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label lblEdit">Target Spend Remarks </label>
-                <span class="valueEdit">{{mprRevisionModel.TargetedSpendRemarks}}</span>
-              </div>
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Target Spend Remarks</label>
+              <textarea class="form-control" type="text" maxlength="500" formControlName="TargetedSpendRemarks" [value]="MPRPageForm2.controls.TargetedSpendRemarks.value" [(ngModel)]="mprRevisionModel.TargetedSpendRemarks" [ngClass]="{ 'is-invalid': MPRForm2Submitted &&  MPRPageForm2.controls.TargetedSpendRemarks.errors }"></textarea>
+              <span *ngIf="MPRForm2Submitted && !MPRPageForm2.controls.TargetedSpendRemarks.value" class="invalid-feedback">Enter Target Spend Remarks.</span>
+            </div>
+            <div *ngIf="materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label lblEdit">Target Spend Remarks </label>
+              <span class="valueEdit">{{mprRevisionModel.TargetedSpendRemarks}}</span>
+            </div>
 
-              <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label">Supporting Documents For Target Spent</label>&nbsp; &nbsp;
-                <button type="button" [disabled]="mprRevisionModel.MPRItemInfoes.length > 0 ? false:true" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentUpload')"></button>
+            <div *ngIf="!materialFormEdit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label">Supporting Documents For Target Spent</label>&nbsp; &nbsp;
+              <button type="button" [disabled]="mprRevisionModel.MPRItemInfoes.length > 0 ? false:true" pButton icon="fa fa-plus" (click)="openMPR3Dialog('showDocumentUpload')"></button>
+            </div>
+            <div *ngIf="MPR3Documents.length>0" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="form-label"><b>Supporting Documents For Target Spent :</b></label>
+              <div *ngFor="let document of MPR3Documents">
+                <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>&nbsp;
+                <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
+                <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
               </div>
-              <div *ngIf="MPR3Documents.length>0" class="col-lg-4 col-md-4 col-sm-4 form-group">
-                <label class="form-label"><b>Supporting Documents For Target Spent :</b></label>
-                <div *ngFor="let document of MPR3Documents">
-                  <i class="fa fa-paperclip" aria-hidden="true" (click)="viewDocument(document.Path,document.DocumentName)" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UplaodedDate | date :  constants.dateFormat}}"></i>&nbsp;
-                  <span>{{document.DocumentName}} </span>&nbsp;&nbsp;
-                  <i *ngIf="deleteDocument" class="fa fa-remove" aria-hidden="true" (click)="removeDoument(document)"></i><br />
-                </div>
-                <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
-          <ng-template pTemplate="caption">
-            Supporting Documents For Target Spent :
-          </ng-template>
-          <ng-template pTemplate="header">
-            <tr>
-              <th>S.No</th>
-              <th>Document</th>
-              <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-            <tr *ngIf="rowData.DocumentTypeid==2">
-              <td>
-                {{ri+1}}
-              </td>
-              <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
-              <td style="text-align:center" *ngIf="hideDeleteBtn">
-                <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>-->
-              </div>
+              <!--<p-table [value]="MPR3Documents" [style]="{height:'200px',overflow:'scroll'}">
+                <ng-template pTemplate="caption">
+                  Supporting Documents For Target Spent :
+                </ng-template>
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th>S.No</th>
+                    <th>Document</th>
+                    <th *ngIf="hideDeleteBtn" style="text-align:center">Remove</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+                  <tr *ngIf="rowData.DocumentTypeid==2">
+                    <td>
+                      {{ri+1}}
+                    </td>
+                    <td><i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UplaodedDate | date :  constants.dateFormat}}"></i></td>
+                    <td style="text-align:center" *ngIf="hideDeleteBtn">
+                      <button [disabled]="materialFormEdit" pButton type="button" icon="fa fa-trash" class="ui-button-info" style="margin-left: 1px;" (click)="removeDoument(rowData)"></button>
+                    </td>
+                  </tr>
+                </ng-template>
+              </p-table>-->
             </div>
           </div>
-
-          <br />
-          <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0 && !materialFormEdit" style="text-align: center;">
-            <button type="button" class="btn btn-success" (click)="onMPRMaterialSubmit('MPRMaterialId','showVendorForm','materialFormEdit')" label="Save">Proceed</button>
-          </div>
         </div>
+
+        <br />
+        <div *ngIf="mprRevisionModel.MPRItemInfoes.length > 0 && !materialFormEdit" style="text-align: center;">
+          <button type="button" class="btn btn-success" (click)="onMPRMaterialSubmit('MPRMaterialId','showVendorForm','materialFormEdit')" label="Save">Proceed</button>
+        </div>
+      </div>
     </div>
     <br />
     <div *ngIf="showVendorForm" id="MPRVendorId" class="my-animation">
@@ -401,8 +525,8 @@
               <td class="ptable-cell">
                 <span *ngIf="viewRfq">
                   <label *ngFor="let Item of RfqGeneratedList">
-                  <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==7" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png"><img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==8" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png"><img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
-                </label>
+                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==7" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png"><img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==8" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png"><img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
+                  </label>
                 </span>
               </td>
               <td class="ptable-cell" style="text-align:center" *ngIf="!editing">
@@ -518,6 +642,32 @@
             <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Scope Shall Include</label>
               <span class="valueEdit">{{MPRPageForm3.controls.ScopeId.value}}</span>
+            </div>
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Storage Locations</label>
+              <select id="manWeeks" class="form-control forms-input" formControlName="StorageLocation" [(ngModel)]="mprRevisionModel.StorageLocation">
+                <option>Choose Website</option>
+                <option *ngFor="let option of locations" [value]="option.Sloc">{{option.storagelocations}}</option>
+              </select>
+              <!--<span><input type="button" class="btn btn-primary" (click)="loadlocations(MPRPageForm1.controls.DepartmentId.value)" value="Load" /></span>-->
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Storage Locations</label>
+              <span class="valueEdit">{{mprRevisionModel.StorageLocation}}</span>
+            </div>
+            <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;<span style="color:red">*</span>
+              <div class="form-inline-list  ml-2 ">
+                <input type="text" class="form-control forms-input" formControlName="shiptoparty" [value]="MPRPageForm3.controls.shiptoparty.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRForm3Submitted && (MPRPageForm3.controls.shiptoparty.value.trim()=='' || !mprRevisionModel.shiptoparty)}">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','shiptoparty',MPRPageForm3.controls.shiptoparty.value,undefined)"></button>
+                </div>
+                <span *ngIf="MPRForm3Submitted && (MPRPageForm3.controls.shiptoparty.value.trim()=='' || !mprRevisionModel.shiptopartyname)" class="invalid-feedback">Select Client Name.</span>
+              </div>
+            </div>
+            <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
+              <label class="lblEdit">Shiptoparty</label>
+              <span class="valueEdit">{{mprRevisionModel.shiptoparty}}</span>
             </div>
           </div>
         </div><br />
@@ -972,7 +1122,7 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
-                  <span style="float:left">Checker: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.CheckStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton  (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
+                  <span style="float:left">Checker: </span>&nbsp;&nbsp;<button *ngIf="mprRevisionModel.CheckStatus!='Approved'" type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;width: 70px;border-radius: 2px;" pButton (click)="onstatusUpdate('',mprRevisionDetails)"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder</button>
                 </th>
               </tr>
             </thead>
@@ -1240,7 +1390,7 @@
     <a *ngIf="showraisePo" (click)="showPORaiseDialog()" pTooltip="Request for issuing PO"><i class="fa fa-first-order"></i></a>
     <a *ngIf="showManualStatus" (click)="showManualStatusDialog()" pTooltip="Add manual status"><i class="fa fa-user"></i></a>
     <a *ngIf="showBuyerGrp" (click)="enableBuyerGrp()" pTooltip="Change Buyer Group"><i class="fa fa-shopping-cart"></i></a>
-    <a *ngIf="showgenPA"  [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
+    <a *ngIf="showgenPA" [routerLink]="['/SCM/PADetails',mprRevisionModel.RevisionId]" routerLinkActive="active" pTooltip="Generate PA"><i class="fa fa-money"></i></a>
   </div>
 
   <div *ngIf="displayFooter" class="footer">
@@ -1271,14 +1421,14 @@
       <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
         <button type="button" class="btn btn-success" (click)="disableFooter()">Close</button>
       </div>
-      <div  *ngIf="showStatusDetails" class="col-lg-2 col-md-2 col-sm-2 form-inline">
-        <span *ngIf="targetspendError"  style="font-size:10px;color:white;font-weight: bold;">Target Spend is zero</span> 
+      <div *ngIf="showStatusDetails" class="col-lg-2 col-md-2 col-sm-2 form-inline">
+        <span *ngIf="targetspendError" style="font-size:10px;color:white;font-weight: bold;">Target Spend is zero</span>
       </div>
-     
+
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
         &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" (change)="statusChange()" [(ngModel)]="mprStatusUpdate.status">
           <option value="Select">Select</option>
-          <option *ngFor="let List of statusList" [ngValue]="List.StatusName" >{{List.StatusName}}</option>
+          <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
         </select>&nbsp;
       </div>
       <div *ngIf="showStatusDetails" class="col-lg-3 col-md-3 col-sm-3 form-inline ">
