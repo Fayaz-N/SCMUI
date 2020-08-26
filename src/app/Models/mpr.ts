@@ -415,3 +415,151 @@ export class materialUpdate {
   Materialdescription: string;
   MPRRevisionId: string;
 }
+
+export class VendorRegStatus {
+  Status: string;
+  Remarks: string;
+}
+export class VendorRegApprovalProcess {
+  ProceesId: number;
+  VendorName: string
+  VendorId: number;
+  VendorEmailId: string;
+  IntiatedBy: string;
+  IntiatedOn: Date
+  CheckedBy: string
+  CheckedOn: Date
+  CheckerStatus: string;
+  CheckerRemarks: string
+  ApprovedBy: string
+  ApprovedOn: Date
+  ApprovalStatus: string
+  ApproverRemarks: string
+  Verifier1: string;
+  Verifier2: string;
+  VerifiedBy: string;
+  VerifiedOn: Date;
+  VerifiedStatus: string
+  VerifierRemarks: string;
+  VendorNoInSAP: string
+  PaymentTerms: string;
+  PaymentTermId: number;
+  Onetimevendor: boolean;
+  EvaluationRequired: boolean;
+  PerformanceVerificationRequired: boolean;
+}
+
+export class DocDetailsList {
+  ItemDetailsId: number;
+  DocumentName: string;
+  UploadedBy: string;
+  UplaodedDate: Date
+  DocumentTypeId: number;
+  Deleteflag: boolean
+  PhysicalPath: string;
+  uniqueid: number;
+}
+
+export class VendorRegistration {
+  NatureOfBusinessType: string;
+  NaturOfBusiness: number;
+  SpecifyNatureOfBusiness: string;
+  Email: string;
+  AltEmail: string;
+  PhoneExn: string;
+  vendorId: number;
+  VendorCode: string;
+  UniqueId: number;
+  Onetimevendor: boolean;
+  EvaluationRequired: boolean;
+  MSMERequired: boolean;
+  PerformanceVerificationRequired: boolean
+  VendorNoInSAP: string;
+  RequestedOn: Date;
+  VendorName: string;
+  VendorAddress: string;
+  PostalCode: string;
+  City: string;
+  Street: string;
+  LocalBranchOffice: string;
+  PhoneAndExtn: string;
+  Fax: string;
+  ContactPerson: string;
+  Phone: string;
+  ContactPersonForSales: string;
+  PhoneNumberForSales: string;
+  EmailIdForSales: string;
+  AltEmailidForSales: string;
+  ContactPersonForOperations: string;
+  PhoneNumberForOperations: string;
+  EmailIdForOperations: string;
+  AltEmailidForOperations: string;
+  ContactPersonForLogistics: string;
+  PhoneNumberForLogistics: string;
+  EmailIdForLogistics: string;
+  AltEmailidForLogistics: string;
+  ContactPersonForAccounts: string;
+  PhoneNumberForAccounts: string;
+  EmailIdForAccounts: string;
+  AltEmailidForAccounts: string;
+  GSTNo: string;
+  NatureofBusiness: number;
+  PANNo: string;
+  CINNo: string;
+  TanNo: string;
+  PaymentTerms: string;
+  PaymentTermId: number;
+  street: string;
+  BusinessArea: string;
+  Mobile: string;
+  EmailId: string;
+  contPhone: string;
+  BankDetails: string;
+  BankerName: string;
+  LocationOrBranch: string;
+  AccNo: string;
+  IFSCCode: string;
+  PhysicalPath: string;
+  DocumentTypeId: number;
+  fileattach1: string;
+  stateid: string;
+  isDisabled: false;
+  filedata: FormData;
+  DocDetailsLists: Array<DocDetailsList> = [];
+  ppath: File;
+  deleteId: string;
+  AccountHolderName: string;
+  State: number;
+  LocalBranch: string;
+  CheckedBy: string;
+  CheckedOn: Date;
+  CheckerStatus: string;
+  CheckerRemarks: string;
+  ApprovedBy: string;
+  ApprovedOn: Date;
+  ApprovalStatus: string;
+  ApproverRemarks: string;
+  Verifier1: string;
+  Verifier2: string;
+  VerifiedBy: string;
+  VerifiedOn: Date;
+  VerifiedStatus: string
+  VerifierRemarks: string;
+  CheckerName: string;
+  ApproverName: string;
+  initiateVendorName: string;
+  initiateVendorEmailId: string;
+  VerifierName: string;
+}
+export class vendorRegfilters {
+  FromDate: Date;
+  ToDate: Date;
+  VendorName: string;
+  IntiatedBy: string;
+  CheckedBy: string;
+  ApprovedBy: string;
+  VerifiedBy: string;
+  SecondApprover: string;
+  ThirdApprover: string;
+  PreparedBY: string;
+}

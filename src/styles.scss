@@ -363,6 +363,10 @@ a.disabled {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+.fixed-text_new {
+  margin-left:6px;
+}
+
 
 .panel-heading {
   border-bottom: 0 !important;
@@ -767,4 +771,56 @@ img {
 }
 .card{
   font-size:12px !important
+}
+.strike {
+  display: block;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  padding-bottom: 2%;
+}
+
+.strike > span {
+  position: relative;
+  display: inline-block;
+}
+
+.strike > span:before,
+.strike > span:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: 9999px;
+  /* Here is the modification */
+  height: 2px; /* space between lines */
+  margin-top: -2px; /* adjust vertical align */
+  border-top: 1px solid orange;
+  border-bottom: 1px solid orange;
+}
+
+.strike > span:before {
+  right: 100%;
+  margin-right: 15px;
+}
+
+.strike > span:after {
+  left: 100%;
+  margin-left: 15px;
+}
+
+.onetimeven {
+  padding-right: 1%;
+  ;
+}
+
+.attachmentfile {
+  height: 32px;
+}
+
+.headername {
+  color: blueviolet;
+}
+
+.attachedbtn {
+  height: 32px;
 }

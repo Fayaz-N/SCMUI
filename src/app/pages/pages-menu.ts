@@ -221,5 +221,22 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 icon: 'list-outline'
             },
         ],
-    },
+  },
+  {
+    title: 'Vendor Registraion',
+    icon: 'lock-outline',
+    expanded: false,
+    children: [
+      {
+        title: 'Vendor Reg Initiate',
+        link: '/SCM/VendorRegInitiate',
+        icon: 'list-outline'
+      },
+      {
+        title: 'Vendor Reg List',
+        link: '/SCM/VendorRegList',
+        icon: 'list-outline'
+      }
+    ],
+  },
 ];

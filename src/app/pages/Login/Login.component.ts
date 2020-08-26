@@ -75,6 +75,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[4].hidden = true;//PA
                 MENU_ITEMS[5].hidden = true;//auth
                 MENU_ITEMS[6].hidden = true; //Reports
+                MENU_ITEMS[7].hidden = true; //Reports
               }
               else {
                 MENU_ITEMS[2].hidden = false;
@@ -82,6 +83,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[4].hidden = false;
                 MENU_ITEMS[5].hidden = false;
                 MENU_ITEMS[6].hidden = false;
+                MENU_ITEMS[7].hidden = false; //Reports
               }
               if (this.AccessList.filter(li => li.AccessName == "AddMasters").length <= 0)
                 MENU_ITEMS[3].hidden = true;//masters

@@ -1,0 +1,498 @@
+<div *ngIf="!VendorData" class="card m-2" style="height:100%;border-radius:0px;">
+  <div class="row m-2">
+    <div class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Vendor Name :</label>&nbsp;
+      <input type="text" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorName" maxlength="500" />
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Vendor Email :</label>&nbsp;
+      <input type="email" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="VendorData" class="card m-2">
+  <div *ngIf="typeOfUser=='Checker'" class="row m-2">
+    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
+      <label class="form-label">One time vendor</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
+      <p-radioButton name="vendor" value="1" label="Yes" [(ngModel)]="VendorData.Onetimevendor"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="vendor" value="0" label="No" [(ngModel)]="VendorData.Onetimevendor"></p-radioButton>&nbsp;&nbsp;
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4  form-group">
+      <label>Evaluation Required</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
+      <p-radioButton name="Evaluation" value="1" label="Yes" [(ngModel)]="VendorData.EvaluationRequired"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="Evaluation" value="0" label="No" [(ngModel)]="VendorData.EvaluationRequired"></p-radioButton>&nbsp;&nbsp;
+    </div>
+    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
+      <label class="form-label">Performance Verification Required</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
+      <p-radioButton name="PerformanceVerificationRequired" value="1" label="Yes" [(ngModel)]="VendorData.PerformanceVerificationRequired"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="PerformanceVerificationRequired" value="0" label="No" [(ngModel)]="VendorData.PerformanceVerificationRequired"></p-radioButton>&nbsp;&nbsp;
+    </div>
+  </div>
+  <div *ngIf="typeOfUser!='Checker'" class="row m-2">
+    <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
+      <label class="lblEdit">One time vendor</label>
+      <span class="valueEdit">{{VendorData.Onetimevendor}}</span>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4  form-group">
+      <label class="lblEdit">Evaluation Required</label>
+      <span class="valueEdit">{{VendorData.EvaluationRequired}}</span>
+    </div>
+    <div class="col-md-4 col-sm-4 col-xs-4  form-group">
+      <label class="lblEdit">Performance Verification Required</label>
+      <span class="valueEdit">{{VendorData.PerformanceVerificationRequired}}</span>
+    </div>
+  </div>
+
+  <div class="strike">
+    <span class="headername">Vendor Details</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-md-3 col-sm-3 col-xs-3  form-group">
+        <label class="lblEdit">MSME</label>
+        <span class="valueEdit">{{VendorData.MSMERequired}}</span>
+      </div>
+      <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+        <label class="lblEdit">Vendor Name:</label>
+        <span class="valueEdit">{{VendorData.VendorName}}</span>
+      </div>
+      <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+        <label class="lblEdit">Street:</label>
+        <span class="valueEdit">{{VendorData.Street}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">State:</label>
+        <span class="valueEdit">{{VendorData.State}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">City:</label>
+        <span class="valueEdit">{{VendorData.City}}</span>
+      </div>
+    </div>
+    <div class='row m-2'>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Postal Code:</label>
+        <span class="valueEdit">{{VendorData.PostalCode}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Local Branch:</label><span class="valueEdit">{{VendorData.LocalBranchOffice}}</span>
+      </div>
+
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Business Area:</label><span class="valueEdit">{{VendorData.BusinessArea}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Vendor Number In SAP:</label><span class="valueEdit">{{VendorData.VendorNoInSAP}}</span>
+
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Communication</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Phone & Extn:</label>
+        <span class="valueEdit">{{VendorData.PhoneAndExtn}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Mobile Number:</label><span class="valueEdit">{{VendorData.Mobile}}</span>
+      </div>
+      <!--<div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Email Id:</label>
+        <span class="valueEdit">{{VendorData.Email}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Alternate Email Id:</label>
+        <span class="valueEdit">{{VendorData.AltEmail}}</span>
+      </div>-->
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Fax:</label><span class="valueEdit">{{VendorData.Fax}}</span>
+      </div>
+    </div>
+    <!--<div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person:</label><span class="valueEdit">{{VendorData.ContactPerson}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person Phone Number:</label><span class="valueEdit">{{VendorData.contPhone}}</span>
+      </div>
+    </div>-->
+  </div>
+  <div class="strike">
+    <span class="headername">Contact Details For Sales/Marketing</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person:</label><span class="valueEdit">{{VendorData.ContactPersonForSales}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person Phone Number:</label><span class="valueEdit">{{VendorData.PhoneNumberForSales}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Email Id:</label>
+        <span class="valueEdit">{{VendorData.EmailIdForSales}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Alternate Email Id:</label>
+        <span class="valueEdit">{{VendorData.AltEmailidForSales}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Contact Details For Operations/Manufacturing</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person:</label><span class="valueEdit">{{VendorData.ContactPersonForOperations}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person Phone Number:</label><span class="valueEdit">{{VendorData.PhoneNumberForOperations}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Email Id:</label>
+        <span class="valueEdit">{{VendorData.EmailIdForOperations}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Alternate Email Id:</label>
+        <span class="valueEdit">{{VendorData.AltEmailidForOperations}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Contact Details For Logistics</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person:</label><span class="valueEdit">{{VendorData.ContactPersonForLogistics}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person Phone Number:</label><span class="valueEdit">{{VendorData.PhoneNumberForLogistics}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Email Id:</label>
+        <span class="valueEdit">{{VendorData.EmailIdForLogistics}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Alternate Email Id:</label>
+        <span class="valueEdit">{{VendorData.AltEmailidForLogistics}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Contact Details For Accounts/Finance</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person:</label><span class="valueEdit">{{VendorData.ContactPersonForAccounts}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Contact Person Phone Number:</label><span class="valueEdit">{{VendorData.PhoneNumberForAccounts}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Email Id:</label>
+        <span class="valueEdit">{{VendorData.EmailIdForAccounts}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Alternate Email Id:</label>
+        <span class="valueEdit">{{VendorData.AltEmailidForAccounts}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Tax Information</span>
+  </div>
+  <div class="tab-pane">
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">GST No:</label><span class="valueEdit">{{VendorData.GSTNo}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">PAN No:</label><span class="valueEdit">{{VendorData.PANNo}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">CIN No:</label><span class="valueEdit">{{VendorData.CINNo}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">TAN No:</label><span class="valueEdit">{{VendorData.TanNo}}</span>
+      </div>
+    </div>
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Nature Of Business Type:</label><span class="valueEdit">{{VendorData.NatureOfBusinessType}}</span>
+      </div>
+      <div *ngIf="VendorData.NatureofBusiness==4" class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Specify Nature Of Business:</label><span class="valueEdit">{{VendorData.SpecifyNatureOfBusiness}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="strike">
+    <span class="headername">Payment Information</span>
+  </div>
+  <div class="tab-pane" style="padding-top:0%;">
+    <div class="row m-2">
+      <div class="col-xs-6 col-md-6 col-sm-6 form-group">
+        <label class="lblEdit">Payment Terms:</label><span class="valueEdit">{{VendorData.PaymentTerms}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Bank Details:</label><span class="valueEdit">{{VendorData.BankDetails}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Banker Name:</label><span class="valueEdit">{{VendorData.BankerName}}</span>
+      </div>
+
+    </div>
+    <div class="row m-2">
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">AccountHolder Name:</label><span class="valueEdit">{{VendorData.AccountHolderName}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit"> Location Or Branch:</label><span class="valueEdit">{{VendorData.LocationOrBranch}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">Account Number:</label><span class="valueEdit">{{VendorData.AccNo}}</span>
+      </div>
+      <div class="col-xs-3 col-md-3 col-sm-3 form-group">
+        <label class="lblEdit">IFSC Code:</label><span class="valueEdit">{{VendorData.IFSCCode}}</span>
+      </div>
+    </div>
+    <div *ngIf="typeOfUser=='Checker'">
+      <div class="strike">
+        <span class="headername">Payment Terms</span>
+      </div>
+      <div class="tab-pane" style="padding-top:0%;">
+        <div class="row form-inline m-3" *ngFor="let term of paymentTermsList;">
+          <div class="col-xs-12 col-md-12 col-sm-12 form-group">
+            <input type="radio" name="terms" [checked]="term.PaymentTermId === VendorData.PaymentTermId" (change)="termChange(term)" style="height:20px;width:20px">&nbsp;&nbsp;<b>{{term.PaymentTermDescription}}</b>
+          </div>
+        </div>
+        <div class="row form-inline m-2" *ngIf="VendorData.PaymentTermId==19">
+          <div class="col-xs-12 col-md-12 col-sm-12 form-group">
+            <input type="text" class="form-control" [(ngModel)]="VendorData.PaymentTerms">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="strike">
+      <span class="headername">Documents Information</span>
+    </div>
+    <div class="tab-pane">
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
+          <b>Address Proof:</b>
+        </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==1" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
+          <b>Select GST registration certificate:</b>
+        </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==2" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+          <b>PAN:</b>
+        </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==3" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>CIN Copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==4" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Bank Mandate duly signed by banker:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==5" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Cancelled cheque Copys:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==6" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Certificate from factory Inspector:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==7" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select ESI / PF Registration:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==8" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Pollution clearance certificate copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==9" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Excise registration certificate copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==10" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row m-2 form-inline">
+      <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Other documents:</b> </div>
+      <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+        <div *ngFor="let selected of DocumentList;let index = index">
+          <span *ngIf="selected.DocumentationTypeId==14" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="VendorData && VendorData.CheckedBy">
+    <div class="strike">
+      <span class="headername">Approvals</span>
+    </div>
+    <div class="tab-pane" style="padding-top:0%;">
+      <div class="row m-2">
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Checker: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{VendorData.CheckerName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{VendorData.CheckerStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{VendorData.CheckedOn | date :  constants.dateFormat }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{VendorData.CheckerRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div *ngIf="VendorData.ApprovedBy" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{VendorData.ApproverName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{VendorData.ApprovalStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{VendorData.ApprovedOn | date :  constants.dateFormat }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{VendorData.ApproverRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div><br />
+      <div class="row m-2">
+        <div *ngIf="VendorData.VerifiedBy" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Verifier: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{VendorData.VerifierName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{VendorData.VerifiedStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{VendorData.VerifiedOn | date :  constants.dateFormat}}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{VendorData.VerifierRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="displayFooter" class="footer">
+  <div class="row form-inline m-2">
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      &nbsp;&nbsp;<label class="form-label">Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="VendorRegStatus.Status">
+        <option value="Select">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+      <label class="form-label">Remarks:</label>&nbsp;
+      <textarea type="text" maxlength="500" [(ngModel)]="VendorRegStatus.Remarks" class="form-control"></textarea>
+    </div>
+    <div *ngIf="(VendorData.Verifier1 || VendorData.Verifier2) && VendorData.ApprovalStatus=='Approved'" class="col-xs-3 col-md-3 col-sm-3 form-group">
+      <label>Vendor Number In SAP:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
+      <input type="text" class="form-control" ngModel maxlength="30" [(ngModel)]="VendorData.VendorNoInSAP" />
+    </div>
+    <div class="col-lg-1 col-md-1 col-sm-1 form-inline">
+      <button type="button" [disabled]="disableStatusSubmit" class="btn btn-success" (click)="InitiateReg()" label="Save">Submit</button>
+    </div>
+  </div>
+</div>

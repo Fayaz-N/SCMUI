@@ -65,6 +65,9 @@ import { PAIncompletedListComponent } from './purchase-authorization/PAIncomplet
 import { TokuchuRequestComponent } from './purchase-authorization/Tokuchurequest.component';
 import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component'
 
+import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate'
+import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
+
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -135,7 +138,10 @@ import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList
     PAReportListComponent,
     PAIncompletedListComponent,
     TokuchuRequestComponent,
-    TokuchuReqListComponent
+    TokuchuReqListComponent,
+    VendorRegInitiateComponent,
+    VendorRegListComponent
+
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

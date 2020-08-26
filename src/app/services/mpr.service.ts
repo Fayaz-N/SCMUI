@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -211,6 +211,16 @@ export class MprService {
     }
     LoadJobCodesbysaleorder(saleorder: number): Observable<any> {
         return this.http.get<any>(this.url + 'MPR/LoadJobCodesbysaleorder/' + saleorder);
-    }
+  }
+
+  //updateVendorRegProcess
+  updateVendorRegProcess(data: VendorRegApprovalProcess, typeOfUser: string): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/updateVendorRegProcess/' + typeOfUser + '', data, this.httpOptions);
+  }
+
+  //get vendor registered list
+  getVendorReqList(data: vendorRegfilters): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/getVendorReqList', data, this.httpOptions)
+  }
 }
 

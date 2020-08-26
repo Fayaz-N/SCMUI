@@ -37,7 +37,9 @@ import { MPRStatusChartComponent } from './Dashboard/MPRStatusChart.component';
 import { PAReportListComponent } from './purchase-authorization/PAReportList.component';
 import { PAIncompletedListComponent } from './purchase-authorization/PAIncompletedList.component';
 import { TokuchuRequestComponent } from './purchase-authorization/Tokuchurequest.component';
-import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component'
+import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component';
+import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate';
+import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
 
 const routes: Routes = [{
   path: '',
@@ -96,7 +98,9 @@ const routes: Routes = [{
     { path: "TokochuRequest", component: TokuchuRequestComponent, canActivate: [AuthGuard] },
     { path: "TokochuRequest/:TokuchRequestid", component: TokuchuRequestComponent, canActivate: [AuthGuard] },
     { path: "TokochuReqList", component: TokuchuReqListComponent, canActivate: [AuthGuard] },
-
+    { path: "VendorRegInitiate", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
+    { path: "VendorRegInitiate/:VendorId", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
+    { path: "VendorRegList", component: VendorRegListComponent, canActivate: [AuthGuard] },
     // {
     //      path: '',
     //      redirectTo: 'Login',
