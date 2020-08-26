@@ -123,7 +123,7 @@ export class MPRPageComponent implements OnInit {
       ClientName: ['', [Validators.required, this.noWhitespaceValidator]],
       PlantLocation: ['', [Validators.required]],
         BuyerGroupId: ['', [Validators.required, this.noWhitespaceValidator]],
-        soldtoparty: ['', [this.noWhitespaceValidator]],
+        soldtoparty: [''],
         Enduser: ['',]
     });
 
@@ -751,23 +751,29 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.JobName = ''
         this.MprService.LoadJobCodesbysaleorder(saleorder).subscribe(data => {
             this.jobcodes = data;
-            this.mprRevisionModel.JobCode = data.ProjectDefinition;
+            if (this.jobcodes.ProjectDefinition != '') {
+                this.mprRevisionModel.JobCode = this.jobcodes.ProjectDefinition;
+            }
+            else {
+                this.mprRevisionModel.JobCode = this.jobcodes.shiptopartyponumber;
+            }
             this.mprRevisionModel.JobName = data.ProjectText;
             this.mprRevisionModel.soldtopartyname = data.soldtopartyname;
             this.mprRevisionModel.shiptopartyname = data.shiptopartyname;
             this.mprRevisionModel.Endusername = data.Endusername;
 
             this[formName].controls['soldtoparty'].setValue(data.soldtopartyname);
-            this[formName].value['soldtoparty'] = data.soldtopartyname
-            this.mprRevisionModel['soldtoparty'] = data.soldtopartyname;
-
-            this[formName].controls['shiptoparty'].setValue(data.shiptopartyname);
-            this[formName].value['shiptoparty'] = data.shiptopartyname
-            this.mprRevisionModel['shiptoparty'] = data.shiptopartyname;
+            this[formName].value['soldtoparty'] = data.soldtoparty
+            this.mprRevisionModel['soldtoparty'] = data.soldtoparty;
 
             this[formName].controls['Enduser'].setValue(data.Endusername);
-            this[formName].value['Enduser'] = data.Endusername
-            this.mprRevisionModel['Enduser'] = data.Endusername;
+            this[formName].value['Enduser'] = data.Enduser
+            this.mprRevisionModel['Enduser'] = data.Enduser;
+
+
+            this['MPRPageForm3'].controls['shiptoparty'].setValue(data.shiptopartyname);
+            this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
+            this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
         })
     }
   //form 3 code

@@ -52,8 +52,8 @@ export class constants {
   public OThirdApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: " where  ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
     public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  where ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
-    public soldtoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'soldtoparty', fieldName: 'soldtopartyname', condition: "  where  ", fieldAliasName: "", updateColumns: "" }
-    public Enduser: searchParams = { tableName: 'SaleorderDetails', fieldId: 'Enduser', fieldName: 'Endusername', condition: "  where Endusername != '' and ", fieldAliasName: "", updateColumns: "" }
-    public shiptoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'shiptoparty', fieldName: 'shiptopartyname', condition: "  where ", fieldAliasName: "", updateColumns: "" }
+    public soldtoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'soldtoparty', fieldName: 'soldtopartyname', condition: "  where  ", fieldAliasName: "soldtopartyname", updateColumns: "" }
+    public Enduser: searchParams = { tableName: 'SaleorderDetails', fieldId: 'Enduser', fieldName: 'Endusername', condition: "  where Endusername != '' and ", fieldAliasName: "Endusername", updateColumns: "" }
+    public shiptoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'shiptoparty', fieldName: 'shiptopartyname', condition: "  where ", fieldAliasName: "shiptopartyname", updateColumns: "" }
 }
 

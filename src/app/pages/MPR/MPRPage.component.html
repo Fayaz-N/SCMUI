@@ -150,11 +150,11 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">Sold To Party</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value" (keypress)="onsrchTxtChange('soldtoparty','mprRevisionModel')" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)}">
+              <input type="text" class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','soldtoparty',MPRPageForm1.controls.soldtoparty.value,undefined)"></button>
               </div>
-              <span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)" class="invalid-feedback">Select Client Name.</span>
+              <!--<span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)" class="invalid-feedback">Select Client Name.</span>-->
             </div>
 
           </div>
@@ -165,16 +165,16 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">End User Name</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="Enduser" [value]="MPRPageForm1.controls.Enduser.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Enduser)}">
+              <input type="text" class="form-control forms-input" formControlName="Enduser" [value]="MPRPageForm1.controls.Enduser.value">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','Enduser',MPRPageForm1.controls.Enduser.value,undefined)"></button>
               </div>
-              <span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Endusername)" class="invalid-feedback">Select Client Name.</span>
+              <!--<span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Endusername)" class="invalid-feedback">Select Client Name.</span>-->
             </div>
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label class="lblEdit">Enduser</label>
-            <span class="valueEdit">{{mprRevisionModel.Enduser}}</span>
+            <label class="lblEdit">End user name</label>
+            <span class="valueEdit">{{mprRevisionModel.Endusername}}</span>
           </div>
         </div>
 
@@ -646,7 +646,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Storage Locations</label>
               <select id="manWeeks" class="form-control forms-input" formControlName="StorageLocation" [(ngModel)]="mprRevisionModel.StorageLocation">
-                <option>Choose Website</option>
+                <option>Choose Storage location</option>
                 <option *ngFor="let option of locations" [value]="option.Sloc">{{option.storagelocations}}</option>
               </select>
               <!--<span><input type="button" class="btn btn-primary" (click)="loadlocations(MPRPageForm1.controls.DepartmentId.value)" value="Load" /></span>-->
@@ -658,7 +658,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;<span style="color:red">*</span>
               <div class="form-inline-list  ml-2 ">
-                <input type="text" class="form-control forms-input" formControlName="shiptoparty" [value]="MPRPageForm3.controls.shiptoparty.value" [ngClass]="{ 'is-invalid': MPRForm3Submitted &&  MPRForm3Submitted && (MPRPageForm3.controls.shiptoparty.value.trim()=='' || !mprRevisionModel.shiptoparty)}">
+                <input type="text" class="form-control forms-input" formControlName="shiptoparty" [value]="MPRPageForm3.controls.shiptoparty.value">
                 <div class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','shiptoparty',MPRPageForm3.controls.shiptoparty.value,undefined)"></button>
                 </div>
@@ -666,8 +666,8 @@
               </div>
             </div>
             <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label class="lblEdit">Shiptoparty</label>
-              <span class="valueEdit">{{mprRevisionModel.shiptoparty}}</span>
+              <label class="lblEdit">Ship to party</label>
+              <span class="valueEdit">{{mprRevisionModel.shiptopartyname}}</span>
             </div>
           </div>
         </div><br />
