@@ -49,7 +49,10 @@ export class MPRItemInfoes {
   POPrice: string;
   PORemarks: string;
   Materialdescription: string;
-  DeleteFlag: boolean
+    DeleteFlag: boolean;
+    ProjectDefinition: string;
+    WBS: string;
+    SystemModel: string
 }
 
 

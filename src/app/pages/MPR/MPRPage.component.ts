@@ -137,8 +137,10 @@ export class MPRPageComponent implements OnInit {
       MfgPartNo: ['', [Validators.required]],
       MfgModelNo: ['', [Validators.required]],
       ReferenceDocNo: ['', [Validators.required]],
-      TargetSpend: ['', [Validators.required]]
-
+      TargetSpend: ['', [Validators.required]],
+        projectdefinition: ['', [Validators.required]],
+        wbs: ['', [Validators.required]],
+        systemmodel: ['', [Validators.required]]
     });
 
     //MPRPageForm2 validation declararion.
@@ -224,7 +226,10 @@ export class MPRPageComponent implements OnInit {
     this.MPRItemDetailsForm.controls['MfgPartNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgModelNo'].clearValidators();
     this.MPRItemDetailsForm.controls['ReferenceDocNo'].clearValidators();
-    this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
+      this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
+      this.MPRItemDetailsForm.controls['projectdefinition'].clearValidators();
+      this.MPRItemDetailsForm.controls['wbs'].clearValidators();
+      this.MPRItemDetailsForm.controls['systemmodel'].clearValidators();
     this.MPRPageForm1.controls['SaleOrderNo'].clearValidators();
     this.MPRPageForm1.controls['PlantLocation'].clearValidators();
     this.MPRPageForm2.controls['TargetSpend'].clearValidators();
@@ -456,6 +461,9 @@ export class MPRPageComponent implements OnInit {
         }
         if (this.txtName == "Enduser") {
             this.mprRevisionModel.Endusername = item.name
+        }
+        if (this.txtName=="DispatchLocation") {
+            this.selectlocation(item.name);
         }
     }
     if (this.formName == "MPRPageForm2" && item.listName == "PurchaseTypeId") {
@@ -1676,8 +1684,7 @@ export class MPRPageComponent implements OnInit {
       this.vendorEmailList.splice(index, 1);
   }
   getPOnumbers(details: any) {
-
-    if (details && details.PAItems) {
+      if (details && details.PAItems) {
       var result = details.PAItems.map(a => a.PONO);
       return result.toString();
     }
@@ -1734,6 +1741,18 @@ export class MPRPageComponent implements OnInit {
       window.open('/SCM/RFQForm/' + rfqrevisionId + '', '_blank');
     });
   }
+    selectlocation(loaction:any) {
+        if (loaction == "EC - Products" || loaction == "EC / Factory" || loaction == "Phase-II") {
+            //this.MPRPageForm3.controls.shiptoparty.value = 'Yokogawa India Limited - CQ2q0001';
+            this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - CQ2q0001');
+            this.mprRevisionModel['shiptopartyname'] = 'Yokogawa India Limited - CQ2q0001';
+        }
+        else {
+            //this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - CQ2q0001');
+            //this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
+            //this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
+        }
+    }
 
   //<<SCM Open issues coding Ended>>
 }

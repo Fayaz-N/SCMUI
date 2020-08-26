@@ -93,9 +93,9 @@
               </div>
               <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.SaleOrderNo.errors" class="invalid-feedback">Sale OrderNo Required.</span>
             </div>
-              <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
-              
-            </div>
+            <!--<span class="glyphicon glyphicon-search form-control-feedback"></span>-->
+
+          </div>
           <!--<div class="col-lg-4 col-md-4 col-sm-4 input-group form-group">
             <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
               <button class="btn btn-secondary" type="button">
@@ -148,7 +148,7 @@
         </div>
         <div class="row">
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="ClientName" class="form-label">Sold To Party</label>&nbsp;
+            <label for="ClientName" class="form-label">Sold To Party/Contract Company</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
               <input type="text" class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
               <div class="input-group-append">
@@ -159,7 +159,7 @@
 
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label class="lblEdit">Soldtoparty</label>
+            <label class="lblEdit">Soldtoparty/Contract Company</label>
             <span class="valueEdit">{{mprRevisionModel.soldtopartyname}}</span>
           </div>
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -325,23 +325,31 @@
                   </td>
                   <td class="ptable-cell">
                     {{rowData.Itemid}} - {{rowData.ItemDescription}}
-                    <div class="row" style="margin-left:3px;margin-right:2px;margin-top:15px">
-                      <label style="width:220px"><b>SO Line Item No:</b><span>{{rowData.SOLineItemNo}}</span></label> &nbsp;&nbsp;
-                      <label style="width:220px">Reference:<span>{{rowData.ReferenceDocNo}}</span></label>
+                    <div class="row" style="margin-right:0px;margin-top:10px">
+                      <label class="col-lg-6 col-md-6 col-sm-6">SO Line Item No:&nbsp;&nbsp;<span>{{rowData.SOLineItemNo}}</span></label>
+                      <label class="col-lg-6 col-md-6 col-sm-6">Reference:&nbsp;&nbsp;<span>{{rowData.ReferenceDocNo}}</span></label>
                     </div>
-                    <div class="row" style="margin-left:3px;margin-right:2px">
-                      <label style="width:220px">Project:<span>shfjkdshfjhdbfdjskbfjkdshf</span></label> &nbsp;&nbsp;
-                      <label style="width:220px">WBS:<span>sdjkhbfjkdshfjkdshbhfjkdbsfjkbdbsjkfdsj</span></label>
+                    <div class="row" style="margin-right:0px">
+                      <!--<div class="col-lg-5 col-md-5 col-sm-5">
+                        <label class="lblEdit">Project</label>
+                        <span class="valueEdit">fhbsahfjjshfhjhasfjasf</span>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-sm-6">
+                        <label class="form-label">WBS</label>
+                        <span class="valueEdit">:{{rowData.WBS}}</span>
+                      </div>-->
+                      <label class="col-lg-6 col-md-6 col-sm-6">YGS Project:&nbsp;&nbsp;<span>{{rowData.ProjectDefinition}}</span></label>
+                      <label class="col-lg-6 col-md-6 col-sm-6">WBS:&nbsp;&nbsp;<span>{{rowData.WBS}}</span></label>
                     </div>
-                    <div class="row" style="margin-left:3px;margin-right:2px">
-                      <label style="width:220px">SystemModel:<span>{{rowData.SOLineItemNo}}</span></label>&nbsp;&nbsp;
-                      <label style="width:220px">PO NO:<span>{{getPOnumbers(rowData)}}</span></label>
+                    <div class="row" style="margin-right:0px">
+                      <label class="col-lg-6 col-md-6 col-sm-6">SystemModel:&nbsp;&nbsp;<span>{{rowData.SystemModel}}</span></label>
+                      <label class="col-lg-6 col-md-6 col-sm-6">PO NO:&nbsp;&nbsp;<span>{{getPOnumbers(rowData)}}</span></label>
                     </div>
-                    <div class="row" style="margin-left:3px;margin-right:2px">
-                      <label>Mfg part No:<span>{{rowData.MfgPartNo}}</span></label>&nbsp;&nbsp;
+                    <div class="row" style="margin-right:0px">
+                      <label class="col-lg-12 col-md-12 col-sm-12">Mfg part No:&nbsp;&nbsp;<span>{{rowData.MfgPartNo}}</span></label>
                     </div>
-                    <div class="row" style="margin-left:3px;margin-right:2px">
-                      <label style="width:250px">Mfg model No:<span>{{rowData.MfgModelNo}}</span></label>
+                    <div class="row" style="margin-right:2px">
+                      <label class="col-lg-12 col-md-12 col-sm-12">Mfg model No:&nbsp;&nbsp;<span>{{rowData.MfgModelNo}}</span></label>
                     </div>
                   </td>
                   <td>{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
@@ -621,7 +629,7 @@
 
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="form-label">Specify Dispatch Location</label>&nbsp;<span style="color:red">*</span>
-              <input type="text" [(ngModel)]="DispatchLocation" maxlength="100" [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
+              <input type="text" [(ngModel)]="DispatchLocation" maxlength="100"  [attr.disabled]="specifyDispatchDisply == true ? true : null" id="specifyDispatchLocation" formControlName="specifyDispatchLocation" class="form-control" [ngClass]="{ 'is-invalid': MPRForm3Submitted && specifyDispatchDisply==false &&  MPRPageForm3.controls.specifyDispatchLocation.errors }">
               <span *ngIf="MPRForm3Submitted && specifyDispatchDisply==false && !MPRPageForm3.controls.specifyDispatchLocation.value" class="invalid-feedback">Specify dispatch location required.</span>
             </div>
 
@@ -646,7 +654,7 @@
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Storage Locations</label>
               <select id="manWeeks" class="form-control forms-input" formControlName="StorageLocation" [(ngModel)]="mprRevisionModel.StorageLocation">
-                <option>Choose Storage location</option>
+                <option value="">Choose Storage location</option>
                 <option *ngFor="let option of locations" [value]="option.Sloc">{{option.storagelocations}}</option>
               </select>
               <!--<span><input type="button" class="btn btn-primary" (click)="loadlocations(MPRPageForm1.controls.DepartmentId.value)" value="Load" /></span>-->
@@ -657,13 +665,20 @@
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;<span style="color:red">*</span>
-              <div class="form-inline-list  ml-2 ">
-                <input type="text" class="form-control forms-input" formControlName="shiptoparty" [value]="MPRPageForm3.controls.shiptoparty.value">
+              <div  class="form-inline-list  ml-2 ">
+                <input type="text" class="form-control forms-input" formControlName="shiptoparty" (keypress)="onsrchTxtChange('shiptoparty','mprRevisionModel')" [value]="MPRPageForm3.controls.shiptoparty.value">
                 <div class="input-group-append">
                   <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','shiptoparty',MPRPageForm3.controls.shiptoparty.value,undefined)"></button>
                 </div>
                 <span *ngIf="MPRForm3Submitted && (MPRPageForm3.controls.shiptoparty.value.trim()=='' || !mprRevisionModel.shiptopartyname)" class="invalid-feedback">Select Client Name.</span>
               </div>
+              <!--<div *ngIf="MPRPageForm3.controls.DispatchLocation.value == 'EC / Factory'|| MPRPageForm3.controls.DispatchLocation.value == 'EC - Products' && MPRPageForm3.controls.DispatchLocation.value == 'Phase-II'" class="form-inline-list  ml-2 ">
+                <input type="text" class="form-control forms-input" formControlName="shiptoparty" [value]="MPRPageForm3.controls.shiptoparty.value">
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm3','shiptoparty',MPRPageForm3.controls.shiptoparty.value,undefined)"></button>
+                </div>
+                <span *ngIf="MPRForm3Submitted && (MPRPageForm3.controls.shiptoparty.value.trim()=='' || !mprRevisionModel.shiptopartyname)" class="invalid-feedback">Select Client Name.</span>
+              </div>-->
             </div>
             <div *ngIf="form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
               <label class="lblEdit">Ship to party</label>
@@ -1506,11 +1521,21 @@
               <span *ngIf="MPRItemDetailsSubmitted && (MPRItemDetailsForm.controls.UnitId.value.trim()=='' || !itemDetails.UnitId)" class="invalid-feedback">Select Units.</span>
             </div>
             <!--<select class="form-control dropdown" name="comptype" [(ngModel)]="itemDetails.UnitId" formControlName="UnitId" [ngClass]="{ 'is-invalid': MPRItemDetailsSubmitted &&  MPRItemDetailsSubmitted && !MPRItemDetailsForm.controls.UnitId.value}">
-              <option value="select" selected>Select</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-            </select>-->
+        <option value="select" selected>Select</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>-->
 
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">YGS ProjectID</label>
+            <input type="text" formControlName="projectdefinition" [(ngModel)]="itemDetails.ProjectDefinition" class="form-control" />
+          </div>
+          <div class="ui-g-6 form-group">
+            <label class="form-label">WBS</label>
+            <input type="text" formControlName="wbs" [(ngModel)]="itemDetails.WBS" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">
@@ -1542,6 +1567,12 @@
             <label class="form-label">File:</label>
             <!--<p-fileUpload mode="basic" name="demo[]"  accept=".pdf,.doc,.docx" maxFileSize="1000000" (onUpload)="onBasicUpload($event)"></p-fileUpload>-->
             <input type="file" class="form-control" id="uploadInputFile" (change)="fileChange($event,'itemDetails')" placeholder="Upload file" accept=".msg,.pdf,.doc,.docx,.xlsx,.xls" multiple>
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-6 form-group">
+            <label class="form-label">System Model</label>
+            <input type="number" formControlName="systemmodel" [(ngModel)]="itemDetails.SystemModel" class="form-control" />
           </div>
         </div>
         <div class="ui-g-12">
