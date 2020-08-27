@@ -301,7 +301,7 @@
         </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==2" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==2" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -311,7 +311,7 @@
         </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==3" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==3" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)"  pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -319,7 +319,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>CIN Copy:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==4" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==4" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -327,7 +327,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Bank Mandate duly signed by banker:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==5" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==5" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -335,7 +335,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Cancelled cheque Copys:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==6" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==6" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -343,7 +343,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Certificate from factory Inspector:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==7" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==7" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -351,7 +351,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select ESI / PF Registration:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==8" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==8" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -359,7 +359,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Pollution clearance certificate copy:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==9" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==9" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -367,7 +367,7 @@
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Select Excise registration certificate copy:</b> </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==10" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==10" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
@@ -376,7 +376,7 @@
       <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Other documents:</b> </div>
       <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
         <div *ngFor="let selected of DocumentList;let index = index">
-          <span *ngIf="selected.DocumentationTypeId==14" class="fixed-text_new" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          <span *ngIf="selected.DocumentationTypeId==14" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
         </div>
       </div>
     </div>
