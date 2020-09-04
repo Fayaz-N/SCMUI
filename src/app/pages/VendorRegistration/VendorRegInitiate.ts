@@ -201,9 +201,9 @@ export class VendorRegInitiateComponent implements OnInit {
       this.displayFooter = true;
       this.typeOfUser = "Verifier";
     }
-    this.displayFooter = true;
-    this.typeOfUser = "Approver";
-    this.VendorData.ApprovalStatus = "Pending";
+    //this.displayFooter = true;
+    //this.typeOfUser = "Approver";
+    //this.VendorData.ApprovalStatus = "Pending";
   }
 
   viewDocument(path: string) {
