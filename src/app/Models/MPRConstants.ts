@@ -11,6 +11,7 @@ export class constants {
   //test server
   public url = 'http://10.29.15.68:90/Api/';
   public Documnentpath = "http://10.29.15.68:90/SCMDocs/";
+  public vendorDocumentPath = "http://10.29.15.68:90/SCMDocs/";
   public PADocumentPath = "http://10.29.15.68:90/PADocuments/";
   public vscmurl = "http://10.29.15.68:92/api/api/Forgetpassword/";
 
@@ -18,6 +19,7 @@ export class constants {
   public accessTokenUrl = "http://10.29.15.183:90/token";
   //public url = 'http://10.29.15.183:90/Api/';
   //public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
+  //public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   //public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
   //public vscmurl="http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
 
