@@ -67,6 +67,7 @@ import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList
 
 import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate'
 import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
+import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegApprover.component'
 
 @NgModule({
   imports: [
@@ -140,7 +141,8 @@ import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
     TokuchuRequestComponent,
     TokuchuReqListComponent,
     VendorRegInitiateComponent,
-    VendorRegListComponent
+    VendorRegListComponent,
+    VendorRegisterApproverComponent
 
   ],
   providers: [MessageService, ConfirmationService],

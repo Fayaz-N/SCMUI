@@ -12,6 +12,7 @@ import { constants } from '../Models/MPRConstants'
 export class MprService {
 
   public url = this.constants.url;
+  public vscmurl = this.constants.vscmurl;
   public accessTokenUrl = this.constants.accessTokenUrl;
   public httpOptions = { headers: new HttpHeaders({ 'Content-Type': 'application/json', 'Authorization': 'Bearer PPCRbsP3beI49XTuG6yKwr9RGL_Vv5-B5MEzBD6k3j6hc9VsCqfGvy14-aBIyXms0odjNS9eahOFhiv7jytiJyibh80MujGAbG44fbQTZb2SIZv2FETb-zrdL3Mw-pPRK3HjuWBZTh09soP68_EDqw91mH7-4uYgswWpTHGkJpHQcZ6NWp3J0nbdEaGDC17w6D-qWUiWIQHbWg1UXeAmwg' }) };
   private currentUserSubject: BehaviorSubject<Employee>;
@@ -203,7 +204,7 @@ export class MprService {
   }
 //save file in cloud server
   InsertDocument(formData: FormData): Observable<any> {
-    return this.http.post<any>('http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/UploadFile', formData)
+    return this.http.post<any>(this.vscmurl + 'UploadFile/' , formData)
       .pipe(map(data => { return data }));
     }
     Loadstoragelocationbydepartment(): Observable<any> {
@@ -222,5 +223,31 @@ export class MprService {
   getVendorReqList(data: vendorRegfilters): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/getVendorReqList', data, this.httpOptions)
   }
+
+  //vendor registration editing
+  GetStateList(): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/GetStateList', this.httpOptions);
+  }
+  GetDocumentTypeList(): Observable<any> {
+   return this.http.get<any>(this.url + 'MPR/GetDocumentTypeList', this.httpOptions);
+  }
+  GetNatureofBusinessList(): Observable<any> {
+   return this.http.get<any>(this.url + 'MPR/GetNaturOfBusiness', this.httpOptions);
+  }
+  getvendordetails(vendorid: any): Observable<any> {
+   return this.http.get<any>(this.url + 'MPR/Getvendordetails/' + vendorid, this.httpOptions);
+  }
+  SaveVendorDetails(vendorList: any): Observable<any> {
+   return this.http.post<any>(this.url + 'MPR/SaveVendorDetails/', JSON.stringify(vendorList), this.httpOptions);
+  }
+
+  UploadVendorRegFile(formData: FormData): Observable<any> {
+    return this.http.post<any>(this.vscmurl + 'UploadVendorRegFile/', formData)
+      .pipe(map(data => { return data }));
+  }
+  deleteRegAttachedfile(redDoc: any): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/deleteRegAttachedfile/', redDoc, this.httpOptions);
+  }
+
 }
 

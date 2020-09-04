@@ -471,6 +471,7 @@ export class VendorRegistration {
   AltEmail: string;
   PhoneExn: string;
   vendorId: number;
+  Vendorid: number;
   VendorCode: string;
   UniqueId: number;
   Onetimevendor: boolean;
@@ -528,11 +529,12 @@ export class VendorRegistration {
   stateid: string;
   isDisabled: false;
   filedata: FormData;
-  DocDetailsLists: Array<DocDetailsList> = [];
+  DocDetailsLists: Array<VendorDocDetailsList> = [];
   ppath: File;
   deleteId: string;
   AccountHolderName: string;
-  State: number;
+  State: string;
+  StateId:number
   LocalBranch: string;
   CheckedBy: string;
   CheckedOn: Date;
@@ -553,6 +555,7 @@ export class VendorRegistration {
   initiateVendorName: string;
   initiateVendorEmailId: string;
   VerifierName: string;
+  VUniqueId: string;
 }
 export class vendorRegfilters {
   FromDate: Date;
@@ -565,4 +568,15 @@ export class vendorRegfilters {
   SecondApprover: string;
   ThirdApprover: string;
   PreparedBY: string;
+}
+
+export class VendorDocDetailsList {
+  VendorId: number;
+  DocumentName: string;
+  UploadedBy: string;
+  UploadedOn: Date
+  DocumentationTypeId: number;
+  Deleteflag: boolean
+  PhysicalPath: string;
+  Id: number;
 }

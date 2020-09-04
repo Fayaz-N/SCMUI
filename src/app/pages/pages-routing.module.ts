@@ -40,6 +40,8 @@ import { TokuchuRequestComponent } from './purchase-authorization/Tokuchurequest
 import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList.component';
 import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate';
 import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
+import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegApprover.component'
+
 
 const routes: Routes = [{
   path: '',
@@ -101,6 +103,9 @@ const routes: Routes = [{
     { path: "VendorRegInitiate", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
     { path: "VendorRegInitiate/:VendorId", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
     { path: "VendorRegList", component: VendorRegListComponent, canActivate: [AuthGuard] },
+    { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
+
+    
     // {
     //      path: '',
     //      redirectTo: 'Login',

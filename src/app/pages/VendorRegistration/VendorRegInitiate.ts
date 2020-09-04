@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ChangeDetectorRef, ViewChild, ElementRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { MprService } from 'src/app/services/mpr.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Employee, VendorRegApprovalProcess, VendorRegStatus, DynamicSearchResult, VendorRegistration } from 'src/app/Models/mpr';
@@ -202,11 +201,23 @@ export class VendorRegInitiateComponent implements OnInit {
       this.displayFooter = true;
       this.typeOfUser = "Verifier";
     }
+    this.displayFooter = true;
+    this.typeOfUser = "Approver";
+    this.VendorData.ApprovalStatus = "Pending";
   }
 
   viewDocument(path: string) {
     var path1 = path.replace(/\\/g, "/");
     path1 = this.constants.Documnentpath + path1;
     window.open(path1);
+  }
+
+
+  //navigate to approver edit page
+  navigateToEditPage() {
+    if (this.typeOfUser == "Approver" && this.VendorData.ApprovalStatus != 'Approved') {
+      localStorage.setItem('vendorRegDetails', JSON.stringify(this.VendorData));
+      this.router.navigateByUrl('/SCM/VendorRegApprover');
+    }
   }
 }
