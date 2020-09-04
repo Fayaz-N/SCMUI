@@ -109,7 +109,13 @@ export class ItemsViewModel {
   Mprrfqsplititemid: number;
   StandardLeadtime: number;
   ProductCategorylevel2id: number;
-  ProductCategorylevel1id: number
+  ProductCategorylevel1id: number;
+  FreightPercentage: number;
+  FreightAmount: number;
+  PFPercentage: number;
+  PFAmount: number;
+  TotalPFAmount: number;
+  TotalFreightAmount: number;
 }
 export class EmployeeModel {
   EmployeeNo: number;
@@ -335,6 +341,7 @@ export class TokuchuRequest {
   PAId: number;
   GepsId: string;
   PreVerifiedBy: string;
+    PreVerfiedBY: string;
   PreVerifiedOn: Date;
   PreVerifiedStatus: string
   PreVerifiedRemarks: string;

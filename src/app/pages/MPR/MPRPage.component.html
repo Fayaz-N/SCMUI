@@ -180,13 +180,13 @@
 
         <div class="row">
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="ClientName" class="form-label">Name of the Client</label>&nbsp;<span style="color:red">*</span>
+            <label for="ClientName" class="form-label">Name of the Client</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="ClientName" (keypress)="onsrchTxtChange('ClientName','mprRevisionModel')" [value]="MPRPageForm1.controls.ClientName.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRForm1Submitted && (MPRPageForm1.controls.ClientName.value.trim()=='' || !mprRevisionModel.ClientName)}">
+              <input type="text" class="form-control forms-input" formControlName="ClientName" (keypress)="onsrchTxtChange('ClientName','mprRevisionModel')" [value]="MPRPageForm1.controls.ClientName.value" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.ClientName.errors}">
               <div class="input-group-append">
                 <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','ClientName',MPRPageForm1.controls.ClientName.value,undefined)"></button>
               </div>
-              <span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.ClientName.value.trim()=='' || !mprRevisionModel.ClientName)" class="invalid-feedback">Select Client Name.</span>
+              <!--<span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.ClientName.value.trim()=='' || !mprRevisionModel.ClientName)" class="invalid-feedback">Select Client Name.</span>-->
             </div>
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
@@ -330,14 +330,7 @@
                       <label class="col-lg-6 col-md-6 col-sm-6">Reference:&nbsp;&nbsp;<span>{{rowData.ReferenceDocNo}}</span></label>
                     </div>
                     <div class="row" style="margin-right:0px">
-                      <!--<div class="col-lg-5 col-md-5 col-sm-5">
-                        <label class="lblEdit">Project</label>
-                        <span class="valueEdit">fhbsahfjjshfhjhasfjasf</span>
-                      </div>
-                      <div class="col-lg-6 col-md-6 col-sm-6">
-                        <label class="form-label">WBS</label>
-                        <span class="valueEdit">:{{rowData.WBS}}</span>
-                      </div>-->
+                     
                       <label class="col-lg-6 col-md-6 col-sm-6">YGS Project:&nbsp;&nbsp;<span>{{rowData.ProjectDefinition}}</span></label>
                       <label class="col-lg-6 col-md-6 col-sm-6">WBS:&nbsp;&nbsp;<span>{{rowData.WBS}}</span></label>
                     </div>
@@ -350,6 +343,9 @@
                     </div>
                     <div class="row" style="margin-right:2px">
                       <label class="col-lg-12 col-md-12 col-sm-12">Mfg model No:&nbsp;&nbsp;<span>{{rowData.MfgModelNo}}</span></label>
+                    </div>
+                    <div class="row" *ngIf="rowData.PAItems" style="margin-right:0px">
+                      <label class="col-lg-12 col-md-12 col-sm-12">TokochuNo:&nbsp;&nbsp;<span>{{getTokochno(rowData.PAItems)}}</span></label>
                     </div>
                   </td>
                   <td>{{rowData.Quantity}}  {{BindUnits(rowData.UnitId)}}</td>
@@ -664,7 +660,7 @@
               <span class="valueEdit">{{mprRevisionModel.StorageLocation}}</span>
             </div>
             <div *ngIf="!form3Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-              <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;<span style="color:red">*</span>
+              <label for="ClientName" class="form-label">Ship To Party</label>&nbsp;
               <div  class="form-inline-list  ml-2 ">
                 <input type="text" class="form-control forms-input" formControlName="shiptoparty" (keypress)="onsrchTxtChange('shiptoparty','mprRevisionModel')" [value]="MPRPageForm3.controls.shiptoparty.value">
                 <div class="input-group-append">

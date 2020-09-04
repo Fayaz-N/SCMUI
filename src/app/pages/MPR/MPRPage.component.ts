@@ -76,7 +76,9 @@ export class MPRPageComponent implements OnInit {
   public rfqCommunicationList: Array<any> = [];
   public targetspendError: boolean = false;
   public locations: any;
-  public jobcodes: any;
+    public jobcodes: any;
+    public ShipToParty: any;
+    public ShipToPartyName: any;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -120,11 +122,11 @@ export class MPRPageComponent implements OnInit {
       JobName: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
       SaleOrderNo: ['', [Validators.required]],
-      ClientName: ['', [Validators.required, this.noWhitespaceValidator]],
+        ClientName: [''],
       PlantLocation: ['', [Validators.required]],
         BuyerGroupId: ['', [Validators.required, this.noWhitespaceValidator]],
         soldtoparty: [''],
-        Enduser: ['',]
+        Enduser: ['']
     });
 
     //MPRItemDetailsForm validation declararion.
@@ -164,7 +166,7 @@ export class MPRPageComponent implements OnInit {
       DispatchLocation: ['', [Validators.required]],
       specifyDispatchLocation: ['', [Validators.required]],
         ScopeId: ['', [Validators.required]],
-        StorageLocation: ['', [Validators.required]],
+        StorageLocation: [''],
       TrainingRequired: ['', [Validators.required]],
       TrainingManWeeks: ['', [Validators.required]],
       TrainingRemarks: ['', [Validators.required]],
@@ -221,7 +223,8 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm1.controls['JobName'].clearValidators();
     this.MPRPageForm1.controls['GEPSApprovalId'].clearValidators();
     this.MPRPageForm1.controls['docNo'].clearValidators();
-    this.MPRPageForm1.controls['JobCode'].clearValidators();
+      this.MPRPageForm1.controls['JobCode'].clearValidators();
+      this.MPRPageForm1.controls['ClientName'].clearValidators();
     this.MPRItemDetailsForm.controls['SOLineItemNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgPartNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgModelNo'].clearValidators();
@@ -241,7 +244,8 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm3.controls['commissionMonths'].clearValidators();
     this.MPRPageForm3.controls['TrainingRemarks'].clearValidators();
     this.MPRPageForm3.controls['InspectionRemarks'].clearValidators();
-    this.MPRPageForm3.controls['Remarks'].clearValidators();
+      this.MPRPageForm3.controls['Remarks'].clearValidators();
+      this.MPRPageForm3.controls['StorageLocation'].clearValidators();
     this.MPRCommunicationForm.controls['ccEmail'].clearValidators(); 
     this.POraiseForm.controls['ORemarks'].clearValidators();
     this.POraiseForm.controls['OSecondApprover'].clearValidators();
@@ -458,6 +462,8 @@ export class MPRPageComponent implements OnInit {
         }
         if (this.txtName == "shiptoparty") {
             this.mprRevisionModel.shiptopartyname = item.name
+            //this.SoldToPartyName = item.name;
+            //this.SoldToParty = item.code;
         }
         if (this.txtName == "Enduser") {
             this.mprRevisionModel.Endusername = item.name
@@ -561,13 +567,12 @@ export class MPRPageComponent implements OnInit {
 
   onMPRForm1Submit(formId, showform, formEdit: string) {
     this.MPRForm1Submitted = true;
-    if (this.MPRPageForm1.invalid || (!this.mprRevisionModel.DepartmentId || !this.mprRevisionModel.ProjectManager || !this.mprRevisionModel.ClientName || !this.mprRevisionModel.BuyerGroupId)) {
+    if (this.MPRPageForm1.invalid || (!this.mprRevisionModel.DepartmentId || !this.mprRevisionModel.ProjectManager || !this.mprRevisionModel.BuyerGroupId)) {
       return;
     }
     else {
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
         this.mprRevisionModel.PreparedOn = new Date();
-        console.log("this.mprRevisionModel", this.mprRevisionModel);
       this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.spinner.hide();
@@ -782,6 +787,9 @@ export class MPRPageComponent implements OnInit {
             this['MPRPageForm3'].controls['shiptoparty'].setValue(data.shiptopartyname);
             this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
             this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
+
+            this.ShipToPartyName = data.shiptopartyname;
+            this.ShipToParty = data.shiptoparty;
         })
     }
   //form 3 code
@@ -1255,7 +1263,6 @@ export class MPRPageComponent implements OnInit {
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
         this.mprRevisionModel = data;
-        console.log("this.mprRevisionModel", this.mprRevisionModel)
       if (this.mprRevisionModel && this.mprRevisionModel.DeleteFlag == false) {
         if (this.mprRevisionModel.DeliveryRequiredBy)
           this.mprRevisionModel.DeliveryRequiredBy = new Date(this.mprRevisionModel.DeliveryRequiredBy);
@@ -1267,7 +1274,7 @@ export class MPRPageComponent implements OnInit {
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
           if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId && this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0])
             this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
-          this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
+            this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
@@ -1323,8 +1330,9 @@ export class MPRPageComponent implements OnInit {
       else {
         this.spinner.hide();
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'No data for this revision' });
-      }
-
+        }
+        this.ShipToPartyName = data.shiptopartyname;
+        this.ShipToParty = data.shiptoparty;
     });
   }
   //bind Status Details
@@ -1674,7 +1682,7 @@ export class MPRPageComponent implements OnInit {
     }
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
-    }
+      } 
     //this.newVendorDetails.Emailid = "";
   }
 
@@ -1687,8 +1695,7 @@ export class MPRPageComponent implements OnInit {
       if (details && details.PAItems) {
       var result = details.PAItems.map(a => a.PONO);
       return result.toString();
-    }
-
+      }
   }
 
   //Purpose : <<SCM Open issues coding start from here>>
@@ -1740,17 +1747,30 @@ export class MPRPageComponent implements OnInit {
     this.router.navigate([]).then(result => {
       window.open('/SCM/RFQForm/' + rfqrevisionId + '', '_blank');
     });
-  }
+    }
+    getTokochno(tokochu: any) {
+        for (var i = 0; i < tokochu.length; i++) {
+            var tokochuresult = tokochu[i].TokuchuLIneItems.map(a => a.TokuchuNo);
+            return tokochuresult.toString();
+        }
+    }
     selectlocation(loaction:any) {
         if (loaction == "EC - Products" || loaction == "EC / Factory" || loaction == "Phase-II") {
-            //this.MPRPageForm3.controls.shiptoparty.value = 'Yokogawa India Limited - CQ2q0001';
-            this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - CQ2q0001');
-            this.mprRevisionModel['shiptopartyname'] = 'Yokogawa India Limited - CQ2q0001';
+            this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - C2q00001');
+            this.mprRevisionModel['shiptopartyname'] = 'Yokogawa India Limited - C2q00001';
+            this.mprRevisionModel['shiptoparty'] = 'C2q00001';
         }
         else {
-            //this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - CQ2q0001');
-            //this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
-            //this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
+            this['MPRPageForm3'].controls['shiptoparty'].setValue(this.ShipToPartyName);
+            this['MPRPageForm3'].value['shiptoparty'] = this.ShipToPartyName;
+            this.mprRevisionModel.shiptoparty = this.ShipToParty;
+            this.mprRevisionModel.shiptopartyname = this.ShipToPartyName;
+            if (loaction == "Site") {
+                this['MPRPageForm3'].controls['specifyDispatchLocation'].setValue(this.ShipToPartyName);
+                this['MPRPageForm3'].value['specifyDispatchLocation'] = this.ShipToPartyName;
+                this.DispatchLocation = this.ShipToPartyName;
+                //this.mprRevisionModel['DispatchLocation'] = this.ShipToPartyName;
+            }
         }
     }
 
