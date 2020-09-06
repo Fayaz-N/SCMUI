@@ -8,9 +8,11 @@ import Exporting from 'highcharts/modules/exporting';
 import funnel from 'highcharts/modules/funnel';
 import { DatePipe } from '@angular/common';
 
+
 @Component({
   selector: 'ngx-dashboard',
-  templateUrl: './dashboard.component.html',
+    templateUrl: './dashboard.component.html',
+    styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
   @ViewChild("container", { read: ElementRef, static: true }) container: ElementRef;
