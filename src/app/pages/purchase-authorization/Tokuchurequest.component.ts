@@ -316,7 +316,8 @@ export class TokuchuRequestComponent implements OnInit {
     this.tokuchuRequest.TokuchRequestid = this.purchasedetails.TokuchuRequest.TokuchRequestid;;
     this.tokuchuRequest.PAId = this.paid;
     this.tokuchuRequest.PreparedBY = this.employee.EmployeeNo;
-    this.tokuchuRequest.PreVerifiedBy = this.tokuchuRequest.VerifiedBy;
+      //this.tokuchuRequest.PreVerifiedBy = this.tokuchuRequest.VerifiedBy;
+      this.tokuchuRequest.PreVerfiedBY = this.tokuchuRequest.VerifiedBy;
     if (this.showPreverSts) {
       this.tokuchuRequest.PreVerifiedOn = new Date();
       typeOfuser = "PreVerifier";

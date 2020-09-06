@@ -258,7 +258,7 @@ export class purchasePaymentComponent implements OnInit {
             if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted" || this.purchasedetails.PAStatus == "Rejected") {
                 this.pasubmitted = true;
                 for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-                    this.purchasedetails.Item[i]["itemsum"] = this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]
+                    this.purchasedetails.Item[i]["itemsum"] = (this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]) + this.purchasedetails.Item[i]["TotalFreightAmount"] + this.purchasedetails.Item[i]["TotalPFAmount"]
                 }
                 this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
                 this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
