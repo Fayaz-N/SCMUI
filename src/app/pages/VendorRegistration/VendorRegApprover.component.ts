@@ -316,8 +316,10 @@ export class VendorRegisterApproverComponent implements OnInit {
 
       this.VendorData.DocDetailsLists.splice(index, 1);
     }
+  }
 
-
-
+  //navigate to iniate page
+  navigateToIntiatePage() {
+    this.router.navigate(['/SCM/VendorRegInitiate', this.VendorDataLocDetails.Vendorid]);
   }
 }
