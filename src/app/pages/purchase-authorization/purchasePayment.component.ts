@@ -124,7 +124,7 @@ export class purchasePaymentComponent implements OnInit {
 
         if (localStorage.getItem("PADetails")) {
             this.selectedItems = JSON.parse(localStorage.getItem("PADetails"));
-            this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
+            this.sum = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current) ;
             this.target = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current) ||0;
             this.displayapproveEmployee();
             for (var i = 0; i < this.selectedItems.length; i++) {
@@ -328,15 +328,18 @@ export class purchasePaymentComponent implements OnInit {
     }
 
     displayapproveEmployee() {
-        console.log("items1", this.selectedItems)
+        //console.log("items1", this.selectedItems)
         this.MPRItemDetailsid = [];
         let item = new ConfigurationModel();
         if (this.selectedItems.length > 0) {
             item.MPRItemDetailsid = [];
             item["UnitPrice"] = this.selectedItems.map(res => res.itemsum).reduce((sum, current) => sum + current);
+            //item["UnitPrice"] = item["UnitPrice"] ;
             item["TargetSpend"] = this.selectedItems.map(res => res.TargetSpend).reduce((sum, current) => sum + current);
             item["DeptID"] = this.selectedItems[0].DepartmentId;
             item["PaymentTermCode"] = this.selectedItems[0].PaymentTermCode;
+            item.BuyerGroupId = this.selectedItems[0].BuyerGroupId;
+            console.log("item.BuyerGroupId", item)
             for (var i = 0; i < this.selectedItems.length; i++) {
                 this.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid)
                 item.MPRItemDetailsid.push(this.selectedItems[i].MPRItemDetailsid);

@@ -41,7 +41,9 @@ import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList
 import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate';
 import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
 import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegApprover.component'
-
+import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.component'
+import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
+import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 
 const routes: Routes = [{
   path: '',
@@ -103,8 +105,10 @@ const routes: Routes = [{
     { path: "VendorRegInitiate", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
     { path: "VendorRegInitiate/:VendorId", component: VendorRegInitiateComponent, canActivate: [AuthGuard] },
     { path: "VendorRegList", component: VendorRegListComponent, canActivate: [AuthGuard] },
-    { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
-
+      { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
+      { path: "statusreport", component: MPRStatusReportsComponent, canActivate: [AuthGuard] },
+      { path: "mprwisereport", component: MPRWiseReportsComponent, canActivate: [AuthGuard] },
+      { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] }
     
     // {
     //      path: '',

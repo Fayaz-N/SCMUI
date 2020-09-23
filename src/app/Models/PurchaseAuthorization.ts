@@ -18,7 +18,7 @@ export class PAAuthorizationLimitModel {
 export class PAAuthorizationEmployeeMappingModel {
   PAmapid: number;
   Authid: number;
-  Employeeid: string;
+  Employeeid: any;
   FunctionalRoleId: string;
   Employeename: string;
   LessBudget: boolean;
@@ -32,6 +32,7 @@ export class PAAuthorizationEmployeeMappingModel {
   checked: string;
   DeptId: string;
 }
+
 export class PACreditDaysApproverModel {
   CRApprovalid: number;
   Authid: number;
@@ -166,8 +167,9 @@ export class ConfigurationModel {
   DeptId: number;
   TargetSpend: number;
   UnitPrice: number;
-  PaymentTermCode: string
-  MPRItemDetailsid: Array<number>[];
+    PaymentTermCode: string;
+    MPRItemDetailsid: Array<number>[];
+    BuyerGroupId: number;
 }
 export class ChangedModel {
   selectedDepartment: number;
@@ -394,5 +396,36 @@ export class tokuchufilters {
   Paid: string;
   PreparedBY: string;
   VerifiedBy: string;
+}
+export class ReportInputModel {
+    BuyerGroupId: number;
+    Fromdate: Date | null;
+    Todate: Date | null;
+    BuyerGroup: string;
+    RequisitionId: number;
+    revisionId: number;
+    jobcode: string;
+    purposeofissuingmpr: string;
+    preparedby: string;
+    Checked: string;
+    ApprovedBy: string;
+    Issuepurposeid: number;
+    DepartmentId: number;
+    finalApproverstatus: string;
+    checkerstatus: string;
+    DocumentNo: string;
+    Department: string;
+    totalcount: number;
+    status: string;
+    ShowAllrevisions: boolean;
+}
+export class statussearch {
+    BuyerGroup: string;
+    status: string;
+    Department: string;
+    totalcount: number;
+    Fromdate: Date;
+    Todate: Date;
+    DepartmentId: number;
 }
 

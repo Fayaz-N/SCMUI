@@ -167,12 +167,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'PAIncompleted List',
                 link: '/SCM/incompletedpa',
                 icon: 'layers-outline'
-          },
-          {
-            title: 'Tokuchu Req List',
-            link: '/SCM/TokochuReqList',
-            icon: 'layers-outline'
-          }
+            },
+            {
+                title: 'Tokuchu Req List',
+                link: '/SCM/TokochuReqList',
+                icon: 'layers-outline'
+            }
         ],
     },
     {
@@ -221,22 +221,49 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 icon: 'list-outline'
             },
         ],
-  },
-  {
-    title: 'Vendor Registraion',
-    icon: 'lock-outline',
-    expanded: false,
-    children: [
-      {
-        title: 'Vendor Reg Initiate',
-        link: '/SCM/VendorRegInitiate',
-        icon: 'list-outline'
-      },
-      {
-        title: 'Vendor Reg List',
-        link: '/SCM/VendorRegList',
-        icon: 'list-outline'
-      }
-    ],
-  },
+    },
+    {
+        title: 'Vendor Registraion',
+        icon: 'lock-outline',
+        expanded: false,
+        children: [
+            {
+                title: 'Vendor Reg Initiate',
+                link: '/SCM/VendorRegInitiate',
+                icon: 'list-outline'
+            },
+            {
+                title: 'Vendor Reg List',
+                link: '/SCM/VendorRegList',
+                icon: 'list-outline'
+            }
+        ],
+    },
+    {
+        title: 'MPRReports',
+        icon: 'lock-outline',
+        expanded: false,
+        children: [
+            {
+                title: 'MPRStatusReport',
+                link: '/SCM/statusreport',
+                icon: 'list-outline'
+            },
+            {
+                title: 'MPRWiseReport',
+                link: '/SCM/mprwisereport',
+                icon: 'list-outline'
+            },
+            {
+                title: 'RequisitionReport',
+                link: '/SCM/requisitionreport',
+                icon: 'list-outline'
+            },
+            //{
+            //    title: 'Vendor Reg List',
+            //    link: '/SCM/VendorRegList',
+            //    icon: 'list-outline'
+            //}
+        ],
+    },
 ];

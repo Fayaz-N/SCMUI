@@ -7,6 +7,7 @@ import { SelectItem } from 'primeng/primeng';
 import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { Employee } from '../../Models/mpr';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
     selector: 'app-purchase-authorization',
@@ -37,6 +38,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     public RolesList = [];
     public deptid: number;
     public SlabsAddForm: FormGroup;
+    dropdownSettings = {};
     LessBudget = "LessBudget";
     MoreBudget = "MoreBudget"
     constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, public messageService: MessageService, public paService: purchaseauthorizationservice) { }
@@ -67,15 +69,27 @@ export class PurchaseAuthorizationComponent implements OnInit {
         this.LoadEmployeemappedPurchases();
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            this.SelectedDepartment = 0;
+            this.employemapping.DeptId = "0";
         });
+        this.dropdownSettings = {
+            singleSelection: true,
+            text: "Select Employee",
+            textField: 'Name',
+            idField: 'EmployeeNo',
+            unSelectAllText: 'UnSelect All',
+            allowSearchFilter: true,
+        };
+    }
 
+    onItemSelect(item: any) {
+        console.log('onItemSelect', item);
     }
     selecteSlabs(event: any) {
         this.deptid = event.target.value;
         this.paService.LoadSlabsByDepartmentID(this.deptid).subscribe(data => {
-            debugger;
             this.slbaslist = data;
+            this.employemapping.Authid = 0;
+            console.log("this.slbaslist", this.slbaslist)
             //this.selectedslabslist = 0;
         })
 

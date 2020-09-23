@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters } from '../Models/PurchaseAuthorization';
+import { PADetailsModel, ItemsViewModel, DepartmentModel, painutmodel, padeletemodel, PAAuthorizationLimitModel, statussearch, PAAuthorizationEmployeeMappingModel, PACreditDaysMasterModel, PACreditDaysApproverModel, mprpapurchasemodesmodel, mprpapurchasetypesmodel, mprpadetailsmodel, PAApproverDetailsInputModel, MPRPAApproversModel, PAReportInputModel, padocuments, TokuchuRequest, tokuchufilters, ReportInputModel } from '../Models/PurchaseAuthorization';
 import { constants } from '../Models/MPRConstants'
 import { Employee } from '../Models/mpr';
 import { SelectItem } from 'primeng/api';
@@ -175,5 +175,19 @@ export class purchaseauthorizationservice {
   getTokuchuReqList(data: tokuchufilters): Observable<any> {
     return this.http.post<any>(this.url + 'PA/getTokuchuReqList', data, this.httpOptions)
   }
-
+    Getmprstatus(status: ReportInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/GetmprstatusReport', status, this.httpOptions)
+    }
+    Getmprstatuswise(status: ReportInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/GetMprstatuswisereport', status, this.httpOptions)
+    }
+    GetmprrequisitionReport(status: ReportInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/GetmprRequisitionReport', status, this.httpOptions)
+    }
+    getmprreportfilters(): Observable<any> {
+        return this.http.get<any>(this.url + 'PA/GetmprRequisitionfilters', this.httpOptions)
+    }
+    getmprstatusbydepartment(data: statussearch): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/getmprstatusbydepartment', data, this.httpOptions)
+    }
 } 

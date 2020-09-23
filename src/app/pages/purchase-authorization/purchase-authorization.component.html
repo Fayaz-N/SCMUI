@@ -16,7 +16,7 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
         <select (change)="selecteSlabs($event)" [(ngModel)]="employemapping.DeptId" class="form-control">
-          <option [value]="0">Select</option>
+          <option value="0">Select</option>
           <option *ngFor="let dep of departmentlist" [value]="dep.DepartmentId">{{dep.Department}} </option>
         </select>
       </div>
@@ -28,6 +28,7 @@
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
         <select [(ngModel)]="employemapping.Authid" class="form-control">
+          <option value="0">Select Slab</option>
           <option *ngFor="let sla of slbaslist" [value]="sla.Authid">{{sla.MinPAValue}}-{{sla.MaxPAValue}}</option>
         </select>
       </div>
@@ -40,9 +41,15 @@
         <label for="GroupName" class="form-label label" style="margin-left: 12px;">Select Employee:</label>
       </div>
       <div class="col-lg-4 col-md-4 col-sm-4 form-group accessgdiv2">
-        <select [(ngModel)]="employemapping.Employeeid" class="form-control chosen">
-          <option *ngFor="let emp of employeelist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
-        </select>
+        <!--<select [(ngModel)]="employemapping.Employeeid" class="form-control chosen">
+    <option *ngFor="let emp of employeelist" [value]="emp.EmployeeNo">{{emp.Name}}</option>
+  </select>-->
+        <ng-multiselect-dropdown [placeholder]="'Select Employee'"
+                                 [data]="employeelist"
+                                 [(ngModel)]="employemapping.Employeeid"
+                                 [settings]="dropdownSettings"
+                                 (onSelect)="onItemSelect($event)">
+        </ng-multiselect-dropdown>
       </div>
       <div class="col-sm-12 col-md-6 col-lg-6">
       </div>
@@ -62,40 +69,40 @@
     </div><br />
 
     <!--<div class="row selectgrow">
-    <div class="col-lg-2 col-md-2 col-sm-2">
-      <label for="GroupName" class="form-label label" style="margin-left: 12px;">Budget:</label>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-6 form-inline accessgdiv2">
-      <div class="radio col-lg-3 col-md-3 col-sm-3">
-        <label class="form-label label">
-          <input type="checkbox" name="Budget" [value]="LessBudget" (click)="setradio($event)">
-          LessBudget
-        </label>
-      </div>&nbsp;&nbsp;
-      <div class="radio col-lg-3 col-md-3 col-sm-3">
-        <label class="form-label label">
-          <input type="checkbox" name="Budget" [value]="MoreBudget" (click)="setradio($event)">
-          MoreBudget
-        </label>
-      </div>
-    </div>
-  </div>-->
-
-    <div class="row selectgrow">
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label for="GroupName" class="form-label label" style="margin-left: 12px;">Budget:</label>
       </div>
       <div class="col-lg-6 col-md-6 col-sm-6 form-inline accessgdiv2">
         <div class="radio col-lg-3 col-md-3 col-sm-3">
           <label class="form-label label">
-            <input type="checkbox" [checked]="employemapping.LessBudget" [(ngModel)]="employemapping.LessBudget" name="Budget" [value]="LessBudget" >
+            <input type="checkbox" name="Budget" [value]="LessBudget" (click)="setradio($event)">
             LessBudget
           </label>
         </div>&nbsp;&nbsp;
         <div class="radio col-lg-3 col-md-3 col-sm-3">
           <label class="form-label label">
-            <input type="checkbox" [checked]="employemapping.MoreBudget" [(ngModel)]="employemapping.MoreBudget" name="Budget" [value]="MoreBudget" >
+            <input type="checkbox" name="Budget" [value]="MoreBudget" (click)="setradio($event)">
             MoreBudget
+          </label>
+        </div>
+      </div>
+    </div>-->
+
+    <div class="row selectgrow">
+      <div class="col-lg-2 col-md-2 col-sm-2">
+        <label for="GroupName" class="form-label label" style="margin-left: 12px;">Budget:</label>
+      </div>
+      <div class="col-lg-8 col-md-8 col-sm-8 form-group">
+        <div class="col-lg-4 col-md-4 col-sm-4">
+          <label class="form-label label">
+            <input type="checkbox" [checked]="employemapping.LessBudget" [(ngModel)]="employemapping.LessBudget" name="Budget" [value]="LessBudget">
+            With In Budget
+          </label>
+        </div>
+        <div class="radio col-lg-4 col-md-4 col-sm-4">
+          <label class="form-label label">
+            <input type="checkbox" [checked]="employemapping.MoreBudget" [(ngModel)]="employemapping.MoreBudget" name="Budget" [value]="MoreBudget">
+            Exceeding Budget
           </label>
         </div>
       </div>
@@ -114,7 +121,7 @@
 
 </div>
 <div *ngIf="employeemapping" class="row form-control" id="employeeid" style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-  <p-table #dt [value]="mappedpurchase" [paginator]="true" [rows]="10" [globalFilterFields]="['DepartmentName','Name']" [resizableColumns]="true" p columnResizeMode="expand">
+  <p-table #dt [value]="mappedpurchase" [paginator]="true" [rows]="100" [globalFilterFields]="['DepartmentName','Name']" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
       <tr>
         <th colspan="8" class="text-right">
@@ -231,14 +238,14 @@
       </div>
     </div>
     <!--<div class="ui-g-12">
-    <div class="ui-g-2">
-      <label for="procSrc">Created By :</label>
-    </div>
-    <div class="ui-g-5">
-      <input  [(ngModel)]="paauthorization.CreatedBy" />
-      <p>{{employee.Name}}</p>
-    </div>
-  </div>-->
+      <div class="ui-g-2">
+        <label for="procSrc">Created By :</label>
+      </div>
+      <div class="ui-g-5">
+        <input  [(ngModel)]="paauthorization.CreatedBy" />
+        <p>{{employee.Name}}</p>
+      </div>
+    </div>-->
     <p-footer>
       <div class="ui-dialog-buttonpane ui-helper-clearfix">
         <button type="button" pButton icon="fa fa-check" class="ui-button-success" (click)="Submit(paauthorization)" label="Insert"></button>

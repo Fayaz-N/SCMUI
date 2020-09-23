@@ -69,6 +69,11 @@ import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitia
 import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
 import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegApprover.component'
 
+import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.component'
+import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
+import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -99,7 +104,8 @@ import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegA
     MatAutocompleteModule,
     AutoCompleteModule,
     MatInputModule,
-    MatFormFieldModule
+        MatFormFieldModule,
+        NgMultiSelectDropDownModule
   ],
   declarations: [
     PagesComponent,
@@ -142,8 +148,10 @@ import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegA
     TokuchuReqListComponent,
     VendorRegInitiateComponent,
     VendorRegListComponent,
-    VendorRegisterApproverComponent
-
+    VendorRegisterApproverComponent,
+      MPRStatusReportsComponent,
+      MPRWiseReportsComponent,
+      MPRRequisitionWiseReportComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

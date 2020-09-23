@@ -35,7 +35,7 @@ export class MPRListComponent implements OnInit {
   loading: boolean;
   public fromDate: Date;
   public toDate: Date
-  public deleteMprInfo: DeleteMpr;
+    public deleteMprInfo: DeleteMpr;
 
   //page load event
   ngOnInit() {
@@ -304,7 +304,13 @@ export class MPRListComponent implements OnInit {
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter Remarks.' });
     }
-  }
+    }
+    //stauscheck(status:any) {
+    //    let fruits: string[] =  ["PA Generated", "RFQ Generated", "RFQ Responded", "RFQ Finalized", "PA Approved", "MPR Closed", "PA Rejected", "Technical Spec Approved"]
+    //    for (var i = 0; i >= 0; i++) {
+
+    //    }
+    //}
 }
 
 

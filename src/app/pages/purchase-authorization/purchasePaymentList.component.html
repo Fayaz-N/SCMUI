@@ -183,39 +183,40 @@
       </div>-->
     </ng-template>
     <ng-template pTemplate="header">
-      <tr>
-        <th style="width:4em">S.No</th>
-        <th>PA NO</th>
-        <th ng-style="{'width': 80px}">MPRNO</th>
-        <th>RFQNO</th>
-        <th width="100px">Department</th>
-        <th width="100px">BuyerGroup</th>
-        <th>Vendor</th>
-        <th width="110px">RequestedBY</th>
-        <th width="110px">RequestedOn</th>
-        <th width="110px">Tokochu Request</th>
-        <th>PA Status</th>
-        <th>PO Status</th>
-        <th>Delete</th>
+      <tr style="font-size: 12px !important;">
+        <th style="width:60px">S.No</th>
+        <th style="width:50px">PA NO</th>
+        <th style="width:100px;">MPRNO</th>
+        <th style="width:80px;">PONO</th>
+        <th style="width:100px;">Department</th>
+        <th style="width:100px;">BuyerGroup</th>
+        <th style="width:100px">Vendor</th>
+        <th style="width:100px">RequestedBY</th>
+        <th style="width:80px">Tokochu Request</th>
+        <th style="width:80px">PA Status</th>
+        <th style="width:80px">PO Status</th>
+        <th style="width:60px">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-      <tr>
-        <td style="width:4em">
+      <tr style="font-size: 12px !important;">
+        <td class="ptable-cell">
           {{ri+1}}
         </td>
         <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td pEditableColumn class="ptable-cell">{{rowData.DocumentNo}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.RFQNo}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.pono}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.Name}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.RequestedOn | date: 'dd/MM/yyyy'}}</td>
-        <td  class="ptable-cell"><button  *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td pEditableColumn class="ptable-cell">
+          {{rowData.Name}}<br />
+          {{rowData.RequestedOn | date}}
+        </td>
+        <td class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
         <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
-        <td class="text-center">
+        <td class="ptable-cell">
           <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletepa(rowData)" class="ui-button-danger"></button>
         </td>
       </tr>

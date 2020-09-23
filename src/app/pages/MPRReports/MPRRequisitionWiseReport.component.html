@@ -1,0 +1,272 @@
+<div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">Requisitions-From</label><br />
+      <input type="date" class="form-control" [(ngModel)]="reportinput.Fromdate">
+      <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">Requisitions-To</label>&nbsp;<br />
+      <input type="date" class="form-control" [(ngModel)]="reportinput.Todate">
+      <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">DocumentNo</label>&nbsp;<br />
+      <input type="text" class="form-control" [(ngModel)]="reportinput.Todate">
+      <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.DepartmentId">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row form-group">
+    <!--<div class="col-lg-3 col-md-3 col-sm-3">
+    <label class="form-label">Requisition Id</label><br />
+    <input type="text" class="form-control" [(ngModel)]="reportinput.RequisitionId">
+
+  </div>-->
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <label class="form-label">Revision Id</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<p-checkbox [(ngModel)]="reportinput.ShowAllrevisions" binary="true"></p-checkbox>&nbsp;&nbsp;<label for="Revisions">Show All Revisions</label>
+      <input type="text" class="form-control" [(ngModel)]="reportinput.revisionId">
+
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Jobcode</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.jobcode">
+          <option value="" selected></option>
+          <!--<option *ngFor="let option of filerlist.jobcode" let i=index>
+          {{option[i]}}
+        </option>-->
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Issue mpr</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.Issuepurposeid">
+          <option value="" selected></option>
+          <option *ngFor="let option of purposetype" [value]="option.Issuepurposeid">
+            {{option.Issuepurpose}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select BuyerGroup</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.BuyerGroupId">
+          <option value="" selected></option>
+          <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+            {{option.BuyerGroup}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>PreparedBy</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.preparedby">
+          <option value="" selected></option>
+          <option *ngFor="let option of mprprepares" [value]="option.Preparedby">
+            {{option.preparedname}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Checker</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.Checked">
+          <option value="" selected></option>
+          <option *ngFor="let option of mprcheckedby" [value]="option.checker">
+            {{option.checkername}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Checker status</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.checkerstatus">
+          <option value="" selected></option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Approved">Approved</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Approver</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.ApprovedBy">
+          <option value="" selected></option>
+          <option *ngFor="let option of mprApprovedby" [value]="option.approvedby">
+            {{option.approvername}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Approver's status</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.finalApproverstatus">
+          <option value="" selected></option>
+          <option value="Pending">Pending</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Approved">Approved</option>
+        </select>
+      </mat-form-field>
+    </div>
+
+    <!--<div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Approver's status</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.Checked">
+          <option value="" selected></option>
+          <option value="All">All</option>
+          <option value="Pending">Pending</option>
+          <option value="Rejected">Rejected</option>
+          <option value="Approved">Approved</option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Approver</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.ApprovedBy">
+          <option value="" selected></option>
+          <option *ngFor="let option of filerlist.mprApprovedby" [value]="option.approvername">
+            {{option.approvername}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>-->
+  </div>
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="GetMprstatusreport(reportinput)">Submit</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="ExportTOExcel()">Export ToExcel</button>
+    </div>
+  </div>
+</div>
+<br />
+
+
+      <table class="table table-sm table-striped table-bordered" #TABLE #table>
+        <thead class="thead-dark" style="font-size:small;text-transform:uppercase;">
+          <tr class="p-2" style="background-color: #33b5e5">
+            <th>S.No</th>
+            <th>Document No</th>
+            <th>Revision no</th>
+            <th>JobName</th>
+            <th>JobCode</th>
+            <th>PreparedBy</th>
+            <th>PreparedOn</th>
+            <th>Checker</th>
+            <th>Checker status</th>
+            <th>Checker status Changedon</th>
+            <th>Approver</th>
+            <th>Approver status</th>
+            <th>Approver status Changedon</th>
+            <th>Second Approver</th>
+            <th>Second Approve'r status</th>
+            <th>SecondApprover status Changedon</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let app of statuslist let ndx = index">
+            <td>{{ndx+1}}</td>
+            <td><a [routerLink]="['/SCM/mprpa',app.revisionid]" target="_blank" routerLinkActive="active">{{app.documentno}}</a></td>
+            <td>{{app.revisionno}}</td>
+            <td>{{app.jobname}}</td>
+            <td>{{app.jobcode}}</td>
+            <td>{{app.prepared}}</td>
+            <td>{{app.preparedon | date}}</td>
+            <td>{{app.Checker}}</td>
+            <td>{{app.checkstatus}}</td>
+            <td>{{app.checkedon | date}}</td>
+            <td>{{app.Approver}}</td>
+            <td>{{app.approvalstatus}}</td>
+            <td>{{app.approvedon | date}}</td>
+            <td>{{app.SecondApprover}}</td>
+            <td>{{app.secondapproversstatus}}</td>
+            <td>{{app.secondapprovedon | date}}</td>
+          </tr>
+        </tbody>
+      </table>
+<!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
+  <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+    <ng-template pTemplate="caption">
+    </ng-template>
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:4em">S.No</th>
+        <th>PA NO</th>
+        <th ng-style="{'width': 80px}">MPRNO</th>
+        <th>RFQNO</th>
+        <th width="100px">Department</th>
+        <th width="100px">BuyerGroup</th>
+        <th>Vendor</th>
+        <th width="110px">RequestedBY</th>
+        <th width="110px">RequestedOn</th>
+        <th width="110px">Tokochu Request</th>
+        <th>PA Status</th>
+        <th>PO Status</th>
+        <th>Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+      <tr>
+        <td style="width:4em">
+          {{ri+1}}
+        </td>
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <td pEditableColumn class="ptable-cell">{{rowData.DocumentNo}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.RFQNo}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.Name}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.RequestedOn | date: 'dd/MM/yyyy'}}</td>
+        <td  class="ptable-cell"><button  *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
+        <td class="text-center">
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletepa(rowData)" class="ui-button-danger"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table><br />
+</div>-->
+<!--<p-dialog header="Add"  [(visible)]="DeleteDialog" showEffect="fade" [modal]="true" [style]="{width: '550px'}" [closable]="false">
+  <form [formGroup]="PADeleteForm">
+    <div class="" style="margin-left:12px"></div>
+    <label for="ProjectName" class="form-label label">Remarks :</label>
+    <textarea [(ngModel)]="padelete.Remarks" formControlName="Remarks" class="form-control" style="margin-left: 12px;"></textarea>
+    <div *ngIf="PADeleteForm.controls['Remarks'].invalid && (PADeleteForm.controls['Remarks'].dirty || PADeleteForm.controls['Remarks'].touched)" class="alert alert-danger" style="margin-left:12px">
+      <div *ngIf="PADeleteForm.controls['Remarks'].errors.required">
+        Remarks is required.
+      </div>
+    </div><br />
+    <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix"  style="margin-left: 12px;">
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PADeleteForm.valid" (click)="finaldelete(padelete)" label="Insert"></button>&nbsp;&nbsp;
+        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>-->

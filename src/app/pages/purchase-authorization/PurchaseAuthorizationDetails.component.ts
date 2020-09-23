@@ -78,9 +78,10 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.paService.LoadItems(padetails).subscribe(data => {
             //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
             this.paitemdetails = data;
+            console.log("paitemdetails", this.paitemdetails)
             if (this.paitemdetails.length) {
                 for (var i = 0; i < this.paitemdetails.length; i++) {
-                    this.paitemdetails[i].itemsum = this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice;
+                    this.paitemdetails[i].itemsum = (this.paitemdetails[i].QuotationQty * this.paitemdetails[i].UnitPrice) + this.paitemdetails[i]["freightamounts"] + this.paitemdetails[i]["pfamounts"];
                 }
             }
             else {

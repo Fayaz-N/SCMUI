@@ -315,8 +315,10 @@
                 <label style="width:200px">Remarks:<span>{{rowData.Remarks}}</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
-                <label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span></label> 
-                <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}} &nbsp;&nbsp;(Freight%={{rowData.FreightPercentage}})</span></label>
+                <!--<label *ngIf="rowData.PFPercentage" style="width:200px">PF:<span>{{rowData.PFPercentage | percent}} </span><span>%</span></label>
+                <label *ngIf="rowData.FreightPercentage" style="width:200px">Freight:<span>{{rowData.FreightPercentage}}</span><span>%</span></label>-->
+                <label *ngIf="rowData.TotalPFAmount" style="width:200px">PF:<span>{{rowData.TotalPFAmount }}</span>&nbsp;<span *ngIf="rowData.PFPercentage">({{rowData.PFPercentage}}%)</span></label>
+                <label *ngIf="rowData.TotalFreightAmount" style="width:200px">Freight:<span>{{rowData.TotalFreightAmount}}</span>&nbsp;<span *ngIf="rowData.FreightPercentage">({{rowData.FreightPercentage}}%)</span></label>
               </div>
               <div class="row" style="margin-left:3px;margin-right:2px">
                 <label style="width:200px">HSNCode:<span>{{rowData.HSNCode}}</span></label>
@@ -326,7 +328,7 @@
           <td>{{rowData.QuotationQty}}</td>
           <td>{{rowData.UnitPrice}}</td>
           <td>{{rowData.TargetSpend| currency:'INR'}}</td>
-          <td>{{rowData.itemsum + rowData.TotalFreightAmount | currency:'INR'}}</td>
+          <td>{{rowData.itemsum | currency:'INR'}}</td>
         </tr>
       </ng-template>
       <ng-template pTemplate="footer">
