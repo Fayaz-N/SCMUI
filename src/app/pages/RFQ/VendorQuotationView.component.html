@@ -93,7 +93,7 @@
               <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>
             </div>
           </div>
-          <div *ngIf="quoteDetails.RFQDocs" class="row" style="margin-left: 0px; margin-right: 0px">
+          <div *ngIf="quoteDetails.RFQDocs && employee.OrgDepartmentId==14" class="row" style="margin-left: 0px; margin-right: 0px">
             <h6>Other Documents:</h6>
             <p-table [value]="quoteDetails.RFQDocs">
               <ng-template pTemplate="header">
