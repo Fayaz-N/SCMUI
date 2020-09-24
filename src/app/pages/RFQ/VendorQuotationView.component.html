@@ -34,128 +34,150 @@
       <label>RFQ Valid Date :</label>&nbsp;<span>{{quoteDetails.RfqValidDate | date : constants.dateFormat}}</span>
     </div>
   </div><br />
-  <div class="form-control" style="height:100%; border-radius:0px;">
-    <div class="row" style="margin-left: 0px; margin-right: 0px">
-      <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Sub Items</b></span><br /><br />
-      <p-table *ngIf="quoteDetails.rfqitem.length>0" [value]="quoteDetails.rfqitem">
-        <ng-template pTemplate="header">
-          <tr class="text-center mprltbldata">
-            <th>Sl No.</th>
-            <th>Item Name</th>
-            <th>Item Description</th>
-            <th>Quantity</th>
-            <th>HSN Code</th>
-            <th *ngIf="RFQPriceVisibility">Unit Price</th>
-            <th *ngIf="MPRPriceVisibilty">Documents</th>
-            <th *ngIf="MPRPriceVisibilty">Status</th>
-            <th *ngIf="MPRPriceVisibilty">Remarks</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-          <tr>
-            <td>{{ri+1}}</td>
-            <td class="ptable-cell">{{rowData.ItemName}}</td>
-            <td class="ptable-cell">{{rowData.ItemDescription}}</td>
-            <td>{{rowData.QuotationQty}}</td>
-            <td>{{rowData.HSNCode}}</td>
-            <td *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
-            <td *ngIf="MPRPriceVisibilty">
-              <div *ngFor="let document of rowData.RFQDocuments">
-                <i class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
-              </div>
-            </td>
-            <td *ngIf="MPRPriceVisibilty">
-              <select *ngIf="rfqDocuments[ri]" [disabled]="rfqDocuments[ri].Status=='Approved'" class="form-control dropdown" [(ngModel)]="rfqDocuments[ri].Status">
-                <option value="Pending">Pending</option>
-                <option value="Approved">Approved</option>
-                <option value="Rejected">Rejected</option>
-              </select>
-            </td>
-            <td *ngIf="MPRPriceVisibilty"><input *ngIf="rfqDocuments[ri]" type="text" class="form-control" [(ngModel)]="rfqDocuments[ri].StatusRemarks" /></td>
-          </tr>
-          <tr *ngFor="let item of rowData.RfqVendorBOM; let i=index">
-            <td class="manual-List">{{ri+1}}.{{i+1}}</td>
-            <td class="manual-List">{{item.ItemName}}</td>
-            <td class="manual-List">{{item.ItemDescription}}</td>
-            <td class="manual-List">{{item.QuotationQty}}</td>
-            <td class="manual-List">{{item.HSNCode}}</td>
-            <td *ngIf="RFQPriceVisibility" class="manual-List">{{item.UnitPrice}}</td>
-            <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
-            <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
-            <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div><br />
-    <div *ngIf="quoteDetails.rfqitem.length>0 && MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
-      <div class="col-xs-4 col-md-4 col-sm-4"></div>
-      <div class="col-xs-4 col-md-4 col-sm-4">
-        <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>
-      </div>
-    </div>
-    <div class="row" style="margin-left: 0px; margin-right: 0px">
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <label style="font-size:14px"><b>Add Communication</b></label>&nbsp;&nbsp;
-        <button type="button" pButton icon="fa fa-plus" (click)="showRfqCommunicationDialogToAdd()"></button>
-      </div>
-    </div><br />
-    <div class="form-group row" style="margin:0px">
-      <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="form-control" style="height:100%; border-radius:0px;">
+          <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Sub Items</b></span><br /><br />
+            <p-table *ngIf="quoteDetails.rfqitem.length>0" [value]="quoteDetails.rfqitem">
+              <ng-template pTemplate="header">
+                <tr class="text-center mprltbldata">
+                  <th>Sl No.</th>
+                  <th>Item Name</th>
+                  <th>Item Description</th>
+                  <th>Quantity</th>
+                  <th>HSN Code</th>
+                  <th *ngIf="RFQPriceVisibility">Unit Price</th>
+                  <th *ngIf="MPRPriceVisibilty">Documents</th>
+                  <th *ngIf="MPRPriceVisibilty">Status</th>
+                  <th *ngIf="MPRPriceVisibilty">Remarks</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr>
+                  <td>{{ri+1}}</td>
+                  <td class="ptable-cell">{{rowData.ItemName}}</td>
+                  <td class="ptable-cell">{{rowData.ItemDescription}}</td>
+                  <td>{{rowData.QuotationQty}}</td>
+                  <td>{{rowData.HSNCode}}</td>
+                  <td *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
+                  <td *ngIf="MPRPriceVisibilty">
+                    <div *ngFor="let document of rowData.RFQDocuments">
+                      <i class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
+                    </div>
+                  </td>
+                  <td *ngIf="MPRPriceVisibilty">
+                    <select *ngIf="rfqDocuments[ri]" [disabled]="rfqDocuments[ri].Status=='Approved'" class="form-control dropdown" [(ngModel)]="rfqDocuments[ri].Status">
+                      <option value="Pending">Pending</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Rejected">Rejected</option>
+                    </select>
+                  </td>
+                  <td *ngIf="MPRPriceVisibilty"><input *ngIf="rfqDocuments[ri]" type="text" class="form-control" [(ngModel)]="rfqDocuments[ri].StatusRemarks" /></td>
+                </tr>
+                <tr *ngFor="let item of rowData.RfqVendorBOM; let i=index">
+                  <td class="manual-List">{{ri+1}}.{{i+1}}</td>
+                  <td class="manual-List">{{item.ItemName}}</td>
+                  <td class="manual-List">{{item.ItemDescription}}</td>
+                  <td class="manual-List">{{item.QuotationQty}}</td>
+                  <td class="manual-List">{{item.HSNCode}}</td>
+                  <td *ngIf="RFQPriceVisibility" class="manual-List">{{item.UnitPrice}}</td>
+                  <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
+                  <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
+                  <td *ngIf="MPRPriceVisibilty" class="manual-List"></td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div><br />
+          <div *ngIf="quoteDetails.rfqitem.length>0 && MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
+            <div class="col-xs-4 col-md-4 col-sm-4"></div>
+            <div class="col-xs-4 col-md-4 col-sm-4">
+              <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>
+            </div>
+          </div>
+          <div *ngIf="quoteDetails.RFQDocs" class="row" style="margin-left: 0px; margin-right: 0px">
+            <h6>Other Documents:</h6>
+            <p-table [value]="quoteDetails.RFQDocs">
+              <ng-template pTemplate="header">
+                <tr class="text-center">
+                  <th>Sl.No</th>
+                  <th colspan="3">File Name</th>
+                  <th>DocumentType</th>
+                  <th>View Document</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr>
+                  <td>{{ri+1}}</td>
+                  <td colspan="3">{{rowData.DocumentName}}</td>
+                  <td class="text-center">{{getDocType(rowData.DocumentType)}}</td>
+                  <td class="text-center"> <i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UploadedDate | date :  constants.dateFormat}}"></i></td>
+                </tr>
 
-        <p-table *ngIf="quoteDetails.rfqCommunications.length>0" [value]="quoteDetails.rfqCommunications">
-          <ng-template pTemplate="header">
-            <tr class="mprltbldata">
-              <th>Communication By</th>
-              <th>Date</th>
-              <th>Remarks</th>
-              <!--<th>Communication To</th>-->
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-            <tr *ngIf="rowData.Employee">
-              <td>{{rowData.Employee.Name}}</td>
-              <!--<td>{{rowData.Employee.Name}}</td>-->
-              <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
-              <td>
-                {{rowData.Remarks}}
-              </td>
-              <!--<td> {{rowData.RemarksTo}}</td>-->
-              <!--<td>
-                <span *ngFor="let trackData of rowData.MPRReminderTrackings">
-                  <span *ngIf="trackData.Employee" [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
-                  <i *ngIf="rowData.SendEmail==1" style="color:green" class="fa fa-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="fa fa-clock-o"></i>&nbsp;
-                </span>
-              </td>-->
-            </tr>
-          </ng-template>
-        </p-table>
-      </div>
-    </div><br />
+              </ng-template>
+            </p-table><br />
+          </div>
+          <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+              <label style="font-size:14px"><b>Add Communication</b></label>&nbsp;&nbsp;
+              <button type="button" pButton icon="fa fa-plus" (click)="showRfqCommunicationDialogToAdd()"></button>
+            </div>
+          </div><br />
+          <div class="form-group row" style="margin:0px">
+            <div class="col-lg-12 col-md-12 col-sm-12">
 
-    <div class="row" style="margin-left: 0px; margin-right: 0px">
-      <h4 style="text-decoration: underline;">Terms & Conditions :</h4>
-      <p-table [value]="quoteDetails.RFQTerms">
-        <ng-template pTemplate="header">
-          <tr class="text-center mprltbldata">
-            <th>Description</th>
-            <th>Agree</th>
-            <th>Not Agree</th>
-            <th>NA</th>
-            <th>Remarks</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-          <tr>
-            <td>{{rowData.Terms}}</td>
-            <td align="center"> <span *ngIf="rowData.VendorResponse!='Agree'">-</span><i *ngIf="rowData.VendorResponse=='Agree'" class="pi pi-check check-color"></i></td>
-            <td align="center"><span *ngIf="rowData.VendorResponse!='NotAgree'">-</span> <i *ngIf="rowData.VendorResponse=='NotAgree'" class="pi pi-check check-color"></i></td>
-            <td align="center"> <span *ngIf="rowData.VendorResponse!='NotApplicable'">-</span><i *ngIf="rowData.VendorResponse=='NotApplicable'" class="pi pi-check check-color"></i></td>
-            <td>{{rowData.Remarks}}</td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
+              <p-table *ngIf="quoteDetails.rfqCommunications.length>0" [value]="quoteDetails.rfqCommunications">
+                <ng-template pTemplate="header">
+                  <tr class="mprltbldata">
+                    <th>Communication By</th>
+                    <th>Date</th>
+                    <th>Remarks</th>
+                    <!--<th>Communication To</th>-->
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+                  <tr *ngIf="rowData.Employee">
+                    <td>{{rowData.Employee.Name}}</td>
+                    <!--<td>{{rowData.Employee.Name}}</td>-->
+                    <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
+                    <td>
+                      {{rowData.Remarks}}
+                    </td>
+                    <!--<td> {{rowData.RemarksTo}}</td>-->
+                    <!--<td>
+              <span *ngFor="let trackData of rowData.MPRReminderTrackings">
+                <span *ngIf="trackData.Employee" [style.color]="trackData.MailAddressType=='CC' ? '#28a745' : 'black' ">{{trackData.Employee.Name}}</span>&nbsp;
+                <i *ngIf="rowData.SendEmail==1" style="color:green" class="fa fa-envelope"></i>&nbsp;<i *ngIf="rowData.SetReminder==1" class="fa fa-clock-o"></i>&nbsp;
+              </span>
+            </td>-->
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </div><br />
+
+          <div class="row" style="margin-left: 0px; margin-right: 0px">
+            <h4 style="text-decoration: underline;">Terms & Conditions :</h4>
+            <p-table [value]="quoteDetails.RFQTerms">
+              <ng-template pTemplate="header">
+                <tr class="text-center mprltbldata">
+                  <th>Description</th>
+                  <th>Agree</th>
+                  <th>Not Agree</th>
+                  <th>NA</th>
+                  <th>Remarks</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+                <tr>
+                  <td>{{rowData.Terms}}</td>
+                  <td align="center"> <span *ngIf="rowData.VendorResponse!='Agree'">-</span><i *ngIf="rowData.VendorResponse=='Agree'" class="pi pi-check check-color"></i></td>
+                  <td align="center"><span *ngIf="rowData.VendorResponse!='NotAgree'">-</span> <i *ngIf="rowData.VendorResponse=='NotAgree'" class="pi pi-check check-color"></i></td>
+                  <td align="center"> <span *ngIf="rowData.VendorResponse!='NotApplicable'">-</span><i *ngIf="rowData.VendorResponse=='NotApplicable'" class="pi pi-check check-color"></i></td>
+                  <td>{{rowData.Remarks}}</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </div>
 </div>
 <div class="icon-bar">
   <a routerLinkActive="active" (click)="createNewRevision()" pTooltip="Revise"><i class="fa fa-plus-square"></i></a>

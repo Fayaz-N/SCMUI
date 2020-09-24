@@ -142,4 +142,16 @@ export class VendorQuotationViewComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
     });
   }
+
+  //get document type
+  getDocType(docType: number) {
+    if (docType == 6)
+      return "Technical File";
+    else if (docType == 7) {
+      return "Commercial File";
+    }
+    else {
+      return "Terms and conditions";
+    }
+  }
 }

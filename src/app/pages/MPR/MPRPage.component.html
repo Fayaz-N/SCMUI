@@ -12,7 +12,7 @@
           <span *ngIf="mprRevisionList.length > 0" class="form-inline ml-2">
             Revision No:<span *ngFor="let revision of mprRevisionList">
               &nbsp;&nbsp;
-              <a href='#/' [ngClass]="{'active': revision.RevisionId == mprRevisionModel.RevisionId,'disabled':revision.RevisionId != mprRevisionModel.RevisionId}" [routerLink]="['/SCM/MPRForm',revision.RevisionId]">{{revision.RevisionNo}}</a>
+              <a href='#/' [ngClass]="{'active': revision.RevisionId == mprRevisionModel.RevisionId}" [routerLink]="['/SCM/MPRForm',revision.RevisionId]">{{revision.RevisionNo}}</a>
             </span>
           </span>
         </div>
@@ -529,7 +529,7 @@
               <td class="ptable-cell">
                 <span *ngIf="viewRfq">
                   <label *ngFor="let Item of RfqGeneratedList">
-                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==7" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png"><img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId)==8" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png"><img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
+                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,7)==7" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png"><img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,8)==8" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png"><img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
                   </label>
                 </span>
               </td>

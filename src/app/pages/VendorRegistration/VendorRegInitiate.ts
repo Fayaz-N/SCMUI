@@ -87,12 +87,19 @@ export class VendorRegInitiateComponent implements OnInit {
   //term change
   termChange(term: any) {
     this.VendorData.PaymentTermId = term.PaymentTermId;
-    if (term.PaymentTermId != 19) {
+    if (term.PaymentTermId != 19) {//19:others
       this.VendorData.PaymentTerms = "";
     }
 
   }
 
+  //getPaymentTerm text
+  getPaymentTermTxt(PaymentTermId: any, PaymentTerms: any) {
+    if (PaymentTermId == 19)
+      return PaymentTerms;
+    else
+      return this.paymentTermsList.filter(li => li.PaymentTermId == PaymentTermId)[0].PaymentTermDescription;
+  }
 
   //Initiate Registration process to vendor
   InitiateReg() {

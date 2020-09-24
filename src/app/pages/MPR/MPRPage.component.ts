@@ -1437,6 +1437,13 @@ export class MPRPageComponent implements OnInit {
       this.showBuyerGrp = this.showgenPA = false;//hide links
     else
       this.showBuyerGrp = this.showgenPA = true;
+
+    //check active revisin or not if not active revision hide edit, generaterfq options
+    if (this.mprRevisionDetails.BoolValidRevision == false) {
+      if (this.showRfqGen)
+        this.showRfqGen = false;
+      this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
+    }
   }
 
   bindMPRPageForm(formName: string, data: any) {
@@ -1560,9 +1567,9 @@ export class MPRPageComponent implements OnInit {
   }
 
   //get rfq status details
-  getRfqStatus(vendorId: string, rfqRevisionId: any) {
+  getRfqStatus(vendorId: string, rfqRevisionId: any,statusId:any) {
     if (this.RfqGeneratedList.length > 0) {
-      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId)[0];
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId && li.StatusId == statusId)[0];
       if (res && res.StatusId) {
         return res.StatusId;
       }
