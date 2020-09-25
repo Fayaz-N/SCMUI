@@ -88,6 +88,14 @@ export class VendorDetails {
   PFAmount: string;
   TotalPrice: string;
   Insurance: string;
+  HandlingPercentage: string;
+  ImportFreightPercentage: string;
+  InsurancePercentage: string;
+  DutyPercentage: string;
+  HandlingAmount: string;
+  ImportFreightAmount: string;
+  InsuranceAmount: string;
+  DutyAmount: string;
 }
 export class RfqItemInfoModel {
   RFQSplitItemId: number;
@@ -172,6 +180,10 @@ export class RfqItemModel {
   MfgPartNo: string;
   MfgModelNo: string;
   ManufacturerName: string;
+  HandlingPercentage: string;
+  ImportFreightPercentage: string;
+  InsurancePercentage: string;
+  DutyPercentage: string;
 }
 
 export class rfqFilterParams {
@@ -191,6 +203,7 @@ export class QuoteDetails {
   RFQTerms: Array<any>;
   mprIncharges: Array<any>;
   rfqCommunications: Array<any>;
+  RFQDocs: Array<any>;
 }
 export class RFQMaster {
   RfqMasterId: string;
