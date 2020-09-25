@@ -283,7 +283,8 @@ export class mprRevision {
     Endusername: string;
     Enduser: string;
     shiptoparty: string;
-    soldtoparty: string;
+  soldtoparty: string;
+  MPRAssignNames: string;
 }
 
 export class SaleOrderDetails {
