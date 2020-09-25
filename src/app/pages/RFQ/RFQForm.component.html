@@ -4,7 +4,7 @@
       RFQ Form : <span *ngIf="rfqRevisionModel.rfqmaster && rfqRevisionModel.rfqmaster.RFQNo" style="color:#dc3545;">{{rfqRevisionModel.rfqmaster.RFQNo}}</span>
     </div>
     <div class="col-md-6 pt-2" *ngIf="rfqRevisionModel.StatusId">
-      Current Status : <span  style="color:#dc3545;">{{getStatusText(rfqRevisionModel.StatusId)}}</span>
+      Current Status : <span style="color:#dc3545;">{{getStatusText(rfqRevisionModel.StatusId)}}</span>
     </div>
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
@@ -36,8 +36,8 @@
         <p-checkbox [(ngModel)]="rfqRevisionModel.rfqmaster.VendorVisibility" formControlName="VendorVisibility" binary="true"></p-checkbox>
         &nbsp;&nbsp;Vendor Visibility
       </div>
-      <div class="col-lg-2 col-md-2 col-sm-2 form-group" *ngIf="showRfqItem" >
-        <p-checkbox [(ngModel)]="rfqResponded" formControlName="RFQResponded" binary="true" ></p-checkbox>
+      <div class="col-lg-2 col-md-2 col-sm-2 form-group" *ngIf="showRfqItem">
+        <p-checkbox [(ngModel)]="rfqResponded" formControlName="RFQResponded" binary="true"></p-checkbox>
         &nbsp;&nbsp;RFQ Responded
       </div>
     </div>
@@ -63,7 +63,10 @@
   </div>
 </form>
 <br />
-<button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add New Item" class="btn btn-success" (click)="showItemDialog()" style="float:right"></button><br /><br />
+<div class="row form-inline" style="margin-left: 0px; margin-right: 0px;float:right">
+  <button type="button" *ngIf="showRfqItem && rfqRevisionModel.rfqmaster.ProcurementSourceId==2" pButton icon="fa fa-money" pTooltip="Add Handling Charges" class="btn btn-success" (click)="showHandlingChargesDialog()" style="float:right"></button>&nbsp;&nbsp;
+  <button type="button" *ngIf="showRfqItem" pButton icon="fa fa-plus" pTooltip="Add New Item" class="btn btn-success" (click)="showItemDialog()" style="float:right"></button>
+</div><br /><br />
 <div class="form-control" style="height:100%;margin-top: 15px;" *ngFor="let item of rfqRevisionModel.rfqitem let itemindex = index">
   <div class="row" style="margin-left: 0px; margin-right: 0px">
     <div class="col-lg-2 col-md-2 col-sm-2 form-group table-bordered">
@@ -113,7 +116,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th colspan="10" style="text-align: right">
-          <button type="button"  class="btn btn-primary" style="font-size: 14px;" (click)="showItemInfo(item.RFQItemsId,item.QuotationQty)">Add Item Price</button>
+          <button type="button" class="btn btn-primary" style="font-size: 14px;" (click)="showItemInfo(item.RFQItemsId,item.QuotationQty)">Add Item Price</button>
         </th>
       </tr>
       <tr class="text-center mprltbldata">
@@ -364,7 +367,7 @@
         <label class="form-label">Currency Value:</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <input type="number" value="{{rfqItemInfo.CurrencyValue}}" class="form-control"  ngModel maxlength="7" formControlName="CurrencyValue" [(ngModel)]="rfqItemInfo.CurrencyValue" [ngClass]="{ 'is-invalid': itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors}" />
+        <input type="number" value="{{rfqItemInfo.CurrencyValue}}" class="form-control" ngModel maxlength="7" formControlName="CurrencyValue" [(ngModel)]="rfqItemInfo.CurrencyValue" [ngClass]="{ 'is-invalid': itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors}" />
         <span *ngIf="itemInfoSubmitted && addItemInfoForm.controls.CurrencyValue.errors" class="invalid-feedback">Please enter currency value.</span>
       </div>
     </div>
@@ -429,4 +432,31 @@
   </p-dialog>
 </form>
 
-
+<p-dialog header="Add Handling Charges" [(visible)]="AddHandlingChargesDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}" [closable]="false">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>RFQ Item Id</th>
+        <th>Handling Percentage</th>
+        <th>Import Freight Percentage</th>
+        <th>Insurance Percentage</th>
+        <th>Duty Percentage</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rfqItem of  rfqRevisionModel.rfqitem">
+        <td>{{rfqItem.RFQItemsId}}</td>
+        <td><input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.HandlingPercentage" /></td>
+        <td> <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.ImportFreightPercentage" /></td>
+        <td> <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.InsurancePercentage" /></td>
+        <td> <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.DutyPercentage" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="submit" pButton icon="fa fa-check" class="ui-button-success" (click)="updateHandlingCharges()" label="Update"></button>&nbsp;&nbsp;
+      <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="dialogCancel('AddHandlingChargesDialog')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>

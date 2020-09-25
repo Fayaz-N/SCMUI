@@ -97,11 +97,11 @@
 
           </div>
           <!--<div class="col-lg-4 col-md-4 col-sm-4 input-group form-group">
-            <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
-              <button class="btn btn-secondary" type="button">
-                <i class="fa fa-search"></i>
-              </button>
-          </div>-->
+      <input type="text" class="form-control form-inline  ml-2" placeholder="Search this blog">
+        <button class="btn btn-secondary" type="button">
+          <i class="fa fa-search"></i>
+        </button>
+    </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Sale Order No</label>
             <span class="valueEdit">{{mprRevisionModel.SaleOrderNo}}</span>
@@ -114,10 +114,10 @@
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
           </div>
           <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="JobCode" class="form-label">Job Code</label>
-            <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="jobcodes.ProjectDefinition" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
-            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
-          </div>-->
+      <label for="JobCode" class="form-label">Job Code</label>
+      <input *ngIf="!form1Edit" class="form-control" type="text" maxlength="50" id="JobCode" formControlName="JobCode" [(ngModel)]="jobcodes.ProjectDefinition" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobCode.errors }">
+      <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobCode.errors" class="invalid-feedback">Job Code Required.</span>
+    </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Code </label>
             <span class="valueEdit">{{mprRevisionModel.JobCode}}</span>
@@ -128,10 +128,10 @@
             <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
           </div>
           <!--<div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
-            <label for="JobName" class="form-label">Job Name</label>
-            <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="jobcodes.ProjectText" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
-            <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
-          </div>-->
+      <label for="JobName" class="form-label">Job Name</label>
+      <input type="text" id="JobName" formControlName="JobName" maxlength="100" [(ngModel)]="jobcodes.ProjectText" class="form-control" [ngClass]="{ 'is-invalid': MPRForm1Submitted &&  MPRPageForm1.controls.JobName.errors }">
+      <span *ngIf="MPRForm1Submitted && MPRPageForm1.controls.JobName.errors" class="invalid-feedback">Job Name Required.</span>
+    </div>-->
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Job Name </label>
             <span class="valueEdit">{{mprRevisionModel.JobName}}</span>
@@ -217,11 +217,17 @@
             <span class="valueEdit">{{MPRPageForm1.value.BuyerGroupId}}</span>
           </div>
         </div>
-        <div *ngIf="!form1Edit" style="text-align: center;">
-          <button type="button" class="btn btn-success" (click)="onMPRForm1Submit('MPRPageForm1','showMaterialForm','form1Edit')" label="Save">Proceed</button>
+        <div class="row" *ngIf="mprRevisionDetails.MPRAssignNames">
+          <div *ngIf="form1Edit" class="col-lg-12 col-md-12 col-sm-12 form-inline">
+            <label style="font-weight:bold">MPR Assigned To : </label>&nbsp;
+            <span>{{mprRevisionDetails.MPRAssignNames}}</span>
+          </div>
+          </div>
+          <div *ngIf="!form1Edit" style="text-align: center;">
+            <button type="button" class="btn btn-success" (click)="onMPRForm1Submit('MPRPageForm1','showMaterialForm','form1Edit')" label="Save">Proceed</button>
+          </div>
         </div>
       </div>
-    </div>
   </form>
   <br />
   <form *ngIf="showMaterialForm" [formGroup]="MPRPageForm2">

@@ -86,4 +86,7 @@ export class RfqService {
   PreviouPriceUpdate(previousprice: MPRItemInfoes): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/PreviouPriceUpdate/', previousprice, this.httpOptions);
   }
+  updateHandlingCharges(RfqItems: Array<RfqItemModel>): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/updateHandlingCharges/', RfqItems, this.httpOptions);
+  }
 }

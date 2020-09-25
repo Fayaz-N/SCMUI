@@ -134,6 +134,7 @@ export class RFQMasters {
   SyncStatus: string;
   RFQRevisions: Array<RFQRevisionData> = [];
   Vendor: VendorMaster;
+  ProcurementSourceId: number;
 }
 export class RFQCurrencyMaster {
   CurrencyId: number;

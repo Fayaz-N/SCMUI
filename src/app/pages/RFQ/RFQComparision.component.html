@@ -81,6 +81,10 @@
       <span><b>APD - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>DP - </b>Delivery period</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>PT - </b>Payment Term</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>HA - </b>Handling  Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>IFRA - </b>Import Friegt Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>INSA - </b>Insurance Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>DA - </b>Duty Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>PFA - </b>PF Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>FRA - </b>Friegt Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b><i class="fa fa-clock-o  times-color"></i> - </b>Pending</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -151,13 +155,13 @@
               <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
                 <input *ngIf="vendor.Status!='Approved' && vendor.RFQSplitItemId!=null" type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
                 <!--<div class="row col-lg-12 col-md-12 col-sm-12">
-                  <span class="form-inline">
-                    <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
-                  </span>
-                </div>
-                <div class="row col-lg-12 col-md-12 col-sm-12">
-                  <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
-                </div>-->
+    <span class="form-inline">
+      <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
+    </span>
+  </div>
+  <div class="row col-lg-12 col-md-12 col-sm-12">
+    <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
+  </div>-->
                 <div class="row">
                   <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">Q</label>
@@ -175,7 +179,25 @@
 
                 </div>
                 <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">HA</label>
+                    <span class="valueEdit">{{vendor.HandlingAmount}}</span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">IFRA </label>
+                    <span class="valueEdit">{{vendor.ImportFreightAmount}}</span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">INSA </label>
+                    <span class="valueEdit" >{{vendor.InsuranceAmount}}</span>
+                    </div>
 
+                </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">DA </label>
+                    <span class="valueEdit">{{vendor.DutyAmount}}</span>
+                  </div>
                   <!--<span>{{discountCalculation(vendor)}}</span>-->
                   <div class="col-lg-4 col-md-4 col-sm-4 form-group">
                     <label class="form-label lblEdit">FRA</label>
@@ -185,18 +207,19 @@
                     <label class="form-label lblEdit">PFA</label>
                     <span class="valueEdit">{{vendor.PFAmount}}</span>
                   </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">TP</label>
-                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
-                  </div>
+                  
                   <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">PT</label>
-                    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
-                  </div>-->
+    <label class="form-label lblEdit">PT</label>
+    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
+  </div>-->
 
                 </div>
 
                 <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">TP</label>
+                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
+                  </div>
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
                     <span class="valueEdit">

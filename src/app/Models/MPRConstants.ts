@@ -6,10 +6,10 @@ import { searchParams, AccessList } from '../Models/mpr';
 })
 export class constants {
   //local
-  //public url = 'http://localhost:49659/Api/';
+  public url = 'http://localhost:49659/Api/';
 
   //test server
-  public url = 'http://10.29.15.68:90/Api/';
+ // public url = 'http://10.29.15.68:90/Api/';
   public Documnentpath = "http://10.29.15.68:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.68:90/SCMDocs/";
   public PADocumentPath = "http://10.29.15.68:90/PADocuments/";
@@ -48,6 +48,8 @@ export class constants {
   public CustomsDutyId: searchParams = { tableName: 'MPRCustomsDuty', fieldId: 'CustomsDutyId', fieldName: 'CustomsDuty', condition: " where ", fieldAliasName: "CustomDuty", updateColumns: "" };
   //public ProjectDutyApplicableId: searchParams = { tableName: 'MPRProjectDutyApplicable', fieldId: 'ProjectDutyApplicableId', fieldName: 'ProjectDutyApplicable', condition: "", fieldAliasName: "ProjectDutyApplicable", updateColumns: "" };
   public DocumentationDescriptionId: searchParams = { tableName: 'MPRDocumentationDescriptions', fieldId: 'DocumentationDescriptionId', fieldName: 'DocumentationDescription', condition: " where ", fieldAliasName: "", updateColumns: "" };
+  public PreparedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "CheckedName", updateColumns: "" };
+
   public CheckedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where DOL IS NULL and ", fieldAliasName: "CheckedName", updateColumns: "" };
   //public ApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: "Grade>'m2' and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public ApprovedBy: searchParams = { tableName: 'MPRApproversView', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where ", fieldAliasName: "ApproverName", updateColumns: "" };

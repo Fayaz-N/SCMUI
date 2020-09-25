@@ -24,7 +24,7 @@ export class RFQFormComponent implements OnInit {
   public AccessList: Array<AccessList> = [];
   public RFQForm; AddItemForm; addItemInfoForm: FormGroup;
   public rfqRevisionModel: RFQRevisionData;
-  public rfqFormEdit; rfqSubmitted; showRfqItem; showList; AddItemDialog; AddItemInfodialog; itemSubmitted; itemInfoSubmitted: boolean = false;
+  public rfqFormEdit; rfqSubmitted; showRfqItem; showList; AddItemDialog; AddItemInfodialog; itemSubmitted; itemInfoSubmitted; AddHandlingChargesDialog: boolean = false;
   public formName: string;
   public txtName: string;
   public selectedItem: searchList;
@@ -217,6 +217,10 @@ export class RFQFormComponent implements OnInit {
     this.IGSTEnablefromCGSTChange();
     this.IGSTEnablefromSGSTChange();
 
+  }
+
+  showHandlingChargesDialog() {
+    this.AddHandlingChargesDialog = true;
   }
 
   Cancel(dialog: string) {
@@ -521,6 +525,18 @@ export class RFQFormComponent implements OnInit {
       return 'RFQ Finalized';
     else
       return '';
+  }
+
+  //update handling charges
+  updateHandlingCharges() {
+    this.spinner.show();
+    this.RfqService.updateHandlingCharges(this.rfqRevisionModel.rfqitem).subscribe(data => {
+      this.spinner.hide();
+      this.AddHandlingChargesDialog = false;
+      if (data)
+        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Handling charges Updated' });
+    })
+    
   }
 }
 

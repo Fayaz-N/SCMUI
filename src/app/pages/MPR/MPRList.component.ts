@@ -69,6 +69,7 @@ export class MPRListComponent implements OnInit {
       DocumentDescription: ['', [Validators.required]],
       FromDate: ['', [Validators.required]],
       ToDate: ['', [Validators.required]],
+      PreparedBy: ['', [Validators.required]],
       CheckedBy: ['', [Validators.required]],
       ApprovedBy: ['', [Validators.required]],
       CheckerStatus: ['', [Validators.required]],

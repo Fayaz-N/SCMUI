@@ -113,9 +113,11 @@ export class GenerateRFQComponent implements OnInit {
         this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
           this.MPRRFQDocuments = data;
           this.prepareRfQItems();
+          this.prepareVendorMatrix();
         });
 
         this.getYILTermsAndConditions();
+      
       })
 
     })
@@ -383,6 +385,53 @@ export class GenerateRFQComponent implements OnInit {
     }
   }
 
+  //select unselect All vendors
+  selectAllvendors(event: any, vendorId: any, MPRItemDetailsid: any) {
+    var index = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
+      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+        this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
+          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
+            var qty = (<HTMLInputElement>document.getElementById("SQty" + i + "" + index)).value;
+            this.rfqQuoteModel[i].suggestedVendorDetails[index].QuotationQty = qty;
+            (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = true;
+            this.selectedVendorList.push(vendor);
+          }
+          else {
+            if (vendor.VendorId == vendorId) {
+              this.selectedVendorList.splice(index, 1);
+              (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = false;
+            }
+          }
+        });
+        this.rfqQuoteModel[i].manualvendorDetails.forEach((vendor, index) => {
+          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
+            var qty = (<HTMLInputElement>document.getElementById("MQty" + i + "" + index)).value;
+            this.rfqQuoteModel[i].manualvendorDetails[index].QuotationQty = qty;
+            (<HTMLInputElement>document.getElementById("MVendor" + i + index)).checked = true;
+            this.selectedVendorList.push(vendor);
+          }
+          else {
+            this.selectedVendorList.splice(index, 1);
+            (<HTMLInputElement>document.getElementById("MVendor" + i + index)).checked = false;
+          }
+        })
+        this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach((vendor, index) => {
+          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
+            var qty = (<HTMLInputElement>document.getElementById("RQty" + i + "" + index)).value;
+            this.rfqQuoteModel[i].repeatOrdervendorDetails[index].QuotationQty = qty;
+            (<HTMLInputElement>document.getElementById("RVendor" + i + index)).checked = true;
+            this.selectedVendorList.push(vendor);
+          }
+          else {
+            this.selectedVendorList.splice(index, 1);
+            (<HTMLInputElement>document.getElementById("RVendor" + i + index)).checked = false;
+          }
+        });
+      }
+    
+    
+  }
+
   //select mail and vendor visibility  funcationality
   selectVsblltyandEmail(vendor: any) {
     var index = this.selectedVendorList.findIndex(x => x.VendorId == vendor.VendorId);
@@ -418,21 +467,21 @@ export class GenerateRFQComponent implements OnInit {
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
       this.rfqQuoteModel[i].suggestedVendorDetails.forEach(vendor => {
         if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
-          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType };
+          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType, MPRItemDetailsid: vendor.MPRItemDetailsid };
           this.cols.push(object);
         }
       });
       this.rfqQuoteModel[i].manualvendorDetails.forEach(vendor => {
         if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
 
-          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType };
+          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType, MPRItemDetailsid: vendor.MPRItemDetailsid };
           this.cols.push(object);
         }
       })
       this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach(vendor => {
         if (this.cols.filter(li => li.VendorId == vendor.VendorId).length == 0) {
 
-          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType };
+          var object = { ItemId: vendor.ItemId, VendorName: vendor.VendorName, VendorId: vendor.VendorId, RFQType: vendor.RFQType, MPRItemDetailsid: vendor.MPRItemDetailsid };
           this.cols.push(object);
         }
       })

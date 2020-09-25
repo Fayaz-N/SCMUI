@@ -109,6 +109,10 @@ export class RFQComparisionComponent implements OnInit {
             this.discountCalculation(this.vendorDetails);
             this.vendorDetails.FreightAmount = (this.calculateFRAmount(this.vendorDetails)).toString();
             this.vendorDetails.PFAmount = (this.calculatePFamount(this.vendorDetails)).toString();
+            this.vendorDetails.HandlingAmount = ((this.tp) * (vendor.HandlingPercentage / 100)).toString();
+            this.vendorDetails.ImportFreightAmount = ((this.tp) * (vendor.ImportFreightPercentage / 100)).toString();
+            this.vendorDetails.InsuranceAmount = ((this.tp) * (vendor.InsurancePercentage / 100)).toString();
+            this.vendorDetails.DutyAmount = ((this.tp) * (vendor.DutyPercentage / 100)).toString();
             this.vendorDetails.TotalPrice = (this.calculateItemToatlPrice(this.vendorDetails)).toString();
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
@@ -285,7 +289,8 @@ export class RFQComparisionComponent implements OnInit {
   calculateItemToatlPrice(vendor) {
     var frfAmt = this.calculateFRAmount(vendor);
     var pfAmnt = this.calculatePFamount(vendor);
-    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString());
+    
+    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString()) + parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
   }
   calculateFRAmount(vendor: any) {
     let value: number = 0;
