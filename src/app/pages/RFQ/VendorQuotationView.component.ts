@@ -66,14 +66,15 @@ export class VendorQuotationViewComponent implements OnInit {
         this.MPRPriceVisibilty = true;
       for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
         this.quoteDetails.rfqitem[i].RFQDocuments.forEach(doc => {
-          if (this.rfqDocuments.filter(li => li.RfqItemsId = doc.RfqItemsId).length == 0) {
+          //documenttype - 6 vendor uploaded document
+          if (this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId && li.DocumentType == 6).length == 0) {
             doc.StatusBy = this.employee.EmployeeNo;
             doc.Statusdate = new Date();
             this.rfqDocuments.push(doc);
           }
         });
       }
-      
+
       this.dynamicData = new DynamicSearchResult();
       this.dynamicData.query = "select * from RFQRevisions_N where rfqMasterId=" + this.quoteDetails.rfqmaster.RfqMasterId + "";
       this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
