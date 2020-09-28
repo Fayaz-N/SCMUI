@@ -526,7 +526,7 @@
               </td>
               <td class="ptable-cell" style="text-align:left" *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster">
                 <div *ngIf="viewRfq">
-                  <label *ngFor="let Item of RfqGeneratedList">
+                  <label *ngFor="let Item of RfqFilteredGeneratedList">
                     <a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" target="_blank" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>
                     <i *ngIf="editRfq && getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i><br />
                   </label>
@@ -535,7 +535,9 @@
               <td class="ptable-cell">
                 <span *ngIf="viewRfq">
                   <label *ngFor="let Item of RfqGeneratedList">
-                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,7)==7" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png"><img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,8)==8" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png"><img *ngIf="checkrfqRaised(Item.rfqRevisionId)" style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
+                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,7)==7" pTooltip={{Item.RFQNo}} style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqgenerate.png">
+                    <img *ngIf="getRfqStatus(rowData.VendorMaster.Vendorid,Item.rfqRevisionId,8)==8" pTooltip={{Item.RFQNo}} style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqresponded.png">
+                    <img *ngIf="checkrfqRaised(Item.rfqRevisionId)" pTooltip={{Item.RFQNo}} style="height: 20px; width: 20px;margin-left:4px" src="assets/rfqraised.png"><br />
                   </label>
                 </span>
               </td>

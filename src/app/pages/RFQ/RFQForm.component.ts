@@ -34,7 +34,7 @@ export class RFQFormComponent implements OnInit {
   public rfqItem: RfqItemModel;
   public rfqItemInfo: RfqItemInfoModel;
   public currncyArray: any[] = [];
-  public rfqResponded: boolean = false;
+  public rfqResponded; HandlingPercentageChk; ImportFreightPercentageChk; InsurancePercentageChk; DutyPercentageChk: boolean = false;
 
   //page load eventl
   ngOnInit() {
@@ -536,9 +536,95 @@ export class RFQFormComponent implements OnInit {
       if (data)
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Handling charges Updated' });
     })
-    
+
+  }
+
+  //copy handling charges
+  copyCharges(event: any, type: any) {
+
+    //handling charges
+    if (type == 'HandlingPercentage' && !this.rfqRevisionModel.rfqitem[0].HandlingPercentage) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Handling Percentage in first text box' });
+      event.target.checked = false;
+      return false;
+    }
+    if (event.target.checked == true && type == 'HandlingPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        item.HandlingPercentage = this.rfqRevisionModel.rfqitem[0].HandlingPercentage;
+      })
+    }
+
+    if (event.target.checked == false && type == 'HandlingPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        if (index > 0)
+          item.HandlingPercentage = "";
+      })
+    }
+
+    //import charges
+    if (type == 'ImportFreightPercentage' && !this.rfqRevisionModel.rfqitem[0].ImportFreightPercentage) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Import Freight Percentage in first text box' });
+      event.target.checked = false;
+      return false;
+    }
+
+    if (event.target.checked == true && type == 'ImportFreightPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        item.ImportFreightPercentage = this.rfqRevisionModel.rfqitem[0].ImportFreightPercentage;
+      })
+    }
+
+    if (event.target.checked == false && type == 'ImportFreightPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        if (index > 0)
+          item.ImportFreightPercentage = "";
+      })
+    }
+
+
+    //Insurance  charges
+    if (type == 'InsurancePercentage' && !this.rfqRevisionModel.rfqitem[0].InsurancePercentage) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter  Insurance Percentage in first text box' });
+      event.target.checked = false;
+      return false;
+    }
+    if (event.target.checked == true && type == 'InsurancePercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        item.InsurancePercentage = this.rfqRevisionModel.rfqitem[0].InsurancePercentage;
+      })
+    }
+
+    if (event.target.checked == false && type == 'InsurancePercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        if (index > 0)
+          item.InsurancePercentage = "";
+      })
+    }
+
+    //Duty charges
+    if (type == 'DutyPercentage' && !this.rfqRevisionModel.rfqitem[0].DutyPercentage) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter  Duty Percentage in first text box' });
+      event.target.checked = false;
+      return false;
+    }
+
+    if (event.target.checked == true && type == 'DutyPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        item.DutyPercentage = this.rfqRevisionModel.rfqitem[0].DutyPercentage;
+      })
+    }
+
+    if (event.target.checked == false && type == 'DutyPercentage') {
+      this.rfqRevisionModel.rfqitem.forEach((item, index) => {
+        if (index > 0)
+          item.DutyPercentage = "";
+      })
+    }
   }
 }
+
+
+
 
 
 

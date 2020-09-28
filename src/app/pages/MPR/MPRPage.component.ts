@@ -68,6 +68,7 @@ export class MPRPageComponent implements OnInit {
   public showNewVendor: boolean = false;
   public newVendorDetails: VendorMaster;
   public RfqGeneratedList: Array<any> = [];
+  public RfqFilteredGeneratedList: Array<any> = [];
   public PAdetailsList: Array<any> = [];
   public RepeatOrderList: Array<MPRItemInfoes> = [];
   public RepeatOrder; showraisePo; showManualStatus; showPALink; deleteDocument; viewRfq; editRfq: boolean = false;
@@ -103,6 +104,7 @@ export class MPRPageComponent implements OnInit {
     this.mprRevisionDetails = new mprRevision();
     this.newVendorDetails = new VendorMaster();
     this.RfqGeneratedList = [];
+    this.RfqFilteredGeneratedList = [];
     this.PAdetailsList = [];
     this.rfqCommunicationList = [];
     this.MPRAssignment = new MPRAssignment();
@@ -1074,9 +1076,10 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId;
+    this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
+      this.RfqFilteredGeneratedList = Array.from(this.RfqGeneratedList.reduce((m, t) => m.set(t.RFQNo, t), new Map()).values());
     })
   }
 

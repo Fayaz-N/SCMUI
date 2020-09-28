@@ -76,7 +76,6 @@
     <div class="card-header gra-header">
       <span><input type="text" class="manual-icon" disabled />&nbsp;&nbsp;<b>Least Price</b></span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>Q - </b>Quantity</span>&nbsp;&nbsp;&nbsp;&nbsp;
-      <span><b>TP - </b>Total Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><img src="../assets/technics.png" style="height: 15px;width: 15px;"> - Technical Clearance</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>APD - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>DP - </b>Delivery period</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -87,6 +86,9 @@
       <span><b>DA - </b>Duty Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>PFA - </b>PF Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b>FRA - </b>Friegt Amount</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>MT - </b>Material Total</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>HC - </b>Handling Charges Total</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span><b>TP - </b>Total Price</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b><i class="fa fa-clock-o  times-color"></i> - </b>Pending</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b><i class="fa fa-check check-color"></i> - </b>Approved</span>&nbsp;&nbsp;&nbsp;&nbsp;
       <span><b><i class="fa fa-times times-color"></i> - </b>Rejected</span>&nbsp;&nbsp;&nbsp;&nbsp;
@@ -216,10 +218,7 @@
                 </div>
 
                 <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">TP</label>
-                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
-                  </div>
+                  
                   <div class="col-lg-3 col-md-3 col-sm-3 form-group">
                     <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
                     <span class="valueEdit">
@@ -239,6 +238,20 @@
                     <span class="valueEdit">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}} &nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p> </span>
                   </div>
                 </div>
+                <div class="row">
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">MT</label>
+                    <span class="valueEdit">{{vendor.MaterialTotalPrice}}</span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">HC</label>
+                    <span class="valueEdit">{{vendor.HandlingChargesTotal}}</span>
+                  </div>
+                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
+                    <label class="form-label lblEdit">TP</label>
+                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
+                  </div>
+                </div>
               </div>
             </td>
           </tr>
@@ -247,7 +260,7 @@
           <tr>
             <td [attr.colspan]="1" style="color: #17a2b8;">Totals</td>
             <td style="color: #17a2b8;">PO Price :&nbsp;{{calculateTotalPOPrice()}}</td>
-            <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">Price :&nbsp;{{calculateTotalPrice(colInd)}}</td>
+            <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index"><span>Material Total:&nbsp;{{calculateTotalPriceWOH(colInd)}}</span><br /><span>Handling Charges:&nbsp;{{calculateTotalPriceHC(colInd)}}</span><br />Total Landed Cost :&nbsp;{{calculateTotalPriceWH(colInd)}}</td>
           </tr>
           <tr><td [attr.colspan]="2">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
           <tr *ngFor="let term of termCols">
@@ -260,11 +273,11 @@
               <span *ngIf="getRemarks(col1.rfqRevisionId,term)" style="font-weight: 500;"> , {{getRemarks(col1.rfqRevisionId,term)}}</span>
             </td>
             <!--<td *ngFor="let rf of term.termsList">
-                <span *ngIf="rf.VendorResponse=='Agree'" class="pi pi-check check-color"></span>
-                <span *ngIf="rf.VendorResponse=='NotAgree'" class="pi pi-times times-color"></span>
-                <span *ngIf="rf.VendorResponse=='NotApplicable'">NA</span>&nbsp;
-                <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
-            </td>-->
+        <span *ngIf="rf.VendorResponse=='Agree'" class="pi pi-check check-color"></span>
+        <span *ngIf="rf.VendorResponse=='NotAgree'" class="pi pi-times times-color"></span>
+        <span *ngIf="rf.VendorResponse=='NotApplicable'">NA</span>&nbsp;
+        <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
+    </td>-->
           </tr>
         </ng-template>
       </p-table>

@@ -432,20 +432,24 @@
   </p-dialog>
 </form>
 
-<p-dialog header="Add Handling Charges" [(visible)]="AddHandlingChargesDialog" showEffect="fade" [modal]="true" [style]="{width: '1000px'}" [closable]="false">
+<p-dialog header="Add Handling Charges" [(visible)]="AddHandlingChargesDialog" showEffect="fade" [modal]="true" [style]="{width: '1100px'}" [closable]="false">
   <table class="table table-bordered">
     <thead>
       <tr>
         <th>RFQ Item Id</th>
-        <th>Handling Percentage</th>
-        <th>Import Freight Percentage</th>
-        <th>Insurance Percentage</th>
-        <th>Duty Percentage</th>
+        <th>Description</th>
+        <th>
+          Handling Percentage &nbsp;  <input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'HandlingPercentage')" [(ngModel)]="HandlingPercentageChk" binary="true">
+        </th>
+        <th>Import Freight Percentage &nbsp; <input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'ImportFreightPercentage')" [(ngModel)]="ImportFreightPercentageChk" binary="true"></th>
+        <th>Insurance Percentage &nbsp; <input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'InsurancePercentage')" [(ngModel)]="InsurancePercentageChk" binary="true"></th>
+        <th>Duty Percentage &nbsp; <input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'DutyPercentage')" [(ngModel)]="DutyPercentageChk" binary="true"></th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let rfqItem of  rfqRevisionModel.rfqitem">
         <td>{{rfqItem.RFQItemsId}}</td>
+        <td><span><b>Material Id:</b>&nbsp;{{rfqItem.ItemId}}</span><br /><span><b>Material Description:</b>&nbsp;{{rfqItem.ItemName}}</span><br /><span><b>MPR Item Description:</b>&nbsp;{{rfqItem.ItemDescription}}</span></td>
         <td><input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.HandlingPercentage" /></td>
         <td> <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.ImportFreightPercentage" /></td>
         <td> <input type="text" class="form-control" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" ngModel maxlength="7" [(ngModel)]="rfqItem.InsurancePercentage" /></td>

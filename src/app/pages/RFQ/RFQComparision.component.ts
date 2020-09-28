@@ -66,7 +66,7 @@ export class RFQComparisionComponent implements OnInit {
   //ger rfqrevision list
   getRfqrevisionList() {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select rm.RfqMasterId,rm.RFQNo,rm.RFQUniqueNo,rm.VendorId,rfqr.RevisionNo,rfqr.rfqRevisionId,rfqr.ActiveRevision from RFQMaster rm inner join RFQRevisions_N rfqr on rfqr.rfqMasterId=rm.RfqMasterId where ActiveRevision=1";
+    this.dynamicData.query = "select rm.MPRRevisionId, rm.RfqMasterId,rm.RFQNo,rm.RFQUniqueNo,rm.VendorId,rfqr.RevisionNo,rfqr.rfqRevisionId,rfqr.ActiveRevision from RFQMaster rm inner join RFQRevisions_N rfqr on rfqr.rfqMasterId=rm.RfqMasterId where ActiveRevision=1 and  rm.MPRRevisionId=" + this.MPRRevisionId + "";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.rfqrevisionsList = data;
     });
@@ -113,7 +113,9 @@ export class RFQComparisionComponent implements OnInit {
             this.vendorDetails.ImportFreightAmount = ((this.tp) * (vendor.ImportFreightPercentage / 100)).toString();
             this.vendorDetails.InsuranceAmount = ((this.tp) * (vendor.InsurancePercentage / 100)).toString();
             this.vendorDetails.DutyAmount = ((this.tp) * (vendor.DutyPercentage / 100)).toString();
-            this.vendorDetails.TotalPrice = (this.calculateItemToatlPrice(this.vendorDetails)).toString();
+            this.vendorDetails.MaterialTotalPrice = (this.calculateItemToatlPriceWOH(this.vendorDetails)).toString();
+            this.vendorDetails.HandlingChargesTotal = (this.calculateItemToatlPriceHC(this.vendorDetails)).toString();
+            this.vendorDetails.TotalPrice = (this.calculateItemToatlPriceWH(this.vendorDetails)).toString();
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
@@ -254,7 +256,27 @@ export class RFQComparisionComponent implements OnInit {
 
   }
 
-  calculateTotalPrice(colIndex: any) {
+  //calculate total price with out handling charges
+  calculateTotalPriceWOH(colIndex: any) {
+    let totalPrice: number = 0;
+    this.rfqQuoteModel.forEach(item => {
+      if (item.suggestedVendorDetails[colIndex])
+        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].MaterialTotalPrice);
+    });
+    return totalPrice;
+  }
+
+  //calculate total handling charges
+  calculateTotalPriceHC(colIndex: any) {
+    let totalPrice: number = 0;
+    this.rfqQuoteModel.forEach(item => {
+      if (item.suggestedVendorDetails[colIndex])
+        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].HandlingChargesTotal);
+    });
+    return totalPrice;
+  }
+  //calculate total price with  handling charges
+  calculateTotalPriceWH(colIndex: any) {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
@@ -286,12 +308,26 @@ export class RFQComparisionComponent implements OnInit {
       this.tp = PriceDis;
   }
 
-  calculateItemToatlPrice(vendor) {
+
+  //calculate material total price with out handling charges
+  calculateItemToatlPriceWOH(vendor) {
     var frfAmt = this.calculateFRAmount(vendor);
     var pfAmnt = this.calculatePFamount(vendor);
-    
+    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString());
+  }
+
+  //calculate total handling charges
+  calculateItemToatlPriceHC(vendor) {
+    return  parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
+  }
+  //calculate material total price including handling charges
+  calculateItemToatlPriceWH(vendor) {
+    var frfAmt = this.calculateFRAmount(vendor);
+    var pfAmnt = this.calculatePFamount(vendor);
+
     return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString()) + parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
   }
+
   calculateFRAmount(vendor: any) {
     let value: number = 0;
     if (vendor.FreightPercentage) {

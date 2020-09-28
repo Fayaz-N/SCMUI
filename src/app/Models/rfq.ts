@@ -86,6 +86,8 @@ export class VendorDetails {
   Freight: string;
   FreightAmount: string;
   PFAmount: string;
+  MaterialTotalPrice: string;
+  HandlingChargesTotal: string;
   TotalPrice: string;
   Insurance: string;
   HandlingPercentage: string;

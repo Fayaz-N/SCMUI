@@ -117,7 +117,7 @@ export class GenerateRFQComponent implements OnInit {
         });
 
         this.getYILTermsAndConditions();
-      
+
       })
 
     })
@@ -387,49 +387,62 @@ export class GenerateRFQComponent implements OnInit {
 
   //select unselect All vendors
   selectAllvendors(event: any, vendorId: any, MPRItemDetailsid: any) {
-    var index = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
-      for (var i = 0; i < this.rfqQuoteModel.length; i++) {
-        this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
-          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
-            var qty = (<HTMLInputElement>document.getElementById("SQty" + i + "" + index)).value;
-            this.rfqQuoteModel[i].suggestedVendorDetails[index].QuotationQty = qty;
+    // var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
+    for (var i = 0; i < this.rfqQuoteModel.length; i++) {
+      this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
+        var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
+        if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
+          var qty = (<HTMLInputElement>document.getElementById("SQty" + i + "" + index)).value;
+          this.rfqQuoteModel[i].suggestedVendorDetails[index].QuotationQty = qty;
+          if (index1 < 0) {
             (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = true;
             this.selectedVendorList.push(vendor);
           }
-          else {
-            if (vendor.VendorId == vendorId) {
-              this.selectedVendorList.splice(index, 1);
-              (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = false;
-            }
+        }
+        else {
+          if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1>=0 && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
+            this.selectedVendorList.splice(index1, 1);
+            (<HTMLInputElement>document.getElementById("SVendor" + i + index)).checked = false;
           }
-        });
-        this.rfqQuoteModel[i].manualvendorDetails.forEach((vendor, index) => {
-          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
-            var qty = (<HTMLInputElement>document.getElementById("MQty" + i + "" + index)).value;
-            this.rfqQuoteModel[i].manualvendorDetails[index].QuotationQty = qty;
+        }
+      });
+      this.rfqQuoteModel[i].manualvendorDetails.forEach((vendor, index) => {
+        var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
+        if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("MVendor" + i + index))) {
+          var qty = (<HTMLInputElement>document.getElementById("MQty" + i + "" + index)).value;
+          this.rfqQuoteModel[i].manualvendorDetails[index].QuotationQty = qty;
+          if (index1 < 0) {
             (<HTMLInputElement>document.getElementById("MVendor" + i + index)).checked = true;
             this.selectedVendorList.push(vendor);
           }
-          else {
-            this.selectedVendorList.splice(index, 1);
+        }
+        else {
+          if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1 >= 0 && (<HTMLInputElement>document.getElementById("MVendor" + i + index))) {
+           this.selectedVendorList.splice(index1, 1);
             (<HTMLInputElement>document.getElementById("MVendor" + i + index)).checked = false;
           }
-        })
-        this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach((vendor, index) => {
-          if (event.currentTarget.checked && vendor.VendorId == vendorId) {
-            var qty = (<HTMLInputElement>document.getElementById("RQty" + i + "" + index)).value;
-            this.rfqQuoteModel[i].repeatOrdervendorDetails[index].QuotationQty = qty;
+        }
+      })
+      this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach((vendor, index) => {
+        var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
+        if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("RVendor" + i + index))) {
+          var qty = (<HTMLInputElement>document.getElementById("RQty" + i + "" + index)).value;
+          this.rfqQuoteModel[i].repeatOrdervendorDetails[index].QuotationQty = qty;
+          if (index1 < 0) {
             (<HTMLInputElement>document.getElementById("RVendor" + i + index)).checked = true;
             this.selectedVendorList.push(vendor);
           }
-          else {
-            this.selectedVendorList.splice(index, 1);
+        }
+        else {
+          if (event.currentTarget.checked == false && vendor.VendorId == vendorId && index1 >= 0 && (<HTMLInputElement>document.getElementById("RVendor" + i + index))) {
+            this.selectedVendorList.splice(index1, 1);
             (<HTMLInputElement>document.getElementById("RVendor" + i + index)).checked = false;
           }
-        });
-      }
-    
-    
+        }
+      });
+    }
+
+
   }
 
   //select mail and vendor visibility  funcationality
