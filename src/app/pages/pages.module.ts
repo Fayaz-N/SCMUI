@@ -73,6 +73,7 @@ import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.compone
 import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -105,7 +106,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     AutoCompleteModule,
     MatInputModule,
         MatFormFieldModule,
-        NgMultiSelectDropDownModule
+        NgMultiSelectDropDownModule,
+        NgbModule
   ],
   declarations: [
     PagesComponent,
