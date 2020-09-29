@@ -1,4 +1,11 @@
-<div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+<div class="row">
+  <div class="col-md-4"><h4>MPR Requisition Report</h4></div>
+  <div class="col-md-6"></div>
+  <div class="col-md-2 text-right">
+    <i class="fa fa-plus-square expand" aria-hidden="true" (click)="toggle()" pTooltip="Expand Filters"></i>
+  </div>
+</div>
+<div *ngIf="show" class="form-control" style="height:100%;border-radius:0px;padding:30px">
   <div class="row form-group">
     <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">Requisitions-From</label><br />
@@ -12,7 +19,7 @@
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">DocumentNo</label>&nbsp;<br />
-      <input type="text" class="form-control" [(ngModel)]="reportinput.Todate">
+      <input type="text" class="form-control" [(ngModel)]="reportinput.DocumentNo">
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3">
@@ -43,9 +50,9 @@
         <mat-label>Select Jobcode</mat-label>
         <select matNativeControl [(ngModel)]="reportinput.jobcode">
           <option value="" selected></option>
-          <!--<option *ngFor="let option of filerlist.jobcode" let i=index>
-          {{option[i]}}
-        </option>-->
+          <option *ngFor="let option of jobcodestotal">
+            {{option.Jobcode}}
+          </option>
         </select>
       </mat-form-field>
     </div>
@@ -165,108 +172,119 @@
 </div>
 <br />
 
-
-      <table class="table table-sm table-striped table-bordered" #TABLE #table>
-        <thead class="thead-dark" style="font-size:small;text-transform:uppercase;">
-          <tr class="p-2" style="background-color: #33b5e5">
-            <th>S.No</th>
-            <th>Document No</th>
-            <th>Revision no</th>
-            <th>JobName</th>
-            <th>JobCode</th>
-            <th>PreparedBy</th>
-            <th>PreparedOn</th>
-            <th>Checker</th>
-            <th>Checker status</th>
-            <th>Checker status Changedon</th>
-            <th>Approver</th>
-            <th>Approver status</th>
-            <th>Approver status Changedon</th>
-            <th>Second Approver</th>
-            <th>Second Approve'r status</th>
-            <th>SecondApprover status Changedon</th>
+<div class="card compar-card mt-2">
+  <div class="card-body">
+    <table class="table table-md table-striped table-bordered" #TABLE #table>
+      <thead class="thead-dark" style="font-size:small;">
+        <tr class="p-2" style="background-color: #33b5e5">
+          <th>S.No</th>
+          <th>Document No</th>
+          <th>Revision no</th>
+          <th>Department</th>
+          <th>JobName</th>
+          <th>JobCode</th>
+          <th>PreparedBy</th>
+          <th>PreparedOn</th>
+          <th>Checker</th>
+          <th>Checker status</th>
+          <th>Checker status Changedon</th>
+          <th>Approver</th>
+          <th>Approver status</th>
+          <th>Approver status Changedon</th>
+          <th>Second Approver</th>
+          <th>Second Approve'r status</th>
+          <th>SecondApprover status Changedon</th>
+          <th>Third Approver</th>
+          <th>Third Approver's status</th>
+          <th>ThirdApprover status Changedon</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of statuslist let ndx = index">
+          <td>{{ndx+1}}</td>
+          <td><a [routerLink]="['/SCM/MPRForm',app.revisionid]" target="_blank" routerLinkActive="active">{{app.documentno}}</a></td>
+          <td>{{app.revisionno}}</td>
+          <td>{{app.department}}</td>
+          <td>{{app.jobname}}</td>
+          <td>{{app.jobcode}}</td>
+          <td>{{app.prepared}}</td>
+          <td>{{app.preparedon | date}}</td>
+          <td>{{app.Checker}}</td>
+          <td>{{app.checkstatus}}</td>
+          <td>{{app.checkedon | date}}</td>
+          <td>{{app.Approver}}</td>
+          <td>{{app.approvalstatus}}</td>
+          <td>{{app.approvedon | date}}</td>
+          <td>{{app.SecondApprover}}</td>
+          <td>{{app.secondapproversstatus}}</td>
+          <td>{{app.secondapprovedon | date}}</td>
+          <td>{{app.Thirdapprover}}</td>
+          <td>{{app.thirdapproverstatus}}</td>
+          <td>{{app.thirdapproverstatuschangedon | date}}</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+    <!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
+      <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
+        <ng-template pTemplate="caption">
+        </ng-template>
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width:4em">S.No</th>
+            <th>PA NO</th>
+            <th ng-style="{'width': 80px}">MPRNO</th>
+            <th>RFQNO</th>
+            <th width="100px">Department</th>
+            <th width="100px">BuyerGroup</th>
+            <th>Vendor</th>
+            <th width="110px">RequestedBY</th>
+            <th width="110px">RequestedOn</th>
+            <th width="110px">Tokochu Request</th>
+            <th>PA Status</th>
+            <th>PO Status</th>
+            <th>Delete</th>
           </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let app of statuslist let ndx = index">
-            <td>{{ndx+1}}</td>
-            <td><a [routerLink]="['/SCM/mprpa',app.revisionid]" target="_blank" routerLinkActive="active">{{app.documentno}}</a></td>
-            <td>{{app.revisionno}}</td>
-            <td>{{app.jobname}}</td>
-            <td>{{app.jobcode}}</td>
-            <td>{{app.prepared}}</td>
-            <td>{{app.preparedon | date}}</td>
-            <td>{{app.Checker}}</td>
-            <td>{{app.checkstatus}}</td>
-            <td>{{app.checkedon | date}}</td>
-            <td>{{app.Approver}}</td>
-            <td>{{app.approvalstatus}}</td>
-            <td>{{app.approvedon | date}}</td>
-            <td>{{app.SecondApprover}}</td>
-            <td>{{app.secondapproversstatus}}</td>
-            <td>{{app.secondapprovedon | date}}</td>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
+          <tr>
+            <td style="width:4em">
+              {{ri+1}}
+            </td>
+            <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+            <td pEditableColumn class="ptable-cell">{{rowData.DocumentNo}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.RFQNo}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.Name}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.RequestedOn | date: 'dd/MM/yyyy'}}</td>
+            <td  class="ptable-cell"><button  *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+            <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
+            <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
+            <td class="text-center">
+              <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletepa(rowData)" class="ui-button-danger"></button>
+            </td>
           </tr>
-        </tbody>
-      </table>
-<!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
-  <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
-    <ng-template pTemplate="caption">
-    </ng-template>
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width:4em">S.No</th>
-        <th>PA NO</th>
-        <th ng-style="{'width': 80px}">MPRNO</th>
-        <th>RFQNO</th>
-        <th width="100px">Department</th>
-        <th width="100px">BuyerGroup</th>
-        <th>Vendor</th>
-        <th width="110px">RequestedBY</th>
-        <th width="110px">RequestedOn</th>
-        <th width="110px">Tokochu Request</th>
-        <th>PA Status</th>
-        <th>PO Status</th>
-        <th>Delete</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-      <tr>
-        <td style="width:4em">
-          {{ri+1}}
-        </td>
-        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
-        <td pEditableColumn class="ptable-cell">{{rowData.DocumentNo}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.RFQNo}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.VendorName}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.Name}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.RequestedOn | date: 'dd/MM/yyyy'}}</td>
-        <td  class="ptable-cell"><button  *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
-        <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
-        <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
-        <td class="text-center">
-          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletepa(rowData)" class="ui-button-danger"></button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table><br />
-</div>-->
-<!--<p-dialog header="Add"  [(visible)]="DeleteDialog" showEffect="fade" [modal]="true" [style]="{width: '550px'}" [closable]="false">
-  <form [formGroup]="PADeleteForm">
-    <div class="" style="margin-left:12px"></div>
-    <label for="ProjectName" class="form-label label">Remarks :</label>
-    <textarea [(ngModel)]="padelete.Remarks" formControlName="Remarks" class="form-control" style="margin-left: 12px;"></textarea>
-    <div *ngIf="PADeleteForm.controls['Remarks'].invalid && (PADeleteForm.controls['Remarks'].dirty || PADeleteForm.controls['Remarks'].touched)" class="alert alert-danger" style="margin-left:12px">
-      <div *ngIf="PADeleteForm.controls['Remarks'].errors.required">
-        Remarks is required.
-      </div>
-    </div><br />
-    <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix"  style="margin-left: 12px;">
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PADeleteForm.valid" (click)="finaldelete(padelete)" label="Insert"></button>&nbsp;&nbsp;
-        <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
-      </div>
-    </p-footer>
-  </form>
-</p-dialog>-->
+        </ng-template>
+      </p-table><br />
+    </div>-->
+    <!--<p-dialog header="Add"  [(visible)]="DeleteDialog" showEffect="fade" [modal]="true" [style]="{width: '550px'}" [closable]="false">
+      <form [formGroup]="PADeleteForm">
+        <div class="" style="margin-left:12px"></div>
+        <label for="ProjectName" class="form-label label">Remarks :</label>
+        <textarea [(ngModel)]="padelete.Remarks" formControlName="Remarks" class="form-control" style="margin-left: 12px;"></textarea>
+        <div *ngIf="PADeleteForm.controls['Remarks'].invalid && (PADeleteForm.controls['Remarks'].dirty || PADeleteForm.controls['Remarks'].touched)" class="alert alert-danger" style="margin-left:12px">
+          <div *ngIf="PADeleteForm.controls['Remarks'].errors.required">
+            Remarks is required.
+          </div>
+        </div><br />
+        <p-footer>
+          <div class="ui-dialog-buttonpane ui-helper-clearfix"  style="margin-left: 12px;">
+            <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PADeleteForm.valid" (click)="finaldelete(padelete)" label="Insert"></button>&nbsp;&nbsp;
+            <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
+          </div>
+        </p-footer>
+      </form>
+    </p-dialog>-->

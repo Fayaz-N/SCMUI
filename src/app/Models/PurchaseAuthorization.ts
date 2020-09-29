@@ -399,8 +399,8 @@ export class tokuchufilters {
 }
 export class ReportInputModel {
     BuyerGroupId: number;
-    Fromdate: Date | null;
-    Todate: Date | null;
+    Fromdate: string;
+    Todate: string;
     BuyerGroup: string;
     RequisitionId: number;
     revisionId: number;
@@ -418,14 +418,16 @@ export class ReportInputModel {
     totalcount: number;
     status: string;
     ShowAllrevisions: boolean;
+    ProjectManager: string;
 }
 export class statussearch {
     BuyerGroup: string;
     status: string;
     Department: string;
     totalcount: number;
-    Fromdate: Date;
-    Todate: Date;
+    Fromdate: string;
+    Todate: string;
     DepartmentId: number;
+    BuyerGroupId: number;
 }
 

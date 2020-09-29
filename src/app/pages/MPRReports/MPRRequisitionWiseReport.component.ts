@@ -7,7 +7,9 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
 import { MessageService } from 'primeng/api';
 import { PADetailsModel, ReportInputModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, padeletemodel } from 'src/app/Models/PurchaseAuthorization'
-import * as XLSX from 'xlsx';  
+import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-MPRRequisitionWiseReport',
@@ -16,10 +18,11 @@ import * as XLSX from 'xlsx';
 
 export class MPRRequisitionWiseReportComponent implements OnInit {
     @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
-  constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public formbuilder: FormBuilder) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
 
   public employee: Employee;
-  public paid: number;
+    public paid: number;
+    public show: boolean = false;
   public buyergroups: Array<any> = [];
   public statuslist: any[];
   public purchasedetails: mprpadetailsmodel;
@@ -46,11 +49,16 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
 
       if (localStorage.getItem("statusDetails")) {
           this.reportinput = JSON.parse(localStorage.getItem("statusDetails"));
+          console.log(" this.reportinput", this.reportinput)
+          //this.reportinput.Fromdate = "2020-09-01";
+          //this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprstatusreport(this.reportinput);
           localStorage.removeItem("statusDetails");
           this.reportinput.DepartmentId = this.reportinput.DepartmentId;
       }
       else {
+          this.reportinput.Fromdate = "2020-09-01";
+          this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprstatusreport(this.reportinput);
       }
       this.mprprepares = new Array<any>();
@@ -64,6 +72,7 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
       this.getmprreportfilters();
       this.loadallmprdepartments();
       this.loadbuyergroups();
+      this.searchdata = new Array<any>();
   }
 
   loadbuyergroups() {
@@ -72,18 +81,21 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
     })
   }
     GetMprstatusreport(status: ReportInputModel) {
+        this.spinner.show();
         this.paService.GetmprrequisitionReport(status).subscribe(data => {
+            this.spinner.hide();
             this.statuslist = data;
         })
     }
     getmprreportfilters() {
         this.paService.getmprreportfilters().subscribe(data => {
             this.filerlist = data;
+            console.log("this.filerlist", this.filerlist['jobcode'][0])
             this.mprApprovedby = data['mprApprovedby']
             this.mprprepares = data['mprprepares']
             this.mprcheckedby = data['mprcheckedby']
             this.purposetype = data['purposetype']
-            //this.jobcodestotal.push(this.filerlist['jobcode'])
+            this.jobcodestotal = data['jobcode']
         })
     }
     loadallmprdepartments() {
@@ -97,5 +109,8 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
         XLSX.writeFile(wb, 'requisitionSheet.xlsx');
-    }  
+    }
+    toggle() {
+        this.show= !this.show;
+    }
 }

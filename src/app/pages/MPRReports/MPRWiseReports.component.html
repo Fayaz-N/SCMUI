@@ -1,16 +1,27 @@
-<div class="form-control" style="height:100%;border-radius:0px;padding:30px">
+<!--<button (click)="toggle()" id="bt">
+  {{buttonName}}
+</button>-->
+  <div class="row">
+    <div class="col-md-4"><h4>MPR Wise Report</h4></div>
+    <div class="col-md-6"></div>
+    <div class="col-md-2 text-right">
+      <i class="fa fa-plus-square expand" aria-hidden="true" (click)="toggle()" pTooltip="Expand Filters"></i>
+    </div>
+  </div>
+
+<div *ngIf="show" class="form-control" style="height:100%;border-radius:0px;padding:30px">
   <div class="row form-group">
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">From Date</label><br />
       <input type="date" class="form-control" [(ngModel)]="report.Fromdate">
       <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">To Date</label>&nbsp;<br />
       <input type="date" class="form-control" [(ngModel)]="report.Todate">
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <mat-form-field style="width:100%">
         <mat-label>Select BuyerGroup</mat-label>
         <select matNativeControl [(ngModel)]="report.BuyerGroupId">
@@ -20,52 +31,119 @@
           </option>
         </select>
       </mat-form-field>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-md-12" style="text-align:center">
-        <button type="button" class="btn btn-primary" (click)="GetMprWisestatusreport(report)">Submit</button>&nbsp;&nbsp;
-        <button type="button" class="btn btn-primary" (click)="ExportTOExcel()">ExportTOExcel</button>
-      </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Projectmanager</mat-label>
+        <select matNativeControl [(ngModel)]="report.ProjectManager">
+          <option value="" selected></option>
+          <option *ngFor="let option of projectmangers" [value]="option.ProjectManager">
+            {{option.Name}}
+          </option>
+        </select>
+      </mat-form-field>
     </div>
   </div>
-<br />
-
-
-<div class="form-control" style="height:100%;width:100%;position:relative">
-  <div style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
-      <table class="table table-bordered" #TABLE #table>
-        <thead>
-          <tr>
-            <th><span style="float:left">S.No </span></th>
-            <th><span style="float:left">DocumentNo </span></th>
-            <!--<th><span style="float:left">RevisionId </span></th>-->
-            <th><span style="float:left">RevisionNo </span></th>
-            <th><span style="float:left">BuyerGroup </span></th>
-            <!--<th><span style="float:left">itemdescription </span></th>-->
-            <th><span style="float:left">PODate </span></th>
-            <th><span style="float:left">PONumber </span></th>
-            <th><span style="float:left">DeliveryRequiredBy </span></th>
-            <th><span style="float:left">Remarks </span></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let app of statuslist let ndx = index">
-            <td>{{ndx+1}}</td>
-            <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
-            <!--<td>{{app.RevisionId}}</td>-->
-            <td>{{app.RevisionNo}}</td>
-            <td>{{app.BuyerGroup}}</td>
-            <!--<td>{{app.itemdescription}}</td>-->
-            <td>{{app.PODate}}</td>
-            <td>{{app.PONumber}}</td>
-            <td>{{app.DeliveryRequiredBy}}</td>
-            <td>{{app.Remarks}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <!--<div class="row form-group">
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Jobcode</mat-label>
+        <select matNativeControl [(ngModel)]="report.jobcode">
+          <option value="" selected></option>
+          <option *ngFor="let option of filerlist.jobcode" let i=index>
+            {{option[i]}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>-->
+  <div class="row">
+    <div class="col-md-12" style="text-align:center">
+      <button type="button" class="btn btn-primary" (click)="GetMprWisestatusreport(report)">Submit</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="ExportTOExcel()">ExportTOExcel</button>
+    </div>
   </div>
 </div>
+<br />
+<div class="card compar-card mt-2">
+  <div class="card-body">
+    <table class="table table-sm table-striped table-bordered" #TABLE #table>
+      <thead class="thead-dark">
+        <tr style="background-color: #33b5e5">
+          <th>S.No</th>
+          <th>DocumentNo</th>
+          <th>RevisionNo</th>
+          <th>RevisionId</th>
+          <th style="max-width:200px !important">Item Description</th>
+          <th>BuyerGroup</th>
+          <th>JobCode</th>
+          <th>JobName</th>
+          <th>TargetSpend</th>
+          <th>PO Price</th>
+          <th>Discount</th>
+          <th>PODate</th>
+          <th>PONumber</th>
+          <th>DeliveryRequiredBy</th>
+          <th>Remarks</th>
+          <th>PaStatus Update</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of statuslist  let ndx = index">
+          <td>{{ndx+1}}</td>
+          <td><a [routerLink]="['/SCM/MPRForm',app.revisionid]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
+          <td>{{app.RevisionNo}}</td>
+          <td>{{app.RevisionId}}</td>
+          <td style="max-width:200px !important">{{app.ItemDescription}}</td>
+          <td>{{app.BuyerGroup}}</td>
+          <td>{{app.JobCode}}</td>
+          <td>{{app.JobName}}</td>
+          <td>{{app.TargetSpend}}</td>
+          <td>{{app.PAamount}}</td>
+          <td>{{app.Discountamount}}</td>
+          <td>{{app.PODate}}</td>
+          <td>{{app.pono}}</td>
+          <td>{{app.DeliveryRequiredBy |date}}</td>
+          <td>{{app.Remarks}}</td>
+          <td>{{app.PAStatusUpdate |date}}</td>
+        </tr>
+      </tbody>
+      <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->
+    </table>
+  </div>
+</div>
+
+
+<!--<div class="form-control" style="height:100%;width:100%;position:relative">
+  <div style="height:100%;border-radius:0px; margin-left:0px; margin-top:7px">
+    <table class="table table-bordered" #TABLE #table>
+      <thead>
+        <tr>
+          <th><span style="float:left">S.No </span></th>
+          <th><span style="float:left">DocumentNo </span></th>
+          <th><span style="float:left">RevisionNo </span></th>
+          <th><span style="float:left">BuyerGroup </span></th>
+          <th><span style="float:left">PODate </span></th>
+          <th><span style="float:left">PONumber </span></th>
+          <th><span style="float:left">DeliveryRequiredBy </span></th>
+          <th><span style="float:left">Remarks </span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let app of statuslist let ndx = index">
+          <td>{{ndx+1}}</td>
+          <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
+          <td>{{app.RevisionNo}}</td>
+          <td>{{app.BuyerGroup}}</td>
+          <td>{{app.PODate}}</td>
+          <td>{{app.PONumber}}</td>
+          <td>{{app.DeliveryRequiredBy}}</td>
+          <td>{{app.Remarks}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>-->
 <!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
   <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
     <ng-template pTemplate="caption">

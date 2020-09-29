@@ -6,9 +6,10 @@ import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators'
 import { MessageService } from 'primeng/api';
-import * as XLSX from 'xlsx';  
+import * as XLSX from 'xlsx';
+import { NgxSpinnerService } from "ngx-spinner";
 import { PADetailsModel, ReportInputModel,ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, padeletemodel } from 'src/app/Models/PurchaseAuthorization'
-
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-MPRWiseReports',
@@ -17,8 +18,11 @@ import { PADetailsModel, ReportInputModel,ItemsViewModel, EmployeeModel, mprpapu
 
 export class MPRWiseReportsComponent implements OnInit {
     @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
-  constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public formbuilder: FormBuilder) { }
-
+    constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
+    page: number;
+    pageSize: number;
+    public show: boolean = false;
+    public buttonName: any = 'Show';
   public employee: Employee;
   public paid: number;
   public palist: any;
@@ -26,14 +30,8 @@ export class MPRWiseReportsComponent implements OnInit {
   public buyergroups: Array<any> = [];
   public Vendors: Array<any> = [];
   public statuslist: any[];
-  public purchasedetails: mprpadetailsmodel;
-  public filtereddepartments: any;
-  public filteredvendors: any;
-  public brand: string;
-  public DeleteDialog: boolean;
-  public padelete: padeletemodel;
-    public PADeleteForm: FormGroup;
     public report: ReportInputModel;
+    public projectmangers: any[];
 
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
@@ -45,20 +43,21 @@ export class MPRWiseReportsComponent implements OnInit {
     }
     else {
       this.router.navigateByUrl("Login");
-    }
-    this.purchasedetails = new mprpadetailsmodel();
+      }
+      this.report = new ReportInputModel();
+      this.report.Fromdate = "2020-09-01";
+      this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
     this.pofilters = new PADetailsModel();
-    this.DeleteDialog = false;
-    //this.loadAllmprpalist();
     this.loadbuyergroups();
-      this.padelete = new padeletemodel();
-      this.report = new ReportInputModel();
-
+      
       this.statuslist = new Array<any>();
-
       this.GetMprWisestatusreport(this.report);
+      this.loadprojectmangers();
+      this.page = 1;
+      this.pageSize = 500;
+      this.projectmangers = new Array<any>();
   }
     ExportTOExcel() {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
@@ -72,9 +71,18 @@ export class MPRWiseReportsComponent implements OnInit {
     })
     }
     GetMprWisestatusreport(report: ReportInputModel) {
+        this.spinner.show();
         this.paService.Getmprstatuswise(report).subscribe(data => {
+            this.spinner.hide();
             this.statuslist = data['Table'];
         })
     }
-  
+    loadprojectmangers() {
+        this.paService.loadprojectmanagersforreport().subscribe(data => {
+            this.projectmangers = data;
+        })
+    }
+    toggle() {
+        this.show = !this.show;
+    }
 }

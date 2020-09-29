@@ -5,7 +5,7 @@
   <div class="row form-group">
     <div class="col-lg-4 col-md-4 col-sm-4">
       <label class="form-label">From Date</label><br />
-      <input type="date" class="form-control" [(ngModel)]="reportinput.Fromdate">
+      <input type="date" class="form-control"  [(ngModel)]="reportinput.Fromdate">
       <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-4 col-md-4 col-sm-4">
@@ -40,7 +40,7 @@
     <div class="col-lg-4 col-md-4 col-sm-4">
       <mat-form-field style="width:100%">
         <mat-label>Purpose Of Issue</mat-label>
-        <select matNativeControl [(ngModel)]="reportinput.BuyerGroupId">
+        <select matNativeControl [(ngModel)]="reportinput.Issuepurposeid">
           <option value="" selected></option>
           <option value="1">For raising Inquiry</option>
           <option value="2">For Placing P.O on recommended vendor</option>

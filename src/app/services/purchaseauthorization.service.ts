@@ -190,4 +190,7 @@ export class purchaseauthorizationservice {
     getmprstatusbydepartment(data: statussearch): Observable<any> {
         return this.http.post<any>(this.url + 'PA/getmprstatusbydepartment', data, this.httpOptions)
     }
+    loadprojectmanagersforreport(): Observable<any> {
+        return this.http.get<any>(this.url + 'PA/Loadprojectmanagersforreport', this.httpOptions)
+    }
 } 
