@@ -110,6 +110,8 @@ export class ItemsViewModel {
   Mprrfqsplititemid: number;
   StandardLeadtime: number;
   ProductCategorylevel2id: number;
+  ProductCategorylevel2Name: string;
+  ProductCategorylevel1Name: string;
   ProductCategorylevel1id: number;
   FreightPercentage: number;
   FreightAmount: number;

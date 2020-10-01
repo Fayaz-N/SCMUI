@@ -36,8 +36,8 @@ export class TokuchuRequestComponent implements OnInit {
   public ProductCategory1List: Array<any> = [];
   public ProductCategory2List: Array<any> = [];
   public ProductCategory2filterList: Array<any> = [];
-  public ProductCategorylevel1id: number;
-  public displayItemDialog: boolean = false;
+  public ProductCategorylevel1id; ProductCategorylevel2id: number = null;
+  public displayItemDialog; showCatDialog: boolean = false;
   public itemDetails: materialUpdate;
   public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
@@ -189,8 +189,12 @@ export class TokuchuRequestComponent implements OnInit {
     this.paService.GetTokuchuDetailsByPAID(paid, this.TokuchRequestid).subscribe(data => {
       this.purchasedetails = data;
       this.purchasedetails.Item.forEach(data => {
-        if (this.ProductCategory2List.filter(li => li.p2CategoryId == data["ProductCategorylevel2id"]).length > 0)
-          data['ProductCategorylevel1id'] = this.ProductCategory2List.filter(li => li.p2CategoryId == data["ProductCategorylevel2id"])[0].P1CategoryId
+        if (this.ProductCategory2List.filter(li => li.p2CategoryId == data["ProductCategorylevel2id"]).length > 0) {
+          var res = this.ProductCategory2List.filter(li => li.p2CategoryId == data["ProductCategorylevel2id"])[0];
+          data['ProductCategorylevel1id'] = res.P1CategoryId;
+          data['ProductCategorylevel1Name'] = this.ProductCategory1List.filter(li => li.P1CategoryId == res.P1CategoryId)[0].CategoryName;
+          data['ProductCategorylevel2Name'] = res.SubCategoryName;
+        }
       })
 
       this.preparetokuchuData();
@@ -245,14 +249,16 @@ export class TokuchuRequestComponent implements OnInit {
         errorText += " " + "Fields need to be fill.";
         (<HTMLInputElement>document.getElementById("item" + details.paitemid)).checked = false;
         this.messageService.add({ severity: 'error', summary: 'Validation', detail: errorText });
-        this.selectedItems.splice(index, 1);
+        if (index > -1)
+          this.selectedItems.splice(index, 1);
       }
       else {
         this.selectedItems.push(details);
       }
     }
     else {
-      this.selectedItems.splice(index, 1);
+      if (index > -1)
+        this.selectedItems.splice(index, 1);
     }
 
   }
@@ -278,6 +284,7 @@ export class TokuchuRequestComponent implements OnInit {
     }
   }
   ProductCategorylevel1change(ProductCategorylevel1id: any) {
+    this.ProductCategorylevel2id = null;
     this.ProductCategory2filterList = this.ProductCategory2List.filter(li => li.P1CategoryId == ProductCategorylevel1id);
 
   }
@@ -290,6 +297,29 @@ export class TokuchuRequestComponent implements OnInit {
 
   dialogCancel(dialogName) {
     this[dialogName] = false;
+  }
+
+  //Add category Levels
+  AddCategoryLevels(index: any) {
+    this.showCatDialog = true;
+    this.ProductCategorylevel1id = this.ProductCategorylevel2id = null;
+    this.rowIndx = index;
+
+  }
+  addCatLevels() {
+    if (!this.ProductCategorylevel1id) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select category level1' });
+      return true;
+    }
+    if (!this.ProductCategorylevel2id) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select category level2' });
+      return true;
+    }
+    this.purchasedetails.Item[this.rowIndx]['ProductCategorylevel1id'] = this.ProductCategorylevel1id;
+    this.purchasedetails.Item[this.rowIndx]['ProductCategorylevel2id'] = this.ProductCategorylevel2id;
+    this.purchasedetails.Item[this.rowIndx]['ProductCategorylevel1Name'] = this.ProductCategory1List.filter(li => li.P1CategoryId == this.ProductCategorylevel1id)[0].CategoryName;
+    this.purchasedetails.Item[this.rowIndx]['ProductCategorylevel2Name'] = this.ProductCategory2filterList.filter(li => li.p2CategoryId == this.ProductCategorylevel2id)[0].SubCategoryName;
+    this.showCatDialog = false;
   }
 
   materialidUpdate() {
@@ -309,6 +339,7 @@ export class TokuchuRequestComponent implements OnInit {
 
   submitTokuchuRequest() {
     var typeOfuser = "Requestor";
+    var errormessage = "";
     if (this.selectedItems.length == 0 && this.showSubmit) {
       this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select atleast one item' });
       return;
@@ -316,8 +347,8 @@ export class TokuchuRequestComponent implements OnInit {
     this.tokuchuRequest.TokuchRequestid = this.purchasedetails.TokuchuRequest.TokuchRequestid;;
     this.tokuchuRequest.PAId = this.paid;
     this.tokuchuRequest.PreparedBY = this.employee.EmployeeNo;
-      //this.tokuchuRequest.PreVerifiedBy = this.tokuchuRequest.VerifiedBy;
-      this.tokuchuRequest.PreVerfiedBY = this.tokuchuRequest.VerifiedBy;
+    //this.tokuchuRequest.PreVerifiedBy = this.tokuchuRequest.VerifiedBy;
+    this.tokuchuRequest.PreVerfiedBY = this.tokuchuRequest.VerifiedBy;
     if (this.showPreverSts) {
       this.tokuchuRequest.PreVerifiedOn = new Date();
       typeOfuser = "PreVerifier";
@@ -327,16 +358,23 @@ export class TokuchuRequestComponent implements OnInit {
       typeOfuser = "Verifier";
     }
     this.tokuchuRequest.TokuchuLIneItems = [];
-    this.selectedItems.forEach(item => {
+    this.selectedItems.forEach((item, index) => {
       this.tokuchuLineItem = new TokuchuLIneItem();
       this.tokuchuLineItem.Tklineitemid = item.Tklineitemid;
       this.tokuchuLineItem.TokuchRequestid = this.tokuchuRequest.TokuchRequestid;
       this.tokuchuLineItem.PAItemID = item.paitemid;
       this.tokuchuLineItem.StandardLeadtime = item.StandardLeadtime;
+      if (!item.ProductCategorylevel2id) {
+        errormessage += (index + 1) + ","
+      }
       this.tokuchuLineItem.ProductCategorylevel2id = item.ProductCategorylevel2id;
       this.tokuchuLineItem.updatedby = this.employee.EmployeeNo;
       this.tokuchuRequest.TokuchuLIneItems.push(this.tokuchuLineItem);
     })
+    if (errormessage) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: 'Select category level2 at selected item ' + errormessage + '' });
+      return true;
+    }
     this.spinner.show();
     this.paService.updateTokuchuRequest(this.tokuchuRequest, typeOfuser, this.purchasedetails.Item[0]["MPRRevisionId"]).subscribe(data => {
       this.spinner.hide();

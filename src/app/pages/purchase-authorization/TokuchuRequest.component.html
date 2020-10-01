@@ -48,7 +48,7 @@
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Status: </span><span style="color: #dc3545;">{{tokuchuRequest.CompletedStatus }}</span></div>
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">Ariba Status On: </span><span style="color: #dc3545;">{{tokuchuRequest.CompletedOn | date :  constants.dateFormat}}</span></div>
   </div>
-  </div>
+</div>
 <div class="card  m-2">
   <div class="card-body" style="overflow:auto !important">
     <p-table [value]="purchasedetails.Item" dataKey="paitemid" [style]="{'width':'100%','overflow':'auto!important'}"
@@ -121,19 +121,16 @@
           </td>
           <td><input [disabled]="!showSubmit" type="number" class="form-control m-0" [(ngModel)]="rowData.StandardLeadtime" /></td>
           <td style="display:inline-block;border:none">
-            <label class="form-label">Category  Level1:</label>&nbsp;<select class="form-control dropdown m-1" [disabled]="!showSubmit" [(ngModel)]="rowData.ProductCategorylevel1id" (change)="ProductCategorylevel1change(rowData.ProductCategorylevel1id)">
-              <option *ngFor="let option of ProductCategory1List" [ngValue]="option.P1CategoryId">{{option.CategoryName}}</option>
-            </select>
-            <label class="form-label m-1">Category  Level2:</label>&nbsp;<select class="form-control dropdown" [disabled]="!showSubmit" [(ngModel)]="rowData.ProductCategorylevel2id">
-              <option *ngFor="let option of ProductCategory2filterList" [ngValue]="option.p2CategoryId">{{option.SubCategoryName}}</option>
-            </select>
+            <label class="form-label"><b>Category  Level1:</b></label>&nbsp;{{rowData.ProductCategorylevel1Name}}
+            <label class="form-label"><b>Category  Level2:</b></label>&nbsp;{{rowData.ProductCategorylevel2Name}} &nbsp;
+            <button type="button" [disabled]="!showSubmit" pButton icon="fa fa-plus" pTooltip="Add Category Levels" (click)="AddCategoryLevels(ri)"></button>
           </td>
         </tr>
       </ng-template>
 
     </p-table>
   </div>
-  </div>
+</div>
 <div class="card  m-2">
   <div *ngIf="tokuchuRequest  && tokuchuRequest.TokuchRequestid" class="row" style="padding-left:20px">
     <div class="m-2" style="font-size: 14px;font-weight: 600;"><span style="color: darkblue;">PreVerified By: </span><span style="color: #dc3545;">{{getEmpName(tokuchuRequest.PreVerifiedBy)}}</span></div>
@@ -186,7 +183,6 @@
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>-->
-    cl
     <div class="col-lg-3 col-md-3 col-sm-3 form-inline">
       &nbsp;&nbsp;<label class="form-label">Verified Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="tokuchuRequest.VerifiedStatus">
         <option value="Select">Select</option>
@@ -258,3 +254,25 @@
     </div>
   </p-footer>
 </p-dialog>
+
+<p-dialog header="Add Category Levels :" [(visible)]="showCatDialog" [responsive]="true" showEffect="fade" [modal]="true" [contentStyle]="{'max-height':'500px'}" [style]="{width: '700px'}">
+  <div class="ui-g ui-fluid">
+    <div class="ui-g-12">
+      <label class="form-label">Category  Level1:</label>&nbsp;<select class="form-control dropdown m-1" [(ngModel)]="ProductCategorylevel1id" (change)="ProductCategorylevel1change(ProductCategorylevel1id)">
+        <option value=null>Select</option>
+        <option *ngFor="let option of ProductCategory1List" [ngValue]="option.P1CategoryId">{{option.CategoryName}}</option>
+      </select>
+      <label class="form-label m-1">Category  Level2:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="ProductCategorylevel2id">
+        <option value=null>Select</option>
+        <option *ngFor="let option of ProductCategory2filterList" [ngValue]="option.p2CategoryId">{{option.SubCategoryName}}</option>
+      </select>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-check" (click)="addCatLevels()" label="Submit"></button>
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showCatDialog')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
+
