@@ -21,6 +21,7 @@ import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
+import { TermsAndConditionsComponent } from './MPR/Admin/TermsAndConditions.component';
 import { UploadVendorComponent } from './MPR/Admin/UploadVendors.component';
 import { VendorEmailComponent } from './MPR/Admin/VendorEmail.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
@@ -73,7 +74,7 @@ import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.compone
 import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+//import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   imports: [
@@ -107,7 +108,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     MatInputModule,
         MatFormFieldModule,
         NgMultiSelectDropDownModule,
-        NgbModule
+        //NgbModule
   ],
   declarations: [
     PagesComponent,
@@ -127,6 +128,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ProcurementSourcesComponent,
     ScopesComponent,
     ProjectManagersComponent,
+    TermsAndConditionsComponent,
     UploadVendorComponent,
     VendorEmailComponent,
     MPRPageComponent,

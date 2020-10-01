@@ -107,7 +107,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'PA Approver Cofiguration',
                 link: '/SCM/EmployeeConfiguration',
                 icon: 'layers-outline'
-            },
+          },
+          {
+            title: 'Terms And Conditions',
+            link: '/SCM/TermsAndConditions',
+            icon: 'layers-outline'
+          },
             {
                 title: 'PA Slabs',
                 link: '/SCM/AddSlab',

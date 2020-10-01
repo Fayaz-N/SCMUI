@@ -1,0 +1,119 @@
+<h4 class="text-center">Terms And Conditions </h4>
+<b>Add Term Group:</b> &nbsp;<button type="button" pButton icon="fa fa-plus" pTooltip="Add Term Group" (click)="ShowTermGroupDialogBox('')"></button><br /><br />
+<div class="card compar-card mt-3" >
+   <div class="card-body" style="overflow:auto !important">
+  <p-table #dt [value]="YILTermsGroupList" dataKey="TermGroupId" [paginator]="true" [rows]="10" [style]="{'width':'100%','overflow':'auto!important'}">
+    <ng-template pTemplate="header">
+      <tr class="mprltbldata">
+        <th rowspan="2" class="text-right" style="width:50px">S.No</th>
+        <th rowspan="2" class="text-center" style="width:100px">Term Group</th>
+        <th rowspan="2" class="text-center" style="width:50px">Edit</th>
+        <th rowspan="2" class="text-center" style="width:50px">Delete</th>
+        <th rowspan="2" class="text-center" style="width:80px">Add Terms & Conditions</th>
+        <th colspan="5" style="width:600px;text-align: center">Terms And Conditions</th>
+      </tr>
+      <tr class="mprltbldata">
+        <th style="text-align: right;width:50px;">S.No</th>
+        <th style="width:500px;text-align: center;">Terms</th>
+        <th style="width:5px;text-align: center;">Edit</th>
+        <th style="width:5px;text-align: center;">Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+      <tr class="ui-widget-header">
+        <td class="ptable-cell text-center">{{rowIndex +1}}</td>
+        <td class="ptable-cell text-left">{{rowData.TermGroup}}</td>
+        <td class="ptable-cell text-center">
+          <button type="button" pButton icon="fa fa-pencil" (click)="ShowTermGroupDialogBox(rowData)"></button>
+        </td>
+        <td class="ptable-cell text-center">
+          <button type="button" pButton icon="fa fa-trash" (click)="DeleteTermGroup(rowData.TermGroupId)"></button>
+        </td>
+        <td class="ptable-cell text-center"><button type="button" pButton icon="fa fa-plus" (click)="ShowTermsAndConditionsDialogBox(rowData,'')"></button></td>
+        <td colspan="4" class="ptable-cell" style="text-align:center">
+          <a href="#" *ngIf="rowData.YILTermsandConditions.length>0" [pRowToggler]="rowData">
+            <i [ngClass]="expanded ? 'fa fa-fw fa-chevron-circle-down' : 'fa fa-fw fa-chevron-circle-right'" style="font-size:25px;"></i>
+          </a>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-rowData let-rowIndex="rowIndex">
+      <tr *ngFor="let termCond of rowData.YILTermsandConditions; let k=index">
+        <td colspan="5"></td>
+        <td class="ptable-cell text-right">{{k +1}}</td>
+        <td style="text-align:left;" class="ptable-cell">
+          {{termCond.Terms}}
+        </td>
+        <td class="ptable-cell text-center">
+          <button type="button" pButton icon="fa fa-pencil" (click)="ShowTermsAndConditionsDialogBox(rowData,termCond)"></button>
+        </td>
+        <td class="ptable-cell text-center">
+          <button type="button" pButton icon="fa fa-trash" (click)="DeleteTermsAndConditions(termCond.TermId)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+  </div>
+
+
+
+<p-dialog header="Add Term Group" [(visible)]="ShowTermGroupDialog" showEffect="fade" [modal]="true" [responsive]="true" [style]="{width: '50%'}">
+  <div class="row col-lg-12 col-md-12 col-sm-12">
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Term Group:</label>
+    </div>
+    <div class='col-md-6 col-lg-6 col-sm-6'>
+      <textarea class="form-control" ngModel maxlength="30" [(ngModel)]="YILTermsGroup.TermGroup"></textarea>
+    </div>
+  </div>
+
+  <div class="row col-lg-12 col-md-12 col-sm-12 mt-2">
+    <button style="margin-left:43%" type="submit" class="btn btn-outline-rounded btn-info" (click)="UpdateYILTermsGroup()">Submit</button>
+  </div>
+</p-dialog>
+
+<p-dialog header="Add Terms And Conditions" [(visible)]="ShowTermsAndConditionsDialog" showEffect="fade" [modal]="true" [responsive]="true" [style]="{width: '60%'}">
+  <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label"><b>Term Group :</b></label>
+    </div>
+    <div class='col-md-4 col-lg-4 col-sm-4'>
+      <label class="form-label">{{YILTermsGroup.TermGroupId}}-{{YILTermsGroup.TermGroup}}</label>
+    </div>
+   
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Buyer Group:</label>
+    </div>
+    <div class='col-md-4 col-lg-4 col-sm-4'>
+      <select class="form-control" [(ngModel)]="YILTermsandCondition.BuyerGroupId">
+        <option value=null>Select</option>
+        <option *ngFor="let option of buyergroups" [value]="option.BuyerGroupId">
+          {{option.BuyerGroup}}
+        </option>
+      </select>
+    </div>
+  </div>
+  <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Default Select:</label>
+    </div>
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <select class="form-control" [(ngModel)]="YILTermsandCondition.DefaultSelect">
+        <option value=null>Select</option>
+        <option value=true>YES</option>
+        <option value=false>NO</option>
+      </select>
+    </div>
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Term:</label>
+    </div>
+    <div class='col-md-4 col-lg-4 col-sm-4'>
+      <textarea class="form-control" ngModel maxlength="250" [(ngModel)]="YILTermsandCondition.Terms"></textarea>
+    </div>
+  </div>
+  <div class="row col-lg-12 col-md-12 col-sm-12" style="margin-top: 10px">
+    <button style="margin-left:43%" type="submit" class="btn btn-outline-rounded btn-info" (click)="UpdateYILTermsAndConditions()">Submit</button>
+  </div>
+</p-dialog>
+

@@ -13,6 +13,7 @@ import { BuyerGroupsComponent } from './MPR/Admin/BuyerGroups.component';
 import { DepartmentComponent } from './MPR/Admin/Departments.component';
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.component';
+import { TermsAndConditionsComponent } from './MPR/Admin/TermsAndConditions.component';
 import { UploadVendorComponent } from './MPR/Admin/UploadVendors.component';
 import { VendorEmailComponent } from './MPR/Admin/VendorEmail.component';
 import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
@@ -78,6 +79,7 @@ const routes: Routes = [{
     { path: 'Departments', component: DepartmentComponent, canActivate: [AuthGuard] },
     { path: 'Scopes', component: ScopesComponent, canActivate: [AuthGuard] },
     { path: 'ProcurementSource', component: ProcurementSourcesComponent, canActivate: [AuthGuard] },
+    { path: 'TermsAndConditions', component: TermsAndConditionsComponent, canActivate: [AuthGuard] },
     { path: 'UploadVendor', component: UploadVendorComponent, canActivate: [AuthGuard] },
     { path: 'VendorEmailTemplate', component: VendorEmailComponent, canActivate: [AuthGuard] },
     { path: 'ProjectManager', component: ProjectManagersComponent, canActivate: [AuthGuard] },

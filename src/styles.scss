@@ -213,7 +213,9 @@ body .ui-radiobutton .ui-radiobutton-box {
 .ui-dialog-mask {
   position: initial;
 }
-
+.ui-table table {
+  table-layout: unset !important;
+}
 .popoverDiv {
   height: max-content !important;
   width: max-content !important;

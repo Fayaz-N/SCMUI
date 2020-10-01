@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess } from '../Models/mpr';
+import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, Employee, MPRBuyerGroup, MPRApprovers, VendorMaster, sendMailObj, DeleteMpr, materialUpdate, vendorRegfilters, VendorRegApprovalProcess, YILTermsGroup, YILTermsandCondition } from '../Models/mpr';
 import { map } from 'rxjs/operators';
 import { constants } from '../Models/MPRConstants'
 
@@ -170,7 +170,7 @@ export class MprService {
   uploadFile(formdata: FormData): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/UploadFile/', formdata)
       .pipe(map(data => {
-        return data;     
+        return data;
       }))
   }
   uploadExcel(formdata: FormData): Observable<any> {
@@ -189,7 +189,7 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/DownloadFile/' + fileName, this.httpOptions);
   }
   copyMprRevision(mpr: mprRevision, repeatOrder: boolean, revise: boolean): Observable<any> {
-    return this.http.post<any>(this.url + 'MPR/copyMprRevision/' + repeatOrder+"/"+ revise, mpr, this.httpOptions);
+    return this.http.post<any>(this.url + 'MPR/copyMprRevision/' + repeatOrder + "/" + revise, mpr, this.httpOptions);
   }
 
   DeleteMpr(deleteinfo: DeleteMpr): Observable<any> {
@@ -202,16 +202,16 @@ export class MprService {
   updateItemId(data: materialUpdate): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/updateItemId/', data, this.httpOptions);
   }
-//save file in cloud server
+  //save file in cloud server
   InsertDocument(formData: FormData): Observable<any> {
-    return this.http.post<any>(this.vscmurl + 'UploadFile/' , formData)
+    return this.http.post<any>(this.vscmurl + 'UploadFile/', formData)
       .pipe(map(data => { return data }));
-    }
-    Loadstoragelocationbydepartment(): Observable<any> {
-        return this.http.get<any>(this.url + 'MPR/Loadstoragelocationsbydepartment', this.httpOptions);
-    }
-    LoadJobCodesbysaleorder(saleorder: number): Observable<any> {
-        return this.http.get<any>(this.url + 'MPR/LoadJobCodesbysaleorder/' + saleorder);
+  }
+  Loadstoragelocationbydepartment(): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/Loadstoragelocationsbydepartment', this.httpOptions);
+  }
+  LoadJobCodesbysaleorder(saleorder: number): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/LoadJobCodesbysaleorder/' + saleorder);
   }
 
   //updateVendorRegProcess
@@ -229,16 +229,16 @@ export class MprService {
     return this.http.get<any>(this.url + 'MPR/GetStateList', this.httpOptions);
   }
   GetDocumentTypeList(): Observable<any> {
-   return this.http.get<any>(this.url + 'MPR/GetDocumentTypeList', this.httpOptions);
+    return this.http.get<any>(this.url + 'MPR/GetDocumentTypeList', this.httpOptions);
   }
   GetNatureofBusinessList(): Observable<any> {
-   return this.http.get<any>(this.url + 'MPR/GetNaturOfBusiness', this.httpOptions);
+    return this.http.get<any>(this.url + 'MPR/GetNaturOfBusiness', this.httpOptions);
   }
   getvendordetails(vendorid: any): Observable<any> {
-   return this.http.get<any>(this.url + 'MPR/Getvendordetails/' + vendorid, this.httpOptions);
+    return this.http.get<any>(this.url + 'MPR/Getvendordetails/' + vendorid, this.httpOptions);
   }
   SaveVendorDetails(vendorList: any): Observable<any> {
-   return this.http.post<any>(this.url + 'MPR/SaveVendorDetails/', JSON.stringify(vendorList), this.httpOptions);
+    return this.http.post<any>(this.url + 'MPR/SaveVendorDetails/', JSON.stringify(vendorList), this.httpOptions);
   }
 
   UploadVendorRegFile(formData: FormData): Observable<any> {
@@ -247,6 +247,23 @@ export class MprService {
   }
   deleteRegAttachedfile(redDoc: any): Observable<any> {
     return this.http.post<any>(this.url + 'MPR/deleteRegAttachedfile/', redDoc, this.httpOptions);
+  }
+
+  GetYILTermGroups(): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/GetYILTermGroups/', this.httpOptions);
+  }
+  UpdateYILTermsGroup(YILTermGroup: YILTermsGroup): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/UpdateYILTermsGroup', YILTermGroup, this.httpOptions);
+  }
+  UpdateYILTermsAndConditions(YILTermsandCondition: YILTermsandCondition): Observable<any> {
+    return this.http.post<any>(this.url + 'MPR/UpdateYILTermsAndConditions', YILTermsandCondition, this.httpOptions);
+  }
+
+  DeleteTermGroup(TermGroupId: number, DeletedBy: string): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/DeleteTermGroup/' + TermGroupId + '/' + DeletedBy);
+  }
+  DeleteTermsAndConditions(TermId: number,DeletedBy: string): Observable<any> {
+    return this.http.get<any>(this.url + 'MPR/DeleteTermsAndConditions/' + TermId + '/' + DeletedBy);
   }
 
 }

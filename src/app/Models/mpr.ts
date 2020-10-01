@@ -49,10 +49,10 @@ export class MPRItemInfoes {
   POPrice: string;
   PORemarks: string;
   Materialdescription: string;
-    DeleteFlag: boolean;
-    ProjectDefinition: string;
-    WBS: string;
-    SystemModel: string
+  DeleteFlag: boolean;
+  ProjectDefinition: string;
+  WBS: string;
+  SystemModel: string
 }
 
 
@@ -162,8 +162,8 @@ export class mprRevision {
   MPRStatusTracks: MPRStatusTrack;
   MPRTargetedSpendSupportingDocs: MPRTargetedSpendSupportingDoc;
   MPRVendorDetails: Array<MPRVendorDetail> = [];
-    MPRStatusTrackDetails: Array<any> = []
-    saleorderdeatils: SaleOrderDetails;
+  MPRStatusTrackDetails: Array<any> = []
+  saleorderdeatils: SaleOrderDetails;
   MPRDetail: MPRDetail;
   RequisitionId: number;
   DepartmentId: number;
@@ -280,20 +280,20 @@ export class mprRevision {
   StorageLocation: string;
   soldtopartyname: string;
   shiptopartyname: string;
-    Endusername: string;
-    Enduser: string;
-    shiptoparty: string;
+  Endusername: string;
+  Enduser: string;
+  shiptoparty: string;
   soldtoparty: string;
   MPRAssignNames: string;
 }
 
 export class SaleOrderDetails {
-    soldtopartyname: string
-    shiptopartyname: string;
-    Endusername: string;
-    shiptoparty: string;
-    soldtoparty: string;
-    Enduser: string;
+  soldtopartyname: string
+  shiptopartyname: string;
+  Endusername: string;
+  shiptoparty: string;
+  soldtoparty: string;
+  Enduser: string;
 }
 
 export class MPRStatusUpdate {
@@ -535,7 +535,7 @@ export class VendorRegistration {
   deleteId: string;
   AccountHolderName: string;
   State: string;
-  StateId:number
+  StateId: number
   LocalBranch: string;
   CheckedBy: string;
   CheckedOn: Date;
@@ -580,4 +580,28 @@ export class VendorDocDetailsList {
   Deleteflag: boolean
   PhysicalPath: string;
   Id: number;
+}
+export class YILTermsGroup {
+  TermGroupId: number;
+  TermGroup: string;
+  CreatedBy: string;
+  CreatedDate: Date
+  DeleteFlag: boolean;
+  DeletedBy: string;
+  DeletedDate: Date;
+  YILTermsandConditions: Array<YILTermsandCondition> = [];
+}
+
+export class YILTermsandCondition {
+  TermId: number;
+  TermGroupId: number;
+  BuyerGroupId: number;
+  Terms: string;
+  DisplayOrder: number;
+  DefaultSelect: boolean;
+  DeleteFlag: boolean;
+  CreatedBy: string;
+  CreatedDate: Date;
+  DeletedBy: string;
+  DeletedDate: Date;
 }

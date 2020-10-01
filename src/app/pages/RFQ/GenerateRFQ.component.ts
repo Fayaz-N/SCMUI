@@ -124,12 +124,15 @@ export class GenerateRFQComponent implements OnInit {
   }
 
   getYILTermsAndConditions() {
+    this.spinner.show();
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select term.TermId,term.TermGroupId,term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term left outer join MPRRevisions mpr on mpr.BuyerGroupId=term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId;
+    this.dynamicData.query = "select term.TermId,term.TermGroupId,tg.TermGroup,term.BuyerGroupId, term.Terms, CASE WHEN term.DefaultSelect = 0 THEN 'false' ELSE 'true' END AS DefaultSelect from yiltermsandconditions term inner join YILTermsGroup tg on tg.TermGroupId=term.TermGroupId left outer join MPRRevisions mpr on mpr.BuyerGroupId = term.BuyerGroupId or  term.BuyerGroupId is NULL where mpr.RevisionId = " + this.MPRRevisionId+" and term.DeleteFlag = 0 order by TermGroupId, TermId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.spinner.hide()
       this.YILTermsAndConditions = data;
     })
   }
+
   openVendorDialog(dialogName: string) {
     this[dialogName] = true;
     this.vendorDetails = new MPRVendorDetail();
@@ -713,7 +716,11 @@ export class GenerateRFQComponent implements OnInit {
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
   }
-
+  navigateTotermsMaster() {
+    this.router.navigate([]).then(result => {
+      window.open('/SCM/TermsAndConditions/', '_blank');
+    });
+  }
 }
 
 
