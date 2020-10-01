@@ -55,14 +55,14 @@ export class TermsAndConditionsComponent implements OnInit {
   }
 
 
-  ShowTermGroupDialogBox(Details: YILTermsGroup) {
+  ShowTermGroupDialogBox(Details: any) {
     this.ShowTermGroupDialog = true;
     this.YILTermsGroup = new YILTermsGroup();
     if (Details) 
       this.YILTermsGroup = Details;
   }
 
-  ShowTermsAndConditionsDialogBox(Details: YILTermsGroup, termsDetails: YILTermsandCondition) {
+  ShowTermsAndConditionsDialogBox(Details: any, termsDetails: any) {
     this.ShowTermsAndConditionsDialog = true;
     this.YILTermsandCondition = new YILTermsandCondition();
     this.YILTermsGroup = Details;
