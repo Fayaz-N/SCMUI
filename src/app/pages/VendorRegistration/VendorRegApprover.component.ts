@@ -85,7 +85,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       PANNo: ['', [Validators.required]],
       CINNo: ['', [Validators.required]],
       TanNo: ['', [Validators.required]],
-      //PaymentTerms: ['', [Validators.required]],
+      PaymentTerms: ['', [Validators.required]],
       BankerName: ['', [Validators.required]],
       LocationOrBranch: ['', [Validators.required]],
       AccNo: ['', [Validators.required]],
@@ -97,7 +97,8 @@ export class VendorRegisterApproverComponent implements OnInit {
     });
     //remove validation for unwanted fields.
     this.VendorRegister.controls['Fax'].clearValidators();
-    this.VendorRegister.controls['PhoneExn'].clearValidators();
+    //this.VendorRegister.controls['PhoneExn'].clearValidators();
+    this.VendorRegister.controls['PaymentTerms'].clearValidators();
     this.VendorRegister.controls['AltEmailidForSales'].clearValidators();
     this.VendorRegister.controls['AltEmailidForOperations'].clearValidators();
     this.VendorRegister.controls['AltEmailidForLogistics'].clearValidators();

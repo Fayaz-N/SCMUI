@@ -112,7 +112,7 @@
     <div class="tab-pane">
       <div class="row m-2">
         <div class="col-xs-3 col-md-3 col-sm-3 form-group">
-          <label>Phone & Extn:</label>
+          <label>Phone & Extn:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
           <!-- <input class="form-control input-md" #PhoneExn="ngModel"  required id="PhoneExn" name="PhoneExn" type="text" pattern="^([^(\x00-\x7F)*]+(\s)*|(\w+){3}(\s)*(\w+)*(\s)*)+$" placeholder="Phone & Extn" [(ngModel)]="Registration.PhoneExn"> -->
           <input type="text" class="form-control" ngModel maxlength="20" formControlName="PhoneExn" [(ngModel)]="VendorData.PhoneAndExtn" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.PhoneExn.errors}" />
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.PhoneExn.errors" class="invalid-feedback">Enter Phone & Extn.</span>
@@ -355,15 +355,16 @@
     <div class="strike">
       <span class="headername">Payment Terms</span>
     </div>
-    <div class="tab-pane" style="padding-top:0%;">
+    <div *ngIf="VendorData" class="tab-pane" style="padding-top:0%;">
       <div class="row form-inline m-3" *ngFor="let term of paymentTermsList;">
         <div class="col-xs-12 col-md-12 col-sm-12 form-group">
           <input type="radio" name="terms" [checked]="term.PaymentTermId === VendorData.PaymentTermId" (change)="termChange(term)" style="height:20px;width:20px">&nbsp;&nbsp;<b>{{term.PaymentTermDescription}}</b>
+          <!--<input type="radio" name="PaymentTerms" formControlName="PaymentTerms" [checked]="term.PaymentTermId === VendorData.PaymentTermId" (change)="termChange(term)" style="height:20px;width:20px">&nbsp;&nbsp;<b>{{term.PaymentTermDescription}}</b>-->
         </div>
       </div>
       <div class="row form-inline m-2" *ngIf="VendorData.PaymentTermId==19">
         <div class="col-xs-12 col-md-12 col-sm-12 form-group">
-          <input type="text" class="form-control" [(ngModel)]="VendorData.PaymentTerms">
+          <input type="text" class="form-control" formControlName="PaymentTerms" [(ngModel)]="VendorData.PaymentTerms">
         </div>
       </div>
     </div>

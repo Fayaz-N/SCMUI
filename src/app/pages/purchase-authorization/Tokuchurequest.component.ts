@@ -234,8 +234,15 @@ export class TokuchuRequestComponent implements OnInit {
   }
 
   selectItem(details: any, event: any) {
-    var errorText = "";
     var index = this.selectedItems.findIndex(x => x.paitemid == details.paitemid);
+    if (details.materialid.indexOf('BOP1') <= -1) {
+      this.messageService.add({ severity: 'error', summary: 'Validation', detail: "Select BOP1 Items" });
+      (<HTMLInputElement>document.getElementById("item" + details.paitemid)).checked = false;
+      if (index > -1)
+        this.selectedItems.splice(index, 1);
+      return;
+    }
+    var errorText = "";
     if (event.currentTarget.checked) {
       if (!details.MfgModelNo || !details.MfgPartNo || !details.VendorModelNo || !details.ManufacturerName) {
         if (!details.MfgModelNo)
