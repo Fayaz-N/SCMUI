@@ -50,14 +50,14 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
       if (localStorage.getItem("statusDetails")) {
           this.reportinput = JSON.parse(localStorage.getItem("statusDetails"));
           console.log(" this.reportinput", this.reportinput)
-          //this.reportinput.Fromdate = "2020-09-01";
+          //this.reportinput.Fromdate = "2020-10-01";
           //this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprstatusreport(this.reportinput);
           localStorage.removeItem("statusDetails");
           this.reportinput.DepartmentId = this.reportinput.DepartmentId;
       }
       else {
-          this.reportinput.Fromdate = "2020-09-01";
+          this.reportinput.Fromdate = "2020-10-01";
           this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprstatusreport(this.reportinput);
       }

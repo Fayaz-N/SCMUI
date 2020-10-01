@@ -52,7 +52,7 @@ export class MPRStatusReportsComponent implements OnInit {
     this.statuslist = new Array<any>();
         this.search = new statussearch();
         //this.reportinput.Fromdate = this.datePipe.transform("01" + '-' + new Date().getMonth().toString() + '-' + new Date().getFullYear().toString(), "yyyy-mm-dd");
-        this.reportinput.Fromdate = "2020-09-01";
+        this.reportinput.Fromdate = "2020-10-01";
         console.log("this.reportinput.Fromdate", this.reportinput.Fromdate)
         this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.GetMprstatusreport(this.reportinput);

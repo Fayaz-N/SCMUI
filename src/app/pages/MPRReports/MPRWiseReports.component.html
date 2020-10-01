@@ -79,8 +79,10 @@
           <th>JobCode</th>
           <th>JobName</th>
           <th>TargetSpend</th>
-          <th>PO Price</th>
+          <th>POPrice</th>
           <th>Discount</th>
+          <th>Freight</th>
+          <th>PF Amount</th>
           <th>PODate</th>
           <th>PONumber</th>
           <th>DeliveryRequiredBy</th>
@@ -99,13 +101,15 @@
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
           <td>{{app.TargetSpend}}</td>
-          <td>{{app.PAamount}}</td>
-          <td>{{app.Discountamount}}</td>
+          <td>{{app.UnitPrice | currency:'INR'}}</td>
+          <td>{{app.Discountamount | currency:'INR'}}</td>
+          <td>{{app.freightamounts | currency:'INR'}}</td>
+          <td>{{app.pfamounts | currency:'INR'}}</td>
           <td>{{app.PODate}}</td>
           <td>{{app.pono}}</td>
-          <td>{{app.DeliveryRequiredBy |date}}</td>
+          <td>{{app.DeliveryRequiredBy |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Remarks}}</td>
-          <td>{{app.PAStatusUpdate |date}}</td>
+          <td>{{app.PAStatusUpdate |date: 'dd/MM/yyyy'}}</td>
         </tr>
       </tbody>
       <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->

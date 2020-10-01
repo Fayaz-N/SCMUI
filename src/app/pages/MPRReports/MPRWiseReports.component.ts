@@ -45,7 +45,7 @@ export class MPRWiseReportsComponent implements OnInit {
       this.router.navigateByUrl("Login");
       }
       this.report = new ReportInputModel();
-      this.report.Fromdate = "2020-09-01";
+      this.report.Fromdate = "2020-10-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
@@ -71,6 +71,7 @@ export class MPRWiseReportsComponent implements OnInit {
     })
     }
     GetMprWisestatusreport(report: ReportInputModel) {
+        console.log("report", report)
         this.spinner.show();
         this.paService.Getmprstatuswise(report).subscribe(data => {
             this.spinner.hide();
