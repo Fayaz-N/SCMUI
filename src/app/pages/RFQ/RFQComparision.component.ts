@@ -96,7 +96,7 @@ export class RFQComparisionComponent implements OnInit {
           rfqQuoteItems.TargetSpend = this.RfqCompareItems[i].TargetSpend;
           rfqQuoteItems.QuotationQty = this.RfqCompareItems[i].QuotationQty;//rfqitems
           rfqQuoteItems.vendorQuoteQty = this.RfqCompareItems[i].vendorQuoteQty;//rfqitemsinfo
-          rfqQuoteItems.UnitPrice = this.RfqCompareItems[i].UnitPrice;//rfqitemsinfo
+          rfqQuoteItems.UnitPrice = parseFloat(this.RfqCompareItems[i].UnitPrice).toFixed(2);//rfqitemsinfo
           rfqQuoteItems.RfqDocStatus = this.RfqCompareItems[i].RfqDocStatus;//rfqdocuments
           rfqQuoteItems.Remarks = this.RfqCompareItems[i].Remarks; //rfqiteminfo
           this.cols.forEach(vendor => {
@@ -107,15 +107,17 @@ export class RFQComparisionComponent implements OnInit {
               this.createEmptyVendor();
             }
             this.discountCalculation(this.vendorDetails);
-            this.vendorDetails.FreightAmount = (this.calculateFRAmount(this.vendorDetails)).toString();
-            this.vendorDetails.PFAmount = (this.calculatePFamount(this.vendorDetails)).toString();
-            this.vendorDetails.HandlingAmount = ((this.tp) * (vendor.HandlingPercentage / 100)).toString();
+            this.vendorDetails.UnitPrice = parseFloat(this.vendorDetails.UnitPrice).toFixed(2);
+            this.vendorDetails.FreightAmount = parseFloat(this.calculateFRAmount(this.vendorDetails).toString()).toFixed(2);
+            //this.vendorDetails.FreightAmount = parseFloat(this.vendorDetails.FreightAmount).toFixed(2);
+            this.vendorDetails.PFAmount = parseFloat((this.calculatePFamount(this.vendorDetails)).toString()).toFixed(2);
+            this.vendorDetails.HandlingAmount = parseFloat(((this.tp) * (vendor.HandlingPercentage / 100)).toString()).toFixed(2);
             this.vendorDetails.ImportFreightAmount = ((this.tp) * (vendor.ImportFreightPercentage / 100)).toString();
-            this.vendorDetails.InsuranceAmount = ((this.tp) * (vendor.InsurancePercentage / 100)).toString();
-            this.vendorDetails.DutyAmount = ((this.tp) * (vendor.DutyPercentage / 100)).toString();
-            this.vendorDetails.MaterialTotalPrice = (this.calculateItemToatlPriceWOH(this.vendorDetails)).toString();
-            this.vendorDetails.HandlingChargesTotal = (this.calculateItemToatlPriceHC(this.vendorDetails)).toString();
-            this.vendorDetails.TotalPrice = (this.calculateItemToatlPriceWH(this.vendorDetails)).toString();
+            this.vendorDetails.InsuranceAmount = parseFloat(((this.tp) * (vendor.InsurancePercentage / 100)).toString()).toFixed(2);
+            this.vendorDetails.DutyAmount = parseFloat(((this.tp) * (vendor.DutyPercentage / 100)).toString()).toFixed(2);
+            this.vendorDetails.MaterialTotalPrice = parseFloat((this.calculateItemToatlPriceWOH(this.vendorDetails)).toString()).toFixed(2);
+            this.vendorDetails.HandlingChargesTotal = parseFloat((this.calculateItemToatlPriceHC(this.vendorDetails)).toString()).toFixed(2);
+            this.vendorDetails.TotalPrice = parseFloat((this.calculateItemToatlPriceWH(this.vendorDetails)).toString()).toFixed(2);
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
@@ -318,7 +320,7 @@ export class RFQComparisionComponent implements OnInit {
 
   //calculate total handling charges
   calculateItemToatlPriceHC(vendor) {
-    return  parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
+    return parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
   }
   //calculate material total price including handling charges
   calculateItemToatlPriceWH(vendor) {
