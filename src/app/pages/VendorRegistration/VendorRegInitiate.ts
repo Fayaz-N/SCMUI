@@ -95,10 +95,12 @@ export class VendorRegInitiateComponent implements OnInit {
 
   //getPaymentTerm text
   getPaymentTermTxt(PaymentTermId: any, PaymentTerms: any) {
-    if (PaymentTermId == 19)
-      return PaymentTerms;
-    else
-      return this.paymentTermsList.filter(li => li.PaymentTermId == PaymentTermId)[0].PaymentTermDescription;
+    if (this.paymentTermsList.length > 0) {
+      if (PaymentTermId == 19)
+        return PaymentTerms;
+      else
+        return this.paymentTermsList.filter(li => li.PaymentTermId == PaymentTermId)[0].PaymentTermDescription;
+    }
   }
 
   //Initiate Registration process to vendor

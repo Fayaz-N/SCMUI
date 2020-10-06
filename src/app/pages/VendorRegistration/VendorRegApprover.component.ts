@@ -21,6 +21,7 @@ export class VendorRegisterApproverComponent implements OnInit {
   public dynamicData = new DynamicSearchResult();
   public paymentTermsList: Array<any> = [];
   StateList: any[] = [];
+  CurrencyList: any[] = [];
   NaturOfBusinessList: any[] = [];
   DocumentList: any[] = [];
   isDisabledaddress = true;
@@ -47,6 +48,7 @@ export class VendorRegisterApproverComponent implements OnInit {
    
     this.VendorData = new VendorRegistration();
     this.VendorData.DocDetailsLists = [];
+    this.VendorData.ESI = "1";
     this.VendorRegister = this.formBuilder.group({
       orders: [''],
       State: ['', [Validators.required]],
@@ -93,6 +95,9 @@ export class VendorRegisterApproverComponent implements OnInit {
       AccountHolderName: ['', [Validators.required]],
       NaturOfBusiness: ['', [Validators.required]],
       SpecifyNatureOfBusiness: ['', [Validators.required]],
+      SwiftCode: ['', [Validators.required]],
+      Currency: ['', [Validators.required]],
+      ESI: ['', [Validators.required]],
       //BankDetails: ['', [Validators.required]],
     });
     //remove validation for unwanted fields.
@@ -115,9 +120,12 @@ export class VendorRegisterApproverComponent implements OnInit {
     this.VendorRegister.controls['CINNo'].clearValidators();
     this.VendorRegister.controls['TanNo'].clearValidators();
     this.VendorRegister.controls['SpecifyNatureOfBusiness'].clearValidators();
+    this.VendorRegister.controls['ESI'].clearValidators();
+    this.VendorRegister.controls['SwiftCode'].clearValidators();
 
     //Load drop downs and data binding
     this.StateListdata();
+    this.getCurrencyData();
     this.NOfBusinessListdata();
     this.DocumentListdata();
     this.getPaymentTerms();
@@ -128,6 +136,17 @@ export class VendorRegisterApproverComponent implements OnInit {
   StateListdata() {
     this.MprService.GetStateList().subscribe(res => {
       this.StateList = res;
+    });
+  }
+
+  //get Currency master
+  getCurrencyData() {
+    this.spinner.show();
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select * from CurrencyMaster where DeleteFlag=0";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.spinner.hide();
+      this.CurrencyList = data;
     });
   }
 
@@ -195,6 +214,10 @@ export class VendorRegisterApproverComponent implements OnInit {
     this.MprService.getvendordetails(this.VendorDataLocDetails.Vendorid).subscribe(data => {
       this.spinner.hide();
       this.VendorData = data;
+      if (this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length > 0)
+        this.VendorData.ESI = "1";
+      else
+        this.VendorData.ESI = "0";
       this.natureOfBusinessChange();
       //this.listOfFiles1 = this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 1);
       //this.VendorRegister.controls['Onetimevendor'].setValue(data["Onetimevendor"])
@@ -236,8 +259,22 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Cancelled Cheque Copy' });
       return;
     }
+    if (this.VendorData.MSMERequired == true && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 15).length <= 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select MSME Document' });
+      return;
+    }
+    if (this.VendorData.ESI == "1" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length <= 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select ESI/PF' });
+      return;
+    }
+
+    if (this.VendorData.ESI == "0" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 16).length <= 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Declaration On Letter Head' });
+      return;
+    }
     else {
       this.VendorData.State = this.StateList.filter(li => li.StateId == this.VendorData.StateId)[0].StateName;
+      this.VendorData.CurrencyName = this.CurrencyList.filter(li => li.CurrencyId == this.VendorData.CurrencyId)[0].CurrencyName;
 
       this.VendorData.Onetimevendor == true ? this.VendorData.Onetimevendor = true : this.VendorData.Onetimevendor = false;
       this.VendorData.EvaluationRequired == true ? this.VendorData.EvaluationRequired = true : this.VendorData.EvaluationRequired = false;
@@ -259,9 +296,13 @@ export class VendorRegisterApproverComponent implements OnInit {
 
   }
 
-  fileattached(event: any, docId: string) {
+  fileattached(event: any, docId: any) {
     let fileList: FileList = event.target.files;
-    var docTypeId = document.getElementById(docId)["value"];
+    var docTypeId;
+    if (docId == "15")
+      docTypeId = docId;
+    else
+      docTypeId = document.getElementById(docId)["value"];
     let idanddocid = this.VendorDataLocDetails.VUniqueId + "_" + this.VendorDataLocDetails.Vendorid + "_" + docTypeId + "_" + "VendorReg";
     let formData: FormData = new FormData();
     if (fileList.length > 0) {

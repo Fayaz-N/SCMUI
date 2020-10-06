@@ -478,6 +478,7 @@ export class VendorRegistration {
   Onetimevendor: boolean;
   EvaluationRequired: boolean;
   MSMERequired: boolean;
+  ESI: string;
   PerformanceVerificationRequired: boolean
   VendorNoInSAP: string;
   RequestedOn: Date;
@@ -557,6 +558,9 @@ export class VendorRegistration {
   initiateVendorEmailId: string;
   VerifierName: string;
   VUniqueId: string;
+  CurrencyId: number;
+  CurrencyName: string;
+  SwiftCode: string = "";
 }
 export class vendorRegfilters {
   FromDate: Date;

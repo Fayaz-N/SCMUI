@@ -1446,6 +1446,8 @@ export class MPRPageComponent implements OnInit {
       if (this.showRfqGen)
         this.showRfqGen = false;
       this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
+      this.showBuyerGrp = this.showgenPA = false;//hide links
+      this.displayFooter = false;
     }
   }
 
