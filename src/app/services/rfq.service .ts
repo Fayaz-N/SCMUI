@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice, RFQCurrencyMaster } from '../Models/rfq';
 
 @Injectable({
   providedIn: 'root'
@@ -89,4 +89,13 @@ export class RfqService {
   updateHandlingCharges(RfqItems: Array<RfqItemModel>): Observable<any> {
     return this.http.post<any>(this.url + 'RFQ/updateHandlingCharges/', RfqItems, this.httpOptions);
   }
+
+  UpdateNewCurrencyMaster(RFQCurrencyMaster: RFQCurrencyMaster): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/UpdateNewCurrencyMaster/', RFQCurrencyMaster, this.httpOptions);
+  }
+
+  RemoveMasterCurrencyById(currencyId: number, DeletedBy: string): Observable<any> {
+    return this.http.get<any>(this.url + 'RFQ/RemoveMasterCurrencyById/' + currencyId + '/' + DeletedBy);
+  }
+
 }

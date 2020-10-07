@@ -22,6 +22,7 @@ import { ProcurementSourcesComponent } from './MPR/Admin/ProcurementSources.comp
 import { ScopesComponent } from './MPR/Admin/Scopes.component';
 import { ProjectManagersComponent } from './MPR/Admin/ProjectManagers.component';
 import { TermsAndConditionsComponent } from './MPR/Admin/TermsAndConditions.component';
+import { CurrencyMasterComponent } from './MPR/Admin/CurrencyMaster.component';
 import { UploadVendorComponent } from './MPR/Admin/UploadVendors.component';
 import { VendorEmailComponent } from './MPR/Admin/VendorEmail.component';
 import { MPRPageComponent } from './MPR/MPRPage.component';
@@ -129,6 +130,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     ScopesComponent,
     ProjectManagersComponent,
     TermsAndConditionsComponent,
+    CurrencyMasterComponent,
     UploadVendorComponent,
     VendorEmailComponent,
     MPRPageComponent,

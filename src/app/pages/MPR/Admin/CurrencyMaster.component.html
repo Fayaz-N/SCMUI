@@ -1,0 +1,59 @@
+<h4 class="text-center">Currency Master </h4>
+<b>Add currency:</b> &nbsp;<button type="button" pButton icon="fa fa-plus" pTooltip="Add Currency" (click)="ShowCurrencyDialogBox('')"></button><br /><br />
+<div class="card compar-card mt-3">
+  <div class="card-body" style="overflow:auto !important">
+    <p-table #dt [value]="CurrencyMasterList" [paginator]="true" [rows]="10" [style]="{'width':'100%','overflow':'auto!important'}">
+      <ng-template pTemplate="header">
+        <tr class="mprltbldata">
+          <th class="text-right" style="width:50px">S.No</th>
+          <th class="text-center" style="width:100px">Currency Name</th>
+          <th class="text-center" style="width:100px">Currency Code</th>
+          <th class="text-center" style="width:50px">Edit</th>
+          <th class="text-center" style="width:50px">Delete</th>
+        </tr>
+
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+        <tr class="ui-widget-header">
+          <td class="ptable-cell text-center">{{rowIndex +1}}</td>
+          <td class="ptable-cell text-left">{{rowData.CurrencyName}}</td>
+          <td class="ptable-cell text-left">{{rowData.CurrencyCode}}</td>
+          <td class="ptable-cell text-center">
+            <button type="button" pButton icon="fa fa-pencil" (click)="ShowCurrencyDialogBox(rowData)"></button>
+          </td>
+          <td class="ptable-cell text-center">
+            <button type="button" pButton icon="fa fa-trash" (click)="DeleteCurrency(rowData.CurrencyId)"></button>
+          </td>
+
+        </tr>
+      </ng-template>
+
+    </p-table>
+  </div>
+</div>
+
+
+
+<p-dialog header="Add Currency" [(visible)]="ShowCurrencyDialog" showEffect="fade" [modal]="true" [responsive]="true" [style]="{width: '60%'}">
+  <div class="row col-lg-12 col-md-12 col-sm-12">
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Currency Name:</label>
+    </div>
+    <div class='col-md-4 col-lg-4 col-sm-4'>
+      <input type="text" class="form-control" ngModel maxlength="100" [(ngModel)]="CurrencyMaster.CurrencyName" />
+    </div>
+    <div class='col-md-2 col-lg-2 col-sm-2'>
+      <label class="form-label">Currency Code:</label>
+    </div>
+    <div class='col-md-4 col-lg-4 col-sm-4'>
+      <input type="text" class="form-control" ngModel maxlength="3" [(ngModel)]="CurrencyMaster.CurrencyCode" />
+    </div>
+  </div>
+  <div class="row col-lg-12 col-md-12 col-sm-12 mt-2">
+    <button style="margin-left:43%" type="submit" class="btn btn-outline-rounded btn-info" (click)="UpdateCurrency()">Submit</button>
+  </div>
+</p-dialog>
+
+
+
+

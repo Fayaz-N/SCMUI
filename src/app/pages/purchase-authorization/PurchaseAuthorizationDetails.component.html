@@ -128,7 +128,7 @@
       <ng-template pTemplate="body" let-rowData let-columns="columns" let-ri="rowIndex" let-rindex=0>
         <tr [pSelectableRow]="rowData">
           <td>
-            <input type="checkbox" id="vendor{{i}}"  (change)="onChange1(rowData,$event.target.checked,$event)">
+            <input type="checkbox" id="vendor{{rowData.Mprrfqsplititemid}}"  (change)="onChange1(rowData,$event.target.checked,$event)">
             <!--<p-tableCheckbox [value]="rowData"></p-tableCheckbox>-->
           </td>
           <td>{{ri+1}}</td>

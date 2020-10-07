@@ -113,6 +113,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
             link: '/SCM/TermsAndConditions',
             icon: 'layers-outline'
           },
+          {
+            title: 'Currency Master',
+            link: '/SCM/CurrencyMaster',
+            icon: 'layers-outline'
+          },
             {
                 title: 'PA Slabs',
                 link: '/SCM/AddSlab',

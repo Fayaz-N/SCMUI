@@ -193,7 +193,7 @@ export class RFQFormComponent implements OnInit {
       for (let i = 0; i < (res.length); i++) {
         _list.push({
           CurrencyName: res[i].CurrencyName,
-          CurrenyId: res[i].CurrenyId
+          CurrenyId: res[i].CurrencyId
         });
       }
       this.currncyArray = _list;
