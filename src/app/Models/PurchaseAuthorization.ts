@@ -118,7 +118,18 @@ export class ItemsViewModel {
   PFPercentage: number;
   PFAmount: number;
   TotalPFAmount: number;
-  TotalFreightAmount: number;
+    TotalFreightAmount: number;
+    HandlingAmount: number;
+    ImportFreightAmount: number;
+    DutyAmount: number;
+    InsuranceAmount: number;
+}
+export class Additionaltaxes {
+    HandlingAmount: number;
+    ImportFreightAmount: number;
+    DutyAmount: number;
+    InsuranceAmount: number;
+    taxessum: number;
 }
 export class EmployeeModel {
   EmployeeNo: number;
@@ -248,8 +259,12 @@ export class mprpadetailsmodel {
   ApproversList: Array<PurchaseCreditApproversModel>[];
   request: Array<parequestedanddeletemodel>[];
   TokuchuRequest: TokuchuRequest;
-  TokuchRequestid: number;
-
+    TokuchRequestid: number;
+    additionaltaxes: Array<Additionaltaxes>[];
+    HandlingAmount: number;
+    ImportFreightAmount: number;
+    DutyAmount: number;
+    InsuranceAmount: number;
 }
 export class parequestedanddeletemodel {
   paid: number;

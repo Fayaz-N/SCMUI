@@ -6,7 +6,7 @@ import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
-import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
+import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, Additionaltaxes, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 import { __param } from 'tslib';
 @Component({
@@ -252,16 +252,15 @@ export class purchasePaymentComponent implements OnInit {
             this.purchasedetails = data;
             this.purchasedetails.Item = data.Item;
             this.purchasedetails.ApproversList = data.ApproversList;
-            console.log("purchasedetails", this.purchasedetails)
             this.purchasedetails.documents = data.documents;
             this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
             if (this.purchasedetails.PAStatus == "Pending" || this.purchasedetails.PAStatus == "Approved" || this.purchasedetails.PAStatus == "Submitted" || this.purchasedetails.PAStatus == "Rejected") {
                 this.pasubmitted = true;
                 for (var i = 0; i < this.purchasedetails.Item.length; i++) {
-                    this.purchasedetails.Item[i]["itemsum"] = (this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]) + this.purchasedetails.Item[i]["TotalFreightAmount"] + this.purchasedetails.Item[i]["TotalPFAmount"]
+                    this.purchasedetails.Item[i]["itemsum"] = (this.purchasedetails.Item[i]["QuotationQty"] * this.purchasedetails.Item[i]["UnitPrice"]) + this.purchasedetails.Item[i]["TotalFreightAmount"] + this.purchasedetails.Item[i]["TotalPFAmount"] + this.purchasedetails.Item[i]["HandlingAmount"] + this.purchasedetails.Item[i]["DutyAmount"] + this.purchasedetails.Item[i]["ImportFreightAmount"] + this.purchasedetails.Item[i]["InsuranceAmount"]
                 }
                 this.mprrevisionid = this.purchasedetails.Item[0]["MPRRevisionId"];
-                this.sum = this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
+                this.sum =  this.purchasedetails.Item.map(res => res["itemsum"]).reduce((sum, current) => sum + current);
                 this.target = this.purchasedetails.Item.map(res => res["TargetSpend"]).reduce((sum, current) => sum + current);
                 if (this.target > this.sum) {
                     this.savingorexcessamount = this.target - this.sum;
