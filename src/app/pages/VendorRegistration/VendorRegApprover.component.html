@@ -44,7 +44,7 @@
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.MSME.errors" class="invalid-feedback" style="display: contents !important">Is there MSME Required?</span>
         </div>
       </div>
-      <div *ngIf="VendorData.MSMERequired==1">
+      <div *ngIf="VendorData.MSMERequired==true">
         <div class='col-xs-8 col-md-8 col-sm-8 form-inline'>
           <button class="attachedbtn" mat-raised-button (click)="fileInput15.click()">Select File</button>
           <input style="display: none" #attachments type="file" (change)="fileattached($event,'15')" #fileInput15>
