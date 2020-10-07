@@ -187,7 +187,7 @@ export class RFQFormComponent implements OnInit {
   loadCurrency() {
     this.RfqService.GetAllMasterCurrency().subscribe(res => {
       //this._list = res; //save posts in array
-      res = res.Result;
+      //res = res.Result;
       this.currncyArray = res;
       let _list: any[] = [];
       for (let i = 0; i < (res.length); i++) {
