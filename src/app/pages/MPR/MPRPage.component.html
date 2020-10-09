@@ -526,9 +526,9 @@
               </td>
               <td class="ptable-cell" style="text-align:left" *ngIf="RfqGeneratedList.length>0 && rowData.VendorMaster">
                 <div *ngIf="viewRfq">
-                  <label *ngFor="let Item of RfqFilteredGeneratedList">
+                  <label *ngFor="let Item of RfqGeneratedList">
                     <a [routerLink]="['/SCM/VendorQuoteView',getRfqData(rowData.VendorMaster.Vendorid,'revisionId',Item.rfqRevisionId)]" target="_blank" routerLinkActive="active">{{getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)}}</a>
-                    <i *ngIf="editRfq && getRfqData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i><br />
+                    <i *ngIf="editRfq && getEditData(rowData.VendorMaster.Vendorid,'rfqLink',Item.rfqRevisionId)" class="fa fa-edit" style="margin-left: 5px;color: red!important;cursor: pointer;" (click)="editRFQData(Item.rfqRevisionId)"></i><br />
                   </label>
                 </div>
               </td>

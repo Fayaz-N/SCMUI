@@ -289,7 +289,7 @@
           <td class="ptable-cell">{{rowData.PurchaseType}}</td>
           <td><button *ngIf="(typeOfList=='MPRList' || typeOfList=='MPRPendingList') && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
           <td><button pButton type="button" icon="fa fa-copy" class="ui-button-info p-1" (click)="onRevisionCopy(rowData)"></button></td>
-          <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved' && rowData.MPRStatus!= 'RFQ Generated' || rowData.MPRStatus!='Technical Spec Approved'||rowData.MPRStatus!='RFQ Finalized'" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
+          <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved' && (rowData.MPRStatus!= 'RFQ Generated' || rowData.MPRStatus!='RFQ Responded' || rowData.MPRStatus!= 'PA Generated' || rowData.MPRStatus!= 'PO Generated' || rowData.MPRStatus!= 'PA Approved' || rowData.MPRStatus!= 'MPR Closed' || rowData.MPRStatus!= 'PA Rejected'|| rowData.MPRStatus!='Technical Spec Approved'||rowData.MPRStatus!='RFQ Finalized')" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
           <td><button *ngIf="typeOfList=='MPRPendingList'" pButton type="button" icon="fa fa-trash" class="ui-button-info p-1" (click)="onRowDelete(rowData)"></button></td>
         </tr>
         <!--*ngIf="(typeOfList=='MPRPendingList') && rowData.CheckedNam=='-' && rowData.ApproverName=='-'"-->

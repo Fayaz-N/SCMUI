@@ -1076,10 +1076,11 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
+    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId +" "
+    //this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId,Ax(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
-      this.RfqFilteredGeneratedList = Array.from(this.RfqGeneratedList.reduce((m, t) => m.set(t.RFQNo, t), new Map()).values());
+      //this.RfqFilteredGeneratedList = Array.from(this.RfqGeneratedList.reduce((m, t) => m.set(t.RFQNo, t), new Map()).values());
     })
   }
 
@@ -1560,6 +1561,21 @@ export class MPRPageComponent implements OnInit {
   getRfqData(vendorId: string, type: string, rfqRevisionId: any) {
     if (this.RfqGeneratedList.length > 0) {
       var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId)[0];
+      if (res) {
+        if (type == "rfqLink")
+          return res.RFQNo + "-" + res.RevisionNo;
+        else
+          return res.rfqRevisionId;
+      }
+      else
+        return "";
+    }
+  }
+
+  //bind rfq link in vendor details
+  getEditData(vendorId: string, type: string, rfqRevisionId: any) {
+    if (this.RfqGeneratedList.length > 0) {
+      var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId && li.ActiveRevision == true)[0];
       if (res) {
         if (type == "rfqLink")
           return res.RFQNo + "-" + res.RevisionNo;

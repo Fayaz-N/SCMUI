@@ -46,8 +46,8 @@
             <th>Quantity</th>
             <th>HSN Code</th>
             <th *ngIf="RFQPriceVisibility">Unit Price</th>
-            <th *ngIf="MPRPriceVisibilty">Vendor Documents</th>
             <th *ngIf="MPRPriceVisibilty">YIL Documents</th>
+            <th *ngIf="MPRPriceVisibilty">Vendor Documents</th>
             <th *ngIf="MPRPriceVisibilty">Status</th>
             <th *ngIf="MPRPriceVisibilty">Remarks</th>
           </tr>
@@ -62,12 +62,12 @@
             <td *ngIf="RFQPriceVisibility">{{rowData.ItemUnitPrice}}</td>
             <td *ngIf="MPRPriceVisibilty">
               <div *ngFor="let document of rowData.RFQDocuments">
-                <i *ngIf="document.DocumentType==6" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
+                <i *ngIf="document.DocumentType==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
               </div>
             </td>
             <td *ngIf="MPRPriceVisibilty">
               <div *ngFor="let document of rowData.RFQDocuments">
-                <i *ngIf="document.DocumentType==1" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
+                <i *ngIf="document.DocumentType==6" class="fa fa-paperclip" (click)="viewDocument(document.Path,document.DocumentName)" aria-hidden="true" pTooltip="File Name: {{document.DocumentName}} Updated By: {{document.UploadedBy}} Updated On: {{document.UploadedDate | date :  constants.dateFormat}}"></i>
               </div>
             </td>
             <td *ngIf="MPRPriceVisibilty">
@@ -121,7 +121,7 @@
         </ng-template>
       </p-table><br />
     </div>
-    <div class="row" style="margin-left: 0px; margin-right: 0px">
+    <div *ngIf="quoteDetails.ActiveRevision==true" class="row" style="margin-left: 0px; margin-right: 0px">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <label style="font-size:14px"><b>Add Communication</b></label>&nbsp;&nbsp;
         <button type="button" pButton icon="fa fa-plus" (click)="showRfqCommunicationDialogToAdd()"></button>
@@ -165,11 +165,11 @@
       <p-table [value]="quoteDetails.RFQTerms">
         <ng-template pTemplate="header">
           <tr class="text-center mprltbldata">
-            <th>Description</th>
-            <th>Agree</th>
-            <th>Not Agree</th>
-            <th>NA</th>
-            <th>Remarks</th>
+            <th style="width:60%">Description</th>
+            <th style="width:5%">Agree</th>
+            <th style="width:5%">Not Agree</th>
+            <th style="width:5%">NA</th>
+            <th style="width:25%">Remarks</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
