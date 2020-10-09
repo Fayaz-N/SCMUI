@@ -201,6 +201,7 @@ export class rfqFilterParams {
 export class QuoteDetails {
   CreatedDate: Date;
   RfqValidDate: Date;
+  ActiveRevision: boolean;
   rfqmaster: RFQMaster;
   rfqitem: Array<RfqItemModel>;
   RFQTerms: Array<any>;
