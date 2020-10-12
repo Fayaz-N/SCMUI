@@ -235,6 +235,7 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
                         (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid)).checked = false;
                         if (this.selectedItems.length === 0) {
                             this.Vendorid = null
+                            this.disableSubmit = true;
                         }
                     }
                 }
@@ -266,7 +267,6 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
       }
       else if (this.Vendorid === itemdetails.VendorId) {
         this.selectedItems.push(itemdetails);
-        console.log("itemdetailsssssssssss", itemdetails)
       }
       else {
         event.target.checked = false;

@@ -1014,7 +1014,7 @@
 </div>
 <br />
 
-<div *ngIf="pasubmitted && approvedemployee && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
+<div *ngIf="pasubmitted && approvedemployee && purchasedetails.PAStatus!='Rejected' && !purchasedetails.Deleteflag && !disableApprovers" class="form-control footer" style="height:100%;border-radius:0px;position: -webkit-sticky; position:sticky;background-color:gainsboro; margin-left:0px;margin-top:5px">
 
   <div class="row col-md-12" style="margin-bottom:10px;border:groove;margin-left:2px;margin-top:5px">
     <label for="Supplier" class="form-label label" style="margin-left: 15px;text-align:left">Excess/Saving From Project Budget</label>
