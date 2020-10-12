@@ -32,7 +32,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Prepared By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value" (keyup)="onsrchTxtChange('PreparedBy',MPRfilterForm.controls.PreparedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','PreparedBy',MPRfilterForm.controls.PreparedBy.value,undefined)"></button>
           </div>
@@ -41,7 +41,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Checked By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="onsrchTxtChange('CheckedBy',MPRfilterForm.controls.CheckedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)"></button>
           </div>
@@ -50,7 +50,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Approved By : </label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="onsrchTxtChange('ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)"></button>
           </div>
@@ -61,7 +61,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Prepared By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value"  (keyup)="onsrchTxtChange('PreparedBy',MPRfilterForm.controls.PreparedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','PreparedBy',MPRfilterForm.controls.PreparedBy.value,undefined)"></button>
           </div>
@@ -70,7 +70,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Checked By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value">
+          <input type="text" disabled="true" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="onsrchTxtChange('CheckedBy',MPRfilterForm.controls.CheckedBy.value,'mprFilterParams')">
           <!--<div class="input-group-append">
         <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy','',undefined)"></button>
       </div>-->
@@ -85,7 +85,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Approved By : </label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="ApprovedBy" [value]="MPRfilterForm.controls.ApprovedBy.value" (keyup)="onsrchTxtChange('ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','ApprovedBy',MPRfilterForm.controls.ApprovedBy.value,undefined)"></button>
           </div>
@@ -96,7 +96,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Prepared By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="PreparedBy" [value]="MPRfilterForm.controls.PreparedBy.value" (keyup)="onsrchTxtChange('PreparedBy',MPRfilterForm.controls.PreparedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','PreparedBy',MPRfilterForm.controls.PreparedBy.value,undefined)"></button>
           </div>
@@ -105,7 +105,7 @@
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
         <label class="form-label">Checked By</label>&nbsp;
         <div class="form-inline-list">
-          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value">
+          <input type="text" class="form-control forms-input" formControlName="CheckedBy" [value]="MPRfilterForm.controls.CheckedBy.value" (keyup)="onsrchTxtChange('CheckedBy',MPRfilterForm.controls.CheckedBy.value,'mprFilterParams')">
           <div class="input-group-append">
             <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRfilterForm','CheckedBy',MPRfilterForm.controls.CheckedBy.value,undefined)"></button>
           </div>
@@ -289,7 +289,7 @@
           <td class="ptable-cell">{{rowData.PurchaseType}}</td>
           <td><button *ngIf="(typeOfList=='MPRList' || typeOfList=='MPRPendingList') && rowData.CheckStatus=='Pending' && rowData.ApprovalStatus=='Pending'" pButton type="button" icon="fa fa-pencil" class="ui-button-info p-1" (click)="onRowEditInit(rowData)"></button></td>
           <td><button pButton type="button" icon="fa fa-copy" class="ui-button-info p-1" (click)="onRevisionCopy(rowData)"></button></td>
-          <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved' && (rowData.MPRStatus!= 'RFQ Generated' || rowData.MPRStatus!='RFQ Responded' || rowData.MPRStatus!= 'PA Generated' || rowData.MPRStatus!= 'PO Generated' || rowData.MPRStatus!= 'PA Approved' || rowData.MPRStatus!= 'MPR Closed' || rowData.MPRStatus!= 'PA Rejected'|| rowData.MPRStatus!='Technical Spec Approved'||rowData.MPRStatus!='RFQ Finalized')" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
+          <td><button *ngIf="typeOfList=='MPRList' && rowData.ApprovalStatus=='Approved' && getReviseBtn(rowData)" pButton type="button" icon="fa fa-plus" class="ui-button-info p-1" (click)="onRevise(rowData)"></button></td>
           <td><button *ngIf="typeOfList=='MPRPendingList'" pButton type="button" icon="fa fa-trash" class="ui-button-info p-1" (click)="onRowDelete(rowData)"></button></td>
         </tr>
         <!--*ngIf="(typeOfList=='MPRPendingList') && rowData.CheckedNam=='-' && rowData.ApproverName=='-'"-->

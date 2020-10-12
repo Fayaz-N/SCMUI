@@ -7,6 +7,7 @@ import { mprRevision, Employee, DynamicSearchResult, searchList, mprFilterParams
 import { DatePipe } from '@angular/common';
 import { NgxSpinnerService } from "ngx-spinner";
 import { MessageService } from 'primeng/api';
+import { stat } from 'fs';
 
 @Component({
   selector: 'app-MPRList',
@@ -35,7 +36,7 @@ export class MPRListComponent implements OnInit {
   loading: boolean;
   public fromDate: Date;
   public toDate: Date
-    public deleteMprInfo: DeleteMpr;
+  public deleteMprInfo: DeleteMpr;
 
   //page load event
   ngOnInit() {
@@ -87,6 +88,7 @@ export class MPRListComponent implements OnInit {
       PONO: ['', [Validators.required]],
       PAID: ['', [Validators.required]]
     });
+    this.getStatusList();
 
     this.mprFilterParams.ListType = this.typeOfList;
     if (this.typeOfList == "MPRCheckerList") {
@@ -126,6 +128,7 @@ export class MPRListComponent implements OnInit {
         this.depDisable = false;
         this.mprFilterParams.DepartmentId = "";
         this.mprFilterParams.ORgDepartmentid = "";
+        this.mprFilterParams.Status = "";
       }
       else if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
         this.showCMMFilter = true;
@@ -148,7 +151,6 @@ export class MPRListComponent implements OnInit {
     this.mprFilterParams.mprStatusListId = [];
     this.mprFilterParams.mprStatusListId[0] = "2";
 
-    this.getStatusList();
 
   }
   //show and hide filter parmas
@@ -174,26 +176,30 @@ export class MPRListComponent implements OnInit {
       this.mprFilterParams.DepartmentId = "";
     if (this.typeOfList != "MPRList")
       this.mprFilterParams.mprStatusListId = [];
-    this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
-      this.mprList = data;
-      if (this.typeOfList == "MPRList") {
-        if (this.employee.OrgDepartmentId == 14) {//for cmm
-          this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
-        } else {
-          if (this.employee.OrgDepartmentId != 14) {
-            this.mprList = this.mprList.filter(li => li.CheckedBy != '-' && li.ApprovedBy != "-");
-          }
-          if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
-          }
-          else {
-            //this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+    if (this.typeOfList == "MPRList") {
+      if (this.employee.OrgDepartmentId == 14)//cmm
+        this.mprFilterParams.Status = null;
+    }
+      this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
+        this.mprList = data;
+        if (this.typeOfList == "MPRList") {
+          if (this.employee.OrgDepartmentId == 14) {//for cmm
+            this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));
+          } else {
+            if (this.employee.OrgDepartmentId != 14) {
+              this.mprList = this.mprList.filter(li => li.CheckedBy != '-' && li.ApprovedBy != "-");
+            }
+            if (this.AccessList.filter(li => li.AccessName == "DepartmentWiseMPRList").length > 0) {
+            }
+            else {
+              //this.mprList = this.mprList.filter(li => li.PreparedBy == this.employee.EmployeeNo);
+            }
           }
         }
-      }
-      this.loading = false;
-      this.spinner.hide();
-    })
-  }
+        this.loading = false;
+        this.spinner.hide();
+      })
+    }
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     this.formName = formName;
     this.txtName = name;
@@ -305,13 +311,23 @@ export class MPRListComponent implements OnInit {
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter Remarks.' });
     }
-    }
-    //stauscheck(status:any) {
-    //    let fruits: string[] =  ["PA Generated", "RFQ Generated", "RFQ Responded", "RFQ Finalized", "PA Approved", "MPR Closed", "PA Rejected", "Technical Spec Approved"]
-    //    for (var i = 0; i >= 0; i++) {
+  }
+  //stauscheck(status:any) {
+  //    let fruits: string[] =  ["PA Generated", "RFQ Generated", "RFQ Responded", "RFQ Finalized", "PA Approved", "MPR Closed", "PA Rejected", "Technical Spec Approved"]
+  //    for (var i = 0; i >= 0; i++) {
 
-    //    }
-    //}
+  //    }
+  //}
+
+
+  getReviseBtn(rowData: any) {
+
+    if ((rowData.MPRStatus == 'RFQ Generated' || rowData.MPRStatus == 'RFQ Responded' || rowData.MPRStatus == 'PA Generated' || rowData.MPRStatus == 'PO Generated' || rowData.MPRStatus == 'PA Approved' || rowData.MPRStatus == 'MPR Closed' || rowData.MPRStatus == 'PA Rejected' || rowData.MPRStatus == 'Technical Spec Approved' || rowData.MPRStatus == 'RFQ Finalized')) {
+      return false;
+    }
+    else
+      return true;
+  }
 }
 
 
