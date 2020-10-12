@@ -204,7 +204,7 @@
           {{ri+1}}
         </td>
         <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
-        <td pEditableColumn class="ptable-cell">{{rowData.DocumentNo}}</td>
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td pEditableColumn class="ptable-cell">{{rowData.pono}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.BuyerGroup}}</td>

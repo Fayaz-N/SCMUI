@@ -75,6 +75,7 @@ import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.compone
 import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -157,7 +158,8 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     VendorRegisterApproverComponent,
       MPRStatusReportsComponent,
       MPRWiseReportsComponent,
-      MPRRequisitionWiseReportComponent
+      MPRRequisitionWiseReportComponent,
+      ProjectWiseReportsComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

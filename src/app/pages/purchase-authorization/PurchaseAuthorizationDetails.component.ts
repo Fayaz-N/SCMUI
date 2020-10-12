@@ -218,23 +218,32 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
   onclickbox(selectitems: any[]) {
     this.paitemdetails = selectitems;
   }
-  selectAll(event) {
-    this.filteredResult = this.paitemdetails.filter(li => li.VendorId == this.Vendorid);
-    this.filteredResult.forEach((vendor, index) => {
-      var index1 = this.selectedItems.findIndex(li => (li.VendorId == this.Vendorid) && (li.Mprrfqsplititemid == vendor.Mprrfqsplititemid));
-      if (event.currentTarget.checked && vendor.VendorId == this.Vendorid && (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid))) {
-        if (index1 < 0) {
-          (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid)).checked = true;
-          this.selectedItems.push(vendor);
+    selectAll(event) {
+        if (this.Vendorid) {
+            this.filteredResult = this.paitemdetails.filter(li => li.VendorId == this.Vendorid);
+            this.filteredResult.forEach((vendor, index) => {
+                var index1 = this.selectedItems.findIndex(li => (li.VendorId == this.Vendorid) && (li.Mprrfqsplititemid == vendor.Mprrfqsplititemid));
+                if (event.currentTarget.checked && vendor.VendorId == this.Vendorid && (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid))) {
+                    if (index1 < 0) {
+                        (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid)).checked = true;
+                        this.selectedItems.push(vendor);
+                    }
+                }
+                else {
+                    if (event.currentTarget.checked == false && vendor.VendorId == this.Vendorid && index1 >= 0 && (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid))) {
+                        this.selectedItems.splice(index1, 1);
+                        (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid)).checked = false;
+                        if (this.selectedItems.length === 0) {
+                            this.Vendorid = null
+                        }
+                    }
+                }
+            });
         }
-      }
-      else {
-        if (event.currentTarget.checked == false && vendor.VendorId == this.Vendorid && index1 >= 0 && (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid))) {
-          this.selectedItems.splice(index1, 1);
-          (<HTMLInputElement>document.getElementById("vendor" + vendor.Mprrfqsplititemid)).checked = false;
+        else {
+            event.target.checked = false;
+            this.messageservice.add({ severity: 'warn', summary: 'Warning Message', detail: 'Please Select One Item' })
         }
-      }
-    });
   }
   //selectAll1() {
   //    this.selectedItems = [];
@@ -269,15 +278,16 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
       let index = this.selectedItems.indexOf(itemdetails);
       this.selectedItems.splice(index, 1);
       if (this.selectedItems.length == 0) {
-        this.disableSubmit = true;
+          this.disableSubmit = true;
+          this.Vendorid = null;
+          (<HTMLInputElement>document.getElementById("checked")).checked = false;
       }
     }
-    console
   }
 
   onChange(itemdetails: ItemsViewModel, isChecked: boolean) {
     if (isChecked) {
-      this.selectedItems.push(itemdetails);
+      this.selectedItems.push(itemdetails); 
     } else {
       let index = this.selectedItems.indexOf(itemdetails);
       this.selectedItems.splice(index, 1);

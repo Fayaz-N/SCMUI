@@ -46,6 +46,7 @@ import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegA
 import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.component'
 import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
+import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
 
 const routes: Routes = [{
   path: '',
@@ -112,7 +113,8 @@ const routes: Routes = [{
       { path: "VendorRegApprover", component: VendorRegisterApproverComponent, canActivate: [AuthGuard] },
       { path: "statusreport", component: MPRStatusReportsComponent, canActivate: [AuthGuard] },
       { path: "mprwisereport", component: MPRWiseReportsComponent, canActivate: [AuthGuard] },
-      { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] }
+      { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] },
+      { path: "projectreport", component: ProjectWiseReportsComponent, canActivate: [AuthGuard] }
     
     // {
     //      path: '',

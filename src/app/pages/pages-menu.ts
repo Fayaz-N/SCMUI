@@ -269,6 +269,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 link: '/SCM/requisitionreport',
                 icon: 'list-outline'
             },
+            {
+                title: 'ProjectReport',
+                link: '/SCM/projectreport',
+                icon: 'list-outline'
+            },
             //{
             //    title: 'Vendor Reg List',
             //    link: '/SCM/VendorRegList',

@@ -102,10 +102,9 @@ export class purchasePaymentListComponent implements OnInit {
 
 
   GetMprpadetailsBySearch(pofilters: PADetailsModel) {
-    console.log("palist", pofilters)
     this.paService.GetMprpadetailsBySearch(pofilters).subscribe(data => {
       this.palist = data;
-
+        console.log("palist", this.palist)
     });
   }
   //displayfn(department: object) {
