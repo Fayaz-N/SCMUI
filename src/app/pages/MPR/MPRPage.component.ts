@@ -641,6 +641,7 @@ export class MPRPageComponent implements OnInit {
     this.displayItemDialog = true;
     this.itemDetails = new MPRItemInfoes();
     this.itemDetails = details;
+    this.itemDetails.ItemId = details.Itemid;
     var value = { listName: "ItemId", name: details.Materialdescription + " - " + details.Itemid, code: details.Itemid };
     this.searchItems.push(value);
     this.selectedItem = this.searchItems.filter(li => li.code == details.ItemId)[0];
@@ -893,7 +894,7 @@ export class MPRPageComponent implements OnInit {
     else {
       if (this.itemDetails.ItemId)
         this.itemDetails.Itemid = this.itemDetails.ItemId;
-      if (!this.itemDetails.Itemid) {
+      if (!this.itemDetails.Itemid || !this.itemDetails.ItemId) {
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select item from the list' });
         return;
       }
