@@ -112,9 +112,9 @@ export class RFQComparisionComponent implements OnInit {
             //this.vendorDetails.FreightAmount = parseFloat(this.vendorDetails.FreightAmount).toFixed(2);
             this.vendorDetails.PFAmount = parseFloat((this.calculatePFamount(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.HandlingAmount = parseFloat(((this.tp) * (vendor.HandlingPercentage / 100)).toString()).toFixed(2);
-            this.vendorDetails.ImportFreightAmount = ((this.tp) * (vendor.ImportFreightPercentage / 100)).toString();
-            this.vendorDetails.InsuranceAmount = parseFloat(((this.tp) * (vendor.InsurancePercentage / 100)).toString()).toFixed(2);
-            this.vendorDetails.DutyAmount = parseFloat(((this.tp) * (vendor.DutyPercentage / 100)).toString()).toFixed(2);
+            this.vendorDetails.ImportFreightAmount = parseFloat(((this.tp + parseFloat(this.vendorDetails.HandlingAmount)) * (vendor.ImportFreightPercentage / 100)).toString()).toFixed(2);
+            this.vendorDetails.InsuranceAmount = parseFloat(((this.tp + parseFloat(this.vendorDetails.HandlingAmount) + parseFloat(this.vendorDetails.ImportFreightAmount)) * (vendor.InsurancePercentage / 100)).toString()).toFixed(2);
+            this.vendorDetails.DutyAmount = parseFloat(((this.tp + parseFloat(this.vendorDetails.HandlingAmount) + parseFloat(this.vendorDetails.ImportFreightAmount) + parseFloat(this.vendorDetails.InsuranceAmount)) * (vendor.DutyPercentage / 100)).toString()).toFixed(2);
             this.vendorDetails.MaterialTotalPrice = parseFloat((this.calculateItemToatlPriceWOH(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.HandlingChargesTotal = parseFloat((this.calculateItemToatlPriceHC(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.TotalPrice = parseFloat((this.calculateItemToatlPriceWH(this.vendorDetails)).toString()).toFixed(2);

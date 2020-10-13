@@ -641,9 +641,10 @@ export class MPRPageComponent implements OnInit {
     this.displayItemDialog = true;
     this.itemDetails = new MPRItemInfoes();
     this.itemDetails = details;
-    this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
-      this.showList = false;
-      if (details.Itemid == "0000")
+    var value = { listName: "ItemId", name: details.Materialdescription + " - " + details.Itemid, code: details.Itemid };
+    this.searchItems.push(value);
+    this.selectedItem = this.searchItems.filter(li => li.code == details.ItemId)[0];
+    if (details.Itemid == "0000")
         this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
       else {
         if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
@@ -652,7 +653,19 @@ export class MPRPageComponent implements OnInit {
       this.MPRItemDetailsForm.value.ItemId = details.Itemid;
       this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity();
       this.spinner.hide();
-    });
+
+    //this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
+    //  this.showList = false;
+    //  if (details.Itemid == "0000")
+    //    this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
+    //  else {
+    //    if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
+    //      this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
+    //  }
+    //  this.MPRItemDetailsForm.value.ItemId = details.Itemid;
+    //  this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity();
+    //  this.spinner.hide();
+    //});
     if (details.UnitId) {
       this.bindSearchListData(e, formName, 'UnitId', "", (): any => {
         this.showList = false;

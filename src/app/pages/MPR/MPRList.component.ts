@@ -177,8 +177,8 @@ export class MPRListComponent implements OnInit {
     if (this.typeOfList != "MPRList")
       this.mprFilterParams.mprStatusListId = [];
     if (this.typeOfList == "MPRList") {
-      if (this.employee.OrgDepartmentId == 14)//cmm
-        this.mprFilterParams.Status = null;
+      //if (this.employee.OrgDepartmentId == 14)//cmm
+        this.mprFilterParams.Status = "";
     }
       this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
         this.mprList = data;

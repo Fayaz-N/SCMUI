@@ -20,8 +20,8 @@ export class VendorQuotationViewComponent implements OnInit {
   public RfqRevisionId: number = 0;
   public quoteDetails: QuoteDetails;
   public rfqDocuments: Array<RFQDocuments> = [];
-  public RFQPriceVisibility: boolean = false;
-  public MPRPriceVisibilty: boolean = false;
+  public RFQPriceVisibility: boolean = true;
+  public MPRPriceVisibilty: boolean = true;
   public RFQCommunications: RFQCommunication;
   public displayCommunicationDialog: boolean = false;
   public MPRRevisionId: string;
@@ -67,9 +67,10 @@ export class VendorQuotationViewComponent implements OnInit {
       for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
         this.quoteDetails.rfqitem[i].RFQDocuments.forEach(doc => {
           //documenttype - 6 vendor uploaded document
-          if (this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId && li.DocumentType == 6).length > 0) {
+          if (doc.DocumentType == 6 && this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId).length == 0) {
             doc.StatusBy = this.employee.EmployeeNo;
             doc.Statusdate = new Date();
+
             this.rfqDocuments.push(doc);
           }
         });

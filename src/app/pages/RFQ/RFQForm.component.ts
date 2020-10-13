@@ -409,16 +409,27 @@ export class RFQFormComponent implements OnInit {
     this.spinner.show();
     this.rfqItem = details;
     this.AddItemDialog = true;
-    this.bindSearchListData(e, 'AddItemForm', 'ItemId', "", (): any => {
-      this.showList = false;
-      if (details.ItemId == "0000")
+    var value = { listName: "ItemId", name: details.ItemName + " - " + details.ItemId, code: details.ItemId };
+    this.searchItems.push(value);
+    this.selectedItem = this.searchItems.filter(li => li.code == details.ItemId)[0];
+       if (details.ItemId == "0000")
         this.AddItemForm.controls.ItemId.value = "NewItem";
       else
         this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
       this.AddItemForm.value.ItemId = details.ItemId;
       this.AddItemForm.controls['ItemId'].updateValueAndValidity();
       this.spinner.hide();
-    });
+
+    //this.bindSearchListData(e, 'AddItemForm', 'ItemId', "", (): any => {
+    //  this.showList = false;
+    //  if (details.ItemId == "0000")
+    //    this.AddItemForm.controls.ItemId.value = "NewItem";
+    //  else
+    //    this.AddItemForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.ItemId)[0].name;
+    //  this.AddItemForm.value.ItemId = details.ItemId;
+    //  this.AddItemForm.controls['ItemId'].updateValueAndValidity();
+    //  this.spinner.hide();
+    //});
     if (details.PFAmount || details.PFAmount == "0")
       this.PFAmountChange();
     if (details.PFPercentage || details.PFPercentage == "0")
