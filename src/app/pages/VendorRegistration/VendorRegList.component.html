@@ -53,6 +53,7 @@
           <th style="width:50px">S.No</th>
           <th style="width:100px">Vendor Id</th>
           <th style="width:100px">Vendor Name</th>
+          <th style="width:100px">Vendor Code</th>
           <th style="width:150px">Initiated By</th>
           <th style="width:100px">Initiated On</th>
           <th style="width:100px">Checked By</th>
@@ -70,6 +71,7 @@
           </td>
           <td class="ptable-cell"><button class="btn btn-link" (click)="toVendorReg(rowData)">{{rowData.Vendorid}}</button></td>
           <td class="ptable-cell">{{rowData.VendorName}}</td>
+          <td class="ptable-cell">{{rowData.VendorNoInSAP}}</td>
           <td class="ptable-cell">{{rowData.IntiatedName}}</td>
           <td class="ptable-cell">{{rowData.IntiatedOn | date :  constants.dateFormat}}</td>
           <td class="ptable-cell">{{rowData.CheckerName}}</td>

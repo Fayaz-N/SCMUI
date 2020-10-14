@@ -62,6 +62,10 @@ export class VendorRegInitiateComponent implements OnInit {
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.spinner.hide();
       this.DocumentList = data;
+      if (this.DocumentList.filter(li => li.DocumentationTypeId == 8).length > 0)
+        this.VendorData.ESI = "1";
+      else
+        this.VendorData.ESI = "0";
     });
   }
   //get payment terms
@@ -107,13 +111,17 @@ export class VendorRegInitiateComponent implements OnInit {
   InitiateReg() {
     if (!this.VendorData) {
       //initiate
-      if (this.VendorRegApprovalProcess.VendorName && this.VendorRegApprovalProcess.VendorEmailId) {
+      if (!this.VendorRegApprovalProcess.VendorName || !this.VendorRegApprovalProcess.VendorEmailId || !this.VendorRegApprovalProcess.VendorType) {
         if (!this.VendorRegApprovalProcess.VendorName) {
           this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Name' });
           return;
         }
         if (!this.VendorRegApprovalProcess.VendorEmailId) {
           this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Email' });
+          return;
+        }
+        if (!this.VendorRegApprovalProcess.VendorType) {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select VendorType' });
           return;
         }
       }

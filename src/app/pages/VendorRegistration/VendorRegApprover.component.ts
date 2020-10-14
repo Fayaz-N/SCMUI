@@ -38,6 +38,8 @@ export class VendorRegisterApproverComponent implements OnInit {
   isDisabledIncorporation: boolean = true;
   isDisabledPANChange: boolean = true;
   isDisableOtherDoc: boolean = true;
+  isDisableTaxDoc: boolean = true;
+  isDisableForm10Doc: boolean = true;
   public typeOfUser: string;
 
   ngOnInit() {
@@ -45,7 +47,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.VendorDataLocDetails = JSON.parse(localStorage.getItem("vendorRegDetails"));
     else
       this.router.navigateByUrl("vendorRegDetails");
-   
+
     this.VendorData = new VendorRegistration();
     this.VendorData.DocDetailsLists = [];
     this.VendorData.ESI = "1";
@@ -54,6 +56,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       State: ['', [Validators.required]],
       street: ['', [Validators.required]],
       VendorName: ['', [Validators.required]],
+      Country: ['', [Validators.required]],
       City: ['', [Validators.required]],
       Onetimevendor: ['', [Validators.required]],
       showEvaluation: ['', [Validators.required]],
@@ -92,6 +95,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       LocationOrBranch: ['', [Validators.required]],
       AccNo: ['', [Validators.required]],
       IFSCCode: ['', [Validators.required]],
+      IncoTerms: ['', [Validators.required]],
       AccountHolderName: ['', [Validators.required]],
       NaturOfBusiness: ['', [Validators.required]],
       SpecifyNatureOfBusiness: ['', [Validators.required]],
@@ -219,12 +223,33 @@ export class VendorRegisterApproverComponent implements OnInit {
       else
         this.VendorData.ESI = "0";
       this.natureOfBusinessChange();
+      this.CheckValidations();
       //this.listOfFiles1 = this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 1);
       //this.VendorRegister.controls['Onetimevendor'].setValue(data["Onetimevendor"])
     })
   }
 
+  //check validations based on vendor type
+  CheckValidations() {
+    if (this.VendorData.VendorType == true) {
+      this.VendorRegister.controls['MSME'].clearValidators();
+      this.VendorRegister.controls['State'].clearValidators();
+      this.VendorRegister.controls['GSTNo'].clearValidators();
+      this.VendorRegister.controls['PANNo'].clearValidators();
+      this.VendorRegister.controls['IFSCCode'].clearValidators();
 
+      this.VendorRegister.controls['MSME'].updateValueAndValidity();
+      this.VendorRegister.controls['State'].updateValueAndValidity();
+      this.VendorRegister.controls['GSTNo'].updateValueAndValidity();
+      this.VendorRegister.controls['PANNo'].updateValueAndValidity();
+      this.VendorRegister.controls['IFSCCode'].updateValueAndValidity();
+    }
+
+    if (this.VendorData.VendorType == false) {
+      this.VendorRegister.controls['Country'].clearValidators();
+      this.VendorRegister.controls['Country'].updateValueAndValidity();
+    }
+  }
   natureOfBusinessChange() {
     if (this.VendorData.NatureofBusiness == 4) {
       this.VendorRegister.controls['SpecifyNatureOfBusiness'].setValidators([Validators.required]);
@@ -247,29 +272,34 @@ export class VendorRegisterApproverComponent implements OnInit {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Address Proof' });
       return;
     }
-    if (this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 2).length <= 0) {
+    //VendorType 0 - local vendor, 1- foreignvendor
+    if (this.VendorData.VendorType == false && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 2).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select GST Registration Certificate' });
       return;
     }
-    if (this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 3).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 3).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select PAN Copy' });
       return;
     }
-    if (this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 6).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 6).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Cancelled Cheque Copy' });
       return;
     }
-    if (this.VendorData.MSMERequired == true && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 15).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.MSMERequired == true && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 15).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select MSME Document' });
       return;
     }
-    if (this.VendorData.ESI == "1" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.ESI == "1" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 8).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select ESI/PF' });
       return;
     }
 
-    if (this.VendorData.ESI == "0" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 16).length <= 0) {
+    if (this.VendorData.VendorType == false && this.VendorData.ESI == "0" && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 16).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Declaration On Letter Head' });
+      return;
+    }
+    if (this.VendorData.VendorType == true && this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 5).length <= 0) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Bank Mandate duly signed by banker' });
       return;
     }
     else {

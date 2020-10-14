@@ -429,6 +429,7 @@ export class VendorRegApprovalProcess {
   VendorName: string
   VendorId: number;
   VendorEmailId: string;
+  VendorType: string;
   IntiatedBy: string;
   IntiatedOn: Date
   CheckedBy: string
@@ -468,6 +469,7 @@ export class VendorRegistration {
   NatureOfBusinessType: string;
   NaturOfBusiness: number;
   SpecifyNatureOfBusiness: string;
+  VendorType: boolean;
   Email: string;
   AltEmail: string;
   PhoneExn: string;
