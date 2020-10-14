@@ -45,15 +45,15 @@
   <div *ngIf="typeOfUser!='Checker'" class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="lblEdit">One time vendor</label>
-      <span class="valueEdit"><span *ngIf="VendorData.Onetimevendor==1">Yes</span><span *ngIf="VendorData.Onetimevendor==0">No</span></span>
+      <span class="valueEdit"><span *ngIf="VendorData.Onetimevendor==true">Yes</span><span *ngIf="VendorData.Onetimevendor==false">No</span></span>
     </div>
     <div class="col-md-4 col-sm-4 col-xs-4  form-group">
       <label class="lblEdit">Evaluation Required</label>
-      <span class="valueEdit"><span *ngIf="VendorData.EvaluationRequired==1">Yes</span><span *ngIf="VendorData.EvaluationRequired==0">No</span></span>
+      <span class="valueEdit"><span *ngIf="VendorData.EvaluationRequired==true">Yes</span><span *ngIf="VendorData.EvaluationRequired==false">No</span></span>
     </div>
     <div class="col-md-4 col-sm-4 col-xs-4  form-group">
       <label class="lblEdit">Performance Verification Required</label>
-      <span class="valueEdit"><span *ngIf="VendorData.PerformanceVerificationRequired==1">Yes</span><span *ngIf="VendorData.PerformanceVerificationRequired==0">No</span></span>
+      <span class="valueEdit"><span *ngIf="VendorData.PerformanceVerificationRequired==true">Yes</span><span *ngIf="VendorData.PerformanceVerificationRequired==false">No</span></span>
     </div>
   </div>
 
@@ -62,9 +62,9 @@
   </div>
   <div class="tab-pane">
     <div class="row m-2">
-      <div *ngIf="VendorData.VendorType==0" class="col-md-3 col-sm-3 col-xs-3  form-group">
+      <div *ngIf="VendorData.VendorType==false" class="col-md-3 col-sm-3 col-xs-3  form-group">
         <label class="lblEdit">MSME</label>
-        <span class="valueEdit"><span *ngIf="VendorData.MSMERequired==1">Yes</span><span *ngIf="VendorData.MSMERequired==0">No</span></span>
+        <span class="valueEdit"><span *ngIf="VendorData.MSMERequired==true">Yes</span><span *ngIf="VendorData.MSMERequired==false">No</span></span>
       </div>
       <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
         <label class="lblEdit">Vendor Name:</label>
@@ -305,7 +305,7 @@
       <span class="headername">Documents Information</span>
     </div>
     <div class="tab-pane">
-        <div *ngIf="VendorData.VendorType==0 && VendorData.MSMERequired==true" class="row m-2 form-inline">
+        <div *ngIf="VendorData.VendorType==false && VendorData.MSMERequired==true" class="row m-2 form-inline">
           <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
             <b>MSME:</b>
           </div>
@@ -409,7 +409,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="VendorData.VendorType==1" class="row m-2 form-inline">
+        <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
           <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> TAX Certificate:</b> </div>
           <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
             <div *ngFor="let selected of DocumentList;let index = index">
@@ -417,7 +417,7 @@
             </div>
           </div>
         </div>
-        <div *ngIf="VendorData.VendorType==1" class="row m-2 form-inline">
+        <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
           <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Form10 F:</b> </div>
           <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
             <div *ngFor="let selected of DocumentList;let index = index">

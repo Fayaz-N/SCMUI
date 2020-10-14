@@ -146,6 +146,7 @@ export class VendorRegInitiateComponent implements OnInit {
       this.VendorData.Onetimevendor == true ? this.VendorRegApprovalProcess.Onetimevendor = true : this.VendorRegApprovalProcess.Onetimevendor = false;
       this.VendorData.EvaluationRequired == true ? this.VendorRegApprovalProcess.EvaluationRequired = true : this.VendorRegApprovalProcess.EvaluationRequired = false;
       this.VendorData.PerformanceVerificationRequired == true ? this.VendorRegApprovalProcess.PerformanceVerificationRequired = true : this.VendorRegApprovalProcess.PerformanceVerificationRequired = false;
+      this.VendorRegApprovalProcess.VendorType == true ? this.VendorRegApprovalProcess.VendorType = true : this.VendorRegApprovalProcess.VendorType = false;
 
       this.VendorRegApprovalProcess.VendorNoInSAP = this.VendorData.VendorNoInSAP;
       this.VendorRegApprovalProcess.PaymentTerms = this.VendorData.PaymentTerms;

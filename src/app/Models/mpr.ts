@@ -429,7 +429,6 @@ export class VendorRegApprovalProcess {
   VendorName: string
   VendorId: number;
   VendorEmailId: string;
-  VendorType: string;
   IntiatedBy: string;
   IntiatedOn: Date
   CheckedBy: string
@@ -452,6 +451,7 @@ export class VendorRegApprovalProcess {
   Onetimevendor: boolean;
   EvaluationRequired: boolean;
   PerformanceVerificationRequired: boolean;
+  VendorType: boolean;
 }
 
 export class DocDetailsList {
@@ -563,6 +563,8 @@ export class VendorRegistration {
   CurrencyId: number;
   CurrencyName: string;
   SwiftCode: string = "";
+  IncoTerms: string;
+  Country: string;
 }
 export class vendorRegfilters {
   FromDate: Date;
