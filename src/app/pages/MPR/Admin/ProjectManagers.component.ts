@@ -36,7 +36,7 @@ export class ProjectManagersComponent implements OnInit {
     });
 
   }
-    public ExportTOExcel(jsonData: any[]): void {
+    public ExportTOExcel(jsonData: any): void {
 
         const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
         const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
