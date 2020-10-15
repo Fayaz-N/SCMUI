@@ -303,6 +303,7 @@ export class VendorRegisterApproverComponent implements OnInit {
       return;
     }
     else {
+      if (this.VendorData.VendorType == false)
       this.VendorData.State = this.StateList.filter(li => li.StateId == this.VendorData.StateId)[0].StateName;
       this.VendorData.CurrencyName = this.CurrencyList.filter(li => li.CurrencyId == this.VendorData.CurrencyId)[0].CurrencyName;
 

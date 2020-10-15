@@ -34,8 +34,8 @@ export class MPRPageComponent implements OnInit {
   public searchresult: Array<object> = [];
   public itemDetails: MPRItemInfoes;
   public mprDocuments: MPRDocument;
-    public selectedItem: searchList;
-    public saleorderdetails: SaleOrderDetails;
+  public selectedItem: searchList;
+  public saleorderdetails: SaleOrderDetails;
   public selectedmultiItem: searchList;
   public showList: boolean = false;
   public selectedlist: Array<searchList> = [];
@@ -77,9 +77,9 @@ export class MPRPageComponent implements OnInit {
   public rfqCommunicationList: Array<any> = [];
   public targetspendError: boolean = false;
   public locations: any;
-    public jobcodes: any;
-    public ShipToParty: any;
-    public ShipToPartyName: any;
+  public jobcodes: any;
+  public ShipToParty: any;
+  public ShipToPartyName: any;
   //page load event
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -124,11 +124,11 @@ export class MPRPageComponent implements OnInit {
       JobName: ['', [Validators.required]],
       GEPSApprovalId: ['', [Validators.required]],
       SaleOrderNo: ['', [Validators.required]],
-        ClientName: [''],
+      ClientName: [''],
       PlantLocation: ['', [Validators.required]],
-        BuyerGroupId: ['', [Validators.required, this.noWhitespaceValidator]],
-        soldtoparty: [''],
-        Enduser: ['']
+      BuyerGroupId: ['', [Validators.required, this.noWhitespaceValidator]],
+      soldtoparty: [''],
+      Enduser: ['']
     });
 
     //MPRItemDetailsForm validation declararion.
@@ -142,9 +142,9 @@ export class MPRPageComponent implements OnInit {
       MfgModelNo: ['', [Validators.required]],
       ReferenceDocNo: ['', [Validators.required]],
       TargetSpend: ['', [Validators.required]],
-        projectdefinition: ['', [Validators.required]],
-        wbs: ['', [Validators.required]],
-        systemmodel: ['', [Validators.required]]
+      projectdefinition: ['', [Validators.required]],
+      wbs: ['', [Validators.required]],
+      systemmodel: ['', [Validators.required]]
     });
 
     //MPRPageForm2 validation declararion.
@@ -167,8 +167,8 @@ export class MPRPageComponent implements OnInit {
       DeliveryRequiredBy: ['', [Validators.required]],
       DispatchLocation: ['', [Validators.required]],
       specifyDispatchLocation: ['', [Validators.required]],
-        ScopeId: ['', [Validators.required]],
-        StorageLocation: [''],
+      ScopeId: ['', [Validators.required]],
+      StorageLocation: [''],
       TrainingRequired: ['', [Validators.required]],
       TrainingManWeeks: ['', [Validators.required]],
       TrainingRemarks: ['', [Validators.required]],
@@ -225,16 +225,16 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm1.controls['JobName'].clearValidators();
     this.MPRPageForm1.controls['GEPSApprovalId'].clearValidators();
     this.MPRPageForm1.controls['docNo'].clearValidators();
-      this.MPRPageForm1.controls['JobCode'].clearValidators();
-      this.MPRPageForm1.controls['ClientName'].clearValidators();
+    this.MPRPageForm1.controls['JobCode'].clearValidators();
+    this.MPRPageForm1.controls['ClientName'].clearValidators();
     this.MPRItemDetailsForm.controls['SOLineItemNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgPartNo'].clearValidators();
     this.MPRItemDetailsForm.controls['MfgModelNo'].clearValidators();
     this.MPRItemDetailsForm.controls['ReferenceDocNo'].clearValidators();
-      this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
-      this.MPRItemDetailsForm.controls['projectdefinition'].clearValidators();
-      this.MPRItemDetailsForm.controls['wbs'].clearValidators();
-      this.MPRItemDetailsForm.controls['systemmodel'].clearValidators();
+    this.MPRItemDetailsForm.controls['TargetSpend'].clearValidators();
+    this.MPRItemDetailsForm.controls['projectdefinition'].clearValidators();
+    this.MPRItemDetailsForm.controls['wbs'].clearValidators();
+    this.MPRItemDetailsForm.controls['systemmodel'].clearValidators();
     this.MPRPageForm1.controls['SaleOrderNo'].clearValidators();
     this.MPRPageForm1.controls['PlantLocation'].clearValidators();
     this.MPRPageForm2.controls['TargetSpend'].clearValidators();
@@ -246,15 +246,15 @@ export class MPRPageComponent implements OnInit {
     this.MPRPageForm3.controls['commissionMonths'].clearValidators();
     this.MPRPageForm3.controls['TrainingRemarks'].clearValidators();
     this.MPRPageForm3.controls['InspectionRemarks'].clearValidators();
-      this.MPRPageForm3.controls['Remarks'].clearValidators();
-      this.MPRPageForm3.controls['StorageLocation'].clearValidators();
-    this.MPRCommunicationForm.controls['ccEmail'].clearValidators(); 
+    this.MPRPageForm3.controls['Remarks'].clearValidators();
+    this.MPRPageForm3.controls['StorageLocation'].clearValidators();
+    this.MPRCommunicationForm.controls['ccEmail'].clearValidators();
     this.POraiseForm.controls['ORemarks'].clearValidators();
     this.POraiseForm.controls['OSecondApprover'].clearValidators();
-      this.POraiseForm.controls['OThirdApprover'].clearValidators();
-      //this.MPRPageForm1.controls['soldtoparty'].clearValidators();
-      //this.MPRPageForm1.controls['Enduser'].clearValidators();
-      //this.MPRPageForm3.controls['shiptoparty'].clearValidators();
+    this.POraiseForm.controls['OThirdApprover'].clearValidators();
+    //this.MPRPageForm1.controls['soldtoparty'].clearValidators();
+    //this.MPRPageForm1.controls['Enduser'].clearValidators();
+    //this.MPRPageForm3.controls['shiptoparty'].clearValidators();
     //if (localStorage.getItem("EmployeeList"))
     //  this.EmployeeList = JSON.parse(localStorage.getItem("EmployeeList"));
     //else {
@@ -458,21 +458,21 @@ export class MPRPageComponent implements OnInit {
       this[this.formName].controls[this.txtName].errors = null;
       this[this.formName].controls[this.txtName].status = 'VALID';
       this[this.formName].value[this.txtName] = item.name
-        this.mprRevisionModel[this.txtName] = item.code;
-        if (this.txtName == "soldtoparty") {
-            this.mprRevisionModel.soldtopartyname = item.name
-        }
-        if (this.txtName == "shiptoparty") {
-            this.mprRevisionModel.shiptopartyname = item.name
-            //this.SoldToPartyName = item.name;
-            //this.SoldToParty = item.code;
-        }
-        if (this.txtName == "Enduser") {
-            this.mprRevisionModel.Endusername = item.name
-        }
-        if (this.txtName=="DispatchLocation") {
-            this.selectlocation(item.name);
-        }
+      this.mprRevisionModel[this.txtName] = item.code;
+      if (this.txtName == "soldtoparty") {
+        this.mprRevisionModel.soldtopartyname = item.name
+      }
+      if (this.txtName == "shiptoparty") {
+        this.mprRevisionModel.shiptopartyname = item.name
+        //this.SoldToPartyName = item.name;
+        //this.SoldToParty = item.code;
+      }
+      if (this.txtName == "Enduser") {
+        this.mprRevisionModel.Endusername = item.name
+      }
+      if (this.txtName == "DispatchLocation") {
+        this.selectlocation(item.name);
+      }
     }
     if (this.formName == "MPRPageForm2" && item.listName == "PurchaseTypeId") {
       if (item.code == 1 || item.code == 2) {
@@ -574,7 +574,7 @@ export class MPRPageComponent implements OnInit {
     }
     else {
       this.mprRevisionModel.PreparedBy = this.employee.EmployeeNo;
-        this.mprRevisionModel.PreparedOn = new Date();
+      this.mprRevisionModel.PreparedOn = new Date();
       this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.spinner.hide();
@@ -593,8 +593,8 @@ export class MPRPageComponent implements OnInit {
   // edit icon click event
   onFormEdit(form, formId) {
     this[form] = false;
-      this.animateCSS(formId, 'slideInLeft');
-      this.loadlocations();
+    this.animateCSS(formId, 'slideInLeft');
+    this.loadlocations();
     //document.getElementById(formId).animate([{ transform: 'translateX(-500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
   }
 
@@ -646,14 +646,14 @@ export class MPRPageComponent implements OnInit {
     this.searchItems.push(value);
     this.selectedItem = this.searchItems.filter(li => li.code == details.ItemId)[0];
     if (details.Itemid == "0000")
-        this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
-      else {
-        if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
-          this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
-      }
-      this.MPRItemDetailsForm.value.ItemId = details.Itemid;
-      this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity();
-      this.spinner.hide();
+      this.MPRItemDetailsForm.controls.ItemId.value = "NewItem";
+    else {
+      if (this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0])
+        this.MPRItemDetailsForm.controls.ItemId.value = this.searchItems.filter(li => li.listName == "ItemId" && li.code == details.Itemid)[0].name;
+    }
+    this.MPRItemDetailsForm.value.ItemId = details.Itemid;
+    this.MPRItemDetailsForm.controls['ItemId'].updateValueAndValidity();
+    this.spinner.hide();
 
     //this.bindSearchListData(e, formName, 'ItemId', "", (): any => {
     //  this.showList = false;
@@ -759,55 +759,55 @@ export class MPRPageComponent implements OnInit {
       this.spinner.show();
       this.MprService.updateMPR(this.mprRevisionModel).subscribe(data => {
         this.spinner.hide();
-          this.mprRevisionModel = data;
-          this.loadlocations();
+        this.mprRevisionModel = data;
+        this.loadlocations();
         this.animateCSS(formId, 'slideInRight');
         //document.getElementById(formId).animate([{ transform: 'translateX(500px)' }, { transform: 'translateX(0px)' }], { duration: 500 })
         this[formEdit] = true;
-          this[showform] = true;
-          
+        this[showform] = true;
+
       });
     }
   }
 
-    loadlocations() {
-        this.MprService.Loadstoragelocationbydepartment().subscribe(data => {
-            this.locations = data;
-        })
-    }
-    loadjobcodes(saleorder: any, formName?: string) {
-        this.mprRevisionModel.JobCode = ''
-        this.mprRevisionModel.JobName = ''
-        this.MprService.LoadJobCodesbysaleorder(saleorder).subscribe(data => {
-            this.jobcodes = data;
-            if (this.jobcodes.ProjectDefinition != '') {
-                this.mprRevisionModel.JobCode = this.jobcodes.ProjectDefinition;
-            }
-            else {
-                this.mprRevisionModel.JobCode = this.jobcodes.shiptopartyponumber;
-            }
-            this.mprRevisionModel.JobName = data.ProjectText;
-            this.mprRevisionModel.soldtopartyname = data.soldtopartyname;
-            this.mprRevisionModel.shiptopartyname = data.shiptopartyname;
-            this.mprRevisionModel.Endusername = data.Endusername;
+  loadlocations() {
+    this.MprService.Loadstoragelocationbydepartment().subscribe(data => {
+      this.locations = data;
+    })
+  }
+  loadjobcodes(saleorder: any, formName?: string) {
+    this.mprRevisionModel.JobCode = ''
+    this.mprRevisionModel.JobName = ''
+    this.MprService.LoadJobCodesbysaleorder(saleorder).subscribe(data => {
+      this.jobcodes = data;
+      if (this.jobcodes.ProjectDefinition != '') {
+        this.mprRevisionModel.JobCode = this.jobcodes.ProjectDefinition;
+      }
+      else {
+        this.mprRevisionModel.JobCode = this.jobcodes.shiptopartyponumber;
+      }
+      this.mprRevisionModel.JobName = data.ProjectText;
+      this.mprRevisionModel.soldtopartyname = data.soldtopartyname;
+      this.mprRevisionModel.shiptopartyname = data.shiptopartyname;
+      this.mprRevisionModel.Endusername = data.Endusername;
 
-            this[formName].controls['soldtoparty'].setValue(data.soldtopartyname);
-            this[formName].value['soldtoparty'] = data.soldtoparty
-            this.mprRevisionModel['soldtoparty'] = data.soldtoparty;
+      this[formName].controls['soldtoparty'].setValue(data.soldtopartyname);
+      this[formName].value['soldtoparty'] = data.soldtoparty
+      this.mprRevisionModel['soldtoparty'] = data.soldtoparty;
 
-            this[formName].controls['Enduser'].setValue(data.Endusername);
-            this[formName].value['Enduser'] = data.Enduser
-            this.mprRevisionModel['Enduser'] = data.Enduser;
+      this[formName].controls['Enduser'].setValue(data.Endusername);
+      this[formName].value['Enduser'] = data.Enduser
+      this.mprRevisionModel['Enduser'] = data.Enduser;
 
 
-            this['MPRPageForm3'].controls['shiptoparty'].setValue(data.shiptopartyname);
-            this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
-            this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
+      this['MPRPageForm3'].controls['shiptoparty'].setValue(data.shiptopartyname);
+      this['MPRPageForm3'].value['shiptoparty'] = data.shiptoparty;
+      this.mprRevisionModel['shiptoparty'] = data.shiptoparty;
 
-            this.ShipToPartyName = data.shiptopartyname;
-            this.ShipToParty = data.shiptoparty;
-        })
-    }
+      this.ShipToPartyName = data.shiptopartyname;
+      this.ShipToParty = data.shiptoparty;
+    })
+  }
   //form 3 code
   removeDoumentation(details: MPRDocumentations) {
     var index = this.mprRevisionModel.MPRDocumentations.findIndex(x => x.DocumentationId == details.DocumentationId);
@@ -1090,7 +1090,7 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId +" "
+    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId + " "
     //this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId,Ax(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
@@ -1280,7 +1280,7 @@ export class MPRPageComponent implements OnInit {
 
   loadMPRData(revisionId: any) {
     this.MprService.getMPRRevisionDetails(revisionId).subscribe(data => {
-        this.mprRevisionModel = data;
+      this.mprRevisionModel = data;
       if (this.mprRevisionModel && this.mprRevisionModel.DeleteFlag == false) {
         if (this.mprRevisionModel.DeliveryRequiredBy)
           this.mprRevisionModel.DeliveryRequiredBy = new Date(this.mprRevisionModel.DeliveryRequiredBy);
@@ -1290,9 +1290,11 @@ export class MPRPageComponent implements OnInit {
         this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
           this.mprRevisionList = data;
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
+          if (this.mprRevisionDetails.MPRStatusTrackDetails.length > 0)
+            this.mprRevisionDetails.MPRStatusTrackDetails = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId);
           if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId && this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0])
             this.currentStatus = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0].Status;
-            this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
+          this.bindMPRPageForm("MPRPageForm1", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRItemDetailsForm", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRPageForm2", this.mprRevisionDetails);
           this.bindMPRPageForm("MPRInchargeForm", this.mprRevisionDetails);
@@ -1325,7 +1327,7 @@ export class MPRPageComponent implements OnInit {
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
 
           if (this.mprRevisionModel.ApprovedBy == this.employee.EmployeeNo && this.mprRevisionModel.ApprovalStatus == 'Approved')
-            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn =  true;
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
 
           if (this.mprRevisionModel.SecondApprover == this.employee.EmployeeNo && this.mprRevisionModel.SecondApproversStatus == 'Approved')
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
@@ -1334,11 +1336,11 @@ export class MPRPageComponent implements OnInit {
             this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
 
           if (this.employee.OrgDepartmentId == 14)
-            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn  = false;
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = false;
 
           //if mpr close hiding the edit buttons
           if (this.mprRevisionDetails.StatusId == 12 || this.mprRevisionDetails.StatusId == 15 || this.mprRevisionDetails.StatusId == 19)
-            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn  = true;
+            this.showForm1EditBtn = this.showMaterialEditBtn = this.showVendorEditBtn = this.shoForm3EditBtn = this.showCommEditBtn = true;
 
           this.bindStatusDetails();
           this.showPage = true;
@@ -1348,9 +1350,9 @@ export class MPRPageComponent implements OnInit {
       else {
         this.spinner.hide();
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'No data for this revision' });
-        }
-        this.ShipToPartyName = data.shiptopartyname;
-        this.ShipToParty = data.shiptoparty;
+      }
+      this.ShipToPartyName = data.shiptopartyname;
+      this.ShipToParty = data.shiptoparty;
     });
   }
   //bind Status Details
@@ -1602,7 +1604,7 @@ export class MPRPageComponent implements OnInit {
   }
 
   //get rfq status details
-  getRfqStatus(vendorId: string, rfqRevisionId: any,statusId:any) {
+  getRfqStatus(vendorId: string, rfqRevisionId: any, statusId: any) {
     if (this.RfqGeneratedList.length > 0) {
       var res = this.RfqGeneratedList.filter(li => li.VendorId == vendorId && li.rfqRevisionId == rfqRevisionId && li.StatusId == statusId)[0];
       if (res && res.StatusId) {
@@ -1724,7 +1726,7 @@ export class MPRPageComponent implements OnInit {
     }
     else {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Email id' });
-      } 
+    }
     //this.newVendorDetails.Emailid = "";
   }
 
@@ -1734,10 +1736,10 @@ export class MPRPageComponent implements OnInit {
       this.vendorEmailList.splice(index, 1);
   }
   getPOnumbers(details: any) {
-      if (details && details.PAItems) {
+    if (details && details.PAItems) {
       var result = details.PAItems.map(a => a.PONO);
       return result.toString();
-      }
+    }
   }
 
   //Purpose : <<SCM Open issues coding start from here>>
@@ -1789,32 +1791,32 @@ export class MPRPageComponent implements OnInit {
     this.router.navigate([]).then(result => {
       window.open('/SCM/RFQForm/' + rfqrevisionId + '', '_blank');
     });
+  }
+  getTokochno(tokochu: any) {
+    for (var i = 0; i < tokochu.length; i++) {
+      var tokochuresult = tokochu[i].TokuchuLIneItems.map(a => a.TokuchuNo);
+      return tokochuresult.toString();
     }
-    getTokochno(tokochu: any) {
-        for (var i = 0; i < tokochu.length; i++) {
-            var tokochuresult = tokochu[i].TokuchuLIneItems.map(a => a.TokuchuNo);
-            return tokochuresult.toString();
-        }
+  }
+  selectlocation(loaction: any) {
+    if (loaction == "EC - Products" || loaction == "EC / Factory" || loaction == "Phase-II") {
+      this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - C2q00001');
+      this.mprRevisionModel['shiptopartyname'] = 'Yokogawa India Limited - C2q00001';
+      this.mprRevisionModel['shiptoparty'] = 'C2q00001';
     }
-    selectlocation(loaction:any) {
-        if (loaction == "EC - Products" || loaction == "EC / Factory" || loaction == "Phase-II") {
-            this['MPRPageForm3'].controls['shiptoparty'].setValue('Yokogawa India Limited - C2q00001');
-            this.mprRevisionModel['shiptopartyname'] = 'Yokogawa India Limited - C2q00001';
-            this.mprRevisionModel['shiptoparty'] = 'C2q00001';
-        }
-        else {
-            this['MPRPageForm3'].controls['shiptoparty'].setValue(this.ShipToPartyName);
-            this['MPRPageForm3'].value['shiptoparty'] = this.ShipToPartyName;
-            this.mprRevisionModel.shiptoparty = this.ShipToParty;
-            this.mprRevisionModel.shiptopartyname = this.ShipToPartyName;
-            if (loaction == "Site") {
-                this['MPRPageForm3'].controls['specifyDispatchLocation'].setValue(this.ShipToPartyName);
-                this['MPRPageForm3'].value['specifyDispatchLocation'] = this.ShipToPartyName;
-                this.DispatchLocation = this.ShipToPartyName;
-                //this.mprRevisionModel['DispatchLocation'] = this.ShipToPartyName;
-            }
-        }
+    else {
+      this['MPRPageForm3'].controls['shiptoparty'].setValue(this.ShipToPartyName);
+      this['MPRPageForm3'].value['shiptoparty'] = this.ShipToPartyName;
+      this.mprRevisionModel.shiptoparty = this.ShipToParty;
+      this.mprRevisionModel.shiptopartyname = this.ShipToPartyName;
+      if (loaction == "Site") {
+        this['MPRPageForm3'].controls['specifyDispatchLocation'].setValue(this.ShipToPartyName);
+        this['MPRPageForm3'].value['specifyDispatchLocation'] = this.ShipToPartyName;
+        this.DispatchLocation = this.ShipToPartyName;
+        //this.mprRevisionModel['DispatchLocation'] = this.ShipToPartyName;
+      }
     }
+  }
 
   //<<SCM Open issues coding Ended>>
 }
