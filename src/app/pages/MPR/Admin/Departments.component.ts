@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { Department, Employee, DynamicSearchResult } from 'src/app/Models/mpr';
-
+import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-Departments',
   templateUrl: './Departments.component.html'
@@ -13,7 +13,7 @@ import { Department, Employee, DynamicSearchResult } from 'src/app/Models/mpr';
 export class DepartmentComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private cdRef: ChangeDetectorRef, public MprService: MprService, public constants: constants) { }
-
+    @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
   public DeptAddForm; DeptEditForm: FormGroup;
   public DeptAddSubmitted: boolean = false;
   public DeptEditSubmitted: boolean = false;
@@ -52,7 +52,13 @@ export class DepartmentComponent implements OnInit {
     this.DeptEditForm.controls["SecondApproverEmpNo"].clearValidators();
     this.DeptEditForm.controls["ThirdApproverEmpNo"].clearValidators();
   }
+    public ExportTOExcel(jsonData: any[]): void {
 
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
+        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        XLSX.writeFile(wb, 'Departmentsheet.xlsx');
+    }
   loadDepartments() {
     this.dynamicData.tableName = "";
     this.dynamicData.query = "SELECT MPRDepartments.DepartmentId,MPRDepartments.Department,MPRDepartments.SecondApprover As SecondApproverEmpNo,SecondApprover.Name As SecondApproverName,MPRDepartments.ThirdApprover As ThirdApproverEmpNo,ThirdApprover.Name As ThirdApproverName,MPRDepartments.BoolInUse FROM MPRDepartments LEFT OUTER JOIN Employee As SecondApprover ON MPRDepartments.SecondApprover=SecondApprover.EmployeeNo LEFT OUTER JOIN Employee As ThirdApprover ON MPRDepartments.ThirdApprover=ThirdApprover.EmployeeNo WHERE MPRDepartments.BoolInUse=1 ORDER BY MPRDepartments.BoolInUse,MPRDepartments.Department";

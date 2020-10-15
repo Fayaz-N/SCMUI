@@ -47,6 +47,7 @@ import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.compone
 import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
+import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
 
 const routes: Routes = [{
   path: '',
@@ -114,7 +115,8 @@ const routes: Routes = [{
       { path: "statusreport", component: MPRStatusReportsComponent, canActivate: [AuthGuard] },
       { path: "mprwisereport", component: MPRWiseReportsComponent, canActivate: [AuthGuard] },
       { path: "requisitionreport", component: MPRRequisitionWiseReportComponent, canActivate: [AuthGuard] },
-      { path: "projectreport", component: ProjectWiseReportsComponent, canActivate: [AuthGuard] }
+      { path: "projectreport", component: ProjectWiseReportsComponent, canActivate: [AuthGuard] },
+      { path: "projectduration", component: ProjectDurationReportsComponent, canActivate: [AuthGuard] }
     
     // {
     //      path: '',

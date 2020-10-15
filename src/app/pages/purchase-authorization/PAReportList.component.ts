@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
 import { Employee } from '../../Models/mpr';
+import { NgxSpinnerService } from "ngx-spinner";
 import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, PAReportInputModel, PAApproverDetailsInputModel, mprpapurchasemodesmodel, mprpadetailsmodel } from 'src/app/Models/PurchaseAuthorization'
 @Component({
     selector: 'app-PAReportList',
@@ -9,7 +10,7 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel,
 })
 export class PAReportListComponent implements OnInit {
 
-    constructor(private paService: purchaseauthorizationservice, private router: Router) { }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, private spinner: NgxSpinnerService,) { }
 
     public employee: Employee;
     public approverslist: Array<any>[];
@@ -55,7 +56,9 @@ export class PAReportListComponent implements OnInit {
         })
     }
     LoadReport(reportsearch: PAReportInputModel) {
+        this.spinner.show();
         this.paService.loadpareport(reportsearch).subscribe(data => {
+            this.spinner.hide();
             this.palist = data;
         })
     }

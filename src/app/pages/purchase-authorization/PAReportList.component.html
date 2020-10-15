@@ -1,4 +1,4 @@
-<div class="container">
+
   <div class="form-control" style="height:100%">
     <div class="row">
       <div class="col-lg-3 col-md-3 col-sm-3 form-group">
@@ -20,8 +20,8 @@
       <button type="button" class="btn btn-primary" (click)="LoadReport(reportsearch)">Search</button>
     </div>
   </div>
-  <div class="form-control" style="height:100%;border-radius:0px;margin-top:40px">
-    <p-table #dt [value]="palist" [paginator]="true" [style]="{'width':'100%','overflow':'auto!important'}" [rows]="50" [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true" appendTo="body">
+  <!--<div class="form-control" style="height:100%;border-radius:0px;margin-top:40px">
+    <p-table #dt [value]="palist" [style]="{'width':'100%','overflow':'auto!important'}"  [resizableColumns]="true" [responsive]="true" columnResizeMode="expand" resizableColumns="true" appendTo="body">
       <ng-template pTemplate="header">
         <tr class="mprltbldata">
           <th style="width:100px">S.No</th>
@@ -41,6 +41,8 @@
           <th style="width:100px">RFQ Generated</th>
           <th style="width:100px">RFQ Responded</th>
           <th style="width:100px">Technical Spec Approved</th>
+          <th style="width:100px">Acknowledged</th>
+          <th style="width:100px">ClarificationtoEndUser</th>
           <th style="width:100px">Quote Finalized</th>
           <th style="width:100px">PA Generated</th>
           <th style="width:100px">PO Released</th>
@@ -63,30 +65,106 @@
           <td class="ptable-cell">{{rowData.Department}}</td>
           <td class="ptable-cell">{{rowData.BuyerGroup}}</td>
           <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
-          <td class="ptable-cell">{{rowData.ApprovedOn | date}}</td>
+          <td class="ptable-cell">{{rowData.ApprovedOn | date:'dd/MM/yyyy'}}</td>
           <td class="ptable-cell">{{rowData.SecondApproversStatus}}</td>
-          <td class="ptable-cell">{{rowData.SecondApprovedOn}}</td>
+          <td class="ptable-cell">{{rowData.SecondApprovedOn| date:'dd/MM/yyyy'}}</td>
           <td class="ptable-cell">{{rowData.ThirdApproverStatus}}</td>
-          <td class="ptable-cell">{{rowData.submitted | date}}</td>
-          <td class="ptable-cell">{{rowData.Checked | date}}</td>
-          <td class="ptable-cell">{{rowData.approved | date}}</td>
+          <td class="ptable-cell">{{rowData.submitted | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.Checked | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.approved | date:'dd/MM/yyyy'}}</td>
           <td class="ptable-cell">{{rowData.rejected | date}}</td>
-          <td class="ptable-cell">{{rowData.Acknowledged | date}}</td>
-          <td class="ptable-cell">{{rowData.ClarificationtoEndUser}}</td>
-          <td class="ptable-cell">{{rowData.RFQGenerated}}</td>
-          <td class="ptable-cell">{{rowData.RFQResponded}}</td>
-          <td class="ptable-cell">{{rowData.TechnicalSpecApproved}}</td>
-          <td class="ptable-cell">{{rowData.QuoteFinalized}}</td>
-          <td class="ptable-cell">{{rowData.PAGenerated}}</td>
-          <td class="ptable-cell">{{rowData.POReleased}}</td>
-          <td class="ptable-cell">{{rowData.RaisingPOChecked}}</td>
-          <td class="ptable-cell">{{rowData.MPRRejected}}</td>
-          <td class="ptable-cell">{{rowData.MPROnHold}}</td>
-          <td class="ptable-cell">{{rowData.RFQFinalized}}</td>
-          <td class="ptable-cell">{{rowData.PAApproved}}</td>
-          <td class="ptable-cell">{{rowData.MPRClosed}}</td>
+          <td class="ptable-cell">{{rowData.RFQGenerated| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RFQResponded| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.TechnicalSpecApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.Acknowledged | date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.ClarificationtoEndUser| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.QuoteFinalized| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.PAGenerated| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.POReleased| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RaisingPOChecked| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RaisingPOApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPRRejected| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPROnHold| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.RFQFinalized| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.PAApproved| date:'dd/MM/yyyy'}}</td>
+          <td class="ptable-cell">{{rowData.MPRClosed| date:'dd/MM/yyyy'}}</td>
         </tr>
       </ng-template>
     </p-table><br />
+  </div>-->
+
+<div class="card compar-card mt-2">
+  <div class="card-body">
+    <table class="table table-sm table-striped table-bordered" #TABLE #table>
+      <thead class="thead-dark">
+        <tr style="background-color: #33b5e5">
+          <th>S.No</th>
+          <th>DocumentNo</th>
+          <th>MPR RevisionId</th>
+          <th>Department</th>
+          <th>BuyerGroup</th>
+          <th>First Approver Status</th>
+          <th>ApprovedOn</th>
+          <th>Second Approver Status</th>
+          <th>Second ApprovedOn</th>
+          <th>Third Approver Status</th>
+          <th>Submitted</th>
+          <th>Checked</th>
+          <th>Approved</th>
+          <th>Rejected</th>
+          <th>Acknowledged</th>
+          <th>ClarificationtoEndUser</th>
+          <th>RFQ Generated</th>
+          <th>RFQ Responded</th>
+          <th>Technical Spec Approved</th>
+          <th>Quote Finalized</th>
+          <th>PA Generated</th>
+          <th>PO Released</th>
+          <th>Raising PO Checked</th>
+          <th>Raising PO Approved</th>
+          <th>MPR Rejected</th>
+          <th>MPROn Hold</th>
+          <th>RFQ Finalized</th>
+          <th>PA Approved</th>
+          <th>MPR Closed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let data of palist  let ndx = index">
+          <td>
+            {{ndx+1}}
+          </td>
+          <td>{{data.DocumentNo}}</td>
+          <td>{{data.RevisionId}}</td>
+          <td>{{data.Department}}</td>
+          <td>{{data.BuyerGroup}}</td>
+          <td>{{data.ApprovalStatus}}</td>
+          <td>{{data.ApprovedOn | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.SecondApproversStatus}}</td>
+          <td>{{data.SecondApprovedOn| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.ThirdApproverStatus}}</td>
+          <td>{{data.submitted | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.Checked | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.approved | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.rejected | date}}</td>
+          <td>{{data.Acknowledged | date:'dd/MM/yyyy'}}</td>
+          <td>{{data.ClarificationtoEndUser| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.RFQGenerated| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.RFQResponded| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.TechnicalSpecApproved| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.QuoteFinalized| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.PAGenerated| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.POReleased| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.RaisingPOChecked| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.RaisingPOApproved| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.MPRRejected| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.MPROnHold| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.RFQFinalized| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.PAApproved| date:'dd/MM/yyyy'}}</td>
+          <td>{{data.MPRClosed| date:'dd/MM/yyyy'}}</td>
+        </tr>
+      </tbody>
+      <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->
+    </table>
   </div>
 </div>

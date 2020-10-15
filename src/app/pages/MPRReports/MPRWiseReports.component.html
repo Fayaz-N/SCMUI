@@ -93,7 +93,7 @@
       <tbody>
         <tr *ngFor="let app of statuslist  let ndx = index">
           <td>{{ndx+1}}</td>
-          <td><a [routerLink]="['/SCM/MPRForm',app.revisionid]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
+          <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
           <td>{{app.RevisionNo}}</td>
           <td>{{app.RevisionId}}</td>
           <td style="max-width:200px !important">{{app.ItemDescription}}</td>

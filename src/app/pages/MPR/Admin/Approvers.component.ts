@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core'
 import { MPRApprovers, DynamicSearchResult, Employee } from 'src/app/Models/mpr';
 import { MprService } from 'src/app/services/mpr.service';
 import { constants } from 'src/app/Models/MPRConstants';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-Approvers',
@@ -12,7 +13,7 @@ import { SelectItem } from 'primeng/api';
 })
 
 export class ApproversComponent implements OnInit {
-
+    @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
   constructor(private formBuilder: FormBuilder, public MprService: MprService, public constants: constants) { }
   public ApproverAddForm: FormGroup;
   public approvers: Array<MPRApprovers> = [];
@@ -37,7 +38,13 @@ export class ApproversComponent implements OnInit {
     });
 
   }
+    public ExportTOExcel(jsonData: any[]): void {
 
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
+        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        XLSX.writeFile(wb, 'Approversheet.xlsx');
+    }
   loadApprovers() {
     this.MprService.getMPRApprovers().subscribe(data => this.approvers = data);
   }

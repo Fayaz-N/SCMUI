@@ -196,6 +196,9 @@ export class purchaseauthorizationservice {
     GetProjectWisereport(status: ReportInputModel): Observable<any> {
         return this.http.post<any>(this.url + 'PA/Loadprojectcodewisereport', status, this.httpOptions)
     }
+    GetProjectDurationWisereport(status: ReportInputModel): Observable<any> {
+        return this.http.post<any>(this.url + 'PA/LoadprojectDurationwisereport', status, this.httpOptions)
+    }
     Loadjobcodes(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/Loadjobcodes', this.httpOptions)
     }

@@ -1,4 +1,4 @@
-<div style="margin-bottom: 10%">
+<div style="margin-bottom: 0%">
 
   <div class="row col-md-10">
     <div class="col-md-6">
@@ -124,8 +124,11 @@
   <p-table #dt [value]="mappedpurchase" [paginator]="true" [rows]="100" [globalFilterFields]="['DepartmentName','Name']" [resizableColumns]="true" p columnResizeMode="expand">
     <ng-template pTemplate="header">
       <tr>
-        <th colspan="8" class="text-right">
+        <th colspan="5" class="text-right">
           <input type="text" pInputText size="35" placeholder="Search......" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto !important">&nbsp;
+        </th>
+        <th colspan="5">
+          <button type="button" class="btn btn-primary" (click)="ExportTOExcel(mappedpurchase)">ExportTOExcel</button>
         </th>
       </tr>
       <tr>

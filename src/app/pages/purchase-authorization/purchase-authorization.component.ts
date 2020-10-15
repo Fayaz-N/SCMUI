@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef  } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfigurationModel, ChangedModel, DepartmentModel, PAAuthorizationLimitModel, PAAuthorizationEmployeeMappingModel } from 'src/app/Models/PurchaseAuthorization'
 import { purchaseauthorizationservice } from 'src/app/services/purchaseauthorization.service'
@@ -8,6 +8,7 @@ import { MessageService } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn } from '@angular/forms';
 import { Employee } from '../../Models/mpr';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: 'app-purchase-authorization',
@@ -42,7 +43,7 @@ export class PurchaseAuthorizationComponent implements OnInit {
     LessBudget = "LessBudget";
     MoreBudget = "MoreBudget"
     constructor(private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute, public messageService: MessageService, public paService: purchaseauthorizationservice) { }
-
+    @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -80,7 +81,13 @@ export class PurchaseAuthorizationComponent implements OnInit {
             allowSearchFilter: true,
         };
     }
+    public ExportTOExcel(jsonData: any[]): void {
 
+        const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(jsonData);
+        const wb: XLSX.WorkBook = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+        const excelBuffer: any = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+        XLSX.writeFile(wb, 'Employeemapping.xlsx');
+    }
     onItemSelect(item: any) {
         console.log('onItemSelect', item);
     }

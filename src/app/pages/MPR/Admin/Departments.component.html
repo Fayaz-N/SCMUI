@@ -1,4 +1,10 @@
-<div class="col-md-4" style="text-decoration: underline;"><h4>Department List</h4></div>
+<div class="col-md-12 row">
+  <div class="col-md-4" style="text-decoration: underline;"><h4>Department List</h4></div>
+  <div class="col-md-4">
+    <button type="button" class="btn btn-primary" (click)="ExportTOExcel(Departments)">ExportTOExcel</button>
+  </div>
+</div>
+
 <p-table #dt [value]="Departments" [globalFilterFields]="['Department']" editMode="row" [resizableColumns]="true" columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
   <ng-template pTemplate="header">
     <tr class="mprltbldata">

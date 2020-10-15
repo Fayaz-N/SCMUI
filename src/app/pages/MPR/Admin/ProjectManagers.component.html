@@ -1,4 +1,9 @@
-<div class="col-md-4" style="text-decoration: underline;"><h4>Project Manager List</h4></div>
+<div class="col-md-12 row">
+  <div class="col-md-4" style="text-decoration: underline;"><h4>Project Manager List</h4></div>
+  <div class="col-md-4 pull-right">
+    <button type="button" class="btn btn-primary" (click)="ExportTOExcel(ProjectManagers)">ExportTOExcel</button>
+  </div>
+</div>
 <div class="container" style="padding-top:30px;padding-bottom:30px">
   <p-table #dt [value]="ProjectManagers" [globalFilterFields]="['Name']" editMode="row" [resizableColumns]="true" p columnResizeMode="expand" selectionMode="single" [paginator]="true" [rows]="10">
     <ng-template pTemplate="header">

@@ -76,6 +76,7 @@ import { MPRWiseReportsComponent } from './MPRReports/MPRWiseReports.component'
 import { MPRRequisitionWiseReportComponent } from './MPRReports/MPRRequisitionWiseReport.component'
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.component'
+import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationReports.component'
 //import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -159,7 +160,8 @@ import { ProjectWiseReportsComponent } from './MPRReports/ProjectWiseReports.com
       MPRStatusReportsComponent,
       MPRWiseReportsComponent,
       MPRRequisitionWiseReportComponent,
-      ProjectWiseReportsComponent
+      ProjectWiseReportsComponent,
+      ProjectDurationReportsComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

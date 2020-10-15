@@ -83,6 +83,8 @@
           <th>Approver Cleared Date</th>
           <th>Second Approver Cleared Date</th>
           <th>PA Approved</th>
+          <th>Mpr Duration</th>
+          <th>PO Duration</th>
           <th>CustomsDuty</th>
           <th>ProcurementSource</th>
         </tr>
@@ -96,7 +98,7 @@
           <td>{{app.RevisionId}}</td>
           <td>{{app.IssuePurpose}}</td>
           <td>{{app.pono}}</td>
-          <td>{{app.PODate| date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.PODate | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.VendorName}}</td>
           <td style="max-width:200px !important">{{app.ItemDescription}}</td>
           <td>{{app.BuyerGroup}}</td>
@@ -104,6 +106,8 @@
           <td>{{app.approveddate | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.SecondApprovedOn | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.PAStatusUpdate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.MprDuration}}</td>
+          <td>{{app.poduration}}</td>
           <td>{{app.CustomsDuty}}</td>
           <td>{{app.ProcurementSource}}</td>
         </tr>
