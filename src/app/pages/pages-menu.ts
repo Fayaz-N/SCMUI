@@ -250,32 +250,32 @@ export const MENU_ITEMS: NbMenuItem[] = [
         ],
     },
     {
-        title: 'MPRReports',
+        title: 'MPR Reports',
         icon: 'lock-outline',
         expanded: false,
         children: [
             {
-                title: 'MPRStatusReport',
+                title: 'MPR Status Report',
                 link: '/SCM/statusreport',
                 icon: 'list-outline'
             },
             {
-                title: 'MPRWiseReport',
+                title: 'MPRWise Report',
                 link: '/SCM/mprwisereport',
                 icon: 'list-outline'
             },
             {
-                title: 'RequisitionReport',
+                title: 'Requisition Report',
                 link: '/SCM/requisitionreport',
                 icon: 'list-outline'
             },
             {
-                title: 'ProjectReport',
+                title: 'Project Report',
                 link: '/SCM/projectreport',
                 icon: 'list-outline'
             },
             {
-                title: 'ProjectDuration',
+                title: 'Project Duration',
                 link: '/SCM/projectduration',
                 icon: 'list-outline'
             },
