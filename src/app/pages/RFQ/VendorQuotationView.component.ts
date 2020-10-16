@@ -28,6 +28,7 @@ export class VendorQuotationViewComponent implements OnInit {
   public newRevision: boolean;
   public rfqrevisions: Array<any> = [];
   public dynamicData = new DynamicSearchResult();
+  public DocTypeList: Array<any> = [];
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -53,11 +54,21 @@ export class VendorQuotationViewComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params["RFQRevisionId"]) {
         this.RfqRevisionId = params["RFQRevisionId"];
+        this.getDocumentTypeMaster();
         this.loadQuotationDetails();
       }
     });
   }
 
+  //get document type master
+
+  getDocumentTypeMaster() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select DocumenTypeId,DocumentTypeName, * from DocumentTypeMaster";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.DocTypeList = data;
+    })
+  }
   loadQuotationDetails() {
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
       this.quoteDetails = data;
@@ -147,13 +158,16 @@ export class VendorQuotationViewComponent implements OnInit {
 
   //get document type
   getDocType(docType: number) {
-    if (docType == 6)
-      return "Technical File";
-    else if (docType == 7) {
-      return "Commercial File";
+    if (docType && this.DocTypeList.length > 0) {
+      return this.DocTypeList.filter(li => li.DocumenTypeId == docType)[0].DocumentTypeName;
     }
-    else {
-      return "Terms and conditions";
-    }
+    //if (docType == 6)
+    //  return "Technical File";
+    //else if (docType == 7) {
+    //  return "Commercial File";
+    //}
+    //else if (docType == 7) {
+    //  return "Terms and conditions";
+    //}
   }
 }
