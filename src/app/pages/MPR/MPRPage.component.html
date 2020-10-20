@@ -1369,13 +1369,13 @@
     </div>
   </div>
   <br />
-  <div *ngIf="showCommunicationForm && mprRevisionDetails.MPRStatusTrackDetails">
+  <div *ngIf="showCommunicationForm && AllMPRStatusTrackDetails">
     <div class="head-text pl-0">
       <div class="col-md-6 pt-2">Status History</div>
       <div class="col-md-3 pt-2"></div>
     </div>
     <div class="form-control" style="height:100%;border-radius:0px;">
-      <p-table [value]="mprRevisionDetails.MPRStatusTrackDetails">
+      <p-table [value]="AllMPRStatusTrackDetails">
         <ng-template pTemplate="header">
           <tr class="mprltbldata">
             <th>Employee Name</th>

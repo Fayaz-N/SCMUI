@@ -45,6 +45,7 @@ export class MPRPageComponent implements OnInit {
   public mprRevisionModel: mprRevision;
   public mprRevisionList: Array<mprRevision> = [];
   public mprRevisionDetails: mprRevision;
+  public AllMPRStatusTrackDetails: Array<any> = [];
   public dialogTop: string;
   public displayItemDialog: boolean = false;
   public showDocumentUpload: boolean;
@@ -1290,6 +1291,8 @@ export class MPRPageComponent implements OnInit {
         this.MprService.getMprRevisionList(this.mprRevisionModel.RequisitionId).subscribe(data => {
           this.mprRevisionList = data;
           this.mprRevisionDetails = this.mprRevisionList.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId)[0];
+          this.AllMPRStatusTrackDetails = this.mprRevisionDetails.MPRStatusTrackDetails;
+
           if (this.mprRevisionDetails.MPRStatusTrackDetails.length > 0)
             this.mprRevisionDetails.MPRStatusTrackDetails = this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.RevisionId == this.mprRevisionModel.RevisionId);
           if (this.mprRevisionDetails && this.mprRevisionDetails.MPRStatusTrackDetails && this.mprRevisionDetails.StatusId && this.mprRevisionDetails.MPRStatusTrackDetails.filter(li => li.StatusId == this.mprRevisionDetails.StatusId)[0])
