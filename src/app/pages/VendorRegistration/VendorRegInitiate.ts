@@ -167,8 +167,8 @@ export class VendorRegInitiateComponent implements OnInit {
         if (this.typeOfUser != "Buyer") {
           this.vendorId = data.Vendorid;
           this.getVendorRegProcess();
-          if (this.VendorRegStatus.Status == "Approved")
-            this.disableStatusSubmit = true;
+          if (this.VendorRegStatus.Status == "Approved" &&  this.typeOfUser != "Checker")
+            this.displayFooter = false;
           this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'Status Updated' });
         }
         else
@@ -205,7 +205,7 @@ export class VendorRegInitiateComponent implements OnInit {
       this.VendorRegStatus.Status = this.VendorData.VerifiedStatus;
       this.VendorRegStatus.Remarks = this.VendorData.VerifierRemarks;
     }
-    if (this.VendorData.CheckedBy == this.employee.EmployeeNo && this.VendorData.CheckerStatus != 'Approved') {
+    if (this.VendorData.CheckedBy == this.employee.EmployeeNo && (this.VendorData.ApprovalStatus != 'Approved' || this.VendorData.VerifiedStatus != 'Approved')) {
       this.displayFooter = true;
       this.typeOfUser = "Checker";
     }
