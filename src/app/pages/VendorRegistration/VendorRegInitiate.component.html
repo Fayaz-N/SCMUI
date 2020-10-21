@@ -22,7 +22,7 @@
 <div *ngIf="VendorData" class="row m-2"  style="background-color: goldenrod;height:1%; margin-bottom:0px!important">
   <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4"></div>
   <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6"><b>Vendor Registration Details</b></div>
-  <div *ngIf="typeOfUser && typeOfUser=='Checker' && VendorData.CheckerStatus != 'Approved'" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
+  <div *ngIf="typeOfUser && typeOfUser=='Checker' && (VendorData.ApprovalStatus != 'Approved' || VendorData.VerifiedStatus != 'Approved')" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
 </div>
 <div *ngIf="VendorData" class="card m-2" style="margin-top:0px !important">
   <div *ngIf="typeOfUser=='Checker'" class="row m-2">

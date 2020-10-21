@@ -162,7 +162,7 @@ export class mprRevision {
   MPRStatusTracks: MPRStatusTrack;
   MPRTargetedSpendSupportingDocs: MPRTargetedSpendSupportingDoc;
   MPRVendorDetails: Array<MPRVendorDetail> = [];
-  MPRStatusTrackDetails: Array<any> = []
+  MPRStatusTrackDetails: Array<any> = [];
   saleorderdeatils: SaleOrderDetails;
   MPRDetail: MPRDetail;
   RequisitionId: number;
