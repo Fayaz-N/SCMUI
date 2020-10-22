@@ -202,4 +202,7 @@ export class purchaseauthorizationservice {
     Loadjobcodes(): Observable<any> {
         return this.http.get<any>(this.url + 'PA/Loadjobcodes', this.httpOptions)
     }
+    GETApprovernamesbydepartmentid(departmentid: number): Observable<any> {
+        return this.http.get<any>(this.url + 'PA/GETApprovernamesbydepartmentid/' + departmentid, this.httpOptions);
+    }
 } 

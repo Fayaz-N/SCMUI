@@ -63,7 +63,8 @@ export class PADetailsModel {
   BuyerGroupId: number;
   RFQNo: string;
   DeptID: number;
-  DepartmentId: number;
+    DepartmentId: number;
+    OrgDepartmentId: number;
   DepartmentName: string;
   EmployeeNo: string;
   vendorProjectManager: string;
@@ -76,7 +77,8 @@ export class PADetailsModel {
   rfqnumber: string;
   fromDate: Date;
   toDate: Date;
-  Paid: number;
+    Paid: number;
+    Approvername: string;
 }
 export class ItemsViewModel {
   RFQItemsId: number;

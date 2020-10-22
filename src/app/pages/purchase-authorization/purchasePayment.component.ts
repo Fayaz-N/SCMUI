@@ -511,6 +511,7 @@ export class purchasePaymentComponent implements OnInit {
     }
     updateAddrs(event, paitem: ItemsViewModel) {
         if (event.target.checked) {
+
             //this.paitem.PONO = paitem.PONO
             (<HTMLInputElement>document.getElementById("txtcopy1")).value = paitem.PONO;
         }

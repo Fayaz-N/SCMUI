@@ -25,9 +25,9 @@
       </mat-form-field>-->
       <mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
-        <select matNativeControl [(ngModel)]="pofilters.DepartmentId">
+        <select matNativeControl [(ngModel)]="pofilters.OrgDepartmentId" [disabled]="editable">
           <option value="" selected></option>
-          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+          <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
             {{option.Department}}
           </option>
         </select>
@@ -109,19 +109,30 @@
     </div>
   </div>
   <div class="row form-group">
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">From Date</label><br />
       <input type="date" class="form-control" [(ngModel)]="pofilters.fromDate">
       <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <label class="form-label">To Date</label>&nbsp;<br />
       <input type="date" class="form-control" [(ngModel)]="pofilters.toDate">
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-4">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <label for="paid" class="form-label ">PA ID</label><br />
       <input class="form-control" [(ngModel)]="pofilters.Paid">
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Approver</mat-label>
+        <select matNativeControl [(ngModel)]="pofilters.Approvername">
+          <option value="" selected></option>
+          <option *ngFor="let option of Approvers" [value]="option.Name">
+            {{option.Name}}
+          </option>
+        </select>
+      </mat-form-field>
     </div>
   </div>
   <div class="row">
@@ -195,6 +206,7 @@
         <th style="width:80px">Tokochu Request</th>
         <th style="width:80px">PA Status</th>
         <th style="width:80px">PO Status</th>
+        <th style="width:60px">Approvers</th>
         <th style="width:60px">Delete</th>
       </tr>
     </ng-template>
@@ -203,7 +215,7 @@
         <td class="ptable-cell">
           {{ri+1}}
         </td>
-        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" [class.disabled]="editable ? true : null"  target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td pEditableColumn class="ptable-cell">{{rowData.pono}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
@@ -213,11 +225,12 @@
           {{rowData.Name}}<br />
           {{rowData.RequestedOn | date}}
         </td>
-        <td class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td  class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
         <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
+        <td pEditableColumn class="ptable-cell">{{rowData.approvers1}}</td>
         <td class="ptable-cell">
-          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" (click)="deletepa(rowData)" class="ui-button-danger"></button>
+          <button pButton type="button" pDeleteEditableRow icon="pi pi-trash" [disabled]="editable" (click)="deletepa(rowData)" class="ui-button-danger"></button>
         </td>
       </tr>
     </ng-template>

@@ -26,7 +26,8 @@ export class purchasePaymentListComponent implements OnInit {
   public pofilters: PADetailsModel;
   public buyergroups: Array<any> = [];
   public Vendors: Array<any> = [];
-  public departmentlist: any[];
+  public departmentlist: Array<any> = [];
+  public Approvers: Array<any> = [];
   public purchasedetails: mprpadetailsmodel;
   public filtereddepartments: any;
   public filteredvendors: any;
@@ -34,24 +35,38 @@ export class purchasePaymentListComponent implements OnInit {
   public DeleteDialog: boolean;
   public padelete: padeletemodel;
   public PADeleteForm: FormGroup;
-
+  public editable: boolean;
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
   filteredoptions: Observable<any[]>;
-  ngOnInit() {
-    if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"));
+    ngOnInit() {
+        this.departmentlist = new Array<any>();
+        this.loadallmprdepartments();
+        this.pofilters = new PADetailsModel();
+        if (localStorage.getItem("Employee")) {
+        this.employee = JSON.parse(localStorage.getItem("Employee"));
+            if (this.employee.OrgDepartmentId != 14) {
+            this.pofilters.OrgDepartmentId = this.employee.OrgDepartmentId;
+            this.editable = true;
+           // let index2 = this.departmentlist.filter(li => li[0]['ORgDepartmentid'] == this.employee.OrgDepartmentId);
+            
+            //var index2 = this.departmentlist.filter(li => li.OrgDepartmentId === this.employee.OrgDepartmentId);
+            //for (var i = 0; i < this.departmentlist.length; i++) {
+            //    let index1 = this.departmentlist[i]['ORgDepartmentid'] === this.employee.OrgDepartmentId
+            //    console.log("index1", index1)
+            //}
+        }
     }
     else {
       this.router.navigateByUrl("Login");
-    }
+      }
     this.purchasemodes = new Array<mprpapurchasemodesmodel>();
     this.purchasetypes = new Array<mprpapurchasetypesmodel>();
     this.purchasedetails = new mprpadetailsmodel();
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
-    this.pofilters = new PADetailsModel();
+   
     this.DeleteDialog = false;
     //this.loadAllmprpalist();
     this.loadbuyergroups();
@@ -59,8 +74,8 @@ export class purchasePaymentListComponent implements OnInit {
     this.loadAllVendor();
     //this.filtereddepartments = [];
 
-    this.departmentlist = new Array<any>();
-    this.loadallmprdepartments();
+    
+
     //this.filteredoptions = this.mycontrol.valueChanges.pipe(startWith(''),
     //    map(value => this._filter(value))
     //);
@@ -95,16 +110,24 @@ export class purchasePaymentListComponent implements OnInit {
   }
   loadallmprdepartments() {
     this.paService.LoadAllDepartments().subscribe(data => {
-      this.departmentlist = data;
-      //this.filtereddepartments = this.filterStates('');
+        this.departmentlist = data;
+        var index2 = this.departmentlist.filter(li => li['ORgDepartmentid'] === this.employee.OrgDepartmentId);
+        var departmentid=0
+        if (this.employee.OrgDepartmentId != 14) {
+             departmentid = index2[0].DepartmentId;
+        }
+        this.GETApprovernamesbydepartmentid(departmentid)
     });
-  }
-
+    }
+    GETApprovernamesbydepartmentid(departmentid: number) {
+        this.paService.GETApprovernamesbydepartmentid(departmentid).subscribe(data => {
+            this.Approvers = data;
+        });
+    }
 
   GetMprpadetailsBySearch(pofilters: PADetailsModel) {
     this.paService.GetMprpadetailsBySearch(pofilters).subscribe(data => {
       this.palist = data;
-        console.log("palist", this.palist)
     });
   }
   //displayfn(department: object) {
