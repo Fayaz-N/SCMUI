@@ -413,17 +413,18 @@
     <div class="tab-pane" id="docdetailsid">
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype1" class="form-control input-md" (change)="onDDLChange($event.target.value,1,'isDisabledaddress')">
+           <label><b>Select Address Proof:</b></label>
+          <!--<select id="drp_documenttype1" class="form-control input-md" (change)="onDDLChange($event.target.value,1,'isDisabledaddress')">
             <option disabled selected value> -- Select Address Proof-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group '>
           <span style="color:red;margin-left: -15px;">*</span>&nbsp;
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledaddress" (click)="fileInput1.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype1')" #fileInput1>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput1.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'1')" #fileInput1>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group '>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -436,17 +437,18 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype2" class="form-control input-md" (change)="onDDLChange($event.target.value,2,'isDisabledGST')">
+           <label><b>Select GST registration certificate:</b></label>
+          <!--<select id="drp_documenttype2" class="form-control input-md" (change)="onDDLChange($event.target.value,2,'isDisabledGST')">
             <option disabled selected value> -- Select GST registration certificate-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
           <span *ngIf="VendorData.VendorType==false" style="color:red;margin-left: -15px;">*</span>&nbsp;
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledGST" (click)="fileInput2.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype2')" #fileInput2>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput2.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'2')" #fileInput2>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -459,17 +461,18 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype3" class="form-control input-md" (change)="onDDLChange($event.target.value,3,'isDisabledPAN')">
+           <label><b>Select PAN:</b></label>
+          <!--<select id="drp_documenttype3" class="form-control input-md" (change)="onDDLChange($event.target.value,3,'isDisabledPAN')">
             <option disabled selected value> -- Select PAN-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
           <span *ngIf="VendorData.VendorType==false" style="color:red;margin-left: -15px;">*</span>&nbsp;
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledPAN" (click)="fileInput3.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype3')" #fileInput3>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput3.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'3')" #fileInput3>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -482,16 +485,17 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype4" class="form-control input-md" (change)="onDDLChange($event.target.value,4,'isDisabledCIN')">
+           <label><b> CIN copy:</b></label>
+          <!--<select id="drp_documenttype4" class="form-control input-md" (change)="onDDLChange($event.target.value,4,'isDisabledCIN')">
             <option disabled selected value> -- CIN Copy-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledCIN" (click)="fileInput4.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype4')" #fileInput4>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput4.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'4')" #fileInput4>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -504,16 +508,17 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype5" class="form-control input-md" (change)="onDDLChange($event.target.value,5,'isDisabledBank')">
+           <label><b>Select Bank Mandate duly signed by banker:</b></label>
+          <!--<select id="drp_documenttype5" class="form-control input-md" (change)="onDDLChange($event.target.value,5,'isDisabledBank')">
             <option disabled selected value> -- Select Bank Mandate duly signed by banker-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledBank" (click)="fileInput5.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype5')" #fileInput5>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput5.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'5')" #fileInput5>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -526,17 +531,18 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype6" class="form-control input-md" (change)="onDDLChange($event.target.value,6,'isDisabledCheque')">
+           <label><b>Select cancelled cheque copy:</b></label>
+          <!--<select id="drp_documenttype6" class="form-control input-md" (change)="onDDLChange($event.target.value,6,'isDisabledCheque')">
             <option disabled selected value> -- Select Cancelled cheque Copy-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
           <span *ngIf="VendorData.VendorType==false" style="color:red;margin-left: -15px;">*</span>&nbsp;
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledCheque" (click)="fileInput6.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype6')" #fileInput6>
+          <button class="attachedbtn" mat-raised-button (click)="fileInput6.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'6')" #fileInput6>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -549,16 +555,17 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype7" class="form-control input-md" (change)="onDDLChange($event.target.value,7,'isDisabledInspecter')">
+           <label><b>Select certificate from factory inspector:</b></label>
+          <!--<select id="drp_documenttype7" class="form-control input-md" (change)="onDDLChange($event.target.value,7,'isDisabledInspecter')">
             <option disabled selected value> -- Select Certificate from factory Inspector-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledInspecter" (click)="fileInput7.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype7')" #fileInput7>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput7.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'7')" #fileInput7>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -577,16 +584,17 @@
       </div>
       <div *ngIf="VendorData.ESI=='1'" class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype8" class="form-control input-md" (change)="onDDLChange($event.target.value,8,'isDisabledESI')">
+           <label><b>Select ESI / PF Registration:</b></label>
+          <!--<select id="drp_documenttype8" class="form-control input-md" (change)="onDDLChange($event.target.value,8,'isDisabledESI')">
             <option disabled selected value> -- Select ESI / PF Registration-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledESI" (click)="fileInput8.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype8')" #fileInput8>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput8.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'8')" #fileInput8>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -599,16 +607,17 @@
       </div>
       <div *ngIf="VendorData.ESI=='0'" class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype16" class="form-control input-md" (change)="onDDLChange($event.target.value,16,'isDisabledESI')">
+           <label><b>Select declaration on letter head:</b></label>
+          <!--<select id="drp_documenttype16" class="form-control input-md" (change)="onDDLChange($event.target.value,16,'isDisabledESI')">
             <option disabled selected value> -- Select Declaration on letter head -- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledESI" (click)="fileInput16.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype16')" #fileInput16>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput16.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'16')" #fileInput16>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -621,16 +630,17 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype9" class="form-control input-md" (change)="onDDLChange($event.target.value,9,'isDisabledPollution')">
+           <label><b>Select pollution clearance certificate copy:</b></label>
+          <!--<select id="drp_documenttype9" class="form-control input-md" (change)="onDDLChange($event.target.value,9,'isDisabledPollution')">
             <option disabled selected value> -- Select Pollution clearance certificate copy-- </option>
             <option id="selectedPANId" *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledPollution" (click)="fileInput9.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype9')" #fileInput9>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput9.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'9')" #fileInput9>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -643,16 +653,17 @@
       </div>
       <div class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype10" class="form-control input-md" (change)="onDDLChange($event.target.value,10,'isDisabledExcise')">
+           <label><b>Select excise registration certificate copy:</b></label>
+          <!--<select id="drp_documenttype10" class="form-control input-md" (change)="onDDLChange($event.target.value,10,'isDisabledExcise')">
             <option disabled selected value> -- Select Excise registration certificate copy-- </option>
             <option *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisabledExcise" (click)="fileInput10.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype10')" #fileInput10>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput10.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'10')" #fileInput10>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -665,16 +676,17 @@
       </div>
       <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype17" class="form-control input-md" (change)="onDDLChange($event.target.value,17,'isDisableTaxDoc')">
+           <label><b>TAX certificate:</b></label>
+          <!--<select id="drp_documenttype17" class="form-control input-md" (change)="onDDLChange($event.target.value,17,'isDisableTaxDoc')">
             <option disabled selected value> -- TAX Certificate-- </option>
             <option *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisableTaxDoc" (click)="fileInput17.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype17')" #fileInput17>
+          <button class="attachedbtn" mat-raised-button (click)="fileInput17.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'17')" #fileInput17>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -687,16 +699,17 @@
       </div>
       <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline" id="documents">
         <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
-          <select id="drp_documenttype18" class="form-control input-md" (change)="onDDLChange($event.target.value,18,'isDisableForm10Doc')">
+           <label><b>Form10 F:</b></label>
+          <!--<select id="drp_documenttype18" class="form-control input-md" (change)="onDDLChange($event.target.value,18,'isDisableForm10Doc')">
             <option disabled selected value> -- Form10 F-- </option>
             <option *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2 form-group'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisableForm10Doc" (click)="fileInput18.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype18')" #fileInput18>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput18.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'18')" #fileInput18>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6 form-group'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">
@@ -708,17 +721,18 @@
         </div>
       </div>
       <div class="row m-2 form-inline" id="documents">
-        <div class='col-xs-4 col-md-4 col-sm-4'>
-          <select id="drp_documenttype14" class="form-control input-md" (change)="onDDLChange($event.target.value,14,'isDisableOtherDoc')">
+        <div class='col-xs-4 col-md-4 col-sm-4 form-group'>
+           <label><b>Other Documents:</b></label>
+          <!--<select id="drp_documenttype14" class="form-control input-md" (change)="onDDLChange($event.target.value,14,'isDisableOtherDoc')">
             <option disabled selected value> -- Other Documents-- </option>
             <option *ngFor=" let DocList of DocumentList " value={{DocList.DocId}}>
               {{DocList.DocumentName}}
             </option>
-          </select>
+          </select>-->
         </div>
         <div class='col-xs-2 col-md-2 col-sm-2'>
-          <button class="attachedbtn" mat-raised-button [disabled]="isDisableOtherDoc" (click)="fileInput14.click()">Select File</button>
-          <input style="display: none" #attachments type="file" (change)="fileattached($event,'drp_documenttype14')" #fileInput14>
+          <button class="attachedbtn" mat-raised-button  (click)="fileInput14.click()">Select File</button>
+          <input style="display: none" #attachments type="file" (change)="fileattached($event,'14')" #fileInput14>
         </div>
         <div class='col-xs-6 col-md-6 col-sm-6'>
           <div *ngFor="let selected of VendorData.DocDetailsLists;let index = index">

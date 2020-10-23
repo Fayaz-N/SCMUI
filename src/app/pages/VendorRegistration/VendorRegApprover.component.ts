@@ -330,10 +330,11 @@ export class VendorRegisterApproverComponent implements OnInit {
   fileattached(event: any, docId: any) {
     let fileList: FileList = event.target.files;
     var docTypeId;
-    if (docId == "15")
-      docTypeId = docId;
-    else
-      docTypeId = document.getElementById(docId)["value"];
+    docTypeId = docId;
+    //if (docId == "15")
+    //  docTypeId = docId;
+    //else
+    //  docTypeId = document.getElementById(docId)["value"];
     let idanddocid = this.VendorDataLocDetails.VUniqueId + "_" + this.VendorDataLocDetails.Vendorid + "_" + docTypeId + "_" + "VendorReg";
     let formData: FormData = new FormData();
     if (fileList.length > 0) {
