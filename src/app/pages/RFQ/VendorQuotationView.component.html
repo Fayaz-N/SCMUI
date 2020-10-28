@@ -93,36 +93,38 @@
           </tr>
         </ng-template>
       </p-table>
-    </div><br />
-    <div *ngIf="quoteDetails.rfqitem.length>0 && MPRPriceVisibilty" class="row" style="margin-left: 0px; margin-right: 0px">
+    </div>
+    <div *ngIf="quoteDetails.rfqitem.length>0 && MPRPriceVisibilty" class="row m-2" >
       <div class="col-xs-4 col-md-4 col-sm-4"></div>
       <div class="col-xs-4 col-md-4 col-sm-4">
         <button type="button" class="btn btn-success" (click)="updateRfqDocumentStatus()" label="Save">Update</button>
       </div>
     </div>
-    <div *ngIf="quoteDetails.RFQDocs && employee.OrgDepartmentId==14" class="row" style="margin-left: 0px; margin-right: 0px">
-      <h6>Other Documents:</h6>
-      <p-table [value]="quoteDetails.RFQDocs">
-        <ng-template pTemplate="header">
-          <tr class="text-center">
-            <th>Sl.No</th>
-            <th colspan="3">File Name</th>
-            <th>DocumentType</th>
-            <th>View Document</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
-          <tr>
-            <td>{{ri+1}}</td>
-            <td colspan="3">{{rowData.DocumentName}}</td>
-            <td class="text-center">{{getDocType(rowData.DocumentType)}}</td>
-            <td class="text-center"> <i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UploadedDate | date :  constants.dateFormat}}"></i></td>
-          </tr>
+    <div *ngIf="quoteDetails.RFQDocs && employee.OrgDepartmentId==14" class="m-2">
+      <h6 style="text-decoration: underline;">Other Documents:</h6>
+      <div class="row m-2">
+        <p-table [value]="quoteDetails.RFQDocs">
+          <ng-template pTemplate="header">
+            <tr class="text-center mprltbldata">
+              <th>Sl.No</th>
+              <th colspan="3">File Name</th>
+              <th>DocumentType</th>
+              <th>View Document</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+            <tr>
+              <td>{{ri+1}}</td>
+              <td colspan="3">{{rowData.DocumentName}}</td>
+              <td class="text-center">{{getDocType(rowData.DocumentType)}}</td>
+              <td class="text-center"> <i class="fa fa-paperclip" (click)="viewDocument(rowData.Path,rowData.DocumentName)" aria-hidden="true" pTooltip="File Name: {{rowData.DocumentName}} Updated By: {{rowData.UploadedBy}} Updated On: {{rowData.UploadedDate | date :  constants.dateFormat}}"></i></td>
+            </tr>
 
-        </ng-template>
-      </p-table><br />
+          </ng-template>
+        </p-table><br />
+      </div>
     </div>
-    <div *ngIf="quoteDetails.ActiveRevision==true" class="row" style="margin-left: 0px; margin-right: 0px">
+    <div *ngIf="quoteDetails.ActiveRevision==true" class="row mt-2" style="margin-left: 0px; margin-right: 0px">
       <div class="col-lg-12 col-md-12 col-sm-12">
         <label style="font-size:14px"><b>Add Communication</b></label>&nbsp;&nbsp;
         <button type="button" pButton icon="fa fa-plus" (click)="showRfqCommunicationDialogToAdd()"></button>
@@ -184,7 +186,31 @@
         </ng-template>
       </p-table>
     </div>
-  </div>
+
+    <div *ngIf="quoteDetails.RFQStatusTrackDetails" class="m-2">
+      <h4 style="text-decoration: underline;">Status History :</h4>
+      <div class="row m-2">
+        <p-table [value]="quoteDetails.RFQStatusTrackDetails">
+          <ng-template pTemplate="header">
+            <tr class="mprltbldata">
+              <th>Employee Name</th>
+              <th>Status</th>
+              <th>Status Updated On</th>
+              <th>Remarks</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+            <tr>
+              <td>{{rowData.Name}}</td>
+              <td>{{rowData.Status}}</td>
+              <td>{{rowData.UpdatedDate  | date :  constants.dateFormat}}</td>
+              <td>{{rowData.Remarks}}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+    </div>
+    </div>
 </div>
 <div class="icon-bar">
   <a routerLinkActive="active" (click)="createNewRevision()" pTooltip="Revise"><i class="fa fa-plus-square"></i></a>

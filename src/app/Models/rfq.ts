@@ -109,7 +109,7 @@ export class RfqItemInfoModel {
   UnitPrice: string;
   DiscountPercentage: string;
   Discount: string;
-  CurrencyId: number;
+  CurrencyId: string;
   CurrencyValue: string;
   Remarks: string;
   DeliveryDate: Date;
@@ -208,6 +208,7 @@ export class QuoteDetails {
   mprIncharges: Array<any>;
   rfqCommunications: Array<any>;
   RFQDocs: Array<any>;
+  RFQStatusTrackDetails: Array<any>;
 }
 export class RFQMaster {
   RfqMasterId: string;

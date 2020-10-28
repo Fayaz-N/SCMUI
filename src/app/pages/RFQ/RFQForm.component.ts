@@ -197,7 +197,7 @@ export class RFQFormComponent implements OnInit {
         });
       }
       this.currncyArray = _list;
-      this.rfqItemInfo.CurrencyId = 0;
+      this.rfqItemInfo.CurrencyId = "";
     });
   }
 
@@ -383,7 +383,7 @@ export class RFQFormComponent implements OnInit {
     this.AddItemInfodialog = true;
     this.rfqItemInfo = new RfqItemInfoModel();
     this.rfqItemInfo.RFQItemsId = rfqItemId;
-    this.rfqItemInfo.CurrencyId = 0;
+    this.rfqItemInfo.CurrencyId = "";
     this.rfqItemInfo.Qty = qty;
     if (this.rfqRevisionModel.RFQType == "Rate Contract") {
       this.rfqItemInfo.Status = "Approved";
@@ -450,7 +450,8 @@ export class RFQFormComponent implements OnInit {
   onItemInfoEdit(e: any, details: RfqItemInfoModel) {
     this.rfqItemInfo = details;
     this.currncyArray = this.currncyArray;
-    // this.rfqItemInfo.CurrencyId = details.CurrencyId;
+    if (!this.rfqItemInfo.CurrencyId)
+     this.rfqItemInfo.CurrencyId = "";
     this.AddItemInfodialog = true;
     this.rfqItemInfo.ValidFrom = new Date(this.rfqItemInfo.ValidFrom);
     this.rfqItemInfo.ValidTo = new Date(this.rfqItemInfo.ValidTo);

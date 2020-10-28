@@ -357,11 +357,11 @@
         <label class="form-label">Currency :</label>&nbsp;<span style="color:red">*</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
-        <select class="form-control dropdown" formControlName="CurrencyId" [(ngModel)]="rfqItemInfo.CurrencyId" [ngClass]="{ 'is-invalid': itemInfoSubmitted && (addItemInfoForm.controls.CurrencyId.value=='0' || addItemInfoForm.controls.CurrencyId.value==null)}">
-          <option value="0">Select</option>
+        <select class="form-control dropdown" formControlName="CurrencyId" [(ngModel)]="rfqItemInfo.CurrencyId" [ngClass]="{ 'is-invalid': itemInfoSubmitted && !addItemInfoForm.controls.CurrencyId.value}">
+          <option value="">Select</option>
           <option *ngFor="let ca of currncyArray" [ngValue]="ca.CurrenyId">{{ca.CurrencyName}}</option>
         </select>
-        <span style="color:red" *ngIf="itemInfoSubmitted && (addItemInfoForm.controls.CurrencyId.value=='0' || addItemInfoForm.controls.CurrencyId.value==null)" class="invalid-feedback">Please select Currency.</span>
+        <span style="color:red" *ngIf="itemInfoSubmitted && !addItemInfoForm.controls.CurrencyId.value" class="invalid-feedback">Please select Currency.</span>
       </div>
       <div class="col-lg-2 col-md-2 col-sm-2">
         <label class="form-label">Currency Value:</label>&nbsp;<span style="color:red">*</span>
