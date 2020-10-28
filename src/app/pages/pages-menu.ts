@@ -42,11 +42,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'PA For Approval',
                 link: '/SCM/MPRPAApproverList',
                 icon: 'layers-outline'
-            },
-            {
-                title: 'PA Approval Tracking',
-                link: '/SCM/MPRPAList',
-                icon: 'layers-outline'
             }
 
         ],
@@ -168,11 +163,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
             //  icon: 'layers-outline'
             //},
 
-            //{
-            //    title: 'PA List',
-            //    link: '/SCM/MPRPAList',
-            //    icon: 'layers-outline'
-            //},
+            {
+                title: 'PA List',
+                link: '/SCM/MPRPAList',
+                icon: 'layers-outline'
+            },
             {
                 title: 'PA For Approval',
                 link: '/SCM/MPRPAApproverList',
