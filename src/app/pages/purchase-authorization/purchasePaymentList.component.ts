@@ -8,6 +8,7 @@ import { map, startWith } from 'rxjs/operators'
 import 'rxjs/add/observable/of';
 import { MessageService } from 'primeng/api';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, padeletemodel } from 'src/app/Models/PurchaseAuthorization'
+import { AccessList } from 'src/app/Models/mpr';
 
 
 @Component({
@@ -35,7 +36,8 @@ export class purchasePaymentListComponent implements OnInit {
   public DeleteDialog: boolean;
   public padelete: padeletemodel;
   public PADeleteForm: FormGroup;
-  public editable: boolean;
+    public editable: boolean;
+    public AccessList: Array<AccessList> = [];
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
@@ -60,7 +62,11 @@ export class purchasePaymentListComponent implements OnInit {
     }
     else {
       this.router.navigateByUrl("Login");
-      }
+        }
+        if (localStorage.getItem("AccessList")) {
+            this.AccessList = JSON.parse(localStorage.getItem("AccessList"));
+            console.log("this.AccessList",this.AccessList)
+        }
     this.purchasemodes = new Array<mprpapurchasemodesmodel>();
     this.purchasetypes = new Array<mprpapurchasetypesmodel>();
     this.purchasedetails = new mprpadetailsmodel();
