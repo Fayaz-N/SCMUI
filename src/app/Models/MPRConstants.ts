@@ -9,19 +9,19 @@ export class constants {
   public url = 'http://localhost:49659/Api/';
 
   //test server
- // public url = 'http://10.29.15.68:90/Api/';
-  public Documnentpath = "http://10.29.15.68:90/SCMDocs/";
-  public vendorDocumentPath = "http://10.29.15.68:90/SCMDocs/";
-  public PADocumentPath = "http://10.29.15.68:90/PADocuments/";
-  public vscmurl = "http://10.29.15.68:92/api/api/Forgetpassword/";
+  //public url = 'http://10.29.15.68:90/Api/';
+  //public Documnentpath = "http://10.29.15.68:90/SCMDocs/";
+  //public vendorDocumentPath = "http://10.29.15.68:90/SCMDocs/";
+  //public PADocumentPath = "http://10.29.15.68:90/PADocuments/";
+  //public vscmurl = "http://10.29.15.68:92/api/api/Forgetpassword/";
 
   //live
   public accessTokenUrl = "http://10.29.15.183:90/token";
-  //public url = 'http://10.29.15.183:90/Api/';
-  //public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
-  //public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
-  //public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
-  //public vscmurl="http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
+ // public url = 'http://10.29.15.183:90/Api/';
+  public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
+  public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
+  public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
+  public vscmurl="http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
 
   public dateFormat = "dd/MM/yyyy";
   public RequisitionId: string = "";
@@ -63,8 +63,8 @@ export class constants {
   public OApprovedBy: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public OSecondApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
   public OThirdApprover: searchParams = { tableName: 'Employee', fieldId: 'EmployeeNo', fieldName: 'Name', condition: " where employeeNo in (190271,220017,030011) and ", fieldAliasName: "ApproverName", updateColumns: "" };
-  public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: " where  ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
-  public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  where ManualStatus=1 and BoolInUse=1 and ", fieldAliasName: "", updateColumns: "" };
+  public MPRStatus: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: " where  ManualStatus=1 and BoolInUse=1 and UsedByYIL=1 and ", fieldAliasName: "", updateColumns: "" };
+  public MPRStatusId: searchParams = { tableName: 'MPRStatus', fieldId: 'StatusId', fieldName: 'Status', condition: "  where ManualStatus=1 and BoolInUse=1 and UsedByYIL=1 and ", fieldAliasName: "", updateColumns: "" };
   public soldtoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'soldtoparty', fieldName: 'soldtopartyname', condition: "  where  ", fieldAliasName: "soldtopartyname", updateColumns: "" }
   public Enduser: searchParams = { tableName: 'SaleorderDetails', fieldId: 'Enduser', fieldName: 'Endusername', condition: "  where Endusername != '' and ", fieldAliasName: "Endusername", updateColumns: "" }
   public shiptoparty: searchParams = { tableName: 'SaleorderDetails', fieldId: 'shiptoparty', fieldName: 'shiptopartyname', condition: "  where ", fieldAliasName: "shiptopartyname", updateColumns: "" }
