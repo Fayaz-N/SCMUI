@@ -63,7 +63,7 @@ export class MPRWiseReportsComponent implements OnInit {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, 'ScoreSheet.xlsx');
+        XLSX.writeFile(wb, 'MprWiseReport.xlsx');
     }  
   loadbuyergroups() {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {

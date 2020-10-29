@@ -166,14 +166,15 @@
   <div class="row">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="GetMprstatusreport(reportinput)">Submit</button>&nbsp;&nbsp;
-      <button type="button" class="btn btn-primary" (click)="ExportTOExcel()">Export ToExcel</button>
+      <!--<button type="button" class="btn btn-primary" (click)="ExportTOExcel()">Export ToExcel</button>-->
     </div>
   </div>
 </div>
 <br />
 
 <div class="card compar-card mt-2">
-  <div class="card-body">
+  <div class="card-body" style="padding-top:7px">
+    <button type="button" class="btn btn-primary btn-sm" (click)="ExportTOExcel()">Export ToExcel</button>
     <table class="table table-md table-striped table-bordered" #TABLE #table>
       <thead class="thead-dark" style="font-size:small;">
         <tr class="p-2" style="background-color: #33b5e5">
@@ -226,7 +227,7 @@
         </tr>
       </tbody>
     </table>
-    </div>
+  </div>
   </div>
     <!--<div class="row form-control" style="height:100%;border-radius:0px;margin-left:1px;width:100%">
       <p-table #dt [value]="palist" [paginator]="true" [rows]="10" [resizableColumns]="true" [responsive]="true" [style]="{'width':'100%','overflow':'auto!important'}">
