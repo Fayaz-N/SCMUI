@@ -577,6 +577,9 @@ export class vendorRegfilters {
   SecondApprover: string;
   ThirdApprover: string;
   PreparedBY: string;
+  CheckerStatus: string="";
+  ApprovalStatus: string="";
+  VerifiedStatus: string="";
 }
 
 export class VendorDocDetailsList {

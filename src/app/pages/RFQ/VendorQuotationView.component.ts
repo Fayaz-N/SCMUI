@@ -170,4 +170,13 @@ export class VendorQuotationViewComponent implements OnInit {
     //  return "Terms and conditions";
     //}
   }
+
+  //get revisionno
+  getRevisionNo(revisionId: any) {
+    var revisionno = "";
+    if (this.rfqrevisions.length > 0) {
+       revisionno= this.rfqrevisions.filter(li => li.rfqRevisionId == revisionId)[0].RevisionNo;
+    }
+    return revisionno;
+  }
 }

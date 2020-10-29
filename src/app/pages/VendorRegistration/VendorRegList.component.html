@@ -26,16 +26,34 @@
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+      &nbsp;&nbsp;<label class="form-label">Checker Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.CheckerStatus">
+        <option value="">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       &nbsp;&nbsp;<label class="form-label">Approved By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.ApprovedBy">
         <option value="">Select</option>
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
       </select>&nbsp;
     </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+      &nbsp;&nbsp;<label class="form-label">Approval Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.ApprovalStatus">
+        <option value="">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
     <div class="col-lg-3 col-md-3 col-sm-3 form-group">
       &nbsp;&nbsp;<label class="form-label">Verified By:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.VerifiedBy">
         <option value="">Select</option>
         <option *ngFor="let List of verifyEmpList" [ngValue]="List.EmployeeNo">{{List.Name}}</option>
+      </select>&nbsp;
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+      &nbsp;&nbsp;<label class="form-label">Verified Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.VerifiedStatus">
+        <option value="">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
       </select>&nbsp;
     </div>
   </div>

@@ -18,6 +18,7 @@ export class VendorRegListComponent implements OnInit {
   public vendorRegfilters: vendorRegfilters;
   public vendorReqList: Array<any> = [];
   public verifyEmpList: Array<any> = [];
+  public statusList: Array<any> = [];
   public dynamicData = new DynamicSearchResult();
 
   ngOnInit() {
@@ -35,7 +36,9 @@ export class VendorRegListComponent implements OnInit {
     this.vendorRegfilters.VerifiedBy = "";
     this.vendorReqList = [];
     this.getEmplist();
+    this.getStatusList();
     this.getVendorReqList();
+
   }
 
 
@@ -47,6 +50,13 @@ export class VendorRegListComponent implements OnInit {
     })
   }
 
+  //get status list
+  getStatusList() {
+    this.MprService.getStatusList().subscribe(data => {
+      this.statusList = data;
+    })
+  }
+
   getVendorReqList() {
     this.spinner.show();
     this.MprService.getVendorReqList(this.vendorRegfilters).subscribe(data => {
@@ -54,6 +64,7 @@ export class VendorRegListComponent implements OnInit {
       this.vendorReqList = data;
     });
   }
+
 
   toVendorReg(details: any) {
     this.router.navigate([]).then(result => {

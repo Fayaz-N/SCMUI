@@ -1091,10 +1091,17 @@ export class MPRPageComponent implements OnInit {
   }
   getRfqGeneratedList(revisionId: string) {
     this.dynamicData = new DynamicSearchResult();
-    this.dynamicData.query = "select RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId + " "
+    this.dynamicData.query = "select distinct RFQRevisions_N.rfqRevisionId, RFQRevisions_N.ActiveRevision,RFQRevisions_N.RevisionNo,RFQMaster.RFQNo,RFQMaster.VendorId ,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId where RFQMaster.MPRRevisionId = " + revisionId + " "
     //this.dynamicData.query = "select MAx(RFQRevisions_N.rfqRevisionId) as rfqRevisionId,Ax(RFQRevisions_N.rfqRevisionId) as rfqRevisionId, max(RFQRevisions_N.RevisionNo) as RevisionNo,RFQMaster.RFQNo,max(RFQMaster.VendorId) as VendorId,RFQStatus.StatusId from RFQMaster left join RFQRevisions_N on  RFQRevisions_N.rfqMasterId = RFQMaster.RfqMasterId left join RFQStatus on RFQStatus.RfqRevisionId=RFQRevisions_N.rfqRevisionId  where RFQMaster.MPRRevisionId = " + revisionId +" group by RFQNo,RFQStatus.StatusId";
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.RfqGeneratedList = data;
+      this.RfqGeneratedList.forEach(item => {
+        var index = this.RfqFilteredGeneratedList.findIndex(x => x.RFQNo == item.RFQNo && x.RevisionNo == item.RevisionNo);
+        if (index > -1)
+          this.RfqFilteredGeneratedList.splice(index, 1);
+        this.RfqFilteredGeneratedList.push(item);
+      })
+
       //this.RfqFilteredGeneratedList = Array.from(this.RfqGeneratedList.reduce((m, t) => m.set(t.RFQNo, t), new Map()).values());
     })
   }
