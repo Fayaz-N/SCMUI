@@ -8,12 +8,12 @@
 <div *ngIf="show" class="form-control" style="height:100%;border-radius:0px;padding:30px">
   <div class="row form-group">
     <div class="col-lg-3 col-md-3 col-sm-3">
-      <label class="form-label">Requisitions-From</label><br />
+      <label class="form-label">Requisitions Prepared-From</label><br />
       <input type="date" class="form-control" [(ngModel)]="reportinput.Fromdate">
       <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3">
-      <label class="form-label">Requisitions-To</label>&nbsp;<br />
+      <label class="form-label">Requisitions Prepared-To</label>&nbsp;<br />
       <input type="date" class="form-control" [(ngModel)]="reportinput.Todate">
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
@@ -179,24 +179,25 @@
         <tr class="p-2" style="background-color: #33b5e5">
           <th>S.No</th>
           <th>Document No</th>
-          <th>Revision no</th>
+          <th>Rev No</th>
+          <th>MPR Description</th>
           <th>Department</th>
-          <th>JobName</th>
-          <th>JobCode</th>
-          <th>PreparedBy</th>
-          <th>PreparedOn</th>
+          <th>Job Code</th>
+          <th>Job Name</th>
+          <th>Prepared By</th>
+          <th>Prepared On</th>
           <th>Checker</th>
-          <th>Checker status</th>
-          <th>Checker status Changedon</th>
+          <th>Checker's status</th>
+          <th>Checker's status Changed On</th>
           <th>Approver</th>
-          <th>Approver status</th>
-          <th>Approver status Changedon</th>
+          <th>Approver's status</th>
+          <th>Approver's status Changed On</th>
           <th>Second Approver</th>
-          <th>Second Approve'r status</th>
-          <th>SecondApprover status Changedon</th>
+          <th>Second Approver's status</th>
+          <th>SecondApprover's status Changed On</th>
           <th>Third Approver</th>
           <th>Third Approver's status</th>
-          <th>ThirdApprover status Changedon</th>
+          <th>ThirdApprover's status Changed On</th>
         </tr>
       </thead>
       <tbody>
@@ -204,9 +205,10 @@
           <td>{{ndx+1}}</td>
           <td><a [routerLink]="['/SCM/MPRForm',app.revisionid]" target="_blank" routerLinkActive="active">{{app.documentno}}</a></td>
           <td>{{app.revisionno}}</td>
+          <td>{{app.DocumentDescription}}</td>
           <td>{{app.department}}</td>
-          <td>{{app.jobname}}</td>
           <td>{{app.jobcode}}</td>
+          <td>{{app.jobname}}</td>
           <td>{{app.prepared}}</td>
           <td>{{app.preparedon | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Checker}}</td>
