@@ -63,29 +63,30 @@
   </div>
 </div>
 <br />
+<i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large" (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i>
 <div class="card compar-card mt-2">
   <div class="card-body" style="padding-top:7px">
-    <button type="button" class="btn btn-primary btn-sm" (click)="ExportTOExcel()">ExportTOExcel</button>
+    <!--<button type="button" class="btn btn-primary btn-sm" (click)="ExportTOExcel()">ExportTOExcel</button>-->
     <table class="table table-sm table-striped table-bordered" #TABLE #table>
       <thead class="thead-dark">
         <tr style="background-color: #33b5e5">
           <th>S.No</th>
           <th>ProjectNo</th>
-          <th>DocumentNo</th>
-          <th>RevisionNo</th>
-          <th>RevisionId</th>
+          <th>Document No</th>
+          <th>Rev No</th>
+          <!--<th>RevisionId</th>-->
           <th>Purpose Of issue</th>
-          <th>PONumber</th>
-          <th>PODate</th>
+          <th>PO Number</th>
+          <th>PO Date</th>
           <th>Vendor</th>
           <th style="max-width:200px !important">Item Description</th>
-          <th>BuyerGroup</th>
+          <th>Buyer Group</th>
           <th>Checker Cleared Date</th>
           <th>Approver Cleared Date</th>
           <th>Second Approver Cleared Date</th>
           <th>PA Approved</th>
-          <th>CustomsDuty</th>
-          <th>ProcurementSource</th>
+          <th>Customs Duty</th>
+          <th>Procurement Source</th>
         </tr>
       </thead>
       <tbody>
@@ -94,7 +95,7 @@
           <td>{{app.JobCode}}</td>
           <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
           <td>{{app.RevisionNo}}</td>
-          <td>{{app.RevisionId}}</td>
+          <!--<td>{{app.RevisionId}}</td>-->
           <td>{{app.IssuePurpose}}</td>
           <td>{{app.pono}}</td>
           <td>{{app.PODate| date: 'dd/MM/yyyy'}}</td>

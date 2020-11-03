@@ -21,7 +21,7 @@ export class MPRWiseReportsComponent implements OnInit {
     constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
     page: number;
     pageSize: number;
-    public show: boolean = false;
+    public show: boolean = true;
     public buttonName: any = 'Show';
   public employee: Employee;
   public paid: number;

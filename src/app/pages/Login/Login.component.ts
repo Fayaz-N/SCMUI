@@ -83,7 +83,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[4].hidden = false;
                 MENU_ITEMS[5].hidden = false;
                 MENU_ITEMS[6].hidden = false;
-                MENU_ITEMS[7].hidden = false; //Reports
+                  MENU_ITEMS[7].hidden = false; //Reports
               }
               if (this.AccessList.filter(li => li.AccessName == "AddMasters").length <= 0)
                 MENU_ITEMS[3].hidden = true;//masters
@@ -110,6 +110,10 @@ export class LoginComponent implements OnInit {
                     MENU_ITEMS[1].children[index].hidden = true;
                 }
                 else {
+                    var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+                    MENU_ITEMS[1].children[index].hidden = false;
+                }
+                if (this.employee.OrgDepartmentId == 14) {
                     var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
                     MENU_ITEMS[1].children[index].hidden = false;
                 }

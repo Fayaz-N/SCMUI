@@ -22,7 +22,7 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
 
   public employee: Employee;
     public paid: number;
-    public show: boolean = false;
+    public show: boolean = true;
   public buyergroups: Array<any> = [];
   public statuslist: any[];
   public purchasedetails: mprpadetailsmodel;

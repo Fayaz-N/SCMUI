@@ -65,30 +65,32 @@
   </div>
 </div>
 <br />
+<i class="fa fa-file-excel-o" aria-hidden="true" style="font-size:x-large"  (click)="ExportTOExcel()" pTooltip="ExportTOExcel"></i>
 <div class="card compar-card mt-2">
   <div class="card-body" style="padding-top:7px">
-    <button type="button" class="btn btn-primary btn-sm" (click)="ExportTOExcel()">ExportTOExcel</button>
     <table class="table table-sm table-striped table-bordered" #TABLE #table>
       <thead class="thead-dark">
         <tr style="background-color: #33b5e5">
           <th>S.No</th>
           <th>DocumentNo</th>
-          <th>RevisionNo</th>
-          <th>RevisionId</th>
-          <th style="max-width:200px !important">Item Description</th>
-          <th>BuyerGroup</th>
-          <th>JobCode</th>
-          <th>JobName</th>
-          <th>TargetSpend</th>
-          <th>POPrice</th>
+          <th>RevNo</th>
+          <!--<th>RevisionId</th>-->
+          <th style="max-width:300px !important">Item Description</th>
+          <th>Buyer Group</th>
+          <th>Job Code</th>
+          <th>Job Name</th>
+          <th>Target Spend</th>
           <th>Discount</th>
           <th>Freight</th>
           <th>PF Amount</th>
-          <th>PODate</th>
-          <th>PONumber</th>
-          <th>DeliveryRequiredBy</th>
+          <th>PA Price</th>
+          <th>PA Approved Update</th>
+          <th>PO Date</th>
+          <th>PO Number</th>
+          <th>Delivery Required By</th>
+          <th>Vendor Delivery Date</th>
           <th>Remarks</th>
-          <th>PaStatus Update</th>
+          >
         </tr>
       </thead>
       <tbody>
@@ -96,21 +98,24 @@
           <td>{{ndx+1}}</td>
           <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
           <td>{{app.RevisionNo}}</td>
-          <td>{{app.RevisionId}}</td>
-          <td style="max-width:200px !important">{{app.ItemDescription}}</td>
+          <!--<td>{{app.RevisionId}}</td>-->
+          <td style="max-width:300px !important">{{app.ItemDescription}}</td>
+          .B
           <td>{{app.BuyerGroup}}</td>
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
-          <td>{{app.TargetSpend}}</td>
-          <td>{{app.UnitPrice | currency:'INR'}}</td>
+          <td>{{app.TargetSpend | currency:'INR'}}</td>
           <td>{{app.Discountamount | currency:'INR'}}</td>
           <td>{{app.freightamounts | currency:'INR'}}</td>
           <td>{{app.pfamounts | currency:'INR'}}</td>
-          <td>{{app.PODate}}</td>
+          <td>{{app.UnitPrice | currency:'INR'}}</td>
+          <td>{{app.PAStatusUpdate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.PODate | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.pono}}</td>
           <td>{{app.DeliveryRequiredBy |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.VendorDeliveryDate |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Remarks}}</td>
-          <td>{{app.PAStatusUpdate |date: 'dd/MM/yyyy'}}</td>
+
         </tr>
       </tbody>
       <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->

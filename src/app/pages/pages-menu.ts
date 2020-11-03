@@ -184,6 +184,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 icon: 'layers-outline'
             },
             {
+                title: 'PA List',
+                link: '/SCM/MPRPAList',
+                icon: 'layers-outline'
+            },
+            {
                 title: 'Tokuchu Req List',
                 link: '/SCM/TokochuReqList',
                 icon: 'layers-outline'

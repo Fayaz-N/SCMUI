@@ -79,6 +79,7 @@ export class PADetailsModel {
   toDate: Date;
     Paid: number;
     Approvername: string;
+    Approverstatus: string;
 }
 export class ItemsViewModel {
   RFQItemsId: number;

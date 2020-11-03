@@ -21,7 +21,7 @@ export class ProjectDurationReportsComponent implements OnInit {
     constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
     page: number;
     pageSize: number;
-    public show: boolean = false;
+    public show: boolean = true;
     public buttonName: any = 'Show';
   public employee: Employee;
   public paid: number;
@@ -65,7 +65,7 @@ export class ProjectDurationReportsComponent implements OnInit {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
         const wb: XLSX.WorkBook = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
-        XLSX.writeFile(wb, 'ScoreSheet.xlsx');
+        XLSX.writeFile(wb, 'ProjectDurationReport.xlsx');
     }  
   loadbuyergroups() {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {
