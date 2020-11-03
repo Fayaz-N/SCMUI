@@ -7,7 +7,7 @@
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-5 col-md-5 col-lg-5 form-inline">
       <label class="form-label">Vendor Name</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <div class="form-inline-list">
-        <input type="text" [(ngModel)]="VendorRegApprovalProcess.VendorName" class="form-control">
+        <input type="text" [(ngModel)]="VendorRegApprovalProcess.VendorName" (keyup)="onsrchTxtChange('venderid',VendorRegApprovalProcess.VendorName,'VendorRegApprovalProcess')" class="form-control">
         <span class="input-group-append">
           <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData('venderid',VendorRegApprovalProcess.VendorName)"></button>
         </span>

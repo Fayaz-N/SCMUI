@@ -154,6 +154,13 @@ export class VendorRegInitiateComponent implements OnInit {
     this.vendorEmailList = item.updateColumns.split(",");
   }
 
+  //clear model when search text is empty
+  onsrchTxtChange(modelparm: string, value: string, model: string) {
+    if (value == "") {
+      this[model][modelparm] = "";
+    }
+  }
+
   selectEmails(event: any, email: any, index: number) {
     if (this.selectedEmail && event.target.checked) {
       (<HTMLInputElement>document.getElementById("email" + index)).checked = false;
@@ -329,6 +336,10 @@ export class VendorRegInitiateComponent implements OnInit {
     window.open(path1);
   }
 
+  dialogCancel(dialogName: string, openDialog: string) {
+    this[dialogName] = false;
+    this[openDialog] = true;
+  }
 
   //navigate to approver edit page
   navigateToEditPage() {
