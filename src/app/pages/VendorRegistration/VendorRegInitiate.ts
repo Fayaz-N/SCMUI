@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MprService } from 'src/app/services/mpr.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Employee, VendorRegApprovalProcess, VendorRegStatus, DynamicSearchResult, VendorRegistration } from 'src/app/Models/mpr';
+import { Employee, searchList, VendorRegApprovalProcess, VendorRegStatus, DynamicSearchResult, VendorRegistration } from 'src/app/Models/mpr';
 import { constants } from 'src/app/Models/MPRConstants';
 import { MessageService } from 'primeng/api';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -19,12 +19,21 @@ export class VendorRegInitiateComponent implements OnInit {
   public VendorRegStatus: VendorRegStatus;
   public VendorData: VendorRegistration;
   public dynamicData = new DynamicSearchResult();
+  public formName: string;
+  public txtName: string;
+  public vendorEmailList: Array<any> = [];
+  public selectedEmail: string;
+  public searchItems: Array<searchList> = [];
+  public selectedlist: Array<searchList> = [];
+  public selectedItem: searchList;
+  public searchresult: Array<object> = [];
   public vendorId: number;
-  public displayFooter; disableStatusSubmit: boolean = false;
+  public showList; displayFooter; disableStatusSubmit: boolean = false;
   public statusList: Array<any> = [];
   public DocumentList: any[] = [];
   public VendorRegList: Array<any> = [];
   public paymentTermsList: Array<any> = [];
+  public VendorStatusTrackList: Array<any> = [];
   public typeOfUser: string;
 
   ngOnInit() {
@@ -41,6 +50,7 @@ export class VendorRegInitiateComponent implements OnInit {
         //this.vendorId = params["VendorId"];
         this.VendorData = new VendorRegistration();
         this.getVendorRegProcess();
+        this.getVendorStatusTrackDetails();
         this.getStatusList();
         this.getPaymentTerms();
         this.DocumentListdata();
@@ -107,28 +117,99 @@ export class VendorRegInitiateComponent implements OnInit {
     }
   }
 
+  public bindSearchListData(name?: string, searchTxt?: string): void {
+    this.txtName = name;
+    if (searchTxt == undefined)
+      searchTxt = "";
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.tableName = this.constants[name].tableName;
+    this.dynamicData.searchCondition = "" + this.constants[name].condition + this.constants[name].fieldName + " like '%" + searchTxt + "%'";
+    if (this.dynamicData.searchCondition && name == "venderid")
+      this.dynamicData.searchCondition += " OR VendorCode" + " like '%" + searchTxt + "%' ";
+    this.MprService.GetListItems(this.dynamicData).subscribe(data => {
+      if (data.length == 0)
+        this.showList = false;
+      else
+        this.showList = true;
+      this.searchresult = data;
+      this.searchItems = [];
+      var fName = "";
+      this.searchresult.forEach(item => {
+        fName = item[this.constants[name].fieldName];
+        if (name == "venderid") {
+          fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+        }
+        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
+        this.searchItems.push(value);
+      });
+
+    });
+  }
+
+  //search list option changes event
+  public onSelectedOptionsChange(item: any, index: number) {
+    this.showList = false;
+    this.VendorRegApprovalProcess.VendorId = item.code;
+    this.VendorRegApprovalProcess.VendorName = item.name;
+    this.vendorEmailList = item.updateColumns.split(",");
+  }
+
+  selectEmails(event: any, email: any, index: number) {
+    if (this.selectedEmail && event.target.checked) {
+      (<HTMLInputElement>document.getElementById("email" + index)).checked = false;
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Only one mail is selected at a time' });
+      return true;
+    }
+    if (event.target.checked) {
+      this.VendorRegApprovalProcess.VendorEmailId = email;
+      this.selectedEmail = email;
+    } else {
+      this.VendorRegApprovalProcess.VendorEmailId = "";
+      this.selectedEmail = "";
+    }
+  }
+
   //Initiate Registration process to vendor
   InitiateReg() {
     if (!this.VendorData) {
       //initiate
-      if (!this.VendorRegApprovalProcess.VendorName || !this.VendorRegApprovalProcess.VendorEmailId || !this.VendorRegApprovalProcess.VendorType) {
+      var isexistvendor = this.VendorRegApprovalProcess.IsExistVendor;
+      this.VendorRegApprovalProcess.IsExistVendor = JSON.parse(isexistvendor.toString());
+      if ( this.VendorRegApprovalProcess.IsExistVendor == true) {
+        //this.VendorRegApprovalProcess.VendorEmailId = this.selectedEmails.toString();
         if (!this.VendorRegApprovalProcess.VendorName) {
-          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Name' });
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Vendor Name' });
+          return;
+        }
+        if (!this.VendorRegApprovalProcess.ChangesFor) {
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Changes' });
           return;
         }
         if (!this.VendorRegApprovalProcess.VendorEmailId) {
-          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Email' });
-          return;
-        }
-        if (!this.VendorRegApprovalProcess.VendorType) {
-          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select VendorType' });
+          this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Vendor Email' });
           return;
         }
       }
-      if (this.VendorRegList.filter(li => li.Vuserid == this.VendorRegApprovalProcess.VendorEmailId).length > 0) {
-        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor already registerd' });
+      if (this.VendorRegApprovalProcess.IsExistVendor==false) {
+        if (!this.VendorRegApprovalProcess.VendorName || !this.VendorRegApprovalProcess.VendorEmailId || !this.VendorRegApprovalProcess.VendorType) {
+          if (!this.VendorRegApprovalProcess.VendorName) {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Name' });
+            return;
+          }
+          if (!this.VendorRegApprovalProcess.VendorEmailId) {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Email' });
+            return;
+          }
+        }
+      }
+      if (!this.VendorRegApprovalProcess.VendorType) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select VendorType' });
         return;
       }
+      //if (this.VendorRegList.filter(li => li.Vuserid == this.VendorRegApprovalProcess.VendorEmailId).length > 0) {
+      //  this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Vendor already registerd' });
+      //  return;
+      //}
       this.VendorRegApprovalProcess.IntiatedBy = this.VendorRegApprovalProcess.CheckedBy = this.employee.EmployeeNo;
       this.typeOfUser = "Buyer";
     }
@@ -139,6 +220,11 @@ export class VendorRegInitiateComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Number' });
         return;
       }
+      if (!this.VendorRegStatus.Remarks) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Remarks' });
+        return;
+      }
+
       if (this.typeOfUser != "Buyer") {
         this.VendorRegApprovalProcess.CheckerStatus = this.VendorRegApprovalProcess.ApprovalStatus = this.VendorRegApprovalProcess.VerifiedStatus = this.VendorRegStatus.Status;
         this.VendorRegApprovalProcess.CheckerRemarks = this.VendorRegApprovalProcess.ApproverRemarks = this.VendorRegApprovalProcess.VerifierRemarks = this.VendorRegStatus.Remarks;
@@ -167,12 +253,15 @@ export class VendorRegInitiateComponent implements OnInit {
         if (this.typeOfUser != "Buyer") {
           this.vendorId = data.Vendorid;
           this.getVendorRegProcess();
-          if (this.VendorRegStatus.Status == "Approved" &&  this.typeOfUser != "Checker")
+          if (this.VendorRegStatus.Status == "Approved" && this.typeOfUser != "Checker")
             this.displayFooter = false;
           this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'Status Updated' });
         }
-        else
+        else {
           this.messageService.add({ severity: 'success', summary: 'Sucess Message', detail: 'Registration Intiated' });
+          this.VendorRegApprovalProcess = new VendorRegApprovalProcess();
+          this.selectedEmail = "";
+        }
       }
     });
 
@@ -187,6 +276,16 @@ export class VendorRegInitiateComponent implements OnInit {
       this.spinner.hide();
       this.VendorData = data[0];
       this.bindStatus();
+    });
+  }
+  //get vendor Status track details
+  getVendorStatusTrackDetails() {
+    this.spinner.show();
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select * from VendorStatusTrackDetails where VendorId=" + this.vendorId + "";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.spinner.hide();
+      this.VendorStatusTrackList = data;
     });
   }
 

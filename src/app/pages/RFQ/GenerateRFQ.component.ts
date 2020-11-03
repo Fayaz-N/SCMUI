@@ -361,6 +361,8 @@ export class GenerateRFQComponent implements OnInit {
   }
 
   selectVendorList(event: any, itemsIndex: number, vendorIndex: number, id: string, vendor: any, checked: boolean) {
+    vendor["VendorVisibility"] = false;
+    vendor["sendemail"] = true;
     var qty = (<HTMLInputElement>document.getElementById(id + itemsIndex + "" + vendorIndex)).value;
     if (id == "SQty")
       this.rfqQuoteModel[itemsIndex].suggestedVendorDetails[vendorIndex].QuotationQty = qty;
@@ -390,9 +392,12 @@ export class GenerateRFQComponent implements OnInit {
 
   //select unselect All vendors
   selectAllvendors(event: any, vendorId: any, MPRItemDetailsid: any) {
+  
     // var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
       this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
+        vendor["VendorVisibility"] = false;
+        vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("SQty" + i + "" + index)).value;
@@ -410,6 +415,8 @@ export class GenerateRFQComponent implements OnInit {
         }
       });
       this.rfqQuoteModel[i].manualvendorDetails.forEach((vendor, index) => {
+        vendor["VendorVisibility"] = false;
+        vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("MVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("MQty" + i + "" + index)).value;
@@ -427,6 +434,8 @@ export class GenerateRFQComponent implements OnInit {
         }
       })
       this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach((vendor, index) => {
+        vendor["VendorVisibility"] = false;
+        vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("RVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("RQty" + i + "" + index)).value;
@@ -451,16 +460,17 @@ export class GenerateRFQComponent implements OnInit {
   //select mail and vendor visibility  funcationality
   selectVsblltyandEmail(vendor: any) {
     var index = this.selectedVendorList.findIndex(x => x.VendorId == vendor.VendorId);
-    if ((<HTMLInputElement>document.getElementById("vis" + vendor.VendorId)).checked == true)
-      this.selectedVendorList[index].VendorVisibility = true;
-    else
-      this.selectedVendorList[index].VendorVisibility = false;
-    if ((<HTMLInputElement>document.getElementById("mail" + vendor.VendorId)).checked == true)
-      this.selectedVendorList[index].sendemail = true;
-    else
-      this.selectedVendorList[index].sendemail = false;
+    if (index >= 0) {
+      if ((<HTMLInputElement>document.getElementById("vis" + vendor.VendorId)).checked == true)
+        this.selectedVendorList[index].VendorVisibility = true;
+      else
+        this.selectedVendorList[index].VendorVisibility = false;
+      if ((<HTMLInputElement>document.getElementById("mail" + vendor.VendorId)).checked == true)
+        this.selectedVendorList[index].sendemail = true;
+      else
+        this.selectedVendorList[index].sendemail = false;
+    }
   }
-
   selectDoc(index: any, mprdoc: any, vendorid: any) {
     var index1 = this.selectedDocList.findIndex(x => x.MprDocId == mprdoc.MprDocId && x.VendorId == mprdoc.VendorId);
     if ((<HTMLInputElement>document.getElementById("doc" + index + mprdoc.MprDocId)).checked == true) {

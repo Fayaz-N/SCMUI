@@ -6,7 +6,7 @@ import { searchParams, AccessList } from '../Models/mpr';
 })
 export class constants {
   //local
-  public url = 'http://localhost:49659/Api/';
+  //public url = 'http://localhost:49659/Api/';
 
   //test server
   //public url = 'http://10.29.15.68:90/Api/';
@@ -17,13 +17,14 @@ export class constants {
 
   //live
   public accessTokenUrl = "http://10.29.15.183:90/token";
- // public url = 'http://10.29.15.183:90/Api/';
+  public url = 'http://10.29.15.183:90/Api/';
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
   public vscmurl="http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
 
   public dateFormat = "dd/MM/yyyy";
+  public dateFormatWithTime ="dd/MM/yyyy h:mm:ss a"
   public RequisitionId: string = "";
   public newMpr: boolean = false;
   public rfqValidDays: number = 7;

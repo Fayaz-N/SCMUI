@@ -334,6 +334,7 @@ export class mprFilterParams {
   mprStatusListId: any;
   PONO: string;
   PAID: string;
+  typeOfUser: string;
 }
 
 export class MPRScope {
@@ -452,6 +453,8 @@ export class VendorRegApprovalProcess {
   EvaluationRequired: boolean;
   PerformanceVerificationRequired: boolean;
   VendorType: boolean;
+  IsExistVendor: boolean;
+  ChangesFor: string;
 }
 
 export class DocDetailsList {

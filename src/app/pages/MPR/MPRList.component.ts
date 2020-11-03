@@ -170,6 +170,10 @@ export class MPRListComponent implements OnInit {
   //bind mpr list
   bindList() {
     this.spinner.show();
+    if (this.employee.OrgDepartmentId == 14)
+      this.mprFilterParams.typeOfUser = "CMM";
+    else
+      this.mprFilterParams.typeOfUser = "";
     this.mprFilterParams.FromDate = this.datePipe.transform(this.fromDate, "yyyy-MM-dd");
     this.mprFilterParams.ToDate = this.datePipe.transform(this.toDate, "yyyy-MM-dd");
     if (this.MPRfilterForm.controls.DepartmentId.value == "")

@@ -298,7 +298,7 @@
       <tr class="mprltbldata">
         <th style="width:200px;text-align:center">Item Name</th>
         <th style="width:300px" *ngFor="let col of columns">
-          <span class="form-inline"> {{col.VendorName}}<br /></span><span class="form-inline"><input type="checkbox" id='vis{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Ven Vis &nbsp;<input type="checkbox" id='mail{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Send mail</span>
+          <span class="form-inline"> {{col.VendorName}}<br /></span><span class="form-inline"><input type="checkbox" id='vis{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Ven Vis &nbsp;<input type="checkbox" checked id='mail{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Send mail</span>
         </th>
       </tr>
     </ng-template>

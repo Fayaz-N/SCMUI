@@ -1,25 +1,57 @@
 <div *ngIf="!VendorData" class="card m-2" style="height:100%;border-radius:0px;">
   <div class="row m-2">
-    <div class="col-sm-3 col-md-3 col-lg-3 form-inline">
-      <label>Vendor Name :</label>&nbsp;
+    <div class="col-sm-3 col-md-3 col-lg-3 form-group mt-4">
+      <p-radioButton name="ExistOrNewVendor" value='1' label="Existing Vendor" [(ngModel)]="VendorRegApprovalProcess.IsExistVendor"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="ExistOrNewVendor" value='0' label="New Vendor" [(ngModel)]="VendorRegApprovalProcess.IsExistVendor"></p-radioButton>&nbsp;&nbsp;
+    </div>
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-5 col-md-5 col-lg-5 form-inline">
+      <label class="form-label">Vendor Name</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="VendorRegApprovalProcess.VendorName" class="form-control">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData('venderid',VendorRegApprovalProcess.VendorName)"></button>
+        </span>
+      </div>
+    </div>
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Change For :</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <textarea class="form-control" [(ngModel)]="VendorRegApprovalProcess.ChangesFor"></textarea>
+    </div>
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Vendor Name :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="text" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorName" maxlength="500" />
     </div>
-    <div class="col-sm-3 col-md-3 col-lg-3 form-inline">
-      <label>Vendor Email :</label>&nbsp;
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="email" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
     </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-1">
-      <label>Type Of Vendor :</label>&nbsp;
-      <p-radioButton name="VendorType" value=false label="Local Vendor"  [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
-      <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
-
+  </div>
+  <div class="row m-2">
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <input type="email" [attr.disabled]="selectedEmail?true:null" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
     </div>
-    <div class="col-sm-2 col-md-2 col-lg-2 form-inline">
-      <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true">
+      <div class="col-sm-5 col-md-5 col-lg-5 form-inline" *ngFor="let email of vendorEmailList;let k=index">
+        <input type="checkbox" name="email" id="email{{k}}" style="height:15px;width:15px" (click)="selectEmails($event,email,k)">&nbsp;{{email}}
+      </div>
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-1">
+      <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
+      <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
     </div>
   </div>
-</div>
-<div *ngIf="VendorData" class="row m-2"  style="background-color: goldenrod;height:1%; margin-bottom:0px!important">
+  <div class="row m-2">
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      </div>
+      <div class="col-sm-2 col-md-2 col-lg-2 form-inline">
+        <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
+      </div>
+    </div>
+  </div>
+
+<div *ngIf="VendorData" class="row m-2" style="background-color: goldenrod;height:1%; margin-bottom:0px!important">
   <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4"></div>
   <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6"><b>Vendor Registration Details</b></div>
   <div *ngIf="typeOfUser && typeOfUser=='Checker' && (VendorData.ApprovalStatus != 'Approved' || VendorData.VerifiedStatus != 'Approved')" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
@@ -255,8 +287,8 @@
         <label class="lblEdit">Payment Terms:</label><span *ngIf="VendorData.PaymentTermId" class="valueEdit">{{getPaymentTermTxt(VendorData.PaymentTermId,VendorData.PaymentTerms)}}</span>
       </div>
       <!--<div class="col-xs-3 col-md-3 col-sm-3 form-group">
-    <label class="lblEdit">Bank Details:</label><span class="valueEdit">{{VendorData.BankDetails}}</span>
-  </div>-->
+        <label class="lblEdit">Bank Details:</label><span class="valueEdit">{{VendorData.BankDetails}}</span>
+      </div>-->
       <div class="col-xs-3 col-md-3 col-sm-3 form-group">
         <label class="lblEdit">Banker Name:</label><span class="valueEdit">{{VendorData.BankerName}}</span>
       </div>
@@ -305,136 +337,136 @@
       <span class="headername">Documents Information</span>
     </div>
     <div class="tab-pane">
-        <div *ngIf="VendorData.VendorType==false && VendorData.MSMERequired==true" class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
-            <b>MSME:</b>
-          </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==15" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
+      <div *ngIf="VendorData.VendorType==false && VendorData.MSMERequired==true" class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
+          <b>MSME:</b>
         </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
-            <b>Address Proof:</b>
-          </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==1" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
-            <b> GST registration certificate:</b>
-          </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==2" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
-            <b>PAN:</b>
-          </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==3" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>CIN Copy:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==4" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Bank Mandate duly signed by banker:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==5" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Cancelled cheque Copys:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==6" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Certificate from factory Inspector:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==7" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="VendorData.ESI=='1'" class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> ESI / PF Registration:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==8" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="VendorData.ESI=='0'" class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Declaration on letter head:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==16" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Pollution clearance certificate copy:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==9" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Excise registration certificate copy:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==10" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> TAX Certificate:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==17" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
-          <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Form10 F:</b> </div>
-          <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
-            <div *ngFor="let selected of DocumentList;let index = index">
-              <span *ngIf="selected.DocumentationTypeId==18" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
-            </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==15" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
       <div class="row m-2 form-inline">
-        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Other documents:</b> </div>
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
+          <b>Address Proof:</b>
+        </div>
         <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
           <div *ngFor="let selected of DocumentList;let index = index">
-            <span *ngIf="selected.DocumentationTypeId==14" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+            <span *ngIf="selected.DocumentationTypeId==1" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group '>
+          <b> GST registration certificate:</b>
+        </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==2" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
+          <b>PAN:</b>
+        </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==3" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>CIN Copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==4" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Bank Mandate duly signed by banker:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==5" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Cancelled cheque Copys:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group'>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==6" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Certificate from factory Inspector:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==7" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="VendorData.ESI=='1'" class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> ESI / PF Registration:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==8" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="VendorData.ESI=='0'" class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Declaration on letter head:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==16" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Pollution clearance certificate copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==9" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Excise registration certificate copy:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==10" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> TAX Certificate:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==17" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="VendorData.VendorType==true" class="row m-2 form-inline">
+        <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b> Form10 F:</b> </div>
+        <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+          <div *ngFor="let selected of DocumentList;let index = index">
+            <span *ngIf="selected.DocumentationTypeId==18" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
           </div>
         </div>
       </div>
     </div>
+    <div class="row m-2 form-inline">
+      <div class='col-xs-3 col-md-3 col-sm-3 form-group'><b>Other documents:</b> </div>
+      <div class='col-xs-9 col-md-9 col-sm-9 form-group '>
+        <div *ngFor="let selected of DocumentList;let index = index">
+          <span *ngIf="selected.DocumentationTypeId==14" class="fixed-text_new" (click)="viewDocument(selected.PhysicalPath)" pTooltip={{selected.DocumentName}}><i icon="fa fa-file" class="fa fa-file"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
   <div *ngIf="VendorData && VendorData.CheckedBy">
     <div class="strike">
       <span class="headername">Approvals</span>
@@ -460,7 +492,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{VendorData.CheckedOn | date :  constants.dateFormat }}</td>
+              <td>{{VendorData.CheckedOn | date :  constants.dateFormatWithTime }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -487,7 +519,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{VendorData.ApprovedOn | date :  constants.dateFormat }}</td>
+              <td>{{VendorData.ApprovedOn | date :  constants.dateFormatWithTime }}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -516,7 +548,7 @@
             </tr>
             <tr>
               <td>Date</td>
-              <td>{{VendorData.VerifiedOn | date :  constants.dateFormat}}</td>
+              <td>{{VendorData.VerifiedOn | date :  constants.dateFormatWithTime}}</td>
             </tr>
             <tr>
               <td style="width:20%">Remarks</td>
@@ -527,6 +559,33 @@
       </div>
     </div>
   </div>
+  <div class="m-2" *ngIf="VendorStatusTrackList">
+    <div class="head-text pl-0">
+      <div class="col-md-6 pt-2">Status History</div>
+      <div class="col-md-3 pt-2"></div>
+    </div>
+    <div class="form-control" style="height:100%;border-radius:0px;">
+      <p-table [value]="VendorStatusTrackList">
+        <ng-template pTemplate="header">
+          <tr class="mprltbldata">
+            <th>Employee Name</th>
+            <th>Status</th>
+            <th>Status Updated On</th>
+            <th>Remarks</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
+          <tr>
+            <td>{{rowData.Name}}</td>
+            <td>{{rowData.Status}}</td>
+            <td>{{rowData.UpdatedOn  | date :  constants.dateFormatWithTime}}</td>
+            <td>{{rowData.Remarks}}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+
 </div>
 
 <div *ngIf="displayFooter" class="footer">
@@ -550,3 +609,13 @@
     </div>
   </div>
 </div>
+<p-dialog #dialog header="List View :" [(visible)]="showList" [contentStyle]="{'overflow':'visible'}">
+  <div class="ui-g ui-fluid">
+    <p-listbox [options]="searchItems" [(ngModel)]="selectedItem" optionLabel="name" (click)="onSelectedOptionsChange(selectedItem,null)"></p-listbox>
+  </div>
+  <p-footer>
+    <div class="ui-dialog-buttonpane ui-helper-clearfix">
+      <button type="button" pButton icon="fa fa-close" (click)="dialogCancel('showList','')" label="Cancel"></button>
+    </div>
+  </p-footer>
+</p-dialog>
