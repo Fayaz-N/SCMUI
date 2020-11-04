@@ -31,12 +31,12 @@
       <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="email" [attr.disabled]="selectedEmail?true:null" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
     </div>
-    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true">
-      <div class="col-sm-5 col-md-5 col-lg-5 form-inline" *ngFor="let email of vendorEmailList;let k=index">
-        <input type="checkbox" name="email" id="email{{k}}" style="height:15px;width:15px" (click)="selectEmails($event,email,k)">&nbsp;{{email}}
-      </div>
-    </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-1">
+      <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-8 col-md-8 col-lg-8 form-inline">
+        <div class="form-inline" *ngFor="let email of vendorEmailList;let k=index">
+          <input class="ml-2" type="checkbox" name="email" id="email{{k}}" style="height:20px;width:20px" (click)="selectEmails($event,email,k)">&nbsp;<span style="padding-top:0px !important">{{email}}</span>
+        </div>
+        </div>
+    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-2">
       <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
       <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;

@@ -105,7 +105,7 @@
             <th *ngFor="let col of columns;let colInd=index" style="width:250px">
               <input type="checkbox" style="height:15px;width:15px" id='vendor{{colInd}}' (click)="selectVendorList($event,col,'',colInd,true)">
               {{col.VendorName}}<br /><label>RFQ revision's List : </label>&nbsp;
-              <span *ngFor="let item of rfqrevisionsList" ><a *ngIf="item.VendorId==col.VendorId" style="color:#fff !important" [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]"><span *ngIf="col.rfqRevisionId!=item.rfqRevisionId"> {{item.rfqRevisionId + ","}}</span><span *ngIf="col.rfqRevisionId==item.rfqRevisionId" style="color:#11d3b8c9;text-decoration:underline"> {{item.rfqRevisionId + ","}}</span></a></span><br />
+              <span *ngFor="let item of rfqrevisionsList"><a *ngIf="item.VendorId==col.VendorId" style="color:#fff !important" [routerLink]="['/SCM/VendorQuoteView',item.rfqRevisionId]"><span *ngIf="col.rfqRevisionId!=item.rfqRevisionId"> {{item.rfqRevisionId + ","}}</span><span *ngIf="col.rfqRevisionId==item.rfqRevisionId" style="color:#11d3b8c9;text-decoration:underline"> {{item.rfqRevisionId + ","}}</span></a></span><br />
               <label>Current RFQ No : </label>&nbsp;<span style="color:#11d3b8c9"> {{col.RFQNo}}</span><br />
               <label>Date : </label>&nbsp;<span style="color:#11d3b8c9">{{col.RFQValidDate | date :  constants.dateFormat}}</span>
             </th>
@@ -118,7 +118,7 @@
                 <div class="col-lg-12 col-md-12 col-sm-12 form-group">
                   <b>MS Code - </b>{{rowData.ItemId}}<br /><b>Name - </b>{{rowData.ItemName}}<br /><b>Desc - </b>{{rowData.ItemDescription}}<br /><b>Qty - </b>{{rowData.QuotationQty}}
                 </div>
-            </div>
+              </div>
             </td>
             <td>
               <div class="row">
@@ -157,101 +157,85 @@
               <div *ngIf="vendor.VendorId" [style.background]="vendor.UnitPrice==rowData.leastPrice ? 'hsla(89, 43%, 51%, 0.3)' : '' ">
                 <input *ngIf="vendor.Status!='Approved' && vendor.RFQSplitItemId!=null" type="checkbox" style="height:15px;width:15px" id='ven{{rowIndex+""+colIndex}}' (click)="selectVendorList($event,vendor,rowIndex,colIndex,false)"><br />
                 <!--<div class="row col-lg-12 col-md-12 col-sm-12">
-    <span class="form-inline">
-      <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
-    </span>
-  </div>
-  <div class="row col-lg-12 col-md-12 col-sm-12">
-    <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
-  </div>-->
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">Q</label>
-                    <span class="valueEdit">{{vendor.vendorQuoteQty}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">Price </label>
-                    <span class="valueEdit">{{vendor.UnitPrice}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">Discount </label>
-                    <span class="valueEdit" *ngIf="vendor.Discount">{{vendor.Discount}}</span>
-                    <span class="valueEdit" *ngIf="vendor.DiscountPercentage">{{(vendor.DiscountPercentage/100)*(vendor.UnitPrice * vendor.vendorQuoteQty)}}</span>
-                  </div>
-
+                  <span class="form-inline">
+                    <b>PQP : </b>&nbsp;<input id='PQP{{rowIndex+""+colIndex}}' type="number" class="form-control" style="width:50%" value={{vendor.UnitPrice}} />
+                  </span>
                 </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">HA</label>
-                    <span class="valueEdit">{{vendor.HandlingAmount}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">IFRA </label>
-                    <span class="valueEdit">{{vendor.ImportFreightAmount}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">INSA </label>
-                    <span class="valueEdit" >{{vendor.InsuranceAmount}}</span>
-                    </div>
-
-                </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">DA </label>
-                    <span class="valueEdit">{{vendor.DutyAmount}}</span>
-                  </div>
-                  <!--<span>{{discountCalculation(vendor)}}</span>-->
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">FRA</label>
-                    <span class="valueEdit">{{vendor.FreightAmount}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">PFA</label>
-                    <span class="valueEdit">{{vendor.PFAmount}}</span>
-                  </div>
-                  
-                  <!--<div class="col-lg-3 col-md-3 col-sm-3 form-group">
-    <label class="form-label lblEdit">PT</label>
-    <span class="valueEdit">{{RfqCompareItems[0].PaymentTermRemarks}}</span>
-  </div>-->
-
-                </div>
-
-                <div class="row">
-                  
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></label>
-                    <span class="valueEdit">
-                      <i *ngIf="vendor.RfqDocStatus=='Pending'" class="fa fa-clock-o times-color"></i>
+                <div class="row col-lg-12 col-md-12 col-sm-12">
+                  <span class="form-inline"><b>Remarks </b>&nbsp;<input id='rmks{{rowIndex+""+colIndex}}' (input)="addRemarks(vendor,rowIndex,colIndex)" type="text" class="form-control" value={{vendor.Remarks}} /></span>
+                </div>-->
+                <table border="1" style="border:#428bca solid 1px;font-weight: 700">
+                  <tr>
+                    <td class="text-left pl-3">Quantity</td>
+                    <td class="text-right">{{vendor.vendorQuoteQty}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">Price</td>
+                    <td class="text-right">{{vendor.UnitPrice}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">Discount&nbsp;({{vendor.DiscountPercentage}}%)</td>
+                    <td class="text-right">
+                      <span *ngIf="vendor.Discount">{{vendor.Discount}}</span>
+                      <span *ngIf="vendor.DiscountPercentage">{{(vendor.DiscountPercentage/100)*(vendor.UnitPrice * vendor.vendorQuoteQty)}}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">HA&nbsp;({{vendor.HandlingPercentage}}%)</td>
+                    <td class="text-right">{{vendor.HandlingAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">IFRA&nbsp;({{vendor.ImportFreightPercentage}}%)</td>
+                    <td class="text-right">{{vendor.ImportFreightAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">INSA&nbsp;({{vendor.InsurancePercentage}}%)</td>
+                    <td class="text-right">{{vendor.InsuranceAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">DA&nbsp;({{vendor.DutyPercentage}}%)</td>
+                    <td class="text-right">{{vendor.DutyAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">FRA&nbsp;({{vendor.FreightPercentage}}%)</td>
+                    <td class="text-right">{{vendor.FreightAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">PFA&nbsp;({{vendor.PFPercentage}}%)</td>
+                    <td class="text-right">{{vendor.PFAmount}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3"><img src="../assets/technics.png" style="height: 15px;width: 15px;"></td>
+                    <td class="text-center">
+                      <i *ngIf="vendor.RfqDocStatus=='Pending' || !vendor.RfqDocStatus" class="fa fa-clock-o times-color"></i>
                       <i *ngIf="vendor.RfqDocStatus=='Approved'" class="fa fa-check check-color"></i>
                       <i *ngIf="vendor.RfqDocStatus=='Rejected'" class="fa fa-times times-color"></i>
-                    </span>
-                  </div>
-                  <div class="col-lg-2 col-md-2 col-sm-2 form-group">
-                    <label class="form-label lblEdit">APD</label>
-                    <span *ngIf="vendor.Status=='Approved'" class="valueEdit pi pi-check check-color"></span>
-                    <span *ngIf="vendor.Status!='Approved'" class="valueEdit pi pi-times times-color"></span>
-
-                  </div>
-                  <div class="col-lg-3 col-md-3 col-sm-3 form-group">
-                    <label class="form-label lblEdit">DP</label>
-                    <span class="valueEdit">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}} &nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p> </span>
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">MT</label>
-                    <span class="valueEdit">{{vendor.MaterialTotalPrice}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">HC</label>
-                    <span class="valueEdit">{{vendor.HandlingChargesTotal}}</span>
-                  </div>
-                  <div class="col-lg-4 col-md-4 col-sm-4 form-group">
-                    <label class="form-label lblEdit">TP</label>
-                    <span class="valueEdit">{{vendor.TotalPrice}}</span>
-                  </div>
-                </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">APD</td>
+                    <td class="text-center">
+                      <span *ngIf="vendor.Status=='Approved'" class="valueEdit pi pi-check check-color"></span>
+                      <span *ngIf="vendor.Status!='Approved'" class="valueEdit pi pi-times times-color"></span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">DP</td>
+                    <td class="text-center">{{vendor.DeliveryMinWeeks}}-{{vendor.DeliveryMaxWeeks}}&nbsp;<p *ngIf="vendor.DeliveryMinWeeks && vendor.DeliveryMaxWeeks">Weeks</p></td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">MT</td>
+                    <td class="text-right">{{vendor.MaterialTotalPrice}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">HC</td>
+                    <td class="text-right">{{vendor.HandlingChargesTotal}}</td>
+                  </tr>
+                  <tr>
+                    <td class="text-left pl-3">TP</td>
+                    <td class="text-right">{{vendor.TotalPrice}}</td>
+                  </tr>
+                </table>
               </div>
             </td>
           </tr>
@@ -273,11 +257,11 @@
               <span *ngIf="getRemarks(col1.rfqRevisionId,term)" style="font-weight: 500;"> , {{getRemarks(col1.rfqRevisionId,term)}}</span>
             </td>
             <!--<td *ngFor="let rf of term.termsList">
-        <span *ngIf="rf.VendorResponse=='Agree'" class="pi pi-check check-color"></span>
-        <span *ngIf="rf.VendorResponse=='NotAgree'" class="pi pi-times times-color"></span>
-        <span *ngIf="rf.VendorResponse=='NotApplicable'">NA</span>&nbsp;
-        <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
-    </td>-->
+                <span *ngIf="rf.VendorResponse=='Agree'" class="pi pi-check check-color"></span>
+                <span *ngIf="rf.VendorResponse=='NotAgree'" class="pi pi-times times-color"></span>
+                <span *ngIf="rf.VendorResponse=='NotApplicable'">NA</span>&nbsp;
+                <span *ngIf="rf.Remarks" style="font-weight: 500;"> , {{rf.Remarks}}</span>
+            </td>-->
           </tr>
         </ng-template>
       </p-table>
@@ -312,14 +296,14 @@
   </div>-->
 
   <div class="footer">
-        <div class="row form-inline pt-2">
-          <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
-            <label>Status :&nbsp;<span class="blink_text">{{status}}</span></label>
-          </div>
-          <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
-            <button type="button" class="btn btn-success" (click)="statusSubmit()" label="Save">Submit</button>
-          </div>
-        </div>
+    <div class="row form-inline pt-2">
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline ">
+        <label>Status :&nbsp;<span class="blink_text">{{status}}</span></label>
+      </div>
+      <div class="col-lg-4 col-md-4 col-sm-4 form-inline">
+        <button type="button" class="btn btn-success" (click)="statusSubmit()" label="Save">Submit</button>
+      </div>
+    </div>
   </div>
 </div>
 

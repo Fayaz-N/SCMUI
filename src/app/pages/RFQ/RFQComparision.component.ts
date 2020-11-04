@@ -263,7 +263,7 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
-        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].MaterialTotalPrice);
+        totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].MaterialTotalPrice);
     });
     return totalPrice;
   }
@@ -273,7 +273,7 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
-        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].HandlingChargesTotal);
+        totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].HandlingChargesTotal);
     });
     return totalPrice;
   }
@@ -282,7 +282,7 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.suggestedVendorDetails[colIndex])
-        totalPrice += parseInt(item.suggestedVendorDetails[colIndex].TotalPrice);
+        totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].TotalPrice);
     });
     return totalPrice;
   }
@@ -292,7 +292,7 @@ export class RFQComparisionComponent implements OnInit {
     let totalPrice: number = 0;
     this.rfqQuoteModel.forEach(item => {
       if (item.POPrice)
-        totalPrice += parseInt(item.POPrice);
+        totalPrice += parseFloat(item.POPrice);
     });
     return totalPrice;
   }
@@ -315,19 +315,20 @@ export class RFQComparisionComponent implements OnInit {
   calculateItemToatlPriceWOH(vendor) {
     var frfAmt = this.calculateFRAmount(vendor);
     var pfAmnt = this.calculatePFamount(vendor);
-    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString());
+    return parseFloat(this.tp.toString()) + parseFloat(frfAmt.toString()) + parseFloat(pfAmnt.toString());
   }
 
   //calculate total handling charges
   calculateItemToatlPriceHC(vendor) {
-    return parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
+    var value = parseFloat(vendor.HandlingAmount.toString()) + parseFloat(vendor.ImportFreightAmount.toString()) + parseFloat(vendor.InsuranceAmount.toString()) + parseFloat(vendor.DutyAmount.toString());
+    return value;
   }
   //calculate material total price including handling charges
   calculateItemToatlPriceWH(vendor) {
     var frfAmt = this.calculateFRAmount(vendor);
     var pfAmnt = this.calculatePFamount(vendor);
 
-    return parseInt(this.tp.toString()) + parseInt(frfAmt.toString()) + parseInt(pfAmnt.toString()) + parseInt(vendor.HandlingAmount.toString()) + parseInt(vendor.ImportFreightAmount.toString()) + parseInt(vendor.InsuranceAmount.toString()) + parseInt(vendor.DutyAmount.toString());
+    return parseFloat(this.tp.toString()) + parseFloat(frfAmt.toString()) + parseFloat(pfAmnt.toString()) + parseFloat(vendor.HandlingAmount.toString()) + parseFloat(vendor.ImportFreightAmount.toString()) + parseFloat(vendor.InsuranceAmount.toString()) + parseFloat(vendor.DutyAmount.toString());
   }
 
   calculateFRAmount(vendor: any) {
