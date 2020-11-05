@@ -185,6 +185,8 @@
           <th>Department</th>
           <th>Job Code</th>
           <th>Job Name</th>
+          <th>Approved Date</th>
+          <th>MPR Current Status</th>
           <th>Prepared By</th>
           <th>Prepared On</th>
           <th>Checker</th>
@@ -199,7 +201,6 @@
           <th>Third Approver</th>
           <th>Third Approver's status</th>
           <th>ThirdApprover's status Changed On</th>
-          <th>Approved Date</th>
         </tr>
       </thead>
       <tbody>
@@ -211,6 +212,8 @@
           <td>{{app.department}}</td>
           <td>{{app.jobcode}}</td>
           <td>{{app.jobname}}</td>
+          <td>{{app.approvedate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.Status}}</td>
           <td>{{app.prepared}}</td>
           <td>{{app.preparedon | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Checker}}</td>
@@ -225,7 +228,6 @@
           <td>{{app.Thirdapprover}}</td>
           <td>{{app.thirdapproverstatus}}</td>
           <td>{{app.thirdapproverstatuschangedon |date: 'dd/MM/yyyy'}}</td>
-          <td>{{app.approvedate |date: 'dd/MM/yyyy'}}</td>
         </tr>
       </tbody>
     </table>
