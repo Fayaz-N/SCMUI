@@ -97,12 +97,8 @@
             </select>&nbsp;
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3">
-            <label for="docNo" class="form-label">Approver's Status:</label> &nbsp;
-            <select [(ngModel)]="pofilters.Approverstatus" class="form-control dropdown">
-              <option value="Pending">Pending</option>
-              <option value="Approved">Approved</option>
-              <option value="Rejected">Rejected</option>
-            </select>&nbsp;
+            <label for="paid" class="form-label ">PA ID</label><br />
+            <input class="form-control" [(ngModel)]="pofilters.Paid">
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3">
             <label for="SaleOrderNo" class="form-label">PO Status:</label> &nbsp;
@@ -116,33 +112,37 @@
             <input class="form-control" type="text" [(ngModel)]="pofilters.rfqnumber">
           </div>
         </div>
-  <div class="row form-group">
-    <div class="col-lg-3 col-md-3 col-sm-3">
-      <label class="form-label">From Date</label><br />
-      <input type="date" class="form-control" [(ngModel)]="pofilters.fromDate">
-      <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
-      <label class="form-label">To Date</label>&nbsp;<br />
-      <input type="date" class="form-control" [(ngModel)]="pofilters.toDate">
-      <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
-      <label for="paid" class="form-label ">PA ID</label><br />
-      <input class="form-control" [(ngModel)]="pofilters.Paid">
-    </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
-      <mat-form-field style="width:100%">
-        <mat-label>Select Approver</mat-label>
-        <select matNativeControl [(ngModel)]="pofilters.Approvername">
-          <option value="" selected></option>
-          <option *ngFor="let option of Approvers" [value]="option.Name">
-            {{option.Name}}
-          </option>
-        </select>
-      </mat-form-field>
-    </div>
-  </div>
+        <div class="row form-group">
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <label class="form-label">From Date</label><br />
+            <input type="date" class="form-control" [(ngModel)]="pofilters.fromDate">
+            <!--<p-calendar class="FromDate" style="width:222px" [(ngModel)]="pofilters.fromDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <label class="form-label">To Date</label>&nbsp;<br />
+            <input type="date" class="form-control" [(ngModel)]="pofilters.toDate">
+            <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <mat-form-field style="width:100%">
+              <mat-label>Select Approver</mat-label>
+              <select matNativeControl [(ngModel)]="pofilters.Approvername">
+                <option value="" selected></option>
+                <option *ngFor="let option of Approvers" [value]="option.Name">
+                  {{option.Name}}
+                </option>
+              </select>
+            </mat-form-field>
+          </div>
+          <div class="col-lg-3 col-md-3 col-sm-3">
+            <label for="docNo" class="form-label">Approver's Status:</label> &nbsp;
+            <select [(ngModel)]="pofilters.Approverstatus" class="form-control dropdown">
+              <option value="Pending">Pending</option>
+              <option value="Approved">Approved</option>
+              <option value="Rejected">Rejected</option>
+            </select>&nbsp;
+          </div>
+        </div>
   <div class="row">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="GetMprpadetailsBySearch(pofilters)">Submit</button>

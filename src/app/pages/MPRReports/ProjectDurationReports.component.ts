@@ -45,7 +45,7 @@ export class ProjectDurationReportsComponent implements OnInit {
       this.router.navigateByUrl("Login");
       }
       this.report = new ReportInputModel();
-      this.report.Fromdate = "2020-10-01";
+      this.report.Fromdate = "2020-11-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
@@ -53,7 +53,7 @@ export class ProjectDurationReportsComponent implements OnInit {
     this.loadbuyergroups();
       
       this.statuslist = new Array<any>();
-      this.GetProjectDurationWisereport(this.report);
+      //this.GetProjectDurationWisereport(this.report);
       this.loadprojectmangers();
       this.loadjobcodes();
       this.page = 1;

@@ -165,7 +165,7 @@
   </div>
   <div class="row">
     <div class="col-md-12" style="text-align:center">
-      <button type="button" class="btn btn-primary" (click)="GetMprstatusreport(reportinput)">Submit</button>&nbsp;&nbsp;
+      <button type="button" class="btn btn-primary" (click)="GetMprRequisitionreport(reportinput)">Submit</button>&nbsp;&nbsp;
       <!--<button type="button" class="btn btn-primary" (click)="ExportTOExcel()">Export ToExcel</button>-->
     </div>
   </div>
@@ -199,6 +199,7 @@
           <th>Third Approver</th>
           <th>Third Approver's status</th>
           <th>ThirdApprover's status Changed On</th>
+          <th>Approved Date</th>
         </tr>
       </thead>
       <tbody>
@@ -224,6 +225,7 @@
           <td>{{app.Thirdapprover}}</td>
           <td>{{app.thirdapproverstatus}}</td>
           <td>{{app.thirdapproverstatuschangedon |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.approvedate |date: 'dd/MM/yyyy'}}</td>
         </tr>
       </tbody>
     </table>

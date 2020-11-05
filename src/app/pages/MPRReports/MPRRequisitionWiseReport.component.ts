@@ -52,14 +52,14 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
           console.log(" this.reportinput", this.reportinput)
           //this.reportinput.Fromdate = "2020-10-01";
           //this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-          this.GetMprstatusreport(this.reportinput);
+          this.GetMprRequisitionreport(this.reportinput);
           localStorage.removeItem("statusDetails");
           this.reportinput.DepartmentId = this.reportinput.DepartmentId;
       }
       else {
-          this.reportinput.Fromdate = "2020-10-01";
+          this.reportinput.Fromdate = "2020-11-01";
           this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-          this.GetMprstatusreport(this.reportinput);
+          //this.GetMprRequisitionreport(this.reportinput);
       }
       this.mprprepares = new Array<any>();
       this.mprcheckedby = new Array<any>();
@@ -80,7 +80,7 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
         this.buyergroups = data;
     })
   }
-    GetMprstatusreport(status: ReportInputModel) {
+    GetMprRequisitionreport(status: ReportInputModel) {
         this.spinner.show();
         this.paService.GetmprrequisitionReport(status).subscribe(data => {
             this.spinner.hide();

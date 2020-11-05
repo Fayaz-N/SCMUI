@@ -90,7 +90,8 @@
           <th>Delivery Required By</th>
           <th>Vendor Delivery Date</th>
           <th>Remarks</th>
-          >
+          <th>Approved Date</th>
+          <th>MPR Cuurent status</th>
         </tr>
       </thead>
       <tbody>
@@ -100,7 +101,6 @@
           <td>{{app.RevisionNo}}</td>
           <!--<td>{{app.RevisionId}}</td>-->
           <td style="max-width:300px !important">{{app.ItemDescription}}</td>
-          .B
           <td>{{app.BuyerGroup}}</td>
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
@@ -115,7 +115,8 @@
           <td>{{app.DeliveryRequiredBy |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.VendorDeliveryDate |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Remarks}}</td>
-
+          <td>{{app.approveddate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.status}}</td>
         </tr>
       </tbody>
       <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->
