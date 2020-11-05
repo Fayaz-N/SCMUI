@@ -278,25 +278,30 @@ export class GenerateRFQComponent implements OnInit {
         this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.spinner.hide();
-          this.vendorSubmitted = false;
-          this.vendorDetailsArray = [];
-          this.vendorDetails.Vendorid = data;
-          if (this.newVendorDetails.VendorName)
-            this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
-          this.vendorDetailsArray.push(this.vendorDetails);
-          this.vendorDetailsArray.forEach((el) => { el.UpdatedBy = this.employee.EmployeeNo; })
-          this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
-            if (data) {
-              this.dynamicData = new DynamicSearchResult();
-              this.dynamicData.query = " select * from MPRVendorDetails Where RevisionId=" + this.MPRRevisionId + "";
-              this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
-                this.vendorDetailsArray = data;
-              });
-              //this.vendorDetailsArray = data;
-              this[dialogName] = false;
-              this.preapreManualRfqlist();
-            }
-          });
+          if (data) {
+            this.vendorSubmitted = false;
+            this.vendorDetailsArray = [];
+            this.vendorDetails.Vendorid = data;
+            if (this.newVendorDetails.VendorName)
+              this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
+            this.vendorDetailsArray.push(this.vendorDetails);
+            this.vendorDetailsArray.forEach((el) => { el.UpdatedBy = this.employee.EmployeeNo; })
+            this.MprService.updateMPRVendor(this.vendorDetailsArray, this.MPRRevisionId).subscribe(data => {
+              if (data) {
+                this.dynamicData = new DynamicSearchResult();
+                this.dynamicData.query = " select * from MPRVendorDetails Where RevisionId=" + this.MPRRevisionId + "";
+                this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+                  this.vendorDetailsArray = data;
+                });
+                //this.vendorDetailsArray = data;
+                this[dialogName] = false;
+                this.preapreManualRfqlist();
+              }
+            });
+          }
+          else {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Failed to add try again' });
+          }
         });
 
       }
@@ -361,8 +366,8 @@ export class GenerateRFQComponent implements OnInit {
   }
 
   selectVendorList(event: any, itemsIndex: number, vendorIndex: number, id: string, vendor: any, checked: boolean) {
-    vendor["VendorVisibility"] = false;
-    vendor["sendemail"] = true;
+    vendor["VendorVisibility"] = true;
+    //vendor["sendemail"] = true;
     var qty = (<HTMLInputElement>document.getElementById(id + itemsIndex + "" + vendorIndex)).value;
     if (id == "SQty")
       this.rfqQuoteModel[itemsIndex].suggestedVendorDetails[vendorIndex].QuotationQty = qty;
@@ -396,8 +401,8 @@ export class GenerateRFQComponent implements OnInit {
     // var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == MPRItemDetailsid));
     for (var i = 0; i < this.rfqQuoteModel.length; i++) {
       this.rfqQuoteModel[i].suggestedVendorDetails.forEach((vendor, index) => {
-        vendor["VendorVisibility"] = false;
-        vendor["sendemail"] = true;
+        vendor["VendorVisibility"] = true;
+        //vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("SVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("SQty" + i + "" + index)).value;
@@ -415,8 +420,8 @@ export class GenerateRFQComponent implements OnInit {
         }
       });
       this.rfqQuoteModel[i].manualvendorDetails.forEach((vendor, index) => {
-        vendor["VendorVisibility"] = false;
-        vendor["sendemail"] = true;
+        vendor["VendorVisibility"] = true;
+        //vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("MVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("MQty" + i + "" + index)).value;
@@ -434,8 +439,8 @@ export class GenerateRFQComponent implements OnInit {
         }
       })
       this.rfqQuoteModel[i].repeatOrdervendorDetails.forEach((vendor, index) => {
-        vendor["VendorVisibility"] = false;
-        vendor["sendemail"] = true;
+        vendor["VendorVisibility"] = true;
+        //vendor["sendemail"] = true;
         var index1 = this.selectedVendorList.findIndex(li => (li.VendorId == vendorId) && (li.MPRItemDetailsid == vendor.MPRItemDetailsid));
         if (event.currentTarget.checked && vendor.VendorId == vendorId && (<HTMLInputElement>document.getElementById("RVendor" + i + index))) {
           var qty = (<HTMLInputElement>document.getElementById("RQty" + i + "" + index)).value;
@@ -465,10 +470,10 @@ export class GenerateRFQComponent implements OnInit {
         this.selectedVendorList[index].VendorVisibility = true;
       else
         this.selectedVendorList[index].VendorVisibility = false;
-      if ((<HTMLInputElement>document.getElementById("mail" + vendor.VendorId)).checked == true)
-        this.selectedVendorList[index].sendemail = true;
-      else
-        this.selectedVendorList[index].sendemail = false;
+      //if ((<HTMLInputElement>document.getElementById("mail" + vendor.VendorId)).checked == true)
+      //  this.selectedVendorList[index].sendemail = true;
+      //else
+      //  this.selectedVendorList[index].sendemail = false;
     }
   }
   selectDoc(index: any, mprdoc: any, vendorid: any) {

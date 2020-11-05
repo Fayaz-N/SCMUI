@@ -20,16 +20,21 @@
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
       <label>Vendor Name :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="text" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorName" maxlength="500" />
+     
     </div>
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
       <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="email" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
+      <br />
+      &nbsp;<span style="color:red">Enter one  email id, multiple mail id's will not take. Example:abc@xyz.com</span>
     </div>
   </div>
   <div class="row m-2">
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-4 col-md-4 col-lg-4 form-inline">
       <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="email" [attr.disabled]="selectedEmail?true:null" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorEmailId" />
+      <br />
+      &nbsp;<span style="color:red">Enter one  email id, multiple mail id's will not take. Example:abc@xyz.com</span>
     </div>
       <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-8 col-md-8 col-lg-8 form-inline">
         <div class="form-inline" *ngFor="let email of vendorEmailList;let k=index">

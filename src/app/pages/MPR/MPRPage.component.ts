@@ -980,13 +980,18 @@ export class MPRPageComponent implements OnInit {
         this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.spinner.hide();
-          this.vendorSubmitted = false;
-          this.vendorDetails.Vendorid = data;
-          if (this.newVendorDetails.VendorName)
-            this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
-          this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
-          this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
-          this.updateDocumentation(dialogName);
+          if (data) {
+            this.vendorSubmitted = false;
+            this.vendorDetails.Vendorid = data;
+            if (this.newVendorDetails.VendorName)
+              this.vendorDetails.VendorName = this.newVendorDetails.VendorName;
+            this.vendorDetails.UpdatedBy = this.employee.EmployeeNo;
+            this.mprRevisionModel.MPRVendorDetails.push(this.vendorDetails);
+            this.updateDocumentation(dialogName);
+          }
+          else {
+            this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Failed to add try again' });
+          }
         })
       }
       //}
