@@ -144,8 +144,8 @@
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
-            <tr *ngIf="rowData.Employee">
-              <td>{{rowData.Employee.Name}}</td>
+            <tr>
+              <td>{{rowData.Name}}</td>
               <!--<td>{{rowData.Employee.Name}}</td>-->
               <td>{{rowData.RemarksDate | date :  constants.dateFormat}}</td>
               <td>

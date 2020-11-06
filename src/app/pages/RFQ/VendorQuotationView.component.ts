@@ -6,6 +6,7 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee, AccessList, DynamicSearchResult } from 'src/app/Models/mpr';
 import { MessageService } from 'primeng/api';
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-VendorQuotationView',
@@ -14,7 +15,7 @@ import { MessageService } from 'primeng/api';
 
 export class VendorQuotationViewComponent implements OnInit {
 
-  constructor(public RfqService: RfqService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
+  constructor(public RfqService: RfqService, private spinner: NgxSpinnerService,  public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   public RfqRevisionId: number = 0;
@@ -56,6 +57,7 @@ export class VendorQuotationViewComponent implements OnInit {
         this.RfqRevisionId = params["RFQRevisionId"];
         this.getDocumentTypeMaster();
         this.loadQuotationDetails();
+        
       }
     });
   }
@@ -70,8 +72,11 @@ export class VendorQuotationViewComponent implements OnInit {
     })
   }
   loadQuotationDetails() {
+    this.spinner.show();
     this.RfqService.GetRfqDetailsById(this.RfqRevisionId).subscribe(data => {
+      this.spinner.hide();
       this.quoteDetails = data;
+      this.loadCommunicationDetails();
       this.MPRRevisionId = this.quoteDetails.rfqmaster.MPRRevisionId;
       if (this.quoteDetails.mprIncharges.filter(li => li.Incharge == this.employee.EmployeeNo).length > 0)
         this.MPRPriceVisibilty = true;
@@ -81,7 +86,6 @@ export class VendorQuotationViewComponent implements OnInit {
           if (doc.DocumentType == 6 && this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId).length == 0) {
             doc.StatusBy = this.employee.EmployeeNo;
             doc.Statusdate = new Date();
-
             this.rfqDocuments.push(doc);
           }
         });
@@ -93,6 +97,13 @@ export class VendorQuotationViewComponent implements OnInit {
         this.rfqrevisions = data;
       })
     });
+  }
+  loadCommunicationDetails() {
+    this.dynamicData = new DynamicSearchResult();
+    this.dynamicData.query = "select * from RFQCommunicationsDetails where RfqRevisionId=" + this.RfqRevisionId + " and DeleteFlag=0";
+    this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
+      this.quoteDetails.rfqCommunications = data;
+    })
   }
   showRfqCommunicationDialogToAdd() {
     this.newRevision = false;

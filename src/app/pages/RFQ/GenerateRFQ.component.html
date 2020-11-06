@@ -199,18 +199,18 @@
     <button type="button" pButton icon="fa fa-refresh" pTooltip="Refresh Terms And Conditions" (click)="getYILTermsAndConditions()"></button>&nbsp;&nbsp;
     <button type="button" pButton icon="fa fa-plus" pTooltip="Add Terms And Conditions" (click)="navigateTotermsMaster()"></button><br />
   </div>
-    <div class="m-0">
-      <div *ngFor="let term of YILTermsAndConditions; let i = index;">
-        <span class="row col-xs-12 col-md-12 col-sm-12 m-0" *ngIf="(YILTermsAndConditions[i-1] && term.TermGroup!=YILTermsAndConditions[i-1].TermGroup)||i==0" style="color:blueviolet;font-size:14px;text-decoration:underline"><b>{{term.TermGroup}}:</b></span>
-        <div class="row col-xs-12 col-md-12 col-sm-12 m-2">
-          <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<span>{{term.Terms}}</span>
-        </div>
+  <div class="m-0">
+    <div *ngFor="let term of YILTermsAndConditions; let i = index;">
+      <span class="row col-xs-12 col-md-12 col-sm-12 m-0" *ngIf="(YILTermsAndConditions[i-1] && term.TermGroup!=YILTermsAndConditions[i-1].TermGroup)||i==0" style="color:blueviolet;font-size:14px;text-decoration:underline"><b>{{term.TermGroup}}:</b></span>
+      <div class="row col-xs-12 col-md-12 col-sm-12 m-2">
+        <input type="checkbox" style="height:20px;width:20px" [checked]="term.DefaultSelect == 'true'?true:null" (change)="termChange($event,i)">&nbsp;<span>{{term.Terms}}</span>
       </div>
     </div>
-    <div class="row m-0" >
-      <div class="col-xs-4 col-md-4 col-sm-4"></div>
-      <button type="button" class="btn btn-success" (click)="openConformDialog()" label="Save">Submit</button>
-    </div>
+  </div>
+  <div class="row m-0">
+    <div class="col-xs-4 col-md-4 col-sm-4"></div>
+    <button type="button" class="btn btn-success" (click)="openConformDialog()" label="Save">Submit</button>
+  </div>
 </div>
 
 <div class="icon-bar">
@@ -298,7 +298,10 @@
       <tr class="mprltbldata">
         <th style="width:200px;text-align:center">Item Name</th>
         <th style="width:300px" *ngFor="let col of columns">
-          <span class="form-inline"> {{col.VendorName}}<br /></span><span class="form-inline"><input type="checkbox" id='vis{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Ven Vis &nbsp;<input type="checkbox" checked id='mail{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Send mail</span>
+          <span class="form-inline"> {{col.VendorName}}<br /></span><span class="form-inline">
+            <input type="checkbox" id='vis{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Vendor visibilty & Mail to vendor &nbsp;
+            <!--<input type="checkbox" checked id='mail{{col.VendorId}}' class="checkmark vndorinputchk" (click)="selectVsblltyandEmail(col)">Send mail-->
+          </span>
         </th>
       </tr>
     </ng-template>
