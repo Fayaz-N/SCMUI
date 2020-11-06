@@ -79,6 +79,8 @@
           <th>Buyer Group</th>
           <th>Job Code</th>
           <th>Job Name</th>
+          <th>Approved Date</th>
+          <th>MPR Cuurent status</th>
           <th>Target Spend</th>
           <th>Discount</th>
           <th>Freight</th>
@@ -90,8 +92,6 @@
           <th>Delivery Required By</th>
           <th>Vendor Delivery Date</th>
           <th>Remarks</th>
-          <th>Approved Date</th>
-          <th>MPR Cuurent status</th>
         </tr>
       </thead>
       <tbody>
@@ -104,6 +104,8 @@
           <td>{{app.BuyerGroup}}</td>
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
+          <td>{{app.approveddate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.status}}</td>
           <td>{{app.TargetSpend | currency:'INR'}}</td>
           <td>{{app.Discountamount | currency:'INR'}}</td>
           <td>{{app.freightamounts | currency:'INR'}}</td>
@@ -115,8 +117,6 @@
           <td>{{app.DeliveryRequiredBy |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.VendorDeliveryDate |date: 'dd/MM/yyyy'}}</td>
           <td>{{app.Remarks}}</td>
-          <td>{{app.approveddate |date: 'dd/MM/yyyy'}}</td>
-          <td>{{app.status}}</td>
         </tr>
       </tbody>
       <!--<ngb-pagination [collectionSize]="statuslist.length" [maxSize]="10" [(page)]="page" [ellipses]="false" [boundaryLinks]="true" [rotate]="true"></ngb-pagination>-->
