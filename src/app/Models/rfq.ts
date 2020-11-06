@@ -237,7 +237,8 @@ export class rfqTerms {
   termsList: Array<any> = [];
 }
 export class RFQDocuments {
-  RfqDocumentId: number;
+ // RfqDocumentId: number;
+  RfqDocId: number;
   RfqRevisionId: number;
   RfqItemsId: number;
   DocumentName: string;
@@ -256,4 +257,11 @@ export class PreviousPrice {
   PODate: Date;
   POPrice: string;
   PORemarks: string;
+}
+export class RFQGenerateReminderMaster {
+  FrmEmailId: string;
+  VendorId: number;
+  rfqno: string;
+  Reminder: boolean;
+
 }

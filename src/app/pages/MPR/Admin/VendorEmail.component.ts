@@ -34,6 +34,7 @@ export class VendorEmailComponent implements OnInit {
       this.MprService.sendMailtoVendor(this.sendMailObj).subscribe(data => {
         if (data) {
           this.sendMailObj.Message = this.sendMailObj.Message.replace('<br />', '/\n/g');
+          this.sendMailObj.Message = '';
           this.spinner.hide();
           this.messageService.add({ severity: 'sucess', summary: 'Sucess Message', detail: 'Mail Sent' });
         }

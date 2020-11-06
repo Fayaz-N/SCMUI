@@ -9,7 +9,7 @@ import { Employee, DynamicSearchResult, AccessList, searchList } from 'src/app/M
 import { MprService } from 'src/app/services/mpr.service';
 import { RfqService } from 'src/app/services/rfq.service ';
 import { constants } from 'src/app/Models/MPRConstants';
-import { RFQRevisionData, RFQMasters, RfqItemModel, RfqItemInfoModel } from 'src/app/Models/rfq';
+import { RFQRevisionData, RFQMasters, RfqItemModel, RfqItemInfoModel, RFQGenerateReminderMaster } from 'src/app/Models/rfq';
 
 
 @Component({
@@ -35,7 +35,7 @@ export class RFQFormComponent implements OnInit {
   public rfqItemInfo: RfqItemInfoModel;
   public currncyArray: any[] = [];
   public rfqResponded; HandlingPercentageChk; ImportFreightPercentageChk; InsurancePercentageChk; DutyPercentageChk: boolean = false;
-
+  public RFQGenerateReminderMaster: RFQGenerateReminderMaster;
   //page load eventl
   ngOnInit() {
 
@@ -552,7 +552,7 @@ export class RFQFormComponent implements OnInit {
   }
 
   //copy handling charges
-  copyCharges(event: any, type: any) {
+  copyCharges(event: any, type: any)  {
 
     //handling charges
     if (type == 'HandlingPercentage' && !this.rfqRevisionModel.rfqitem[0].HandlingPercentage) {
@@ -631,7 +631,23 @@ export class RFQFormComponent implements OnInit {
         if (index > 0)
           item.DutyPercentage = "";
       })
+
     }
+  }
+
+  //send reminder mail to vendor
+  sendRFQGenerateReminder() {
+    this.RFQGenerateReminderMaster = new RFQGenerateReminderMaster();
+    this.RFQGenerateReminderMaster.VendorId = this.rfqRevisionModel.rfqmaster.VendorId;
+    this.RFQGenerateReminderMaster.FrmEmailId = this.employee.EmployeeNo;
+    this.RFQGenerateReminderMaster.rfqno = this.rfqRevisionModel.rfqmaster.RFQNo;
+    this.RFQGenerateReminderMaster.Reminder = true;
+    this.spinner.show();
+    this.RfqService.SendRFQGeneratedEmail(this.RFQGenerateReminderMaster).subscribe(data => {
+      this.spinner.hide();
+      if (data)
+         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Reminder Sent' });
+    })
   }
 }
 

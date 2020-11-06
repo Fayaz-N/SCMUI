@@ -275,6 +275,7 @@ export class GenerateRFQComponent implements OnInit {
           return;
         }
         this.newVendorDetails.Emailid = this.vendorEmailList.toString();
+        this.newVendorDetails.UpdatedBy = this.employee.EmployeeNo;
         this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.spinner.hide();

@@ -15,7 +15,7 @@ import { NgxSpinnerService } from "ngx-spinner";
 
 export class VendorQuotationViewComponent implements OnInit {
 
-  constructor(public RfqService: RfqService, private spinner: NgxSpinnerService,  public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
+  constructor(public RfqService: RfqService, private spinner: NgxSpinnerService, public MprService: MprService, public constants: constants, private route: ActivatedRoute, private router: Router, private messageService: MessageService) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   public RfqRevisionId: number = 0;
@@ -24,7 +24,7 @@ export class VendorQuotationViewComponent implements OnInit {
   public RFQPriceVisibility: boolean = true;
   public MPRPriceVisibilty: boolean = true;
   public RFQCommunications: RFQCommunication;
-  public displayCommunicationDialog: boolean = false;
+  public displayCommunicationDialog; statusSubmit: boolean = false;
   public MPRRevisionId: string;
   public newRevision: boolean;
   public rfqrevisions: Array<any> = [];
@@ -57,7 +57,7 @@ export class VendorQuotationViewComponent implements OnInit {
         this.RfqRevisionId = params["RFQRevisionId"];
         this.getDocumentTypeMaster();
         this.loadQuotationDetails();
-        
+
       }
     });
   }
@@ -83,14 +83,27 @@ export class VendorQuotationViewComponent implements OnInit {
       for (var i = 0; i < this.quoteDetails.rfqitem.length; i++) {
         this.quoteDetails.rfqitem[i].RFQDocuments.forEach(doc => {
           //documenttype - 6 vendor uploaded document
-          if (doc.DocumentType == 6 && this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId).length == 0) {
-            doc.StatusBy = this.employee.EmployeeNo;
-            doc.Statusdate = new Date();
+          if (doc.DocumentType == 6 && this.rfqDocuments.filter(li => li.RfqItemsId == doc.RfqItemsId).length == 0) {           
+            if (doc.Status != "Approved") {
+              doc.Statusdate = new Date();
+              doc.StatusBy = this.employee.EmployeeNo;
+            }
             this.rfqDocuments.push(doc);
           }
         });
       }
-
+      //filter other documents, for cmm show all docs, for others only technical docs (documenttype=6)
+      if (this.employee.OrgDepartmentId != 14)
+        this.quoteDetails.RFQDocs = this.quoteDetails.RFQDocs.filter(li => li.DocumentType == 6);
+      this.quoteDetails.RFQDocs.forEach(doc => {
+        //documenttype - 6 vendor uploaded document
+        if (doc.DocumentType == 6) {       
+          if (doc.Status != "Approved") {
+            doc.StatusBy = this.employee.EmployeeNo;
+            doc.Statusdate = new Date();
+          }
+        }
+      });
       this.dynamicData = new DynamicSearchResult();
       this.dynamicData.query = "select * from RFQRevisions_N where rfqMasterId=" + this.quoteDetails.rfqmaster.RfqMasterId + "";
       this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
@@ -161,10 +174,15 @@ export class VendorQuotationViewComponent implements OnInit {
     this.displayCommunicationDialog = true;
   }
   updateRfqDocumentStatus() {
-    this.RfqService.updateRfqDocumentStatus(this.rfqDocuments).subscribe(data => {
-      if (data)
-        this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
-    });
+    this.statusSubmit = true;
+    if (this.quoteDetails.RFQDocs.filter(li => li.DocumentType == 6).length > 0)
+      this.rfqDocuments = this.rfqDocuments.concat(this.quoteDetails.RFQDocs);
+    if (this.rfqDocuments.length > 0) {
+      this.RfqService.updateRfqDocumentStatus(this.rfqDocuments).subscribe(data => {
+        if (data)
+          this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
+      });
+    }
   }
 
   //get document type
@@ -186,7 +204,7 @@ export class VendorQuotationViewComponent implements OnInit {
   getRevisionNo(revisionId: any) {
     var revisionno = "";
     if (this.rfqrevisions.length > 0) {
-       revisionno= this.rfqrevisions.filter(li => li.rfqRevisionId == revisionId)[0].RevisionNo;
+      revisionno = this.rfqrevisions.filter(li => li.rfqRevisionId == revisionId)[0].RevisionNo;
     }
     return revisionno;
   }

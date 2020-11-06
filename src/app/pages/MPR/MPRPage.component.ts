@@ -977,6 +977,7 @@ export class MPRPageComponent implements OnInit {
         this.mprRevisionModel.MPRDocuments = [];
         this.mprRevisionModel.MPRDocumentations = [];
         this.newVendorDetails.Emailid = this.vendorEmailList.toString();
+        this.newVendorDetails.UpdatedBy = this.employee.EmployeeNo;
         this.spinner.show();
         this.MprService.addNewVendor(this.newVendorDetails).subscribe(data => {
           this.spinner.hide();

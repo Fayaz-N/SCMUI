@@ -4,7 +4,7 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { DynamicSearchResult, mprRevision, MPRItemInfoes, MPRDocument, MPRVendorDetail, MPRDocumentations, MPRStatusUpdate, mprFilterParams, MPRBuyerGroup, MPRApprovers } from '../Models/mpr';
 import { constants } from '../Models/MPRConstants'
-import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice, RFQCurrencyMaster } from '../Models/rfq';
+import { RfqItemModel, rfqFilterParams, rfqQuoteModel, QuoteDetails, RFQDocuments, RFQCommunication, RFQRevisionData, RfqItemInfoModel, PreviousPrice, RFQCurrencyMaster, RFQGenerateReminderMaster } from '../Models/rfq';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +96,10 @@ export class RfqService {
 
   RemoveMasterCurrencyById(currencyId: number, DeletedBy: string): Observable<any> {
     return this.http.get<any>(this.url + 'RFQ/RemoveMasterCurrencyById/' + currencyId + '/' + DeletedBy);
+  }
+
+  SendRFQGeneratedEmail(RFQGenerateReminderMaster: RFQGenerateReminderMaster): Observable<any> {
+    return this.http.post<any>(this.url + 'RFQ/SendRFQGeneratedEmail/', RFQGenerateReminderMaster, this.httpOptions);
   }
 
 }

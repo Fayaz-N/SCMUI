@@ -149,6 +149,7 @@ export class VendorMaster {
   VendorName: string;
   Emailid: string;
   ContactNo: string;
+  UpdatedBy: string;
 }
 
 export class mprRevision {

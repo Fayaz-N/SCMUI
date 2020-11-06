@@ -4,7 +4,7 @@
       RFQ Form : <span *ngIf="rfqRevisionModel.rfqmaster && rfqRevisionModel.rfqmaster.RFQNo" style="color:#dc3545;">{{rfqRevisionModel.rfqmaster.RFQNo}}</span>
     </div>
     <div class="col-md-6 pt-2" *ngIf="rfqRevisionModel.StatusId">
-      Current Status : <span style="color:#dc3545;">{{getStatusText(rfqRevisionModel.StatusId)}}</span>
+      Current Status : <span style="color:#dc3545;">{{getStatusText(rfqRevisionModel.StatusId)}}</span><button  type="button" class="btn btn-secondary" style="cursor:pointer;height:20px;font-size:10px;margin-left: 50px;border-radius: 2px;" pButton (click)="sendRFQGenerateReminder()"><i class="fa fa-bell-o" aria-hidden="true"></i> Reminder mail to vendor</button>
     </div>
   </div>
   <div class="form-control" style="height:100%;border-radius:0px;">
