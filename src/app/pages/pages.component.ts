@@ -64,7 +64,19 @@ export class PagesComponent {
       else {
         var index = MENU_ITEMS[6].children.findIndex(li => li.title == "MPR Status Track");
         MENU_ITEMS[6].children[index].hidden = false;
-      }
+        }
+        if (this.AccessList.filter(li => li.AccessName == "PAdepartmentView").length <= 0) {
+            var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+            MENU_ITEMS[1].children[index].hidden = true;
+        }
+        else {
+            var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+            MENU_ITEMS[1].children[index].hidden = false;
+        }
+        if (this.employee.OrgDepartmentId == 14) {
+            var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+            MENU_ITEMS[1].children[index].hidden = true;
+        }
     }
 
     else

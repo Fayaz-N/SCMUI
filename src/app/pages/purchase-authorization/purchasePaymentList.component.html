@@ -104,7 +104,7 @@
             <label for="SaleOrderNo" class="form-label">PO Status:</label> &nbsp;
             <select [(ngModel)]="pofilters.POStatus" class="form-control dropdown">
               <option value="Pending">Pending</option>
-              <option value="PORelease">PO Release</option>
+              <option value="PO Released">PO Released</option>
             </select>&nbsp;
           </div>
           <div class="col-lg-3 col-md-3 col-sm-3">
@@ -223,7 +223,8 @@
         <td class="ptable-cell">
           {{ri+1}}
         </td>
-        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" [class.disabled]="editable ? true : null"  target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
+        <!--<td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]" [class.disabled]="editable ? true : null"  target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>-->
+        <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/mprpa',rowData.PAId]"  target="_blank" routerLinkActive="active">{{rowData.PAId}}</a></td>
         <td pEditableColumn class="ptable-cell"><a [routerLink]="['/SCM/MPRForm',rowData.RevisionId]" target="_blank" routerLinkActive="active">{{rowData.DocumentNo}}</a></td>
         <td pEditableColumn class="ptable-cell">{{rowData.pono}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.Department}}</td>
@@ -233,7 +234,7 @@
           {{rowData.Name}}<br />
           {{rowData.RequestedOn | date}}
         </td>
-        <td  class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
+        <td class="ptable-cell"><button *ngIf="rowData.PAStatus=='Approved' && !rowData.TokuchRequestid" [disabled]="editable" pButton icon="fa fa-plus" (click)="createTokuchuRequest(rowData)"></button><button *ngIf="rowData.PAStatus=='Approved' && rowData.TokuchRequestid" (click)="createTokuchuRequest(rowData)" class="btn btn-link">{{rowData.PAId}}</button></td>
         <td pEditableColumn class="ptable-cell">{{rowData.PAStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.POStatus}}</td>
         <td pEditableColumn class="ptable-cell">{{rowData.approvers1}}</td>

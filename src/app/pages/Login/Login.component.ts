@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 
             this.MprService.getAccessList(this.employee.RoleId).subscribe(data => {
               localStorage.setItem("AccessList", JSON.stringify(data));
-              this.AccessList = data;
+                this.AccessList = data;
 
               if (this.AccessList.filter(li => li.AccessName == "CreateMPR").length <= 0) {
                 var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
@@ -115,7 +115,7 @@ export class LoginComponent implements OnInit {
                 }
                 if (this.employee.OrgDepartmentId == 14) {
                     var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
-                    MENU_ITEMS[1].children[index].hidden = false;
+                    MENU_ITEMS[1].children[index].hidden = true;
                 }
             })
            
