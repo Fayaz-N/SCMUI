@@ -44,19 +44,41 @@
       </mat-form-field>
     </div>
   </div>
-  <!--<div class="row form-group">
+  <div class="row form-group">
     <div class="col-lg-3 col-md-3 col-sm-3">
       <mat-form-field style="width:100%">
         <mat-label>Select Jobcode</mat-label>
         <select matNativeControl [(ngModel)]="report.jobcode">
           <option value="" selected></option>
-          <option *ngFor="let option of filerlist.jobcode" let i=index>
-            {{option[i]}}
+          <option *ngFor="let option of jobcodes">
+            {{option.Jobcode}}
           </option>
         </select>
       </mat-form-field>
     </div>
-  </div>-->
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="report.DepartmentId">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select SaleOrder</mat-label>
+        <select matNativeControl [(ngModel)]="report.SaleOrderNo">
+          <option value="" selected></option>
+          <option *ngFor="let option of saleorder" [value]="option.SaleOrderNo">
+            {{option.SaleOrderNo}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+  </div>
   <div class="row">
     <div class="col-md-12" style="text-align:center">
       <button type="button" class="btn btn-primary" (click)="GetMprWisestatusreport(report)">Submit</button>&nbsp;&nbsp;
@@ -77,6 +99,8 @@
           <!--<th>RevisionId</th>-->
           <th style="max-width:300px !important">Item Description</th>
           <th>Buyer Group</th>
+          <th>Department</th>
+          <th>SaleOrder No</th>
           <th>Job Code</th>
           <th>Job Name</th>
           <th>Approved Date</th>
@@ -103,6 +127,8 @@
           <!--<td>{{app.RevisionId}}</td>-->
           <td style="max-width:300px !important">{{app.ItemDescription}}</td>
           <td>{{app.BuyerGroup}}</td>
+          <td>{{app.Department}}</td>
+          <td>{{app.SaleOrderNo}}</td>
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
           <td>{{app.approveddate |date: 'dd/MM/yyyy'}}</td>

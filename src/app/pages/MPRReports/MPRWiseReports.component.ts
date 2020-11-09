@@ -32,7 +32,9 @@ export class MPRWiseReportsComponent implements OnInit {
   public statuslist: any[];
     public report: ReportInputModel;
     public projectmangers: any[];
-
+    public jobcodes: any[];
+    public saleorder: any[];
+    public departmentlist: any[];
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
@@ -48,16 +50,22 @@ export class MPRWiseReportsComponent implements OnInit {
       this.report.Fromdate = "2020-11-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
-    this.palist = new Array<any>();
+      this.palist = new Array<any>();
+      this.jobcodes = new Array<any>();
     this.pofilters = new PADetailsModel();
     this.loadbuyergroups();
       
       this.statuslist = new Array<any>();
       //this.GetMprWisestatusreport(this.report);
       this.loadprojectmangers();
+      this.loadjobcodes();
+      this.loadallmprdepartments();
       this.page = 1;
       this.pageSize = 500;
       this.projectmangers = new Array<any>();
+      this.departmentlist = new Array<any>();
+      this.saleorder = new Array<any>();
+      this.Loadsaleorder();
   }
     ExportTOExcel() {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
@@ -69,6 +77,16 @@ export class MPRWiseReportsComponent implements OnInit {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {
       this.buyergroups = data;
     })
+    }
+    loadjobcodes() {
+        this.paService.Loadjobcodes().subscribe(data => {
+            this.jobcodes = data;
+        })
+    }
+    Loadsaleorder() {
+        this.paService.Loadsaleorder().subscribe(data => {
+            this.saleorder = data;
+        })
     }
     GetMprWisestatusreport(report: ReportInputModel) {
         console.log("report", report)
@@ -82,6 +100,12 @@ export class MPRWiseReportsComponent implements OnInit {
         this.paService.loadprojectmanagersforreport().subscribe(data => {
             this.projectmangers = data;
         })
+    }
+    loadallmprdepartments() {
+        this.paService.LoadAllDepartments().subscribe(data => {
+            this.departmentlist = data;
+            //this.filtereddepartments = this.filterStates('');
+        });
     }
     toggle() {
         this.show = !this.show;

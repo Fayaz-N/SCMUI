@@ -35,7 +35,8 @@ export class purchasePaymentListComponent implements OnInit {
   public DeleteDialog: boolean;
   public padelete: padeletemodel;
   public PADeleteForm: FormGroup;
-  public editable: boolean;
+    public editable: boolean;
+    public approverselect: boolean;
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
@@ -74,7 +75,7 @@ export class purchasePaymentListComponent implements OnInit {
     this.loadAllVendor();
     //this.filtereddepartments = [];
 
-    
+        this.approverselect = true;
 
     //this.filteredoptions = this.mycontrol.valueChanges.pipe(startWith(''),
     //    map(value => this._filter(value))
@@ -206,5 +207,9 @@ export class purchasePaymentListComponent implements OnInit {
       this.router.navigate(["/SCM/TokochuRequest", details.TokuchRequestid]);
     else
       this.router.navigateByUrl("/SCM/TokochuRequest");
-  }
+    }
+    someFunction(e) {
+        this.approverselect = false;
+        console.log("akil",e)
+    }
 }
