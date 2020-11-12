@@ -33,6 +33,8 @@ export class ProjectWiseReportsComponent implements OnInit {
     public report: ReportInputModel;
     public projectmangers: any[];
     public jobcodes: any[];
+    public saleorder: any[];
+    public departmentlist: any[];
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
@@ -60,6 +62,10 @@ export class ProjectWiseReportsComponent implements OnInit {
       this.pageSize = 500;
       this.projectmangers = new Array<any>();
       this.jobcodes = new Array<any>();
+      this.saleorder = new Array<any>();
+      this.Loadsaleorder();
+      this.departmentlist = new Array<any>();
+      this.loadallmprdepartments();
   }
     ExportTOExcel() {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
@@ -88,6 +94,16 @@ export class ProjectWiseReportsComponent implements OnInit {
         this.paService.loadprojectmanagersforreport().subscribe(data => {
             this.projectmangers = data;
         })
+    }
+    Loadsaleorder() {
+        this.paService.Loadsaleorder().subscribe(data => {
+            this.saleorder = data;
+        })
+    }
+    loadallmprdepartments() {
+        this.paService.LoadAllDepartments().subscribe(data => {
+            this.departmentlist = data;
+        });
     }
     toggle() {
         this.show = !this.show;

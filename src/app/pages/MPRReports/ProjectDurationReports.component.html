@@ -54,6 +54,28 @@
         </select>
       </mat-form-field>
     </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="report.DepartmentId">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3">
+      <mat-form-field style="width:100%">
+        <mat-label>Select SaleOrder</mat-label>
+        <select matNativeControl [(ngModel)]="report.SaleOrderNo">
+          <option value="" selected></option>
+          <option *ngFor="let option of saleorder" [value]="option.SaleOrderNo">
+            {{option.SaleOrderNo}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
   </div>
   <div class="row">
     <div class="col-md-12" style="text-align:center">
@@ -74,8 +96,9 @@
           <th>Project No</th>
           <th>Document No</th>
           <th>Rev No</th>
-          <!--<th>RevisionId</th>-->
+          <th>Department</th>
           <th>Purpose Of issue</th>
+          <th>SaleOrderNo</th>
           <th>PO Number</th>
           <th>PO Date</th>
           <th>Vendor</th>
@@ -97,8 +120,9 @@
           <td>{{app.JobCode}}</td>
           <td><a [routerLink]="['/SCM/MPRForm',app.RevisionId]" target="_blank" routerLinkActive="active">{{app.DocumentNo}}</a></td>
           <td>{{app.RevisionNo}}</td>
-          <!--<td>{{app.RevisionId}}</td>-->
+          <td>{{app.Department}}</td>
           <td>{{app.IssuePurpose}}</td>
+          <td>{{app.SaleOrderNo}}</td>
           <td>{{app.pono}}</td>
           <td>{{app.PODate | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.VendorName}}</td>
