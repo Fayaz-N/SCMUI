@@ -440,6 +440,7 @@ export class ReportInputModel {
     ShowAllrevisions: boolean;
     ProjectManager: string;
     SaleOrderNo: string;
+    OrgDepartmentId: number;
 }
 export class statussearch {
     BuyerGroup: string;

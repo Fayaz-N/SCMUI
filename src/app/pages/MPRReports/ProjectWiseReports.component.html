@@ -55,11 +55,20 @@
       </mat-form-field>
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3">
+      <!--<mat-form-field style="width:100%">
+    <mat-label>Select Department</mat-label>
+    <select matNativeControl [(ngModel)]="report.DepartmentId">
+      <option value="" selected></option>
+      <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+        {{option.Department}}
+      </option>
+    </select>
+  </mat-form-field>-->
       <mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
-        <select matNativeControl [(ngModel)]="report.DepartmentId">
+        <select matNativeControl [(ngModel)]="report.OrgDepartmentId" [disabled]="editable">
           <option value="" selected></option>
-          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+          <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
             {{option.Department}}
           </option>
         </select>

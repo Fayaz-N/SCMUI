@@ -35,23 +35,32 @@ export class ProjectWiseReportsComponent implements OnInit {
     public jobcodes: any[];
     public saleorder: any[];
     public departmentlist: any[];
+    public editable: boolean;
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
   filteredoptions: Observable<any[]>;
-  ngOnInit() {
+    ngOnInit() {
+        this.report = new ReportInputModel();
+        this.departmentlist = new Array<any>();
+        this.loadallmprdepartments();
+        this.pofilters = new PADetailsModel();
     if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"));
+        this.employee = JSON.parse(localStorage.getItem("Employee"));
+        if (this.employee.OrgDepartmentId != 14) {
+            this.report.OrgDepartmentId = this.employee.OrgDepartmentId;
+            this.editable = true;
+        }
     }
     else {
       this.router.navigateByUrl("Login");
       }
-      this.report = new ReportInputModel();
+      
       this.report.Fromdate = "2020-11-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
-    this.pofilters = new PADetailsModel();
+    
     this.loadbuyergroups();
       
       this.statuslist = new Array<any>();
@@ -64,8 +73,6 @@ export class ProjectWiseReportsComponent implements OnInit {
       this.jobcodes = new Array<any>();
       this.saleorder = new Array<any>();
       this.Loadsaleorder();
-      this.departmentlist = new Array<any>();
-      this.loadallmprdepartments();
   }
     ExportTOExcel() {
         const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(this.TABLE.nativeElement);
@@ -103,6 +110,11 @@ export class ProjectWiseReportsComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
+            var index2 = this.departmentlist.filter(li => li['ORgDepartmentid'] === this.employee.OrgDepartmentId);
+            var departmentid = 0
+            if (this.employee.OrgDepartmentId != 14) {
+                departmentid = index2[0].DepartmentId;
+            }
         });
     }
     toggle() {
