@@ -9,6 +9,7 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, Additionaltaxes, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 import { __param } from 'tslib';
+import { DatePipe } from '@angular/common';
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
@@ -75,6 +76,7 @@ export class purchasePaymentComponent implements OnInit {
     public updatevalue: boolean = true;
     public mprno: string;
     public cols: any[];
+    control = new FormArray([]);
     constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
        
     }
@@ -150,12 +152,23 @@ export class purchasePaymentComponent implements OnInit {
             localStorage.removeItem("PADetails");
             this.showemployee = true;
         }
+    
+        //let arr = this.PAsubmitForm.get('arr') as FormArray;
+        //for (let i = 0; i < this.purchasedetails.Item.length; i++) {
+        //    arr.push(this.formBuilder.group({
+        //        PONO: [this.purchasedetails.Item[i]["PONO"], [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
+        //        POItemNo: [this.purchasedetails.Item[i]["POItemNo"], [Validators.required]],
+        //        PODate: [this.purchasedetails.Item[i]["PODate"], [Validators.required]],
+        //        Remarks: [this.purchasedetails.Item[i]["Remarks"], [Validators.required]]
+        //    }))
+        //} 
         this.PAsubmitForm = this.formBuilder.group({
             PONO: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
             POItemNo: ['', [Validators.required, Validators.maxLength(6)]],
             PODate: ['', [Validators.required]],
             Remarks: ['', [Validators.required]]
         })
+        //this.purchasedetails.Item = this.control.controls;
 
         //this.cols = [
         //    { field: 'Terms', header: 'Terms' },
@@ -177,7 +190,10 @@ export class purchasePaymentComponent implements OnInit {
         this.purchasedetails.SpecialInstructions = "Not Applicable"
         this.purchasedetails.FactorsForImports = "Not Applicable";
         this.purchasedetails.SpecialRemarks = "Not Applicable";
+
+      
     }
+
     loadallpurchasemodes() {
         this.paService.LoadAllmprpapurchasemodes().subscribe(data => {
             this.purchasemodes = data;
@@ -322,6 +338,7 @@ export class purchasePaymentComponent implements OnInit {
     }
     displayitems(padetails: PADetailsModel) {
         this.paService.LoadItems(padetails).subscribe(data => {
+            this.purchasedetails.Item['POStatusDate'] = new Date();
             this.paitemdetails = data;
         })
     }
@@ -366,7 +383,7 @@ export class purchasePaymentComponent implements OnInit {
             item["PaymentTermCode"] = this.purchasedetails.Item[0]["PaymentTermCode"];
             for (var i = 0; i < this.purchasedetails.Item.length; i++) {
                 this.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"])
-                item.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
+                //item.MPRItemDetailsid.push(this.purchasedetails.Item[i]["MRPItemsDetailsID"]);
             }
             this.LoadVendorbymprdeptids(this.MPRItemDetailsid);
             this.paService.ApproveItems(item).subscribe(data => {
@@ -576,21 +593,27 @@ export class purchasePaymentComponent implements OnInit {
     }
     AddPaitem(paitemid: any) {
         this.EditDialog = true;
+        //var app = angular.module('myapp', []);
         this.paitem = paitemid;
-        //this.SubmitItem(paitemid);
     }
     Cancel() {
         this.EditDialog = false;
     }    
     SubmitItem(paitem: ItemsViewModel) {
-        var id = this.mprrevisionid;
-        paitem.EmployeeNo = this.employee.EmployeeNo;
-        this.paService.InsertPAitems(paitem).subscribe(data => {
-            this.paid = data;
-            this.EditDialog = false;
-            paitem = new ItemsViewModel();
-            this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
-        })
+        if (this.PAsubmitForm.invalid) {
+            return;
+        }
+        else {
+            var id = this.mprrevisionid;
+            paitem.EmployeeNo = this.employee.EmployeeNo;
+            this.paService.InsertPAitems(paitem).subscribe(data => {
+                this.paid = data;
+                this.EditDialog = false;
+                paitem = new ItemsViewModel();
+                this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
+            })
+        }
+
         //if (this.PAsubmitForm.invalid) {
         //    return;
         //}
@@ -676,6 +699,61 @@ export class purchasePaymentComponent implements OnInit {
             this.paDocuments.DocumentId = data.Sid;
             this.getmprpabyid(this.paid);
         })
+
+    }
+    setdate() {
+        const dateSendingToServer = new DatePipe('en-US').transform(this.purchasedetails.Item[0]['POStatusDate'], 'dd/MM/yyyy')
+        console.log("dateSendingToServer",dateSendingToServer);
+    }
+    copyCharges(event: any, type: any) {
+        if (type == 'PONO') {
+            if (event.target.checked == true && this.purchasedetails.Item[0]["PONO"] != null) {
+                var pono = this.purchasedetails.Item[0]["PONO"]
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["PONO"] = pono;
+                }
+            }
+            else {
+                event.target.checked = false;
+                this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter PONO At Starting Row' });
+            }
+        }
+        if (type == 'POITEMNO' ) {
+            if (event.target.checked == true && this.purchasedetails.Item[0]["POItemNo"] != null) {
+                var POITEMNO = this.purchasedetails.Item[0]["POItemNo"]
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["POItemNo"] = POITEMNO;
+                }
+            }
+            else {
+                event.target.checked = false;
+                this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter POITEMNO At Starting Row' });
+            }
+        }
+        if (type == 'PODATE') {
+            if (event.target.checked == true && this.purchasedetails.Item[0]["POStatusDate"] != null) {
+                var PODATE = this.purchasedetails.Item[0]["POStatusDate"]
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["POStatusDate"] = PODATE;
+                }
+            }
+            else {
+                event.target.checked = false;
+                this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter PODate At Starting Row' });
+            }
+        }
+        if (type == 'POREMARKS') {
+            if (event.target.checked == true && this.purchasedetails.Item[0]["Remarks"] != null) {
+                var POREMARKS = this.purchasedetails.Item[0]["Remarks"]
+                for (var i = 0; i < this.purchasedetails.Item.length; i++) {
+                    this.purchasedetails.Item[i]["Remarks"] = POREMARKS;
+                }
+            }
+            else {
+                event.target.checked = false;
+                this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Please Enter Remarks At Starting Row' });
+            }
+        }
 
     }
 }

@@ -102,7 +102,8 @@ export class ItemsViewModel {
   TragetSpend: number;
   PONO: string;
   POItemNo: string;
-  PODate: Date;
+    PODate: Date;
+    POStatusDate: Date;
   Remarks: string;
   paitemid: number;
   paid: number;
