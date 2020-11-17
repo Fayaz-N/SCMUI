@@ -20,7 +20,7 @@
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
       <label>Vendor Name :</label>&nbsp;<span style="color:red">*</span>&nbsp;
       <input type="text" class="form-control" [(ngModel)]="VendorRegApprovalProcess.VendorName" maxlength="500" />
-     
+
     </div>
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==false" class="col-sm-4 col-md-4 col-lg-4 form-inline">
       <label>Vendor Email :</label>&nbsp;<span style="color:red">*</span>&nbsp;
@@ -28,6 +28,7 @@
       <br />
       &nbsp;<span style="color:red">Enter one  email id, multiple mail id's will not take. Example:abc@xyz.com</span>
     </div>
+
   </div>
   <div class="row m-2">
     <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-4 col-md-4 col-lg-4 form-inline">
@@ -36,19 +37,30 @@
       <br />
       &nbsp;<span style="color:red">Enter one  email id, multiple mail id's will not take. Example:abc@xyz.com</span>
     </div>
-      <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-8 col-md-8 col-lg-8 form-inline">
-        <div class="form-inline" *ngFor="let email of vendorEmailList;let k=index">
-          <input class="ml-2" type="checkbox" name="email" id="email{{k}}" style="height:20px;width:20px" (click)="selectEmails($event,email,k)">&nbsp;<span style="padding-top:0px !important">{{email}}</span>
-        </div>
-        </div>
-    <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-2">
-      <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
-      <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
-      <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
+    <div *ngIf="VendorRegApprovalProcess.IsExistVendor==true" class="col-sm-8 col-md-8 col-lg-8 form-inline">
+      <div class="form-inline" *ngFor="let email of vendorEmailList;let k=index">
+        <input class="ml-2" type="checkbox" name="email" id="email{{k}}" style="height:20px;width:20px" (click)="selectEmails($event,email,k)">&nbsp;<span style="padding-top:0px !important">{{email}}</span>
+      </div>
     </div>
   </div>
   <div class="row m-2">
-    <div class="col-sm-4 col-md-4 col-lg-4">
+    <div class="col-sm-4 col-md-4 col-lg-4 form-inline">
+      <label class="form-label">Buyer of Group</label>&nbsp;<span style="color:red">*</span>&nbsp;
+      <div class="form-inline-list">
+        <input type="text" [(ngModel)]="VendorRegApprovalProcess.BuyerGroupName" (keyup)="onsrchTxtChange('BuyerGroupId',VendorRegApprovalProcess.BuyerGroupName,'VendorRegApprovalProcess')" class="form-control">
+        <span class="input-group-append">
+          <button type="button" class="btn btn-outline-secondary form-control" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData('BuyerGroupId',VendorRegApprovalProcess.BuyerGroupId)"></button>
+        </span>
+      </div>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4 form-group mt-2">
+        <label>Type Of Vendor :</label>&nbsp;<span style="color:red">*</span>&nbsp;
+        <p-radioButton name="VendorType" value=false label="Local Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
+        <p-radioButton name="VendorType" value=true label="Foreign Vendor" [(ngModel)]="VendorRegApprovalProcess.VendorType"></p-radioButton>&nbsp;&nbsp;
+      </div>
+    </div>
+    <div class="row m-2">
+      <div class="col-sm-4 col-md-4 col-lg-4">
       </div>
       <div class="col-sm-2 col-md-2 col-lg-2 form-inline">
         <button type="submit" class="btn btn-primary" (click)="InitiateReg()">Initiate</button>
@@ -59,10 +71,10 @@
 <div *ngIf="VendorData" class="row m-2" style="background-color: goldenrod;height:1%; margin-bottom:0px!important">
   <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4"></div>
   <div class="col-md-6 col-sm-6 col-lg-6 col-xs-6"><b>Vendor Registration Details</b></div>
-  <div *ngIf="typeOfUser && typeOfUser=='Checker' && (VendorData.ApprovalStatus != 'Approved' || VendorData.VerifiedStatus != 'Approved')" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
+  <div *ngIf="showEdit" class="col-md-2 col-sm-2 col-lg-2 col-xs-2">  <button type="button" class="btn btn-outline-secondary form-inline edit-button" pButton icon="fa fa-edit" aria-hidden="true" pTooltip="Edit Registration Details" (click)="navigateToEditPage()"></button></div>
 </div>
 <div *ngIf="VendorData" class="card m-2" style="margin-top:0px !important">
-  <div *ngIf="typeOfUser=='Checker'" class="row m-2">
+  <div *ngIf="typeOfUser=='Intiator' || typeOfUser=='Checker'" class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="form-label">One time vendor</label>:&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
       <p-radioButton name="vendor" value="1" label="Yes" [(ngModel)]="VendorData.Onetimevendor"></p-radioButton>&nbsp;&nbsp;
@@ -79,7 +91,7 @@
       <p-radioButton name="PerformanceVerificationRequired" value="0" label="No" [(ngModel)]="VendorData.PerformanceVerificationRequired"></p-radioButton>&nbsp;&nbsp;
     </div>
   </div>
-  <div *ngIf="typeOfUser!='Checker'" class="row m-2">
+  <div *ngIf="typeOfUser!='Intiator' || typeOfUser!='Checker'" class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="lblEdit">One time vendor</label>
       <span class="valueEdit"><span *ngIf="VendorData.Onetimevendor==true">Yes</span><span *ngIf="VendorData.Onetimevendor==false">No</span></span>
@@ -483,6 +495,33 @@
             <thead style="background-color:#007bff36">
               <tr>
                 <th colspan="2">
+                  <span style="float:left">Intiator: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{VendorData.IntiatedName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{VendorData.IntiatorStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{VendorData.InitiatorStatusChangedOn | date :  constants.dateFormatWithTime }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{VendorData.IntiatorRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
                   <span style="float:left">Checker: </span>
                 </th>
               </tr>
@@ -505,6 +544,8 @@
             </tr>
           </table>
         </div>
+      </div>
+      <div class="row m-2">
         <div *ngIf="VendorData.ApprovedBy" class="col-lg-6 col-md-6 col-sm-6">
           <table class="table table-bordered">
             <thead style="background-color:#007bff36">
@@ -532,9 +573,7 @@
             </tr>
           </table>
         </div>
-      </div><br />
-      <div class="row m-2">
-        <div *ngIf="VendorData.VerifiedBy" class="col-lg-6 col-md-6 col-sm-6">
+        <div *ngIf="VendorData.Verifier1 || VendorData.Verifier2" class="col-lg-6 col-md-6 col-sm-6">
           <table class="table table-bordered">
             <thead style="background-color:#007bff36">
               <tr>
@@ -545,7 +584,8 @@
             </thead>
             <tr>
               <td style="width:20%">Employee Name</td>
-              <td style="width:20%">{{VendorData.VerifierName}}</td>
+              <td *ngIf="!VendorData.VerifiedBy" style="width:20%">Jayaprakasha P S / Hemanth R</td>
+              <td *ngIf="VendorData.VerifiedBy" style="width:20%">{{VendorData.VerifierName}}</td>
             </tr>
             <tr>
               <td>Status</td>
@@ -558,6 +598,35 @@
             <tr>
               <td style="width:20%">Remarks</td>
               <td style="width:20%">{{VendorData.VerifierRemarks}}</td>
+            </tr>
+          </table>
+        </div>
+      </div><br />
+      <div class="row m-2">
+        <div *ngIf="VendorData.FinanceApprover" class="col-lg-6 col-md-6 col-sm-6">
+          <table class="table table-bordered">
+            <thead style="background-color:#007bff36">
+              <tr>
+                <th colspan="2">
+                  <span style="float:left">Finance Approver: </span>
+                </th>
+              </tr>
+            </thead>
+            <tr>
+              <td style="width:20%">Employee Name</td>
+              <td style="width:20%">{{VendorData.FinanceApproverName}}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>{{VendorData.FinanceApprovedStatus}}</td>
+            </tr>
+            <tr>
+              <td>Date</td>
+              <td>{{VendorData.FinanceApprovedOn | date :  constants.dateFormatWithTime }}</td>
+            </tr>
+            <tr>
+              <td style="width:20%">Remarks</td>
+              <td style="width:20%">{{VendorData.FinanceApprovedRemarks}}</td>
             </tr>
           </table>
         </div>
@@ -605,7 +674,7 @@
       <label class="form-label">Remarks:</label>&nbsp;
       <textarea type="text" maxlength="500" [(ngModel)]="VendorRegStatus.Remarks" class="form-control"></textarea>
     </div>
-    <div *ngIf="(VendorData.Verifier1 || VendorData.Verifier2) && VendorData.ApprovalStatus=='Approved'" class="col-xs-3 col-md-3 col-sm-3 form-group">
+    <div *ngIf="(VendorData.Verifier1 || VendorData.Verifier2) && typeOfUser == 'Verifier' && VendorData.ApprovalStatus=='Approved'" class="col-xs-3 col-md-3 col-sm-3 form-group">
       <label>Vendor Number In SAP:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
       <input type="text" class="form-control" ngModel maxlength="30" [(ngModel)]="VendorData.VendorNoInSAP" />
     </div>

@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
 
             this.MprService.getAccessList(this.employee.RoleId).subscribe(data => {
               localStorage.setItem("AccessList", JSON.stringify(data));
-                this.AccessList = data;
+              this.AccessList = data;
 
               if (this.AccessList.filter(li => li.AccessName == "CreateMPR").length <= 0) {
                 var index = MENU_ITEMS[1].children.findIndex(li => li.title == "MPR Form");
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[4].hidden = true;//PA
                 MENU_ITEMS[5].hidden = true;//auth
                 MENU_ITEMS[6].hidden = true; //Reports
-                MENU_ITEMS[7].hidden = true; //Reports
+                MENU_ITEMS[7].hidden = true; //Vendor Reg
               }
               else {
                 MENU_ITEMS[2].hidden = false;
@@ -83,8 +83,12 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[4].hidden = false;
                 MENU_ITEMS[5].hidden = false;
                 MENU_ITEMS[6].hidden = false;
-                  MENU_ITEMS[7].hidden = false; //Reports
+                MENU_ITEMS[7].hidden = false; //Vendor Reg
               }
+              //check finance login to show vendor reg
+              if (this.employee.EmployeeNo == "100142" || this.employee.EmployeeNo == "080036")
+                MENU_ITEMS[7].hidden = false
+
               if (this.AccessList.filter(li => li.AccessName == "AddMasters").length <= 0)
                 MENU_ITEMS[3].hidden = true;//masters
               if (this.AccessList.filter(li => li.AccessName == "AddAutherization").length <= 0)
@@ -104,27 +108,27 @@ export class LoginComponent implements OnInit {
               else {
                 var index = MENU_ITEMS[6].children.findIndex(li => li.title == "MPR Status Track");
                 MENU_ITEMS[6].children[index].hidden = false;
-                }
-                if (this.AccessList.filter(li => li.AccessName == "PAdepartmentView").length <= 0) {
-                    var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
-                    MENU_ITEMS[1].children[index].hidden = true;
-                }
-                else {
-                    var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
-                    MENU_ITEMS[1].children[index].hidden = false;
-                }
-                if (this.employee.OrgDepartmentId == 14) {
-                    var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
-                    MENU_ITEMS[1].children[index].hidden = true;
-                }
+              }
+              if (this.AccessList.filter(li => li.AccessName == "PAdepartmentView").length <= 0) {
+                var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+                MENU_ITEMS[1].children[index].hidden = true;
+              }
+              else {
+                var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+                MENU_ITEMS[1].children[index].hidden = false;
+              }
+              if (this.employee.OrgDepartmentId == 14) {
+                var index = MENU_ITEMS[1].children.findIndex(li => li.title == "PA Approval Tracking");
+                MENU_ITEMS[1].children[index].hidden = true;
+              }
             })
-           
+
             this.LoginForm.reset();
             if (this.returnUrl)
               this.router.navigateByUrl(this.returnUrl);
             else
               //this.router.navigateByUrl('/SCM/MPRList');
-            this.router.navigateByUrl('/SCM/Dashboard');
+              this.router.navigateByUrl('/SCM/Dashboard');
 
           }
           else {

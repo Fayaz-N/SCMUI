@@ -124,6 +124,7 @@ export class MprService {
     return this.http.post<any>(this.url + 'MPR/ValidateLoginCredentials/', search)
       .pipe(map(data => {
         if (data.EmployeeNo != null) {
+         // data.EmployeeNo ="220373"
           //const object = Object.assign({}, ...data);
           localStorage.setItem('Employee', JSON.stringify(data));
           this.currentUserSubject.next(data);
@@ -164,7 +165,9 @@ export class MprService {
   }
   logout() {
     //localStorage.removeItem('Employee');
+    localStorage.clear();
     this.currentUserSubject.next(null);
+    this.currentUser = this.currentUserSubject.asObservable();
     //window.location.reload();
   }
   uploadFile(formdata: FormData): Observable<any> {

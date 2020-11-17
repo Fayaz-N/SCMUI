@@ -41,12 +41,16 @@ export class VendorRegisterApproverComponent implements OnInit {
   isDisableTaxDoc: boolean = true;
   isDisableForm10Doc: boolean = true;
   public typeOfUser: string;
+  public regGST: RegExp;
+  public regpan: RegExp;
 
   ngOnInit() {
     if (localStorage.getItem("vendorRegDetails"))
       this.VendorDataLocDetails = JSON.parse(localStorage.getItem("vendorRegDetails"));
     else
       this.router.navigateByUrl("vendorRegDetails");
+    this.regGST = new RegExp('^([0]{1}[1-9]{1}|[1-2]{1}[0-9]{1}|[3]{1}[0-7]{1})([a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9a-zA-Z]{1}[zZ]{1}[0-9a-zA-Z]{1})+$');
+    this.regpan = new RegExp('^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$');
 
     this.VendorData = new VendorRegistration();
     this.VendorData.DocDetailsLists = [];
@@ -262,11 +266,52 @@ export class VendorRegisterApproverComponent implements OnInit {
     this.VendorRegister.controls['SpecifyNatureOfBusiness'].updateValueAndValidity();
   }
 
+
+
+  CheckPanNo() {
+    if (this.VendorData.PANNo) {
+      //var regpan = /^([a-zA-Z]){5}([0-9]){4}([a-zA-Z]){1}?$/;
+      if (!this.regpan.test(this.VendorData.PANNo)) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Valid PAN No' });
+        return;
+      }
+    }
+  }
+  //allow first two digits only numbers
+  validateGSTNo() {
+    if (this.VendorData.GSTNo && this.VendorData.GSTNo.length <= 2) {
+      this.VendorData.GSTNo = this.VendorData.GSTNo.replace(/([a-zA-Z ])/g, "");
+    }
+  }
+
+  //validate gst no
+  CheckGSTNo() {
+    if (!this.VendorData.PANNo) {
+      this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Valid PAN No' });
+      return;
+    }
+    if (this.VendorData.GSTNo) {
+      var res = this.VendorData.GSTNo.substr(2, 10);
+      if (this.VendorData.PANNo != res) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Entered GST No should match with PAN No' });
+        return;
+      }
+      if (!this.regGST.test(this.VendorData.GSTNo)) {
+        this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Valid GST No' });
+        return;
+      }
+    }
+  }
+
+
   FinalSubmit() {
     this.VQAddSubmitted = true;
     if (this.VendorRegister.invalid) {
       return;
     }
+    //check validations
+    this.CheckPanNo();
+    this.CheckGSTNo();
     //check documents
     if (this.VendorData.DocDetailsLists.filter(li => li.DocumentationTypeId == 1).length <= 0) {
       this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Address Proof' });

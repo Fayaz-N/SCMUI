@@ -35,6 +35,7 @@ export class VendorRegInitiateComponent implements OnInit {
   public paymentTermsList: Array<any> = [];
   public VendorStatusTrackList: Array<any> = [];
   public typeOfUser: string;
+  public showEdit: boolean = false;
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -135,12 +136,16 @@ export class VendorRegInitiateComponent implements OnInit {
       this.searchItems = [];
       var fName = "";
       this.searchresult.forEach(item => {
-        fName = item[this.constants[name].fieldName];
-        if (name == "venderid") {
+        if (name == "venderid" && item["VendorCode"] != null) {
           fName = item[this.constants[name].fieldName] + " - " + item["VendorCode"];
+          var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
+          this.searchItems.push(value);
         }
-        var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
-        this.searchItems.push(value);
+        else {
+          fName = item[this.constants[name].fieldName];
+          var value = { listName: name, name: fName, code: item[this.constants[name].fieldId], updateColumns: item[this.constants[name].updateColumns] };
+          this.searchItems.push(value);
+        }
       });
 
     });
@@ -149,9 +154,16 @@ export class VendorRegInitiateComponent implements OnInit {
   //search list option changes event
   public onSelectedOptionsChange(item: any, index: number) {
     this.showList = false;
-    this.VendorRegApprovalProcess.VendorId = item.code;
-    this.VendorRegApprovalProcess.VendorName = item.name;
-    this.vendorEmailList = item.updateColumns.split(",");
+    if (item.listName == "venderid") {
+      this.VendorRegApprovalProcess.VendorId = item.code;
+      this.VendorRegApprovalProcess.VendorName = this.searchresult.filter(li => li["Vendorid"] == item.code)[0]["VendorName"];
+      this.vendorEmailList = item.updateColumns.split(",");
+    }
+    if (item.listName == "BuyerGroupId") {
+      this.VendorRegApprovalProcess.BuyerGroupId = item.code;
+      this.VendorRegApprovalProcess.BuyerGroupName = item.name;
+    }
+
   }
 
   //clear model when search text is empty
@@ -182,7 +194,7 @@ export class VendorRegInitiateComponent implements OnInit {
       //initiate
       var isexistvendor = this.VendorRegApprovalProcess.IsExistVendor;
       this.VendorRegApprovalProcess.IsExistVendor = JSON.parse(isexistvendor.toString());
-      if ( this.VendorRegApprovalProcess.IsExistVendor == true) {
+      if (this.VendorRegApprovalProcess.IsExistVendor == true) {
         //this.VendorRegApprovalProcess.VendorEmailId = this.selectedEmails.toString();
         if (!this.VendorRegApprovalProcess.VendorName) {
           this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Select Vendor Name' });
@@ -197,7 +209,7 @@ export class VendorRegInitiateComponent implements OnInit {
           return;
         }
       }
-      if (this.VendorRegApprovalProcess.IsExistVendor==false) {
+      if (this.VendorRegApprovalProcess.IsExistVendor == false) {
         if (!this.VendorRegApprovalProcess.VendorName || !this.VendorRegApprovalProcess.VendorEmailId || !this.VendorRegApprovalProcess.VendorType) {
           if (!this.VendorRegApprovalProcess.VendorName) {
             this.messageService.add({ severity: 'error', summary: 'Error Message', detail: 'Enter Vendor Name' });
@@ -233,8 +245,8 @@ export class VendorRegInitiateComponent implements OnInit {
       }
 
       if (this.typeOfUser != "Buyer") {
-        this.VendorRegApprovalProcess.CheckerStatus = this.VendorRegApprovalProcess.ApprovalStatus = this.VendorRegApprovalProcess.VerifiedStatus = this.VendorRegStatus.Status;
-        this.VendorRegApprovalProcess.CheckerRemarks = this.VendorRegApprovalProcess.ApproverRemarks = this.VendorRegApprovalProcess.VerifierRemarks = this.VendorRegStatus.Remarks;
+        this.VendorRegApprovalProcess.IntiatorStatus = this.VendorRegApprovalProcess.CheckerStatus = this.VendorRegApprovalProcess.ApprovalStatus = this.VendorRegApprovalProcess.VerifiedStatus = this.VendorRegApprovalProcess.FinanceApprovedStatus = this.VendorRegStatus.Status;
+        this.VendorRegApprovalProcess.IntiatorRemarks = this.VendorRegApprovalProcess.CheckerRemarks = this.VendorRegApprovalProcess.ApproverRemarks = this.VendorRegApprovalProcess.VerifierRemarks = this.VendorRegApprovalProcess.FinanceApprovedRemarks = this.VendorRegStatus.Remarks;
       }
       this.VendorData.Onetimevendor == true ? this.VendorRegApprovalProcess.Onetimevendor = true : this.VendorRegApprovalProcess.Onetimevendor = false;
       this.VendorData.EvaluationRequired == true ? this.VendorRegApprovalProcess.EvaluationRequired = true : this.VendorRegApprovalProcess.EvaluationRequired = false;
@@ -298,12 +310,16 @@ export class VendorRegInitiateComponent implements OnInit {
 
   //enable footer based on conidtions
   bindStatus() {
-    if (this.VendorData.CheckedBy == this.employee.EmployeeNo) {
+    if (this.VendorData.IntiatedBy == this.employee.EmployeeNo && this.VendorData.IntiatorStatus != "Approved") {
+      this.VendorRegStatus.Status = this.VendorData.IntiatorStatus;
+      this.VendorRegStatus.Remarks = this.VendorData.IntiatorRemarks;
+    }
+
+    if (this.VendorData.CheckedBy == this.employee.EmployeeNo && this.VendorData.IntiatorStatus == "Approved") {
       this.VendorRegStatus.Status = this.VendorData.CheckerStatus;
       this.VendorRegStatus.Remarks = this.VendorData.CheckerRemarks;
     }
     if (this.VendorData.ApprovedBy == this.employee.EmployeeNo) {
-
       this.VendorRegStatus.Status = this.VendorData.ApprovalStatus;
       this.VendorRegStatus.Remarks = this.VendorData.ApproverRemarks;
     }
@@ -311,20 +327,39 @@ export class VendorRegInitiateComponent implements OnInit {
       this.VendorRegStatus.Status = this.VendorData.VerifiedStatus;
       this.VendorRegStatus.Remarks = this.VendorData.VerifierRemarks;
     }
-    if (this.VendorData.CheckedBy == this.employee.EmployeeNo && (this.VendorData.ApprovalStatus != 'Approved' || this.VendorData.VerifiedStatus != 'Approved')) {
+    if (this.VendorData.FinanceApprover == this.employee.EmployeeNo) {
+      this.VendorRegStatus.Status = this.VendorData.FinanceApprovedStatus;
+      this.VendorRegStatus.Remarks = this.VendorData.FinanceApprovedRemarks;
+    }
+
+    if (this.VendorData.IntiatedBy == this.employee.EmployeeNo && this.VendorData.IntiatorStatus != 'Approved' && this.VendorData.CheckerStatus != 'Approved') {
+      this.displayFooter = true;
+      this.typeOfUser = "Intiator";
+    }
+
+    if (this.VendorData.CheckedBy == this.employee.EmployeeNo && this.VendorData.IntiatorStatus == 'Approved' && this.VendorData.CheckerStatus != "Approved") {
       this.displayFooter = true;
       this.typeOfUser = "Checker";
     }
 
-    if (this.VendorData.ApprovedBy == this.employee.EmployeeNo && this.VendorData.CheckerStatus == 'Approved' && this.VendorData.ApprovalStatus != 'Approved') {
+    if (this.VendorData.ApprovedBy == this.employee.EmployeeNo && this.VendorData.IntiatorStatus == 'Approved' && this.VendorData.CheckerStatus == 'Approved' && this.VendorData.ApprovalStatus != 'Approved') {
       this.displayFooter = true;
       this.typeOfUser = "Approver";
     }
 
-    if ((this.VendorData.Verifier1.trim() == this.employee.EmployeeNo || this.VendorData.Verifier2.trim() == this.employee.EmployeeNo) && this.VendorData.CheckerStatus == 'Approved' && this.VendorData.ApprovalStatus == 'Approved' && this.VendorData.VerifiedStatus != 'Approved') {
+    if ((this.VendorData.Verifier1.trim() == this.employee.EmployeeNo || this.VendorData.Verifier2.trim() == this.employee.EmployeeNo) && this.VendorData.IntiatorStatus == 'Approved' && this.VendorData.CheckerStatus == 'Approved' && this.VendorData.ApprovalStatus == 'Approved' && (this.VendorData.VerifiedStatus != 'Approved' || this.VendorData.FinanceApprovedStatus != 'Approved')) {
       this.displayFooter = true;
       this.typeOfUser = "Verifier";
     }
+    if (this.VendorData.FinanceApprover == this.employee.EmployeeNo && this.VendorData.IntiatorStatus == 'Approved' && this.VendorData.CheckerStatus == 'Approved' && this.VendorData.ApprovalStatus == 'Approved' && this.VendorData.VerifiedStatus == 'Approved' && this.VendorData.FinanceApprovedStatus != 'Approved') {
+      this.displayFooter = true;
+      this.typeOfUser = "FinanceApprover";
+    }
+
+    if (this.typeOfUser && this.typeOfUser == 'Intiator' && (this.VendorData.CheckerStatus != 'Approved'))
+      this.showEdit = true;
+    if (this.typeOfUser && this.typeOfUser == 'Checker' && (this.VendorData.ApprovalStatus != 'Approved'))
+      this.showEdit = true;
     //this.displayFooter = true;
     //this.typeOfUser = "Approver";
     //this.VendorData.ApprovalStatus = "Pending";

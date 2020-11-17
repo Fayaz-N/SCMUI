@@ -56,6 +56,12 @@
         <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
       </select>&nbsp;
     </div>
+    <div class="col-lg-3 col-md-3 col-sm-3 form-group ">
+      &nbsp;&nbsp;<label class="form-label">Finance Approver Status:</label>&nbsp;<select class="form-control dropdown" [(ngModel)]="vendorRegfilters.FinanceApprovedStatus">
+        <option value="">Select</option>
+        <option *ngFor="let List of statusList" [ngValue]="List.StatusName">{{List.StatusName}}</option>
+      </select>&nbsp;
+    </div>
   </div>
   <div class="row m-2">
     <div class="col-md-12" style="text-align:center">
@@ -74,12 +80,15 @@
           <th style="width:100px">Vendor Code</th>
           <th style="width:150px">Initiated By</th>
           <th style="width:100px">Initiated On</th>
+          <th style="width:100px">Initiator Status</th>
           <th style="width:100px">Checked By</th>
           <th style="width:150px">Checker Status</th>
           <th style="width:100px">Approved By</th>
           <th style="width:150px">Approver Status</th>
           <th style="width:100px">Verified By</th>
           <th style="width:150px">Verifier Status</th>
+          <th style="width:100px">Finance Approved By</th>
+          <th style="width:150px">Finance Approver Status</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex" let-rindex=0>
@@ -92,12 +101,15 @@
           <td class="ptable-cell">{{rowData.VendorNoInSAP}}</td>
           <td class="ptable-cell">{{rowData.IntiatedName}}</td>
           <td class="ptable-cell">{{rowData.IntiatedOn | date :  constants.dateFormat}}</td>
+          <td class="ptable-cell">{{rowData.IntiatorStatus}}</td>
           <td class="ptable-cell">{{rowData.CheckerName}}</td>
           <td class="ptable-cell">{{rowData.CheckerStatus}}</td>
           <td class="ptable-cell">{{rowData.ApproverName}}</td>
           <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
           <td class="ptable-cell">{{rowData.VerifierName}}</td>
           <td class="ptable-cell">{{rowData.VerifiedStatus}}</td>
+          <td class="ptable-cell">{{rowData.FinanceApproverName}}</td>
+          <td class="ptable-cell">{{rowData.FinanceApprovedStatus}}</td>
         </tr>
       </ng-template>
     </p-table><br />

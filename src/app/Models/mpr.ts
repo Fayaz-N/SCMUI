@@ -433,6 +433,8 @@ export class VendorRegApprovalProcess {
   VendorEmailId: string;
   IntiatedBy: string;
   IntiatedOn: Date
+  IntiatorStatus: string;
+  IntiatorRemarks: string
   CheckedBy: string
   CheckedOn: Date
   CheckerStatus: string;
@@ -447,6 +449,10 @@ export class VendorRegApprovalProcess {
   VerifiedOn: Date;
   VerifiedStatus: string
   VerifierRemarks: string;
+  FinanceApprover: string;
+  FinanceApprovedOn: Date;
+  FinanceApprovedStatus: string
+  FinanceApprovedRemarks: string;
   VendorNoInSAP: string
   PaymentTerms: string;
   PaymentTermId: number;
@@ -456,6 +462,8 @@ export class VendorRegApprovalProcess {
   VendorType: boolean;
   IsExistVendor: boolean;
   ChangesFor: string;
+  BuyerGroupId: number;
+  BuyerGroupName: string;
 }
 
 export class DocDetailsList {
@@ -544,6 +552,11 @@ export class VendorRegistration {
   State: string;
   StateId: number
   LocalBranch: string;
+  IntiatedBy: string;
+  InitiatorStatusChangedOn: Date;
+  IntiatedName: string;
+  IntiatorStatus: string;
+  IntiatorRemarks: string;
   CheckedBy: string;
   CheckedOn: Date;
   CheckerStatus: string;
@@ -558,8 +571,13 @@ export class VendorRegistration {
   VerifiedOn: Date;
   VerifiedStatus: string
   VerifierRemarks: string;
+  FinanceApprover: string;
+  FinanceApprovedStatus: string;
+  FinanceApprovedOn: Date;
+  FinanceApprovedRemarks: string;
   CheckerName: string;
   ApproverName: string;
+  FinanceApproverName: string;
   initiateVendorName: string;
   initiateVendorEmailId: string;
   VerifierName: string;
@@ -581,9 +599,10 @@ export class vendorRegfilters {
   SecondApprover: string;
   ThirdApprover: string;
   PreparedBY: string;
-  CheckerStatus: string="";
-  ApprovalStatus: string="";
-  VerifiedStatus: string="";
+  CheckerStatus: string = "";
+  ApprovalStatus: string = "";
+  VerifiedStatus: string = "";
+  FinanceApprovedStatus: string = "";
 }
 
 export class VendorDocDetailsList {
