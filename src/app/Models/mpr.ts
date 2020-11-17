@@ -462,7 +462,7 @@ export class VendorRegApprovalProcess {
   VendorType: boolean;
   IsExistVendor: boolean;
   ChangesFor: string;
-  BuyerGroupId: number;
+  BuyerGroupId: string;
   BuyerGroupName: string;
 }
 

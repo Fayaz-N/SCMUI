@@ -35,7 +35,7 @@ export class VendorRegInitiateComponent implements OnInit {
   public paymentTermsList: Array<any> = [];
   public VendorStatusTrackList: Array<any> = [];
   public typeOfUser: string;
-  public showEdit: boolean = false;
+  public showEdit; showDetails: boolean = false;
 
   ngOnInit() {
     if (localStorage.getItem("Employee"))
@@ -360,6 +360,11 @@ export class VendorRegInitiateComponent implements OnInit {
       this.showEdit = true;
     if (this.typeOfUser && this.typeOfUser == 'Checker' && (this.VendorData.ApprovalStatus != 'Approved'))
       this.showEdit = true;
+    if (this.typeOfUser == 'Intiator' || this.typeOfUser == 'Checker')
+      this.showDetails = false;
+    else
+      this.showDetails = true;
+
     //this.displayFooter = true;
     //this.typeOfUser = "Approver";
     //this.VendorData.ApprovalStatus = "Pending";

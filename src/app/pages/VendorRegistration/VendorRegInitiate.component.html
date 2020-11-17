@@ -91,7 +91,7 @@
       <p-radioButton name="PerformanceVerificationRequired" value="0" label="No" [(ngModel)]="VendorData.PerformanceVerificationRequired"></p-radioButton>&nbsp;&nbsp;
     </div>
   </div>
-  <div *ngIf="typeOfUser!='Intiator' || typeOfUser!='Checker'" class="row m-2">
+  <div *ngIf="showDetails"  class="row m-2">
     <div class="col-md-4 col-sm-4 col-lg-4 col-xs-4 form-group">
       <label class="lblEdit">One time vendor</label>
       <span class="valueEdit"><span *ngIf="VendorData.Onetimevendor==true">Yes</span><span *ngIf="VendorData.Onetimevendor==false">No</span></span>
@@ -333,7 +333,7 @@
         <label class="lblEdit">Inco terms:</label><span class="valueEdit">{{VendorData.IncoTerms}}</span>
       </div>
     </div>
-    <div *ngIf="typeOfUser=='Checker'">
+    <div *ngIf="typeOfUser=='Intiator' || typeOfUser=='Checker'">
       <div class="strike">
         <span class="headername">Payment Terms</span>
       </div>
