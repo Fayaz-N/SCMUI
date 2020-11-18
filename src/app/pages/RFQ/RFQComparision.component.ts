@@ -118,6 +118,7 @@ export class RFQComparisionComponent implements OnInit {
             this.vendorDetails.MaterialTotalPrice = parseFloat((this.calculateItemToatlPriceWOH(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.HandlingChargesTotal = parseFloat((this.calculateItemToatlPriceHC(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.TotalPrice = parseFloat((this.calculateItemToatlPriceWH(this.vendorDetails)).toString()).toFixed(2);
+            this.vendorDetails.Discount = parseFloat(this.vendorDetails.Discount).toFixed(2)
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);

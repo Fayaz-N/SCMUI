@@ -133,7 +133,9 @@ export class VendorQuotationViewComponent implements OnInit {
       this.RFQCommunications.RemarksFrom = this.employee.EmployeeNo;
       this.RFQCommunications.RemarksDate = new Date();
       if (this.newRevision) {
+        this.spinner.show();
         this.RfqService.addNewRevision(this.RfqRevisionId).subscribe(data => {
+          this.spinner.hide();
           this.displayCommunicationDialog = false;
           if (data) {
             this.RFQCommunications.RfqRevisionId = data;
@@ -153,7 +155,9 @@ export class VendorQuotationViewComponent implements OnInit {
 
   updateCommunication() {
     this.RFQCommunications.RemarksTo = this.quoteDetails.rfqmaster.Vendor.Vendorid;
+    this.spinner.show();
     this.RfqService.UpdateVendorCommunication(this.RFQCommunications).subscribe(data => {
+      this.spinner.hide();
       if (data) {
         this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Remarked Added' });
         this.displayCommunicationDialog = false;
@@ -178,7 +182,9 @@ export class VendorQuotationViewComponent implements OnInit {
     if (this.quoteDetails.RFQDocs.filter(li => li.DocumentType == 6).length > 0)
       this.rfqDocuments = this.rfqDocuments.concat(this.quoteDetails.RFQDocs);
     if (this.rfqDocuments.length > 0) {
+      this.spinner.show();
       this.RfqService.updateRfqDocumentStatus(this.rfqDocuments).subscribe(data => {
+        this.spinner.hide();
         if (data)
           this.messageService.add({ severity: 'success', summary: 'Success Message', detail: 'Status Updated' });
       });
