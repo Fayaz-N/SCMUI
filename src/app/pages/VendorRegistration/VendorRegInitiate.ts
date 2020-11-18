@@ -383,7 +383,7 @@ export class VendorRegInitiateComponent implements OnInit {
 
   //navigate to approver edit page
   navigateToEditPage() {
-    if (this.typeOfUser == "Checker") {
+    if (this.typeOfUser == "Checker" || this.typeOfUser == "Intiator") {
       localStorage.setItem('vendorRegDetails', JSON.stringify(this.VendorData));
       this.router.navigateByUrl('/SCM/VendorRegApprover');
     }

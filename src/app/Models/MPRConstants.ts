@@ -21,13 +21,17 @@ export class constants {
   public Documnentpath = "http://10.29.15.183:90/SCMDocs/";
   public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   public PADocumentPath = "http://10.29.15.183:90/PADocuments/";
-  public vscmurl="http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
+  public vscmurl = "http://vscm-1089815394.ap-south-1.elb.amazonaws.com/api/api/Forgetpassword/";
 
   public dateFormat = "dd/MM/yyyy";
-  public dateFormatWithTime ="dd/MM/yyyy h:mm:ss a"
+  public dateFormatWithTime = "dd/MM/yyyy h:mm:ss a"
   public RequisitionId: string = "";
   public newMpr: boolean = false;
   public rfqValidDays: number = 7;
+  public VendorReg_CMM_Approver: string = "080100";
+  public VendorReg_Verifier1: string = "100142";
+  public VendorReg_Verifier2: string = "080036";
+  public VendorReg_Fin_Approver: string = "220373";
 
   //public vendorDocumentPath = "http://10.29.15.183:90/SCMDocs/";
   //public PADocumentPath = "http://49659/PADocuments/";

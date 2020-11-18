@@ -20,6 +20,7 @@ export class VendorRegListComponent implements OnInit {
   public verifyEmpList: Array<any> = [];
   public statusList: Array<any> = [];
   public dynamicData = new DynamicSearchResult();
+  public hideForVerifier: boolean = true;
 
   ngOnInit() {
     if (localStorage.getItem("Employee")) {
@@ -32,8 +33,20 @@ export class VendorRegListComponent implements OnInit {
     this.vendorRegfilters = new vendorRegfilters();
     this.vendorRegfilters.IntiatedBy = "";
     this.vendorRegfilters.CheckedBy = "";
-    this.vendorRegfilters.ApprovedBy = "";
+    this.vendorRegfilters.ApprovedBy = this.constants.VendorReg_CMM_Approver;
     this.vendorRegfilters.VerifiedBy = "";
+    //for finance Verifier
+    if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2) {
+      this.vendorRegfilters.VerifiedBy = this.employee.EmployeeNo;
+      this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = "Approved";
+      this.vendorRegfilters.VerifiedStatus = "Pending";
+      this.hideForVerifier = false;
+    }
+    //for finance Approver
+    //if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
+    //  this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
+    //  this.vendorRegfilters.FinanceApprovedStatus = "Pending";
+    //}
     this.vendorReqList = [];
     this.getEmplist();
     this.getStatusList();

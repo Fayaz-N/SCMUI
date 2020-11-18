@@ -78,13 +78,13 @@
           <th style="width:100px">Vendor Id</th>
           <th style="width:100px">Vendor Name</th>
           <th style="width:100px">Vendor Code</th>
-          <th style="width:150px">Initiated By</th>
-          <th style="width:100px">Initiated On</th>
-          <th style="width:100px">Initiator Status</th>
-          <th style="width:100px">Checked By</th>
-          <th style="width:150px">Checker Status</th>
-          <th style="width:100px">Approved By</th>
-          <th style="width:150px">Approver Status</th>
+          <th *ngIf="hideForVerifier" style="width:150px">Initiated By</th>
+          <th *ngIf="hideForVerifier" style="width:100px">Initiated On</th>
+          <th *ngIf="hideForVerifier" style="width:100px">Initiator Status</th>
+          <th *ngIf="hideForVerifier" style="width:100px">Checked By</th>
+          <th *ngIf="hideForVerifier" style="width:150px">Checker Status</th>
+          <th *ngIf="hideForVerifier" style="width:100px">Approved By</th>
+          <th *ngIf="hideForVerifier" style="width:150px">Approver Status</th>
           <th style="width:100px">Verified By</th>
           <th style="width:150px">Verifier Status</th>
           <th style="width:100px">Finance Approved By</th>
@@ -99,13 +99,13 @@
           <td class="ptable-cell"><button class="btn btn-link" (click)="toVendorReg(rowData)">{{rowData.Vendorid}}</button></td>
           <td class="ptable-cell">{{rowData.VendorName}}</td>
           <td class="ptable-cell">{{rowData.VendorNoInSAP}}</td>
-          <td class="ptable-cell">{{rowData.IntiatedName}}</td>
-          <td class="ptable-cell">{{rowData.IntiatedOn | date :  constants.dateFormat}}</td>
-          <td class="ptable-cell">{{rowData.IntiatorStatus}}</td>
-          <td class="ptable-cell">{{rowData.CheckerName}}</td>
-          <td class="ptable-cell">{{rowData.CheckerStatus}}</td>
-          <td class="ptable-cell">{{rowData.ApproverName}}</td>
-          <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.IntiatedName}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.IntiatedOn | date :  constants.dateFormat}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.IntiatorStatus}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.CheckerName}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.CheckerStatus}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.ApproverName}}</td>
+          <td *ngIf="hideForVerifier" class="ptable-cell">{{rowData.ApprovalStatus}}</td>
           <td class="ptable-cell">{{rowData.VerifierName}}</td>
           <td class="ptable-cell">{{rowData.VerifiedStatus}}</td>
           <td class="ptable-cell">{{rowData.FinanceApproverName}}</td>

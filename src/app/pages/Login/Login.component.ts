@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
                 MENU_ITEMS[7].hidden = false; //Vendor Reg
               }
               //check finance login to show vendor reg
-              if (this.employee.EmployeeNo == "100142" || this.employee.EmployeeNo == "080036")
+              if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2)
                 MENU_ITEMS[7].hidden = false
 
               if (this.AccessList.filter(li => li.AccessName == "AddMasters").length <= 0)

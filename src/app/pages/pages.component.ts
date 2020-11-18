@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee, AccessList } from 'src/app/Models/mpr';
 import { MENU_ITEMS } from './pages-menu';
+import { constants } from 'src/app/Models/MPRConstants';
 
 @Component({
   selector: 'ngx-pages',
@@ -16,7 +17,7 @@ import { MENU_ITEMS } from './pages-menu';
 })
 export class PagesComponent {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, public constants: constants,) { }
   public employee: Employee;
   public AccessList: Array<AccessList> = [];
   menu = MENU_ITEMS;
@@ -46,10 +47,10 @@ export class PagesComponent {
         MENU_ITEMS[7].hidden = false;
       }
       //check finance login to show vendor reg
-      if (this.employee.EmployeeNo == "100142" || this.employee.EmployeeNo == "080036")
+      if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2)
         MENU_ITEMS[7].hidden = false;
-      else
-        MENU_ITEMS[7].hidden = true;
+      //else
+      //  MENU_ITEMS[7].hidden = true;
 
 
       if (this.AccessList.filter(li => li.AccessName == "AddMasters").length <= 0)
