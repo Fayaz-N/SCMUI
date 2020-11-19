@@ -267,7 +267,7 @@ export class RFQComparisionComponent implements OnInit {
       if (item.suggestedVendorDetails[colIndex])
         totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].MaterialTotalPrice);
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
 
   //calculate total handling charges
@@ -277,7 +277,7 @@ export class RFQComparisionComponent implements OnInit {
       if (item.suggestedVendorDetails[colIndex])
         totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].HandlingChargesTotal);
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
   //calculate total price with  handling charges
   calculateTotalPriceWH(colIndex: any) {
@@ -286,7 +286,7 @@ export class RFQComparisionComponent implements OnInit {
       if (item.suggestedVendorDetails[colIndex])
         totalPrice += parseFloat(item.suggestedVendorDetails[colIndex].TotalPrice);
     });
-    return totalPrice;
+    return totalPrice.toFixed(2);
   }
 
   //calculate total po price

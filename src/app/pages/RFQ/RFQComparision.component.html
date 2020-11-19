@@ -244,7 +244,26 @@
           <tr>
             <td [attr.colspan]="1" style="color: #17a2b8;">Totals</td>
             <td style="color: #17a2b8;">PO Price :&nbsp;{{calculateTotalPOPrice()}}</td>
-            <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index"><span>Material Total:&nbsp;{{calculateTotalPriceWOH(colInd)}}</span><br /><span>Handling Charges:&nbsp;{{calculateTotalPriceHC(colInd)}}</span><br />Total Landed Cost :&nbsp;{{calculateTotalPriceWH(colInd)}}</td>
+            <td style="color: #17a2b8;" *ngFor="let col of cols;let colInd=index">
+              <table border="1" style="border:#428bca solid 1px;font-weight: 700">
+                <tr>
+                  <td class="text-left pl-3">Material Total</td>
+                  <td class="text-right">{{calculateTotalPriceWOH(colInd)}}</td>
+                </tr>
+                <tr>
+                  <td class="text-left pl-3">Handling Charges</td>
+                  <td class="text-right">{{calculateTotalPriceHC(colInd)}}</td>
+                </tr>
+                <tr>
+                  <td class="text-left pl-3">Total Landed Cost</td>
+                  <td class="text-right">{{calculateTotalPriceWH(colInd)}}</td>
+                </tr>
+              </table>
+                <!--<span>Material Total:&nbsp;{{calculateTotalPriceWOH(colInd)}}</span>
+                <br />
+                <span>Handling Charges:&nbsp;{{calculateTotalPriceHC(colInd)}}</span>
+                <br />Total Landed Cost :&nbsp;{{calculateTotalPriceWH(colInd)}}-->
+            </td>
           </tr>
           <tr><td [attr.colspan]="2">Description</td><td *ngFor="let col of cols;let colInd=index">Response</tr>
           <tr *ngFor="let term of termCols">
