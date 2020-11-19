@@ -177,7 +177,7 @@
                     <td class="text-left pl-3">Discount&nbsp;({{vendor.DiscountPercentage}}%)</td>
                     <td class="text-right">
                       <span *ngIf="vendor.Discount">{{vendor.Discount}}</span>
-                      <span *ngIf="vendor.DiscountPercentage">{{(vendor.DiscountPercentage/100)*(vendor.UnitPrice * vendor.vendorQuoteQty)}}</span>
+                      <span *ngIf="vendor.DiscountPercentage">{{calculateDiscountPer(vendor)}}</span>
                     </td>
                   </tr>
                   <tr>

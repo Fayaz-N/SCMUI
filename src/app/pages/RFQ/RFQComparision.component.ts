@@ -118,7 +118,8 @@ export class RFQComparisionComponent implements OnInit {
             this.vendorDetails.MaterialTotalPrice = parseFloat((this.calculateItemToatlPriceWOH(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.HandlingChargesTotal = parseFloat((this.calculateItemToatlPriceHC(this.vendorDetails)).toString()).toFixed(2);
             this.vendorDetails.TotalPrice = parseFloat((this.calculateItemToatlPriceWH(this.vendorDetails)).toString()).toFixed(2);
-            this.vendorDetails.Discount = parseFloat(this.vendorDetails.Discount).toFixed(2)
+            if (this.vendorDetails.Discount)
+              this.vendorDetails.Discount = parseFloat(this.vendorDetails.Discount).toFixed(2);
             rfqQuoteItems.suggestedVendorDetails.push(this.vendorDetails);
           });
           //rfqQuoteItems.suggestedVendorDetails = this.RfqCompareItems.filter(li => li.ItemId == this.RfqCompareItems[i].ItemId);
@@ -311,6 +312,14 @@ export class RFQComparisionComponent implements OnInit {
       this.tp = PriceDis;
   }
 
+  //calculate diccount perecentage
+  calculateDiscountPer(vendor: any) {
+    if (vendor) {
+      return parseFloat(((vendor.DiscountPercentage / 100) * (vendor.UnitPrice * vendor.vendorQuoteQty)).toString()).toFixed(2);
+    }
+    else
+      return "";
+  }
 
   //calculate material total price with out handling charges
   calculateItemToatlPriceWOH(vendor) {
