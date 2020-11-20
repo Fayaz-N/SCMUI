@@ -150,13 +150,12 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">Sold To Party/Contract Company</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
+              <input type="text" readonly  class="form-control forms-input" formControlName="soldtoparty" [value]="MPRPageForm1.controls.soldtoparty.value">
               <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','soldtoparty',MPRPageForm1.controls.soldtoparty.value,undefined)"></button>
+                <button type="button" [disabled]="true" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','soldtoparty',MPRPageForm1.controls.soldtoparty.value,undefined)"></button>
               </div>
               <!--<span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.soldtoparty.value.trim()=='' || !mprRevisionModel.soldtoparty)" class="invalid-feedback">Select Client Name.</span>-->
             </div>
-
           </div>
           <div *ngIf="form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label class="lblEdit">Soldtoparty/Contract Company</label>
@@ -165,9 +164,9 @@
           <div *ngIf="!form1Edit" class="col-lg-4 col-md-4 col-sm-4 form-group">
             <label for="ClientName" class="form-label">End User Name</label>&nbsp;
             <div class="form-inline-list  ml-2 ">
-              <input type="text" class="form-control forms-input" formControlName="Enduser" [value]="MPRPageForm1.controls.Enduser.value">
+              <input type="text" readonly class="form-control forms-input" formControlName="Enduser" [value]="MPRPageForm1.controls.Enduser.value">
               <div class="input-group-append">
-                <button type="button" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','Enduser',MPRPageForm1.controls.Enduser.value,undefined)"></button>
+                <button type="button" [disabled]="true" class="btn btn-outline-secondary form-control btn-border" style="cursor:pointer" pButton icon="fa fa-list" aria-hidden="true" (click)="bindSearchListData($event,'MPRPageForm1','Enduser',MPRPageForm1.controls.Enduser.value,undefined)"></button>
               </div>
               <!--<span *ngIf="MPRForm1Submitted && (MPRPageForm1.controls.Enduser.value.trim()=='' || !mprRevisionModel.Endusername)" class="invalid-feedback">Select Client Name.</span>-->
             </div>
