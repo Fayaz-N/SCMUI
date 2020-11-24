@@ -9,17 +9,22 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { PADetailsModel, ItemsViewModel, EmployeeModel, MPRPAApproversModel, PurchaseCreditApproversModel, Additionaltaxes, StatusCheckModel, mprpapurchasetypesmodel, mprpapurchasemodesmodel, mprpadetailsmodel, ConfigurationModel, VendorMasterModel, padocuments } from 'src/app/Models/PurchaseAuthorization'
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, ValidatorFn, MinLengthValidator } from '@angular/forms';
 import { __param } from 'tslib';
-import { DatePipe } from '@angular/common';
+//import { DatePipe } from '@angular/common';
+
 @Component({
     selector: 'app-purchasePayment',
     templateUrl: './purchasePayment.component.html',
 })
+
+//Name of Class: << purchasePaymentComponent >> Author :<< Akhil Kumar reddy >>
+//    Date of Creation << 1 - 11 - 2019 >>
+//        Purpose : << to generate PA, get PA data >>
+//            Review Date:<<>> Reviewed By:<<>>
 export class purchasePaymentComponent implements OnInit {
 
  
     public itemsform: FormGroup;
     myFiles: string[] = [];
-    //myFiles: Array<File>;
     myfiles1: string[] = [];
     public purchasemodes: mprpapurchasemodesmodel[];
     public purchasetypes: mprpapurchasetypesmodel[];
@@ -76,10 +81,9 @@ export class purchasePaymentComponent implements OnInit {
     public updatevalue: boolean = true;
     public mprno: string;
     public cols: any[];
+    public itemdeatils: any
     control = new FormArray([]);
-    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {
-       
-    }
+    constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public constants: constants, private spinner: NgxSpinnerService, private route: ActivatedRoute, private formBuilder: FormBuilder) {}
     ngOnInit() {
         if (localStorage.getItem("Employee")) {
             this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -153,28 +157,12 @@ export class purchasePaymentComponent implements OnInit {
             this.showemployee = true;
         }
     
-        //let arr = this.PAsubmitForm.get('arr') as FormArray;
-        //for (let i = 0; i < this.purchasedetails.Item.length; i++) {
-        //    arr.push(this.formBuilder.group({
-        //        PONO: [this.purchasedetails.Item[i]["PONO"], [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
-        //        POItemNo: [this.purchasedetails.Item[i]["POItemNo"], [Validators.required]],
-        //        PODate: [this.purchasedetails.Item[i]["PODate"], [Validators.required]],
-        //        Remarks: [this.purchasedetails.Item[i]["Remarks"], [Validators.required]]
-        //    }))
-        //} 
         this.PAsubmitForm = this.formBuilder.group({
             PONO: ['', [Validators.required, Validators.maxLength(10), Validators.pattern("^[0-9]*$")]],
             POItemNo: ['', [Validators.required, Validators.maxLength(6)]],
             PODate: ['', [Validators.required]],
             Remarks: ['', [Validators.required]]
         })
-        //this.purchasedetails.Item = this.control.controls;
-
-        //this.cols = [
-        //    { field: 'Terms', header: 'Terms' },
-        //    { field: 'RFQrevisionId', header: 'Rfqrevisionid' },
-        //    { field: 'rfq', header: 'Rfqno' }
-        //];
 
         this.purchasedetails.PackagingForwarding = "Included in Price";
         this.purchasedetails.Taxes = "GST Extra as applicable";
@@ -193,19 +181,29 @@ export class purchasePaymentComponent implements OnInit {
 
       
     }
-
+    //Name of Function: << loadallpurchasemodes >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << To load all purchase modes >>
+    //            Review Date:<<>> Reviewed By:<<>>
     loadallpurchasemodes() {
         this.paService.LoadAllmprpapurchasemodes().subscribe(data => {
             this.purchasemodes = data;
         })
     }
+        //Name of Function: << loadallpurchasemodes >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << To load all purchase types >>
+    //            Review Date:<<>> Reviewed By:<<>>
     loadallpurchasetypes() {
         this.paService.LoadAllmprpapurchasetypes().subscribe(data => {
             this.purchasetypes = data;
         })
     }
 
-
+            //Name of Function: << InsertPurchaseAuthorization >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << generating the purchase authorization for approved items>>
+    //            Review Date:<<>> Reviewed By:<<>>
     InsertPurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
         if (purchasedetails.PurchaseTypeId != undefined && purchasedetails.PurchaseModeId != undefined) {
             this.purchasedetails.Item = [];
@@ -236,6 +234,10 @@ export class purchasePaymentComponent implements OnInit {
         }
 
     }
+/*Name of Function : <<finalpa>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Inserting approvers to the generated pa based on pa value,target spend and credit days>>
+Review Date :<<>>   Reviewed By :<<>>*/
     finalpa(purchasedetails: mprpadetailsmodel) {
         this.purchasedetails.LoginEmployee = this.employee.EmployeeNo;
         this.purchasedetails.ApproversList = this.employeelist.Approvers;
@@ -246,13 +248,20 @@ export class purchasePaymentComponent implements OnInit {
         })
     }
 
+/*Name of Function : <<LoadAllmprBuyerGroups>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<To load all buyergroups from mpr buyer groups>>
+Review Date :<<>>   Reviewed By :<<>>*/
     LoadAllBuyerGroups() {
         this.paService.LoadAllmprBuyerGroups().subscribe(data => {
             this.buyergroups = data;
             //this.purchasedetails.BuyerGroupId = 0;
         })
     }
-
+/*Name of Function : <<LoadAllDepartments>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<To load all departments from mpr Departments>>
+Review Date :<<>>   Reviewed By :<<>>*/
     LoadAllDeaprtments() {
 
         this.paService.LoadAllDepartments().subscribe(data => {
@@ -260,6 +269,10 @@ export class purchasePaymentComponent implements OnInit {
             //this.purchasedetails.DepartmentID = 0;
         });
     }
+/*Name of Function : <<getmprpabyid>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<getting pa details by paid>>
+Review Date :<<>>   Reviewed By :<<>>*/
     getmprpabyid(paid: any) {
         //this.paitemdetails = new Array<ItemsViewModel>[];
         this.uploaddocuments = false;
@@ -267,6 +280,7 @@ export class purchasePaymentComponent implements OnInit {
         this.paService.LoadMprPADeatilsbyid(paid).subscribe(data => {
             this.purchasedetails = data;
             this.purchasedetails.Item = data.Item;
+            console.log(" this.purchasedetails.Item", this.purchasedetails.Item)
             this.purchasedetails.ApproversList = data.ApproversList;
             this.purchasedetails.documents = data.documents;
             this.finalpaymentterm = this.purchasedetails.Item[0]["PaymentTermCode"];
@@ -342,7 +356,10 @@ export class purchasePaymentComponent implements OnInit {
             this.paitemdetails = data;
         })
     }
-
+/*Name of Function : <<displayapproveEmployee>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<getting configured employee based on total pa value,target spend and credit days>>
+Review Date :<<>>   Reviewed By :<<>>*/
     displayapproveEmployee() {
         //console.log("items1", this.selectedItems)
         this.MPRItemDetailsid = [];
@@ -368,6 +385,10 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
+/*Name of Function : <<displayapproveEmployee>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<getting configured employee based on total pa value,target spend and credit days>>
+Review Date :<<>>   Reviewed By :<<>>*/
     displayapproveEmployee1() {
         this.MPRItemDetailsid = [];
         let item = new ConfigurationModel();
@@ -496,6 +517,10 @@ export class purchasePaymentComponent implements OnInit {
     public ispagerefresh() {
         window.history.back();
     }
+/*Name of Function : <<displayRfqTerms>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<getting the assigned vendor rfq terms by revisionid>>
+Review Date :<<>>   Reviewed By :<<>>*/
     displayRfqTerms(rfqrevisionid: any) {
         this.paService.getrfqtermsbyrevisionid(rfqrevisionid).subscribe(data => {
             this.rfqterms = data;
@@ -536,7 +561,10 @@ export class purchasePaymentComponent implements OnInit {
             this.paitem.PONO = '';
         }
     }
-
+/*Name of Function : <<Approvepa>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<updating assigned approver status after approving or rejection of pa>>
+Review Date :<<>>   Reviewed By :<<>>*/
     Approvepa(approvers: MPRPAApproversModel) {
        var data= this.purchasedetails.Item;
         if (approvers.ApprovalStatus != '' && approvers.ApprovalStatus != null) {
@@ -591,35 +619,37 @@ export class purchasePaymentComponent implements OnInit {
             this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Reminder Sent Succesfully' });
         })
     }
-    AddPaitem(paitemid: any) {
+    AddPaitem() {
         this.EditDialog = true;
         //var app = angular.module('myapp', []);
-        this.paitem = paitemid;
+        this.itemdeatils = this.purchasedetails.Item;
+       //var itemdeatils = this.purchasedetails.Item;
+       // console.log("this.paitem", itemdeatils)
+        
     }
     Cancel() {
         this.EditDialog = false;
-    }    
-    SubmitItem(paitem: ItemsViewModel) {
-        if (this.PAsubmitForm.invalid) {
-            return;
-        }
-        else {
-            var id = this.mprrevisionid;
-            paitem.EmployeeNo = this.employee.EmployeeNo;
-            this.paService.InsertPAitems(paitem).subscribe(data => {
-                this.paid = data;
-                this.EditDialog = false;
-                paitem = new ItemsViewModel();
-                this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
-            })
-        }
+    }
+    /*Name of Function : <<SubmitItem>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<inserting pa items after pa approval>>
+Review Date :<<>>   Reviewed By :<<>>*/
 
+    SubmitItem(paitem: any) {
+        var id = this.mprrevisionid;
+        paitem.EmployeeNo = this.employee.EmployeeNo;
+        this.paService.InsertPAitems(paitem).subscribe(data => {
+            this.paid = data;
+            this.EditDialog = false;
+            paitem = new ItemsViewModel();
+            this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
+        })
         //if (this.PAsubmitForm.invalid) {
         //    return;
         //}
         //else {
-        //    this.paitemvalue = true;
         //    var id = this.mprrevisionid;
+        //    paitem.EmployeeNo = this.employee.EmployeeNo;
         //    this.paService.InsertPAitems(paitem).subscribe(data => {
         //        this.paid = data;
         //        this.EditDialog = false;
@@ -627,8 +657,6 @@ export class purchasePaymentComponent implements OnInit {
         //        this.messageService.add({ severity: 'success', summary: 'success Message', detail: 'Item Inserted Succesfully' });
         //    })
         //}
-        //this.paitem.EmployeeNo = this.employee.EmployeeNo;
-        //this.purchasedetails.Item = paitem[0];
 
     }
     numberOnly(event): boolean {
@@ -667,6 +695,10 @@ export class purchasePaymentComponent implements OnInit {
             })
         }
     }
+/*Name of Function : <<UpdatePurchaseAuthorization>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Updating the inprogress purchase authorization>>
+Review Date :<<>>   Reviewed By :<<>>*/
     UpdatePurchaseAuthorization(purchasedetails: mprpadetailsmodel) {
         
         if (purchasedetails.PurchaseTypeId != undefined && purchasedetails.PurchaseModeId != undefined) {
@@ -693,6 +725,10 @@ export class purchasePaymentComponent implements OnInit {
         }
 
     }
+/*Name of Function : <<Deletefile>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Deleting the Attached pa dcoument>>
+Review Date :<<>>   Reviewed By :<<>>*/
     Deletefile(documents: number) {
         this.paDocuments.DocumentId = documents
         this.paService.DeletePADocument(this.paDocuments).subscribe(data => {
@@ -701,10 +737,14 @@ export class purchasePaymentComponent implements OnInit {
         })
 
     }
-    setdate() {
-        const dateSendingToServer = new DatePipe('en-US').transform(this.purchasedetails.Item[0]['POStatusDate'], 'dd/MM/yyyy')
-        console.log("dateSendingToServer",dateSendingToServer);
-    }
+    //setdate() {
+    //    const dateSendingToServer = new DatePipe('en-US').transform(this.purchasedetails.Item[0]['POStatusDate'], 'dd/MM/yyyy')
+    //    console.log("dateSendingToServer",dateSendingToServer);
+    //}
+/*Name of Function : <<copyCharges>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<copying pono,poitemno,podate and remarks to each item wise>>
+Review Date :<<>>   Reviewed By :<<>>*/
     copyCharges(event: any, type: any) {
         if (type == 'PONO') {
             if (event.target.checked == true && this.purchasedetails.Item[0]["PONO"] != null) {
@@ -755,5 +795,9 @@ export class purchasePaymentComponent implements OnInit {
             }
         }
 
+    }
+    modelChangeFn(event: any) {
+        console.log("event", event)
+        this.purchasedetails.Item[0]["POStatusDate"] = event;
     }
 }

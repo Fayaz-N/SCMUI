@@ -295,7 +295,7 @@
           <th>Price</th>
           <th>Target Spend</th>
           <th>Total Price</th>
-          <th [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem(purchasedetails.Item)"></button></th>
+          <th [pEditableRow]="rowData"><button pButton type="button" pInitEditableRow icon="pi pi-pencil" class="ui-button-info" (click)="AddPaitem()"></button></th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-editing="editing" let-ri="rowIndex">
@@ -1042,45 +1042,38 @@
 </div>
 
 <p-dialog header="Add" [(visible)]="EditDialog" showEffect="fade" [modal]="true" [style]="{width: '1100px'}" [closable]="false">
-  <form [formGroup]="PAsubmitForm">
+  <!--<form (ngSubmit)="SubmitItem(purchasedetails.Item)" #myForm="ngForm">-->
     <table class="table table-bordered">
       <thead>
         <tr>
           <th>ITEM</th>
           <th>MPRNO</th>
           <th>PONO :<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PONO')" binary="true"></th>
-          <th>POITEMNO<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POITEMNO')" binary="true"></th>
+          <th>POITEMNO<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POITEMNO')"  binary="true"></th>
           <th>PODATE<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'PODATE')" binary="true"></th>
           <th>POREMARKS<input type="checkbox" style="height:20px;width:20px" (change)="copyCharges($event,'POREMARKS')" binary="true"></th>
         </tr>
       </thead>
       <tbody>
-        <!--<tr *ngFor="let items of paitem">
 
-    <td ng-repeat="ItemDescription in items">{{ItemDescription}}</td>
-    <td ng-repeat="DocumentNo in items">{{DocumentNo}}</td>
-    <td ng-repeat="PONO in items"><input (keypress)="numberOnly($event)" id="txtcopy1" formControlName="PONO" type="text" ng-model="PONO" maxlength="10" numberOnly class="form-control" /></td>
-    <td ng-repeat="POItemNo in items"><input type="text" formControlName="POItemNo" ng-model="POItemNo" maxlength="6" class="form-control" numberOnly /></td>
-    <td ng-repeat="PODate in items"><input formControlName="PODate" type="date" ng-model="PODate" class="form-control" /></td>
-    <td ng-repeat="Remarks in items"><input formControlName="Remarks" type="text" ng-model="Remarks" class="form-control" /></td>
-  </tr>-->
-        <tr *ngFor="let items of paitem">
+        <tr *ngFor="let items of purchasedetails.Item">
           <td>{{items.ItemDescription}}</td>
           <td>{{items.DocumentNo}}</td>
-          <td><input (keypress)="numberOnly($event)" id="txtcopy1" formControlName="PONO" type="text" [(ngModel)]="items.PONO" ngModel maxlength="10" numberOnly class="form-control" /></td>
-          <td><input type="text"  [(ngModel)]="items.POItemNo" formControlName="POItemNo" maxlength="6" class="form-control" numberOnly /></td>
-          <td><input  type="date" [(ngModel)]="items.POStatusDate" formControlName="PODate" (change)="setdate()" class="form-control" /></td>
-          <td><input  type="text" [(ngModel)]="items.Remarks" formControlName="Remarks" class="form-control" /></td>
+          <td><input (keypress)="numberOnly($event)" id="txtcopy1" type="text" [(ngModel)]="items.PONO" required maxlength="10" numberOnly class="form-control" /></td>
+          <td><input type="text" maxlength="6" [(ngModel)]="items.POItemNo" required class="form-control" numberOnly /></td>
+          <td><input type="date" [value]="items.POStatusDate | date:'yyyy-MM-dd'" [ngModel]="items.POStatusDate | date:'yyyy-MM-dd'" (ngModelChange)="modelChangeFn($event)" required  class="form-control" /></td>
+          <td><input type="text" [(ngModel)]="items.Remarks" required class="form-control" /></td>
         </tr>
       </tbody>
     </table>
     <p-footer>
-      <div class="ui-dialog-buttonpane ui-helper-clearfix"> 
-        <button type="submit" pButton icon="fa fa-check" class="ui-button-success" [disabled]="!PAsubmitForm.valid" (click)="SubmitItem(paitem)" label="Insert"></button>&nbsp;&nbsp;
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">
+        <button type="submit" pButton icon="fa fa-check" class="ui-button-success"  (click)="SubmitItem(purchasedetails.Item)" label="Insert"></button>&nbsp;&nbsp;
+        <!--(click)="SubmitItem(purchasedetails.Item)"-->
         <button type="button" pButton icon="fa fa-close" class="ui-button-danger" (click)="Cancel()" label="Cancel"></button>
       </div>
     </p-footer>
-  </form>
+  <!--</form>-->
 </p-dialog>
 
 

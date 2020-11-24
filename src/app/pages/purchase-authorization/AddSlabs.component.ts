@@ -51,6 +51,10 @@ export class AddSlabsComponent implements OnInit {
         this.paauthorization = new PAAuthorizationLimitModel();
         this.loadmappedslab();
     }
+            //Name of Function: << Submit >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << creating the purchase authorization slabs >>
+    //            Review Date:<<>> Reviewed By:<<>>
     Submit(paauthorization: PAAuthorizationLimitModel) {
         paauthorization.CreatedBy = this.employee.EmployeeNo;
         this.paSubmitted = true;
@@ -67,6 +71,10 @@ export class AddSlabsComponent implements OnInit {
             })
         }
     }
+     //Name of Function: << loadmappedslab >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << creating the purchase authorization slabs >>
+    //            Review Date:<<>> Reviewed By:<<>>
     loadmappedslab() {
         this.paService.LoadAllMappedSlabs().subscribe(data => {
             this.mappedslab = data;

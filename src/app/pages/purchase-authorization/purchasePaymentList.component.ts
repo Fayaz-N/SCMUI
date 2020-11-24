@@ -15,6 +15,10 @@ import { PADetailsModel, ItemsViewModel, EmployeeModel, mprpapurchasetypesmodel,
   templateUrl: './purchasePaymentList.component.html',
 })
 
+//Name of Class: << purchasePaymentListComponent >> Author :<< Akhil Kumar reddy >>
+//    Date of Creation << 1 - 11 - 2019 >>
+//        Purpose : << to generate PA, get PA data >>
+//            Review Date:<<>> Reviewed By:<<>>
 export class purchasePaymentListComponent implements OnInit {
 
   constructor(private paService: purchaseauthorizationservice, private router: Router, public messageService: MessageService, public formbuilder: FormBuilder) { }
@@ -84,7 +88,10 @@ export class purchasePaymentListComponent implements OnInit {
       Remarks: ['', [Validators.required]]
     })
   }
-
+        //Name of Function: << loadAllVendor >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Load all vendors from vendor master >>
+    //            Review Date:<<>> Reviewed By:<<>>
   loadAllVendor() {
     this.paService.LoadAllVendors().subscribe(data => {
       this.Vendors = data
@@ -108,7 +115,11 @@ export class purchasePaymentListComponent implements OnInit {
       arr = this.departmentlist;
     }
     return Observable.of(arr);
-  }
+    }
+    //Name of Function: << loadallmprdepartments >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Load all Departments from mprdepartments>>
+    //            Review Date:<<>> Reviewed By:<<>>
   loadallmprdepartments() {
     this.paService.LoadAllDepartments().subscribe(data => {
         this.departmentlist = data;
@@ -120,12 +131,19 @@ export class purchasePaymentListComponent implements OnInit {
         this.GETApprovernamesbydepartmentid(departmentid)
     });
     }
+    //Name of Function: << GETApprovernamesbydepartmentid >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Getting mapped employee name by department>>
+    //            Review Date:<<>> Reviewed By:<<>>
     GETApprovernamesbydepartmentid(departmentid: number) {
         this.paService.GETApprovernamesbydepartmentid(departmentid).subscribe(data => {
             this.Approvers = data;
         });
     }
-
+        //Name of Function: << GetMprpadetailsBySearch >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Getting the data by filter search>>
+    //            Review Date:<<>> Reviewed By:<<>>
   GetMprpadetailsBySearch(pofilters: PADetailsModel) {
     this.paService.GetMprpadetailsBySearch(pofilters).subscribe(data => {
       this.palist = data;
@@ -146,7 +164,11 @@ export class purchasePaymentListComponent implements OnInit {
   }
   returnFn(option): number | undefined {
     return option ? option.DepartmentId : undefined;
-  }
+    }
+     //Name of Function: << loadbuyergroups >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Loading all buyer groups by mprbuyergroups>>
+    //            Review Date:<<>> Reviewed By:<<>>
   loadbuyergroups() {
     this.paService.LoadAllmprBuyerGroups().subscribe(data => {
       this.buyergroups = data;
@@ -184,7 +206,11 @@ export class purchasePaymentListComponent implements OnInit {
   deletepa(padelete: padeletemodel) {
     this.DeleteDialog = true;
     this.paid = padelete.PAId
-  }
+    }
+    //Name of Function: << finaldelete >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Deleting the purchase authorization by paid>>
+    //            Review Date:<<>> Reviewed By:<<>>
   finaldelete(padelete: padeletemodel) {
     this.DeleteDialog = false;
     padelete.PAId = this.paid;
@@ -195,7 +221,11 @@ export class purchasePaymentListComponent implements OnInit {
       this.GetMprpadetailsBySearch(this.pofilters);
     })
 
-  }
+    }
+    //Name of Function: << Cancel >> Author :<< Akhil >>
+    //    Date of Creation <<>>
+    //        Purpose : << Delete dialog popup>>
+    //            Review Date:<<>> Reviewed By:<<>>
   Cancel() {
     this.DeleteDialog = false;
   }

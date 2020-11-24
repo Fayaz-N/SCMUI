@@ -76,7 +76,11 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
 
 
     //this.checked = false;
-  }
+    }
+/*Name of Function : <<displayitems>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<getting approved items and items which are not done PA>>
+Review Date :<<>>   Reviewed By :<<>>*/
   displayitems(padetails: PADetailsModel) {
     this.paService.LoadItems(padetails).subscribe(data => {
       //this.paitemdetails[0].itemsum = data[0].QuotationQty * data[0].UnitPrice;
@@ -92,7 +96,11 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
         this.messageservice.add({ severity: 'info', summary: 'Alert Message', detail: 'No Items', });
       }
     })
-  }
+    }
+/*Name of Function : <<bindSearchListData>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<binding the value to dropdown>>
+Review Date :<<>>   Reviewed By :<<>>*/
   public bindSearchListData(e: any, formName?: string, name?: string, searchTxt?: string, callback?: () => any): void {
     this.dialogTop = e.clientY + 30 + "px";
     this.txtName = name;
@@ -180,6 +188,10 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
   //    debugger;
   //    this.paService.itemvalues.push(this.selectedItems);
   //}
+/*Name of Function : <<displayapproveitems>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<tranferring selected items data to purchasepayment page>>
+Review Date :<<>>   Reviewed By :<<>>*/
   displayapproveitems() {
     let dataa: any = this.selectedItems;
     localStorage.setItem("PADetails", JSON.stringify(this.selectedItems));
@@ -190,7 +202,10 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
     let dataa: any = this.selectedItems;
     this.paService.getdata(this.paitemdetails, dataa);
   }
-
+/*Name of Function : <<onSelectedOptionsChange>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Dropdown selection functionality>>
+Review Date :<<>>   Reviewed By :<<>>*/
   public onSelectedOptionsChange(item: any, index: number) {
     this.showList = false;
     if (item.listName == "venderid") {
@@ -217,7 +232,11 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
   }
   onclickbox(selectitems: any[]) {
     this.paitemdetails = selectitems;
-  }
+    }
+/*Name of Function : <<selectAll>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Selecting the all items of selected vendor>>
+Review Date :<<>>   Reviewed By :<<>>*/
     selectAll(event) {
         if (this.Vendorid) {
             this.filteredResult = this.paitemdetails.filter(li => li.VendorId == this.Vendorid);
@@ -256,7 +275,10 @@ export class PurchaseAuthorizationDetailsComponent implements OnInit {
   //    this.selectedItems = this.paitemdetails.filter(value => value.VendorId == this.Vendorid);
   //    console.log("this.selectedItems", this.selectedItems)
   //}
-
+/*Name of Function : <<onChange1>>  Author :<<Akhil>>
+Date of Creation <<>>
+Purpose : <<Selecting only one vendor items>>
+Review Date :<<>>   Reviewed By :<<>>*/
   onChange1(itemdetails: ItemsViewModel, isChecked: boolean, event) {
     this.disableSubmit = false;
     if (this.selectedItems.length === 0)
