@@ -256,7 +256,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
                 title: 'Vendor Reg List',
                 link: '/SCM/VendorRegList',
                 icon: 'list-outline'
-            }
+          }
+          ,
+          {
+            title: 'Vendor Reg Pending List',
+            link: '/SCM/VendorRegPendingList',
+            icon: 'list-outline'
+          }
         ],
     },
     {

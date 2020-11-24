@@ -69,6 +69,7 @@ import { TokuchuReqListComponent } from './purchase-authorization/TokuchuReqList
 
 import { VendorRegInitiateComponent } from './VendorRegistration/VendorRegInitiate'
 import { VendorRegListComponent } from './VendorRegistration/VendorRegList'
+import { VendorRegPendingListComponent } from './VendorRegistration/VendorRegPendingList.component'
 import { VendorRegisterApproverComponent } from './VendorRegistration/VendorRegApprover.component'
 
 import { MPRStatusReportsComponent } from './MPRReports/MPRStatusReports.component'
@@ -109,9 +110,9 @@ import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationRep
     MatAutocompleteModule,
     AutoCompleteModule,
     MatInputModule,
-        MatFormFieldModule,
-        NgMultiSelectDropDownModule,
-        //NgbModule
+    MatFormFieldModule,
+    NgMultiSelectDropDownModule,
+    //NgbModule
   ],
   declarations: [
     PagesComponent,
@@ -156,12 +157,13 @@ import { ProjectDurationReportsComponent } from './MPRReports/ProjectDurationRep
     TokuchuReqListComponent,
     VendorRegInitiateComponent,
     VendorRegListComponent,
+    VendorRegPendingListComponent,
     VendorRegisterApproverComponent,
-      MPRStatusReportsComponent,
-      MPRWiseReportsComponent,
-      MPRRequisitionWiseReportComponent,
-      ProjectWiseReportsComponent,
-      ProjectDurationReportsComponent
+    MPRStatusReportsComponent,
+    MPRWiseReportsComponent,
+    MPRRequisitionWiseReportComponent,
+    ProjectWiseReportsComponent,
+    ProjectDurationReportsComponent
   ],
   providers: [MessageService, ConfirmationService],
   entryComponents: [ConfirmationDialogComponent]

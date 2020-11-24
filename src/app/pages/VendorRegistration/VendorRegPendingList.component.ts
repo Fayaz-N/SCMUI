@@ -6,11 +6,11 @@ import { constants } from 'src/app/Models/MPRConstants';
 import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
-  selector: 'app-VendorList',
-  templateUrl: './VendorRegList.component.html'
+  selector: 'app-VendorPendingList',
+  templateUrl: './VendorRegPendingList.component.html'
 })
 
-export class VendorRegListComponent implements OnInit {
+export class VendorRegPendingListComponent implements OnInit {
 
   constructor(public MprService: MprService, private router: Router, public constants: constants, private spinner: NgxSpinnerService) { }
 
@@ -35,18 +35,23 @@ export class VendorRegListComponent implements OnInit {
     this.vendorRegfilters.CheckedBy = "";
     this.vendorRegfilters.ApprovedBy = this.constants.VendorReg_CMM_Approver;
     this.vendorRegfilters.VerifiedBy = "";
+    this.vendorRegfilters.IntiatorStatus = this.vendorRegfilters.CheckerStatus = "Pending";
+    //For Approver
+    if (this.employee.EmployeeNo == this.constants.VendorReg_CMM_Approver) {
+      this.vendorRegfilters.IntiatorStatus = this.vendorRegfilters.CheckerStatus = "Approved";
+    }
     //for finance Verifier
     if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2) {
-     // this.vendorRegfilters.VerifiedBy = this.employee.EmployeeNo;
+      // this.vendorRegfilters.VerifiedBy = this.employee.EmployeeNo;
       this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = "Approved";
       this.vendorRegfilters.VerifiedStatus = "Pending";
       this.hideForVerifier = false;
     }
     //for finance Approver
-    //if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
-    //  this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
-    //  this.vendorRegfilters.FinanceApprovedStatus = "Pending";
-    //}
+    if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
+      this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
+      this.vendorRegfilters.FinanceApprovedStatus = "Pending";
+    }
     this.vendorReqList = [];
     this.getEmplist();
     this.getStatusList();

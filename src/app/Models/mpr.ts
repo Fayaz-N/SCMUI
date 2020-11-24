@@ -593,6 +593,7 @@ export class vendorRegfilters {
   ToDate: Date;
   VendorName: string;
   IntiatedBy: string;
+  IntiatorStatus: string="";
   CheckedBy: string;
   ApprovedBy: string;
   VerifiedBy: string;
