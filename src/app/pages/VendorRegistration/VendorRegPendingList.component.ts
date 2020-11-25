@@ -39,18 +39,23 @@ export class VendorRegPendingListComponent implements OnInit {
     //For Approver
     if (this.employee.EmployeeNo == this.constants.VendorReg_CMM_Approver) {
       this.vendorRegfilters.IntiatorStatus = this.vendorRegfilters.CheckerStatus = "Approved";
+      this.vendorRegfilters.ApprovalStatus = "Pending";
     }
     //for finance Verifier
-    if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2) {
+    else if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2) {
       // this.vendorRegfilters.VerifiedBy = this.employee.EmployeeNo;
       this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = "Approved";
       this.vendorRegfilters.VerifiedStatus = "Pending";
       this.hideForVerifier = false;
     }
     //for finance Approver
-    if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
+    else if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
       this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
       this.vendorRegfilters.FinanceApprovedStatus = "Pending";
+    }
+    else {
+      this.vendorRegfilters.IntiatedBy = this.employee.EmployeeNo;
+      this.vendorRegfilters.CheckedBy = this.employee.EmployeeNo;
     }
     this.vendorReqList = [];
     this.getEmplist();
