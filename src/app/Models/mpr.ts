@@ -591,6 +591,7 @@ export class VendorRegistration {
 export class vendorRegfilters {
   FromDate: Date;
   ToDate: Date;
+  Vendorid: string;
   VendorName: string;
   IntiatedBy: string;
   IntiatorStatus: string="";
