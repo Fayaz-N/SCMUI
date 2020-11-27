@@ -107,6 +107,7 @@
           <th>Checker Cleared Date</th>
           <th>Approver Cleared Date</th>
           <th>Second Approver Cleared Date</th>
+          <th>Third Approver Cleared Date</th>
           <th>PA Approved</th>
           <th>Mpr Duration</th>
           <th>PO Duration</th>
@@ -129,8 +130,9 @@
           <td style="max-width:200px !important">{{app.ItemDescription}}</td>
           <td>{{app.BuyerGroup}}</td>
           <td>{{app.CheckedOn | date: 'dd/MM/yyyy'}}</td>
-          <td>{{app.approveddate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.ApprovedOn | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.SecondApprovedOn | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.ThirdApproverStatusChangedOn | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.PAStatusUpdate | date: 'dd/MM/yyyy'}}</td>
           <td>{{app.MprDuration}}</td>
           <td>{{app.poduration}}</td>

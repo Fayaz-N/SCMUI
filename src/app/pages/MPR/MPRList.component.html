@@ -249,6 +249,7 @@
           <th style="width:100px">Purpose of issuing MPR</th>
           <th style="width:100px" *ngIf="MPRfilterForm.controls.ItemDescription.value">Item Description</th>
           <th style="width:100px">MPRStatus</th>
+          <th style="width:100px">Cleared To CMM</th>
           <th style="width:100px">Ge Ps Approval Id</th>
           <th style="width:100px">Buyer Group Name</th>
           <th style="width:100px">Preapared By</th>
@@ -257,6 +258,10 @@
           <th style="width:100px">Checker Status</th>
           <th style="width:100px">Approved By</th>
           <th style="width:100px">Approver Status</th>
+          <th style="width:100px">Second Approver</th>
+          <th style="width:100px">Second Approver Status</th>
+          <th style="width:100px">Third Approver</th>
+          <th style="width:100px">Third Approver Status</th>
           <th style="width:100px">Department Name</th>
           <th style="width:100px">AssignTo</th>
           <th style="width:100px">Purchase Type</th>
@@ -276,6 +281,7 @@
           <td class="ptable-cell">{{rowData.IssuePurposeId==1?'For Enquiry':'For Issuing PO'}}</td>
           <td *ngIf="MPRfilterForm.controls.ItemDescription.value" class="ptable-cell">{{rowData.ItemDescription}}</td>
           <td class="ptable-cell">{{rowData.MPRStatus}}</td>
+          <td class="ptable-cell">{{rowData.approvedate  ? 'Cleared' : 'Pending'}}</td>
           <td class="ptable-cell">{{rowData.GEPSApprovalId}}</td>
           <td class="ptable-cell">{{rowData.BuyerGroupName}}</td>
           <td class="ptable-cell">{{rowData.PreparedName}}</td>
@@ -284,6 +290,10 @@
           <td class="ptable-cell">{{rowData.CheckStatus }}</td>
           <td class="ptable-cell">{{rowData.ApproverName}}</td>
           <td class="ptable-cell">{{rowData.ApprovalStatus}}</td>
+          <td class="ptable-cell">{{rowData.SecondApproverName}}</td>
+          <td class="ptable-cell">{{rowData.SecondApproversStatus}}</td>
+          <td class="ptable-cell">{{rowData.ThirdApproverName}}</td>
+          <td class="ptable-cell">{{rowData.ThirdApproverStatus}}</td>
           <td class="ptable-cell"><span *ngIf="mprFilterParams.ORgDepartmentid">{{employee.OrgDepartmentName}}</span><span *ngIf="!mprFilterParams.ORgDepartmentid || mprFilterParams.ORgDepartmentid==''">{{rowData.DepartmentName}}</span></td>
           <td class="ptable-cell">{{rowData.AssignEmployeeName}}</td>
           <td class="ptable-cell">{{rowData.PurchaseType}}</td>
