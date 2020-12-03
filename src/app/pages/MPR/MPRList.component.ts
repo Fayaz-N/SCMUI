@@ -185,7 +185,8 @@ export class MPRListComponent implements OnInit {
         this.mprFilterParams.Status = "";
     }
       this.MprService.getMPRList(this.mprFilterParams).subscribe(data => {
-        this.mprList = data;
+          this.mprList = data;
+          console.log(" this.mprList", this.mprList)
         if (this.typeOfList == "MPRList") {
           if (this.employee.OrgDepartmentId == 14) {//for cmm
             this.mprList = this.mprList.filter(li => li.CheckStatus == "Approved" && li.ApprovalStatus == "Approved" && li.SecondApprover == '-' && li.ThirdApprover == '-' || (li.SecondApprover != '-' && li.SecondApproversStatus == 'Approved') || (li.ThirdApprover != '-' && li.ThirdApproverStatus == 'Approved'));

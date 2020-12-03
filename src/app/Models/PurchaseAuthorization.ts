@@ -442,6 +442,7 @@ export class ReportInputModel {
     ProjectManager: string;
     SaleOrderNo: string;
     OrgDepartmentId: number;
+    Itemwise: boolean;
 }
 export class statussearch {
     BuyerGroup: string;
@@ -452,5 +453,6 @@ export class statussearch {
     Todate: string;
     DepartmentId: number;
     BuyerGroupId: number;
+    Issuepurposeid: number;
 }
 

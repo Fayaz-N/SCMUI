@@ -83,6 +83,7 @@ export class MPRStatusReportsComponent implements OnInit {
         this.search.BuyerGroupId = this.reportinput.BuyerGroupId;
         this.search.Fromdate = this.reportinput.Fromdate;
         this.search.Todate = this.reportinput.Todate;
+        this.search.Issuepurposeid = this.reportinput.Issuepurposeid;
         localStorage.setItem("statusDetails", JSON.stringify(this.search));
         // this.routing.navigateByUrl("/SCM/requisitionreport",'_blank');
         window.open("/SCM/requisitionreport", '_blank')

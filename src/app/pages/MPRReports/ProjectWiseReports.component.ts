@@ -90,6 +90,7 @@ export class ProjectWiseReportsComponent implements OnInit {
         this.paService.GetProjectWisereport(report).subscribe(data => {
             this.spinner.hide();
             this.statuslist = data;
+            console.log("this.statuslist", this.statuslist )
         })
     }
     loadjobcodes() {
