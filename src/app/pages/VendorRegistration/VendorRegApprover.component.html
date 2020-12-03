@@ -67,12 +67,12 @@
       <div class="row m-2">
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
           <label>Vendor Name:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
-          <input type="text" class="form-control" ngModel maxlength="100" formControlName="VendorName" [(ngModel)]="VendorData.VendorName" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.VendorName.errors}" />
+          <input type="text" class="form-control" ngModel maxlength="500" formControlName="VendorName" [(ngModel)]="VendorData.VendorName" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.VendorName.errors}" />
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.VendorName.errors" class="invalid-feedback">Enter Vendor Name.</span>
         </div>
         <div class='col-xs-3 col-md-3 col-sm-3 form-group'>
           <label>Street:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
-          <input type="text" class="form-control" ngModel maxlength="100" formControlName="street" [(ngModel)]="VendorData.Street" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.street.errors}" />
+          <input type="text" class="form-control" ngModel maxlength="500" formControlName="street" [(ngModel)]="VendorData.Street" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.street.errors}" />
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.street.errors" class="invalid-feedback">Enter Street.</span>
         </div>
         <div *ngIf="VendorData.VendorType==false" class="col-xs-3 col-md-3 col-sm-3 form-group">
@@ -83,7 +83,7 @@
               {{state.StateName}}
             </option>
           </select>
-          <span *ngIf="VQAddSubmitted && VendorRegister.controls.State.errors" class="invalid-feedback">Select state.</span>
+          <span *ngIf="VQAddSubmitted && (VendorRegister.controls.State.value=='0' || VendorRegister.controls.State.value==null)" class="invalid-feedback">Select state.</span>
         </div>
         <div *ngIf="VendorData.VendorType==true" class="col-xs-3 col-md-3 col-sm-3 form-group">
           <label>Country:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
@@ -92,7 +92,7 @@
         </div>
         <div class="col-xs-3 col-md-3 col-sm-3 form-group">
           <label>City:</label>&nbsp;<span style="color:red">*</span>&nbsp;&nbsp;
-          <input type="text" class="form-control" ngModel maxlength="40" formControlName="City" [(ngModel)]="VendorData.City" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.City.errors}" />
+          <input type="text" class="form-control" ngModel maxlength="150" formControlName="City" [(ngModel)]="VendorData.City" [ngClass]="{ 'is-invalid': VQAddSubmitted && VendorRegister.controls.City.errors}" />
           <span *ngIf="VQAddSubmitted && VendorRegister.controls.City.errors" class="invalid-feedback">Enter City.</span>
         </div>
       </div>
