@@ -443,6 +443,7 @@ export class ReportInputModel {
     SaleOrderNo: string;
     OrgDepartmentId: number;
     Itemwise: boolean;
+    OrgDepartment: string;
 }
 export class statussearch {
     BuyerGroup: string;
@@ -454,5 +455,6 @@ export class statussearch {
     DepartmentId: number;
     BuyerGroupId: number;
     Issuepurposeid: number;
+    OrgDepartmentId: number;
 }
 

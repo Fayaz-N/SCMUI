@@ -38,16 +38,23 @@ export class MPRWiseReportsComponent implements OnInit {
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
-  filteredoptions: Observable<any[]>;
-  ngOnInit() {
+    filteredoptions: Observable<any[]>;
+    public editable: boolean;
+    ngOnInit() {
+        this.report = new ReportInputModel();
+        this.loadallmprdepartments();
     if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"));
+        this.employee = JSON.parse(localStorage.getItem("Employee"));
+        if (this.employee.OrgDepartmentId != 14) {
+            this.report.OrgDepartmentId = this.employee.OrgDepartmentId;
+            this.editable = true;
+        }
     }
     else {
       this.router.navigateByUrl("Login");
       }
-      this.report = new ReportInputModel();
-      this.report.Fromdate = "2020-11-01";
+      
+      this.report.Fromdate = "2020-12-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
       this.palist = new Array<any>();
@@ -59,7 +66,7 @@ export class MPRWiseReportsComponent implements OnInit {
       //this.GetMprWisestatusreport(this.report);
       this.loadprojectmangers();
       this.loadjobcodes();
-      this.loadallmprdepartments();
+      
       this.page = 1;
       this.pageSize = 500;
       this.projectmangers = new Array<any>();

@@ -34,29 +34,36 @@ export class MPRStatusReportsComponent implements OnInit {
     Pending: any;
     Submitted: any;
     public currentDate: Date;
-  filteredoptions: Observable<any[]>;
+    filteredoptions: Observable<any[]>;
+    public editable: boolean;
     ngOnInit() {
+        this.reportinput = new ReportInputModel();
+        this.pofilters = new PADetailsModel();
+        this.loadallmprdepartments();
     if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"));
+        this.employee = JSON.parse(localStorage.getItem("Employee"));
+        console.log("this.employee ", this.employee )
+        if (this.employee.OrgDepartmentId != 14) {
+            this.reportinput.OrgDepartmentId = this.employee.OrgDepartmentId;
+            this.editable = true;
+        }
     }
     else {
       this.router.navigateByUrl("Login");
     }
     this.purchasedetails = new mprpadetailsmodel();
     this.buyergroups = new Array<any>();
-    this.pofilters = new PADetailsModel();
     this.DeleteDialog = false;
     this.departmentlist = new Array<any>();
     this.loadbuyergroups();
-    this.reportinput = new ReportInputModel();
+   
     this.statuslist = new Array<any>();
         this.search = new statussearch();
         //this.reportinput.Fromdate = this.datePipe.transform("01" + '-' + new Date().getMonth().toString() + '-' + new Date().getFullYear().toString(), "yyyy-mm-dd");
-        this.reportinput.Fromdate = "2020-10-01";
-        console.log("this.reportinput.Fromdate", this.reportinput.Fromdate)
+        this.reportinput.Fromdate = "2020-12-01";
         this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
       this.GetMprstatusreport(this.reportinput);
-      this.loadallmprdepartments();
+      
      
   }
 
@@ -84,6 +91,7 @@ export class MPRStatusReportsComponent implements OnInit {
         this.search.Fromdate = this.reportinput.Fromdate;
         this.search.Todate = this.reportinput.Todate;
         this.search.Issuepurposeid = this.reportinput.Issuepurposeid;
+        this.search.OrgDepartmentId = this.reportinput.OrgDepartmentId;
         localStorage.setItem("statusDetails", JSON.stringify(this.search));
         // this.routing.navigateByUrl("/SCM/requisitionreport",'_blank');
         window.open("/SCM/requisitionreport", '_blank')

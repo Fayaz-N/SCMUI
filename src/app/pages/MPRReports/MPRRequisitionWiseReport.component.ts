@@ -36,20 +36,26 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
     public mprcheckedby: any[];
     public mprApprovedby: any[];
     public purposetype: any[];
-  ngOnInit() {
+    public editable: boolean;
+    ngOnInit() {
+        this.reportinput = new ReportInputModel();
+        this.loadallmprdepartments();
+        
     if (localStorage.getItem("Employee")) {
-      this.employee = JSON.parse(localStorage.getItem("Employee"));
+        this.employee = JSON.parse(localStorage.getItem("Employee"));
+        if (this.employee.OrgDepartmentId != 14) {
+            //this.reportinput.OrgDepartmentId = this.employee.OrgDepartmentId;
+            this.editable = true;
+        }
     }
     else {
       this.router.navigateByUrl("Login");
     }
     this.purchasedetails = new mprpadetailsmodel();
     this.buyergroups = new Array<any>();
-      this.reportinput = new ReportInputModel();
 
       if (localStorage.getItem("statusDetails")) {
           this.reportinput = JSON.parse(localStorage.getItem("statusDetails"));
-          console.log(" this.reportinput", this.reportinput)
           //this.reportinput.Fromdate = "2020-10-01";
           //this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprRequisitionreport(this.reportinput);
@@ -57,7 +63,7 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
           this.reportinput.DepartmentId = this.reportinput.DepartmentId;
       }
       else {
-          this.reportinput.Fromdate = "2020-11-01";
+          this.reportinput.Fromdate = "2020-12-01";
           this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           //this.GetMprRequisitionreport(this.reportinput);
       }
@@ -70,7 +76,6 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
       this.departmentlist = new Array<any>();
       
       this.getmprreportfilters();
-      this.loadallmprdepartments();
       this.loadbuyergroups();
       this.searchdata = new Array<any>();
   }
@@ -101,7 +106,12 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            //this.filtereddepartments = this.filterStates('');
+            if (this.employee.OrgDepartmentId != 14) {
+                var departmentdata = this.departmentlist.filter(dep => dep.OrgDepartment === this.employee.OrgDepartmentName)
+                this.reportinput.DepartmentId = departmentdata[0].DepartmentId;
+                console.log("departmentdata", departmentdata);
+            }
+
         });
     }
     ExportTOExcel() {

@@ -59,9 +59,9 @@
     <div class="col-lg-3 col-md-3 col-sm-3">
       <mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
-        <select matNativeControl [(ngModel)]="report.DepartmentId">
+        <select matNativeControl [(ngModel)]="report.OrgDepartmentId" [disabled]="editable">
           <option value="" selected></option>
-          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+          <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
             {{option.Department}}
           </option>
         </select>
@@ -131,13 +131,13 @@
           <td>{{app.SaleOrderNo}}</td>
           <td>{{app.JobCode}}</td>
           <td>{{app.JobName}}</td>
-          <td>{{app.approveddate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.approveddate |date: 'dd.MM.yyyy'}}</td>
           <td>{{app.technicaldate}}</td>
-          <td>{{app.PAStatusUpdate |date: 'dd/MM/yyyy'}}</td>
-          <td>{{app.PODate | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.PAStatusUpdate | date: 'dd.MM.yyyy'}}</td>
+          <td>{{app.PODate | date: 'dd.MM.yyyy'}}</td>
           <td>{{app.pono}}</td>
-          <td>{{app.DeliveryRequiredBy |date: 'dd/MM/yyyy'}}</td>
-          <td>{{app.VendorDeliveryDate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.DeliveryRequiredBy |date: 'dd.MM.yyyy'}}</td>
+          <td>{{app.VendorDeliveryDate |date: 'dd.MM.yyyy'}}</td>
           <td>{{app.status}}</td>
           <td>{{app.TargetSpend | currency:'INR'}}</td>
           <td>{{app.Discountamount | currency:'INR'}}</td>

@@ -240,6 +240,5 @@ export class purchasePaymentListComponent implements OnInit {
     }
     someFunction(e) {
         this.approverselect = false;
-        console.log("akil",e)
     }
 }

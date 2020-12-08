@@ -22,10 +22,21 @@
       <input type="text" class="form-control" [(ngModel)]="reportinput.DocumentNo">
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3">
+    <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="reportinput.OrgDepartmentId==14">
       <mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
-        <select matNativeControl [(ngModel)]="reportinput.DepartmentId">
+        <select matNativeControl [(ngModel)]="reportinput.OrgDepartmentId" [disabled]="editable">
+          <option value="" selected></option>
+          <option *ngFor="let option of departmentlist" [value]="option.ORgDepartmentid">
+            {{option.Department}}
+          </option>
+        </select>
+      </mat-form-field>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="reportinput.OrgDepartmentId!=14">
+      <mat-form-field style="width:100%">
+        <mat-label>Select Department</mat-label>
+        <select matNativeControl [(ngModel)]="reportinput.DepartmentId" [disabled]="editable">
           <option value="" selected></option>
           <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
             {{option.Department}}
@@ -212,22 +223,22 @@
           <td>{{app.department}}</td>
           <td>{{app.jobcode}}</td>
           <td>{{app.jobname}}</td>
-          <td>{{app.approvedate |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.approvedate |date: 'dd.MM.yyyy'}}</td>
           <td>{{app.Status}}</td>
           <td>{{app.prepared}}</td>
-          <td>{{app.preparedon | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.preparedon | date: 'dd.MM.yyyy'}}</td>
           <td>{{app.Checker}}</td>
           <td>{{app.checkstatus}}</td>
-          <td>{{app.checkedon | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.checkedon | date: 'dd.MM.yyyy'}}</td>
           <td>{{app.Approver}}</td>
           <td>{{app.approvalstatus}}</td>
-          <td>{{app.approvedon | date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.approvedon | date: 'dd.MM.yyyy'}}</td>
           <td>{{app.SecondApprover}}</td>
           <td>{{app.secondapproversstatus}}</td>
-          <td>{{app.secondapprovedon |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.secondapprovedon |date: 'dd.MM.yyyy'}}</td>
           <td>{{app.Thirdapprover}}</td>
           <td>{{app.thirdapproverstatus}}</td>
-          <td>{{app.thirdapproverstatuschangedon |date: 'dd/MM/yyyy'}}</td>
+          <td>{{app.thirdapproverstatuschangedon |date: 'dd.MM.yyyy'}}</td>
         </tr>
       </tbody>
     </table>
