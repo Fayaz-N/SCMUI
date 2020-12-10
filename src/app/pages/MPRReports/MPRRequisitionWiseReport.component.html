@@ -23,7 +23,7 @@
       <!--<p-calendar class="toDate" [(ngModel)]="pofilters.toDate" [monthNavigator]="true" [yearNavigator]="true" yearRange="1900:2050"></p-calendar>-->
     </div>
     <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="reportinput.OrgDepartmentId==14">
-      <mat-form-field style="width:100%">
+      <!--<mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
         <select matNativeControl [(ngModel)]="reportinput.OrgDepartmentId" [disabled]="editable">
           <option value="" selected></option>
@@ -31,14 +31,14 @@
             {{option.Department}}
           </option>
         </select>
-      </mat-form-field>
+      </mat-form-field>-->
     </div>
-    <div class="col-lg-3 col-md-3 col-sm-3" *ngIf="reportinput.OrgDepartmentId!=14">
+    <div class="col-lg-3 col-md-3 col-sm-3">
       <mat-form-field style="width:100%">
         <mat-label>Select Department</mat-label>
-        <select matNativeControl [(ngModel)]="reportinput.DepartmentId" [disabled]="editable">
+        <select matNativeControl [(ngModel)]="reportinput.DepartmentId">
           <option value="" selected></option>
-          <option *ngFor="let option of departmentlist" [value]="option.DepartmentId">
+          <option *ngFor="let option of Orgdepartments" [value]="option.DepartmentId">
             {{option.Department}}
           </option>
         </select>

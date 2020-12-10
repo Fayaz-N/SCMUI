@@ -37,9 +37,11 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
     public mprApprovedby: any[];
     public purposetype: any[];
     public editable: boolean;
+    public Orgdepartments: any[];
     ngOnInit() {
         this.reportinput = new ReportInputModel();
         this.loadallmprdepartments();
+        this.Orgdepartments = new Array<any>();
         
     if (localStorage.getItem("Employee")) {
         this.employee = JSON.parse(localStorage.getItem("Employee"));
@@ -56,8 +58,6 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
 
       if (localStorage.getItem("statusDetails")) {
           this.reportinput = JSON.parse(localStorage.getItem("statusDetails"));
-          //this.reportinput.Fromdate = "2020-10-01";
-          //this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
           this.GetMprRequisitionreport(this.reportinput);
           localStorage.removeItem("statusDetails");
           this.reportinput.DepartmentId = this.reportinput.DepartmentId;
@@ -65,7 +65,6 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
       else {
           this.reportinput.Fromdate = "2020-12-01";
           this.reportinput.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
-          //this.GetMprRequisitionreport(this.reportinput);
       }
       this.mprprepares = new Array<any>();
       this.mprcheckedby = new Array<any>();
@@ -86,6 +85,10 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
     })
   }
     GetMprRequisitionreport(status: ReportInputModel) {
+        if (this.employee.OrgDepartmentId != 14) {
+            //status.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
+            console.log("this.Orgdepartments", this.Orgdepartments)
+        }
         this.spinner.show();
         this.paService.GetmprrequisitionReport(status).subscribe(data => {
             this.spinner.hide();
@@ -107,9 +110,13 @@ export class MPRRequisitionWiseReportComponent implements OnInit {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
             if (this.employee.OrgDepartmentId != 14) {
-                var departmentdata = this.departmentlist.filter(dep => dep.OrgDepartment === this.employee.OrgDepartmentName)
-                this.reportinput.DepartmentId = departmentdata[0].DepartmentId;
-                console.log("departmentdata", departmentdata);
+                this.Orgdepartments = this.departmentlist.filter(dep => dep.ORgDepartmentid === this.employee.OrgDepartmentId)
+                this.reportinput.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
+                console.log("this.Orgdepartments", this.Orgdepartments)
+            }
+            else {
+                this.Orgdepartments = this.departmentlist
+                console.log("this.Orgdepartments", this.Orgdepartments)
             }
 
         });

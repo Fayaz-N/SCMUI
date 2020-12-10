@@ -40,6 +40,7 @@ export class MPRWiseReportsComponent implements OnInit {
   buyercontrol = new FormControl();
     filteredoptions: Observable<any[]>;
     public editable: boolean;
+    public Orgdepartments: any[];
     ngOnInit() {
         this.report = new ReportInputModel();
         this.loadallmprdepartments();
@@ -111,7 +112,15 @@ export class MPRWiseReportsComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            //this.filtereddepartments = this.filterStates('');
+            if (this.employee.OrgDepartmentId != 14) {
+                this.Orgdepartments = this.departmentlist.filter(dep => dep.ORgDepartmentid === this.employee.OrgDepartmentId)
+                this.report.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
+                console.log("this.Orgdepartments", this.Orgdepartments)
+            }
+            else {
+                this.Orgdepartments = this.departmentlist
+                console.log("this.Orgdepartments", this.Orgdepartments)
+            }
         });
     }
     toggle() {
