@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 
 export class ProjectDurationReportsComponent implements OnInit {
     @ViewChild('TABLE', { static: false }) TABLE: ElementRef;  
+    
     constructor(private paService: purchaseauthorizationservice, private router: Router, private datePipe: DatePipe, public messageService: MessageService, private spinner: NgxSpinnerService, public formbuilder: FormBuilder) { }
     page: number;
     pageSize: number;
@@ -39,7 +40,8 @@ export class ProjectDurationReportsComponent implements OnInit {
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
-  filteredoptions: Observable<any[]>;
+    filteredoptions: Observable<any[]>;
+   public Orgdepartments: any[];
     ngOnInit() {
         this.report = new ReportInputModel();
         this.pofilters = new PADetailsModel();
@@ -56,7 +58,7 @@ export class ProjectDurationReportsComponent implements OnInit {
       this.router.navigateByUrl("Login");
       }
       
-      this.report.Fromdate = "2020-11-01";
+      this.report.Fromdate = "2020-12-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
@@ -110,12 +112,15 @@ export class ProjectDurationReportsComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            console.log("this.departmentlist", this.departmentlist)
-            //var index2 = this.departmentlist.filter(li => li['ORgDepartmentid'] === this.employee.OrgDepartmentId);
-            //var departmentid = 0
-            //if (this.employee.OrgDepartmentId != 14) {
-            //    departmentid = index2[0].DepartmentId;
-            //}
+            if (this.employee.OrgDepartmentId != 14) {
+                this.Orgdepartments = this.departmentlist.filter(dep => dep.ORgDepartmentid === this.employee.OrgDepartmentId)
+                this.report.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
+                console.log("this.Orgdepartments", this.Orgdepartments)
+            }
+            else {
+                this.Orgdepartments = this.departmentlist
+                console.log("this.Orgdepartments", this.Orgdepartments)
+            }
         });
     }
     toggle() {

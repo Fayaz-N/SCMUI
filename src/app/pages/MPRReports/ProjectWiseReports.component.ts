@@ -39,7 +39,8 @@ export class ProjectWiseReportsComponent implements OnInit {
   mycontrol = new FormControl();
   vendorcontrol = new FormControl();
   buyercontrol = new FormControl();
-  filteredoptions: Observable<any[]>;
+    filteredoptions: Observable<any[]>;
+    public Orgdepartments: any[];
     ngOnInit() {
         this.report = new ReportInputModel();
         this.departmentlist = new Array<any>();
@@ -56,7 +57,7 @@ export class ProjectWiseReportsComponent implements OnInit {
       this.router.navigateByUrl("Login");
       }
       
-      this.report.Fromdate = "2020-11-01";
+      this.report.Fromdate = "2020-12-01";
       this.report.Todate = this.datePipe.transform(Date.now(), "yyyy-MM-dd")
     this.buyergroups = new Array<any>();
     this.palist = new Array<any>();
@@ -111,11 +112,18 @@ export class ProjectWiseReportsComponent implements OnInit {
     loadallmprdepartments() {
         this.paService.LoadAllDepartments().subscribe(data => {
             this.departmentlist = data;
-            var index2 = this.departmentlist.filter(li => li['ORgDepartmentid'] === this.employee.OrgDepartmentId);
-            var departmentid = 0
             if (this.employee.OrgDepartmentId != 14) {
-                departmentid = index2[0].DepartmentId;
+                this.Orgdepartments = this.departmentlist.filter(dep => dep.ORgDepartmentid === this.employee.OrgDepartmentId)
+                this.report.OrgDepartmentId = this.Orgdepartments[0].ORgDepartmentid;
             }
+            else {
+                this.Orgdepartments = this.departmentlist
+            }
+            //var index2 = this.departmentlist.filter(li => li['ORgDepartmentid'] === this.employee.OrgDepartmentId);
+            //var departmentid = 0
+            //if (this.employee.OrgDepartmentId != 14) {
+            //    departmentid = index2[0].DepartmentId;
+            //}
         });
     }
     toggle() {
