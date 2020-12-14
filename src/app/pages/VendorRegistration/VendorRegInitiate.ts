@@ -54,7 +54,7 @@ export class VendorRegInitiateComponent implements OnInit {
         this.getVendorStatusTrackDetails();
         this.getStatusList();
         this.getPaymentTerms();
-        this.DocumentListdata();
+       
       }
     });
   }
@@ -294,6 +294,7 @@ export class VendorRegInitiateComponent implements OnInit {
     this.MprService.getDBMastersList(this.dynamicData).subscribe(data => {
       this.spinner.hide();
       this.VendorData = data[0];
+      this.DocumentListdata();
       this.bindStatus();
     });
   }
