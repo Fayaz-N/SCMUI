@@ -44,13 +44,13 @@ export class VendorRegPendingListComponent implements OnInit {
     //for finance Verifier
     else if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2) {
       // this.vendorRegfilters.VerifiedBy = this.employee.EmployeeNo;
-      this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = "Approved";
+      this.vendorRegfilters.IntiatorStatus =this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = "Approved";
       this.vendorRegfilters.VerifiedStatus = "Pending";
       this.hideForVerifier = false;
     }
     //for finance Approver
     else if (this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver) {
-      this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
+      this.vendorRegfilters.IntiatorStatus =this.vendorRegfilters.CheckerStatus = this.vendorRegfilters.ApprovalStatus = this.vendorRegfilters.VerifiedStatus = "Approved";
       this.vendorRegfilters.FinanceApprovedStatus = "Pending";
     }
     else {

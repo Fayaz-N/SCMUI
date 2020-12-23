@@ -47,7 +47,7 @@ export class PagesComponent {
         MENU_ITEMS[7].hidden = false;
       }
       //check finance login to show vendor reg
-      if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2)
+      if (this.employee.EmployeeNo == this.constants.VendorReg_Verifier1 || this.employee.EmployeeNo == this.constants.VendorReg_Verifier2 || this.employee.EmployeeNo == this.constants.VendorReg_Fin_Approver)
         MENU_ITEMS[7].hidden = false;
       //else
       //  MENU_ITEMS[7].hidden = true;
